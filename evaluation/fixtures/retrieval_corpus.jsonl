@@ -1,0 +1,20 @@
+{"id": "eval-api-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "API design includes request validation, stable response schemas, and clear error handling."}
+{"id": "eval-api-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "API 設計包括輸入驗證、穩定回應格式同清楚嘅錯誤處理。"}
+{"id": "eval-testing-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Testing checks expected behavior, boundary cases, and regressions after changes."}
+{"id": "eval-testing-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "測試要檢查預期行為、邊界情況同改動後嘅回歸問題。"}
+{"id": "eval-data-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Data validation checks missing values, inconsistent types, and duplicate records."}
+{"id": "eval-data-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "數據驗證要檢查缺失值、類型不一致同重複記錄。"}
+{"id": "eval-security-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Security engineering applies least privilege, input validation, and careful secret storage."}
+{"id": "eval-security-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "資訊安全工程應用最小權限、輸入驗證同謹慎嘅密鑰儲存。"}
+{"id": "eval-collaboration-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Collaboration includes clarifying responsibilities, discussing trade-offs, and documenting decisions."}
+{"id": "eval-collaboration-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "團隊合作包括分清責任、討論取捨同記錄決策。"}
+{"id": "eval-reliability-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Reliability work uses health checks, recoverable failures, and incident investigation."}
+{"id": "eval-reliability-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "可靠性工作包括健康檢查、故障復原同事故調查。"}
+{"id": "eval-accessibility-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Accessibility supports keyboard navigation, readable contrast, captions, and reduced motion."}
+{"id": "eval-accessibility-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "無障礙設計支援鍵盤導覽、清楚對比度、字幕同減少動畫。"}
+{"id": "eval-deployment-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Deployment automation runs tests, builds artifacts, and preserves a rollback path."}
+{"id": "eval-deployment-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "部署自動化執行測試、建立產物同保留還原方法。"}
+{"id": "eval-evaluation-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "Model evaluation uses independent held-out data, appropriate metrics, and failure analysis."}
+{"id": "eval-evaluation-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "模型評估使用獨立測試數據、合適指標同失敗分析。"}
+{"id": "eval-star-en-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "STAR answers describe Situation, Task, Action, and Result using observed evidence."}
+{"id": "eval-star-zh-HK", "source": "Original synthetic evaluation fixture, CC0-1.0", "text": "STAR 答案包括處境、任務、行動同結果，並使用觀察到嘅證據。"}

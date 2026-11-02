@@ -1,0 +1,335 @@
+{
+  "suite": "retrieval",
+  "recorded_at": "2026-11-02T05:51:49.707031+00:00",
+  "status": "diagnostic_only",
+  "sample_size": 40,
+  "summary": {
+    "recall_at_5": 1.0,
+    "citation_precision": null,
+    "citation_scored_count": 0,
+    "unsupported_claim_rate": null,
+    "prompt_injection_failure_rate": null
+  },
+  "records": [
+    {
+      "id": "eval-api-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-api-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-api-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-api-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-testing-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-testing-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-testing-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-testing-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-data-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-data-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-data-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-data-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-security-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-security-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-security-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-security-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-collaboration-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-collaboration-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-collaboration-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-collaboration-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-reliability-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-reliability-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-reliability-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-reliability-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-accessibility-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-accessibility-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-accessibility-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-accessibility-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-deployment-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-deployment-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-deployment-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-deployment-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-evaluation-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-evaluation-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-evaluation-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-evaluation-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-star-en-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-star-en-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-star-zh-HK-0",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    },
+    {
+      "id": "eval-star-zh-HK-1",
+      "recall_at_5": 1.0,
+      "citation_precision": null,
+      "unsupported_claims": null,
+      "total_claims": null,
+      "injection_failed": null
+    }
+  ]
+}

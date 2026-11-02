@@ -1,0 +1,85 @@
+{
+  "suite": "smoke",
+  "recorded_at": "2026-11-02T05:54:34.247174+00:00",
+  "status": "passed_software_checks_only",
+  "sample_size": 12,
+  "summary": {
+    "golden_schemas_valid": 12,
+    "metric_fixture_checks": 5,
+    "release_gates_passed": false
+  },
+  "records": [
+    {
+      "id": "draft-software-008",
+      "task": "question",
+      "language": "en-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-013",
+      "task": "safety",
+      "language": "en-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-002",
+      "task": "feedback",
+      "language": "en-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-001",
+      "task": "report",
+      "language": "en-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-007",
+      "task": "question",
+      "language": "zh-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-063",
+      "task": "safety",
+      "language": "zh-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-000",
+      "task": "feedback",
+      "language": "zh-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-023",
+      "task": "report",
+      "language": "zh-HK",
+      "valid": true
+    },
+    {
+      "id": "draft-software-046",
+      "task": "question",
+      "language": "mixed",
+      "valid": true
+    },
+    {
+      "id": "draft-software-047",
+      "task": "safety",
+      "language": "mixed",
+      "valid": true
+    },
+    {
+      "id": "draft-software-014",
+      "task": "feedback",
+      "language": "mixed",
+      "valid": true
+    },
+    {
+      "id": "draft-software-003",
+      "task": "report",
+      "language": "mixed",
+      "valid": true
+    }
+  ]
+}

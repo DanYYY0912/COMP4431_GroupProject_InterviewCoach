@@ -1,0 +1,44 @@
+{
+  "status": "development_evidence_only",
+  "provider": "configured_at_runtime",
+  "training": {
+    "status": "not_trained",
+    "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "draft_examples": 1500,
+    "reviewed_examples": 0,
+    "adapter_available": false
+  },
+  "evaluations": [
+    {
+      "name": "retrieval",
+      "status": "diagnostic_only",
+      "value": {
+        "recall_at_5": 1.0,
+        "citation_precision": null,
+        "citation_scored_count": 0,
+        "unsupported_claim_rate": null,
+        "prompt_injection_failure_rate": null
+      },
+      "sample_size": 40,
+      "details": "evaluation/results/retrieval.json"
+    },
+    {
+      "name": "smoke",
+      "status": "passed_software_checks_only",
+      "value": {
+        "golden_schemas_valid": 12,
+        "metric_fixture_checks": 5,
+        "release_gates_passed": false
+      },
+      "sample_size": 12,
+      "details": "evaluation/results/smoke.json"
+    }
+  ],
+  "limitations": [
+    "No QLoRA training or fine-tuned adapter has been produced in this environment.",
+    "Synthetic curriculum drafts require independent human review and duplicate removal before training.",
+    "Schema smoke tests are software checks, not model quality measurements.",
+    "Language detection is a script heuristic; Cantonese adherence requires human assessment.",
+    "Blinded preference, four-speaker speech tests, usability, and clean-machine release gates remain pending."
+  ]
+}
