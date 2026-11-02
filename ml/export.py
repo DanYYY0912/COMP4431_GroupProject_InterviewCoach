@@ -7,6 +7,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from ml.train import validate_revision
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
@@ -24,6 +26,7 @@ def main():
     manifest = json.loads((run / "model_manifest.json").read_text())
     if manifest["status"] != "training_completed":
         raise SystemExit("A completed training run is required")
+    validate_revision(manifest["base_revision"])
     adapter = run / "adapter"
     for name, digest in manifest["adapter_sha256"].items():
         if hashlib.sha256((adapter / name).read_bytes()).hexdigest() != digest:

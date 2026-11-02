@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from ml.dataset import generate_drafts, split_dataset, validate_dataset
-from ml.train import mask_completion
+from ml.train import mask_completion, validate_revision
 
 
 class DatasetTests(unittest.TestCase):
@@ -72,6 +72,11 @@ class DatasetTests(unittest.TestCase):
         result = validate_dataset(rows + [duplicate], check_duplicates=True)
         self.assertFalse(result["valid"])
         self.assertEqual(result["near_duplicates"][0]["similarity"], 1.0)
+
+    def test_training_rejects_floating_model_revision(self):
+        with self.assertRaises(ValueError):
+            validate_revision("main")
+        self.assertEqual(validate_revision("a" * 40), "a" * 40)
 
     def test_prompt_tokens_are_masked_and_completion_remains(self):
         self.assertEqual(mask_completion([1, 2, 3, 4], [1, 2]), [-100, -100, 3, 4])

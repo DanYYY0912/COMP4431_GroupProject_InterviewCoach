@@ -1,4 +1,4 @@
-"""Strict training/evaluation schemas; matching application field names."""
+"""Strict training/evaluation schemas; matching the application model boundary."""
 
 import math
 
@@ -17,11 +17,8 @@ def arr(items):
 
 
 S = {"type": "string"}
-N = {"type": "number"}
 B = {"type": "boolean"}
 NULLABLE_S = {"type": ["string", "null"]}
-NULLABLE_N = {"type": ["number", "null"]}
-CITATION = obj({"chunk_id": S, "source": S, "text": S})
 COACH_TURN = obj(
     {
         "interviewer_text": {"type": "string", "minLength": 1, "maxLength": 4000},
@@ -29,9 +26,14 @@ COACH_TURN = obj(
             "type": "string",
             "enum": ["opening", "behavioral", "technical", "follow_up", "closing"],
         },
-        "targeted_competencies": {"type": "array", "items": S, "maxItems": 8},
+        "targeted_competencies": {
+            "type": "array",
+            "items": S,
+            "minItems": 1,
+            "maxItems": 8,
+        },
         "adaptive_follow_up_reason": NULLABLE_S,
-        "citations": {"type": "array", "items": CITATION, "maxItems": 4},
+        "citation_ids": {"type": "array", "items": S, "minItems": 1, "maxItems": 4},
     }
 )
 STAR = obj(
@@ -45,47 +47,50 @@ STAR = obj(
         "coaching": S,
     }
 )
-FEEDBACK = obj(
-    {
-        "star": arr(STAR),
-        "strengths": arr(S),
-        "prioritized_improvement": S,
-        "retry_exercise": S,
-        "citations": arr(CITATION),
-    }
-)
 REPORT = obj(
     {
-        "session_id": S,
-        "role_title": S,
-        "language": {"type": "string", "enum": ["en-HK", "zh-HK"]},
-        "summary": S,
-        "star": arr(STAR),
-        "competencies": arr(
-            obj({"name": S, "evidence": S, "feedback": S, "citations": arr(CITATION)})
-        ),
-        "strengths": arr(S),
-        "prioritized_improvement": S,
-        "retry_exercise": S,
-        "speech_metrics": obj(
-            {
-                "word_count": {"type": "integer"},
-                "duration_seconds": N,
-                "words_per_minute": NULLABLE_N,
-                "filler_count": {"type": "integer"},
-                "pause_count": {"type": ["integer", "null"]},
-                "silence_seconds": NULLABLE_N,
-                "answer_count": {"type": "integer"},
-            }
-        ),
-        "citations": arr(CITATION),
-        "limitations": arr(S),
+        "star": {"type": "array", "items": STAR, "minItems": 4, "maxItems": 4},
+        "competencies": {
+            "type": "array",
+            "maxItems": 8,
+            "items": obj(
+                {
+                    "name": S,
+                    "evidence": S,
+                    "feedback": S,
+                    "citation_ids": {
+                        "type": "array",
+                        "items": S,
+                        "minItems": 1,
+                        "maxItems": 4,
+                    },
+                }
+            ),
+        },
+        "strengths": {
+            "type": "array",
+            "maxItems": 4,
+            "items": obj(
+                {
+                    "text": S,
+                    "evidence": {"type": "string", "minLength": 1},
+                }
+            ),
+        },
+        "prioritized_improvement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1500,
+        },
+        "retry_exercise": {"type": "string", "minLength": 1, "maxLength": 2000},
     }
 )
+# These are the LLM boundary schemas, not the public SessionReport/Citation API.
+# Backend attaches authoritative citation text and computes speech metrics itself.
 SCHEMAS = {
     "question": COACH_TURN,
     "safety": COACH_TURN,
-    "feedback": FEEDBACK,
+    "feedback": REPORT,
     "report": REPORT,
 }
 
@@ -116,8 +121,10 @@ def validate(value, schema, path="$"):
         value
     ) <= schema.get("maxLength", float("inf")):
         errors.append(f"{path}: invalid string length")
-    if isinstance(value, list) and len(value) > schema.get("maxItems", float("inf")):
-        errors.append(f"{path}: too many items")
+    if isinstance(value, list) and not schema.get("minItems", 0) <= len(
+        value
+    ) <= schema.get("maxItems", float("inf")):
+        errors.append(f"{path}: invalid array length")
     if "enum" in schema and value not in schema["enum"]:
         errors.append(f"{path}: outside enum")
     if isinstance(value, dict):

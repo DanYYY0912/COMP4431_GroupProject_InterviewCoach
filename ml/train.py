@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -21,6 +22,14 @@ def mask_completion(full_ids, prompt_ids):
     if len(full_ids) <= len(prompt_ids):
         raise ValueError("No assistant tokens remain")
     return [-100] * len(prompt_ids) + full_ids[len(prompt_ids) :]
+
+
+def validate_revision(revision):
+    if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise ValueError(
+            "Pin the base model to a complete Hugging Face commit hash before training"
+        )
+    return revision
 
 
 def validate_splits(data_dir, expected_examples=1500):
@@ -64,6 +73,7 @@ def main():
     parser.add_argument("--resume-from-checkpoint")
     args = parser.parse_args()
     config = json.loads(Path(args.config).read_text())
+    validate_revision(config["revision"])
     splits, data_manifest = validate_splits(
         config["data_dir"], config["expected_examples"]
     )
@@ -235,7 +245,7 @@ def main():
         "status": "training_completed",
         "completed_at": datetime.now(UTC).isoformat(),
         "base_model": config["base_model"],
-        "base_revision": getattr(model.config, "_commit_hash", None),
+        "base_revision": config["revision"],
         "training_config": config,
         "dataset": data_manifest,
         "gpu": torch.cuda.get_device_name(0),

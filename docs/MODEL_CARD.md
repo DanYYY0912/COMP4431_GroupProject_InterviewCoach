@@ -9,6 +9,7 @@ VoxPrep HK currently has a real QLoRA training and export workflow but **no trai
 | Field | Value |
 |---|---|
 | Planned base | `Qwen/Qwen3-4B-Instruct-2507` |
+| Pinned base revision | `cdbee75f17c01a7cc42f958dc650907174af0554` |
 | Base license | Apache-2.0; see the upstream model card |
 | Adapter | Not produced |
 | Training status | Not run |
@@ -21,7 +22,7 @@ The base model has 4B parameters and a non-thinking instruction interface, accor
 
 ## Training configuration
 
-`ml/config.json` records the proposed experiment. `ml/train.py` uses Transformers 4.57.1, PEFT, and bitsandbytes directly, with an explicit assistant-only token mask. This avoids relying on a model chat template to expose an assistant mask. It checks that the prompt token sequence is an exact prefix of the completed conversation and masks all prompt/padding labels with `-100`.
+`ml/config.json` records the proposed experiment and immutable Hugging Face commit hash. The tokenizer, model and export all use that same revision; floating tags such as `main` are rejected. `ml/train.py` uses Transformers 4.57.1, PEFT, and bitsandbytes directly, with an explicit assistant-only token mask. This avoids relying on a model chat template to expose an assistant mask. It checks that the prompt token sequence is an exact prefix of the completed conversation and masks all prompt/padding labels with `-100`.
 
 | Parameter | Setting |
 |---|---|

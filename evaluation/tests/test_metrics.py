@@ -39,7 +39,7 @@ class MetricTests(unittest.TestCase):
             "question_type": "follow_up",
             "targeted_competencies": ["testing"],
             "adaptive_follow_up_reason": "Missing action",
-            "citations": [],
+            "citation_ids": ["source-a"],
         }
         self.assertTrue(validate_output(response, "question"))
         self.assertFalse(validate_output({**response, "hire_score": 90}, "question"))
@@ -47,7 +47,7 @@ class MetricTests(unittest.TestCase):
             validate_output({**response, "interviewer_text": ""}, "question")
         )
         self.assertFalse(
-            validate_output({**response, "citations": [{}] * 5}, "question")
+            validate_output({**response, "citation_ids": ["source-a"] * 5}, "question")
         )
 
 

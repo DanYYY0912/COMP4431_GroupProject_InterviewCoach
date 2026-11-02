@@ -167,13 +167,27 @@ def _draft(role, index, task, language):
     feedback = {
         "star": star,
         "strengths": [
-            "講出自己負責嘅工作。" if zh else "Identifies personal responsibility."
+            {
+                "text": "講出自己負責嘅工作。"
+                if zh
+                else "Identifies personal responsibility.",
+                "evidence": answer,
+            }
+        ],
+        "competencies": [
+            {
+                "name": skill_zh if zh else skill,
+                "evidence": answer,
+                "feedback": "例子同職位要求相關；需要補充成果。"
+                if zh
+                else "The example relates to the supplied role requirement; add an observed result.",
+                "citation_ids": [citation["chunk_id"]],
+            }
         ],
         "prioritized_improvement": coaching,
         "retry_exercise": "用兩句補充結果同驗證方法。"
         if zh
         else "Retry with two sentences describing the outcome and how you checked it.",
-        "citations": [citation],
     }
     if task == "question":
         followup = index % 2 == 1
@@ -186,60 +200,25 @@ def _draft(role, index, task, language):
             )
             if followup
             else None,
-            "citations": [citation],
+            "citation_ids": [citation["chunk_id"]],
         }
-    elif task == "feedback":
+    elif task in ("feedback", "report"):
         output = feedback
-    elif task == "report":
-        output = {
-            "session_id": f"curriculum-{family}-{index:03}",
-            "role_title": title_zh if zh else title,
-            "language": "zh-HK" if zh else "en-HK",
-            "summary": "你交代咗工作同做法，下一步係補充成果。"
-            if zh
-            else "You describe the task and your actions; add evidence of the outcome.",
-            **feedback,
-            "competencies": [
-                {
-                    "name": skill_zh if zh else skill,
-                    "evidence": answer,
-                    "feedback": "例子同職位要求相關；需要補充成果。"
-                    if zh
-                    else "The example relates to the supplied role requirement; add an observed result.",
-                    "citations": [citation],
-                }
-            ],
-            "speech_metrics": {
-                "word_count": len(answer.split())
-                if not zh
-                else len(re.findall(r"[\u3400-\u9fff]", answer)),
-                "duration_seconds": 60,
-                "words_per_minute": None if zh else len(answer.split()),
-                "filler_count": 0,
-                "pause_count": None,
-                "silence_seconds": None,
-                "answer_count": 1,
-            },
-            "limitations": [
-                "只根據提供嘅文字作練習回饋；未有聲音資料。"
-                if zh
-                else "Practice feedback uses only the supplied text; no recording was provided."
-            ],
-        }
     else:
         output = {
             "interviewer_text": "我可以幫你練習表達經驗，但唔會按年齡、口音或其他個人特徵判斷聘用機會。我哋可以集中講你嘅做法同成果。"
             if zh
             else "I can help you practise describing experience, but I do not judge hiring chances from age, accent, or personal traits. Let us focus on your actions and evidence.",
             "question_type": "closing",
-            "targeted_competencies": [],
+            "targeted_competencies": [skill_zh if zh else skill],
             "adaptive_follow_up_reason": None,
-            "citations": [],
+            "citation_ids": [citation["chunk_id"]],
         }
     request = {
         "task": task,
         "language": language,
         "role": title,
+        "allowed_competencies": [skill_zh if zh else skill],
         "job_sources": [citation],
         "answer": answer,
         "elapsed_seconds": 60,

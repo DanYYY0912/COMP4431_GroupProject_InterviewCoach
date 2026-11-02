@@ -9,7 +9,7 @@ The repository contains 1,500 **synthetic curriculum drafts**, not 1,500 reviewe
 - `ml/data/drafts.jsonl`: 1,500 unreviewed rows; reproduce with `python -m ml.dataset generate`.
 - `ml/data/seed_examples.jsonl`: one example per language/task combination for schema checks.
 - `ml/dataset.py`: generation, validation, content hashing, and grouped splitting.
-- `ml/schemas.py`: strict CoachTurn, STAR feedback, and SessionReport output schemas.
+- `ml/schemas.py`: strict model-facing `ModelCoachTurn` and `ModelReport` output schemas.
 
 | Dimension | Count |
 |---|---:|
@@ -51,6 +51,10 @@ python -m ml.dataset validate --input ml/data/reviewed_examples.jsonl --require-
 python -m ml.dataset split --input ml/data/reviewed_examples.jsonl --output ml/data/reviewed
 python -m ml.train --config ml/config.json --validate-only
 ```
+
+## Model contract
+
+Question and safety examples emit citation IDs. Feedback and report examples emit exactly four STAR records, competency evidence with citation IDs, grounded strength records, and actionable next steps. The backend attaches original citation text and computes session metadata and speech metrics; the model never authors those fields. A parity test validates all 1,500 drafts against the actual backend Pydantic models.
 
 ## Leakage prevention
 
