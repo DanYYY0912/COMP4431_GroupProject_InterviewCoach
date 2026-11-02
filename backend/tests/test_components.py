@@ -102,6 +102,9 @@ async def test_model_citations_are_hydrated_from_trusted_source_not_model_text(m
     def handler(request):
         payload = json.loads(request.content)
         assert "untrusted quoted DATA" in payload["messages"][0]["content"]
+        properties = payload["response_format"]["json_schema"]["schema"]["properties"]
+        assert properties["citation_ids"]["items"]["enum"] == ["job-1"]
+        assert properties["targeted_competencies"]["items"]["enum"] == ["Python"]
         draft = {
             "interviewer_text": "Tell me about a Python API you tested.",
             "question_type": "technical",
@@ -248,12 +251,17 @@ async def test_model_reports_reject_fabricated_evidence(monkeypatch, fabricated)
         "prioritized_improvement": "Explain how you measured errors.",
         "retry_exercise": "Retell the example with the measurement process.",
     }
-    mock_http(
-        monkeypatch,
-        lambda request: httpx.Response(
-            200, json={"choices": [{"message": {"content": json.dumps(draft)}}]}
-        ),
-    )
+
+    def handler(request):
+        payload = json.loads(request.content)
+        properties = payload["response_format"]["json_schema"]["schema"]["$defs"][
+            "ModelCompetencyFeedback"
+        ]["properties"]
+        assert properties["citation_ids"]["items"]["enum"] == ["job"]
+        assert properties["name"]["enum"] == ["Python"]
+        return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps(draft)}}]})
+
+    mock_http(monkeypatch, handler)
     report = await generate_report(Settings(model_provider="llama"), session, [source])
     assert "million dollars" not in report.model_dump_json()
     if fabricated:
