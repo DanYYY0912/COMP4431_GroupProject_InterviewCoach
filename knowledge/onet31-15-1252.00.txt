@@ -1,0 +1,38 @@
+O*NET® 31.0 — Software Developers (15-1252.00)
+Source: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html
+License: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.
+These US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.
+
+Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.
+
+Task Statements:
+Task 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.
+Task 21669: Develop or direct software system testing or validation procedures, programming, or documentation.
+Task 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.
+Task 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.
+Task 21673: Prepare reports or correspondence concerning project specifications, activities, or status.
+Task 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.
+
+Essential Skills:
+Critical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.
+Reading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.
+Active Learning (2.A.2.b): Understanding the implications of new information for both current and future problem-solving and decision-making. Importance 3.50 on the O*NET IM scale; source date 08/2025.
+Active Listening (2.A.1.b): Giving full attention to what other people are saying, taking time to understand the points being made, asking questions as appropriate, and not interrupting at inappropriate times. Importance 3.38 on the O*NET IM scale; source date 08/2025.
+Writing (2.A.1.c): Communicating effectively in writing as appropriate for the needs of the audience. Importance 3.25 on the O*NET IM scale; source date 08/2025.
+Speaking (2.A.1.d): Talking to others to convey information effectively. Importance 3.12 on the O*NET IM scale; source date 08/2025.
+
+Transferable Skills:
+Programming (2.B.3.e): Writing computer programs for various purposes. Importance 4.00 on the O*NET IM scale; source date 08/2025.
+Judgment and Decision Making (2.B.4.e): Considering the relative costs and benefits of potential actions to choose the most appropriate one. Importance 3.62 on the O*NET IM scale; source date 08/2025.
+Systems Analysis (2.B.4.g): Determining how a system should work and how changes in conditions, operations, and the environment will affect outcomes. Importance 3.50 on the O*NET IM scale; source date 08/2025.
+Complex Problem Solving (2.B.2.i): Identifying complex problems and reviewing related information to develop and evaluate options and implement solutions. Importance 3.38 on the O*NET IM scale; source date 08/2025.
+Technology Design (2.B.3.b): Generating or adapting equipment and technology to serve user needs. Importance 3.38 on the O*NET IM scale; source date 08/2025.
+Systems Evaluation (2.B.4.h): Identifying measures or indicators of system performance and the actions needed to improve or correct performance, relative to the goals of the system. Importance 3.38 on the O*NET IM scale; source date 08/2025.
+
+Work Activities:
+Working with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.61 on the O*NET IM scale; source date 08/2025.
+Processing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.38 on the O*NET IM scale; source date 08/2025.
+Making Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.34 on the O*NET IM scale; source date 08/2025.
+Thinking Creatively (4.A.2.b.2): Developing, designing, or creating new applications, ideas, relationships, systems, or products, including artistic contributions. Importance 4.33 on the O*NET IM scale; source date 08/2025.
+Communicating with Supervisors, Peers, or Subordinates (4.A.4.a.2): Providing information to supervisors, co-workers, and subordinates by telephone, in written form, e-mail, or in person. Importance 4.23 on the O*NET IM scale; source date 08/2025.
+Analyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.20 on the O*NET IM scale; source date 08/2025.

@@ -1,0 +1,38 @@
+O*NET® 31.0 — Computer and Information Research Scientists (15-1221.00)
+Source: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html
+License: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.
+These US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.
+
+Conduct research into fundamental computer and information science as theorists, designers, or inventors. Develop solutions to problems in the field of computer hardware and software.
+
+Task Statements:
+Task 14623: Analyze problems to develop solutions involving computer hardware and software.
+Task 14626: Apply theoretical expertise and innovation to create or apply new technology, such as adapting principles for applying computers to new uses.
+Task 14624: Assign or schedule tasks to meet work priorities and goals.
+Task 14628: Meet with managers, vendors, and others to solicit cooperation and resolve problems.
+Task 14633: Design computers and the software that runs them.
+Task 14629: Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.
+
+Essential Skills:
+Critical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 4.00 on the O*NET IM scale; source date 08/2019.
+Reading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.75 on the O*NET IM scale; source date 08/2019.
+Active Listening (2.A.1.b): Giving full attention to what other people are saying, taking time to understand the points being made, asking questions as appropriate, and not interrupting at inappropriate times. Importance 3.75 on the O*NET IM scale; source date 08/2019.
+Speaking (2.A.1.d): Talking to others to convey information effectively. Importance 3.50 on the O*NET IM scale; source date 08/2019.
+Active Learning (2.A.2.b): Understanding the implications of new information for both current and future problem-solving and decision-making. Importance 3.50 on the O*NET IM scale; source date 08/2019.
+Writing (2.A.1.c): Communicating effectively in writing as appropriate for the needs of the audience. Importance 3.38 on the O*NET IM scale; source date 08/2019.
+
+Transferable Skills:
+Complex Problem Solving (2.B.2.i): Identifying complex problems and reviewing related information to develop and evaluate options and implement solutions. Importance 4.00 on the O*NET IM scale; source date 08/2019.
+Judgment and Decision Making (2.B.4.e): Considering the relative costs and benefits of potential actions to choose the most appropriate one. Importance 4.00 on the O*NET IM scale; source date 08/2019.
+Systems Analysis (2.B.4.g): Determining how a system should work and how changes in conditions, operations, and the environment will affect outcomes. Importance 3.75 on the O*NET IM scale; source date 08/2019.
+Programming (2.B.3.e): Writing computer programs for various purposes. Importance 3.62 on the O*NET IM scale; source date 08/2019.
+Systems Evaluation (2.B.4.h): Identifying measures or indicators of system performance and the actions needed to improve or correct performance, relative to the goals of the system. Importance 3.62 on the O*NET IM scale; source date 08/2019.
+Time Management (2.B.5.a): Managing one's own time and the time of others. Importance 3.38 on the O*NET IM scale; source date 08/2019.
+
+Work Activities:
+Working with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.97 on the O*NET IM scale; source date 08/2019.
+Making Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.65 on the O*NET IM scale; source date 08/2019.
+Getting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.62 on the O*NET IM scale; source date 08/2019.
+Updating and Using Relevant Knowledge (4.A.2.b.3): Keeping up-to-date technically and applying new knowledge to your job. Importance 4.57 on the O*NET IM scale; source date 08/2019.
+Analyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.56 on the O*NET IM scale; source date 08/2019.
+Thinking Creatively (4.A.2.b.2): Developing, designing, or creating new applications, ideas, relationships, systems, or products, including artistic contributions. Importance 4.53 on the O*NET IM scale; source date 08/2019.

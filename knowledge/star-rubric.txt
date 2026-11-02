@@ -1,0 +1,13 @@
+VoxPrep HK STAR practice rubric — original project content, 2026.
+
+Situation: Describe the context, users and constraint that made the example meaningful. Name one concrete setting rather than a broad claim.
+Task: Explain your own responsibility, the objective and what success would mean. Distinguish the team's aim from your individual contribution.
+Action: State specific actions you took and why. Explain trade-offs, collaboration and technical choices; avoid claiming the whole team's work as your own.
+Result: Report the outcome and what evidence supports it. Quantify only when you know the measurement. A qualitative result or lesson is valid; never invent numbers.
+
+處境：講清楚背景、用戶同限制，用一個具體例子。
+任務：講出你自己負責嘅部分、目標同成功標準，分清團隊目標同個人貢獻。
+行動：講清楚你實際做過嘅步驟、選擇原因同取捨，唔好將成個團隊嘅工作當成自己做。
+結果：講出成果同支持成果嘅證據。有量度先用數字，唔好作數；質性結果同學到嘅嘢都可以。
+
+This rubric supports reflective interview practice. It does not measure employability, accent quality, personality, emotion, protected traits, or hiring suitability.

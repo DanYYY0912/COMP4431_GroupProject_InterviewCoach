@@ -1,0 +1,38 @@
+O*NET® 31.0 — Data Scientists (15-2051.00)
+Source: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html
+License: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.
+These US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.
+
+Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.
+
+Task Statements:
+Task 21823: Analyze, manipulate, or process large sets of data using statistical software.
+Task 21828: Create graphs, charts, or other visualizations to convey the results of data analysis using specialized software.
+Task 21837: Test, validate, and reformulate models to ensure accurate prediction of outcomes of interest.
+Task 21829: Deliver oral or written presentations of the results of mathematical modeling and data analysis to management or other end users.
+Task 21836: Recommend data-driven solutions to key stakeholders.
+Task 21831: Identify business problems or management objectives that can be addressed through data analysis.
+
+Essential Skills:
+Mathematics (2.A.1.e): Using mathematics to solve problems. Importance 4.38 on the O*NET IM scale; source date 08/2026.
+Critical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 4.25 on the O*NET IM scale; source date 08/2026.
+Reading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.88 on the O*NET IM scale; source date 08/2026.
+Speaking (2.A.1.d): Talking to others to convey information effectively. Importance 3.62 on the O*NET IM scale; source date 08/2026.
+Active Learning (2.A.2.b): Understanding the implications of new information for both current and future problem-solving and decision-making. Importance 3.62 on the O*NET IM scale; source date 08/2026.
+Active Listening (2.A.1.b): Giving full attention to what other people are saying, taking time to understand the points being made, asking questions as appropriate, and not interrupting at inappropriate times. Importance 3.50 on the O*NET IM scale; source date 08/2026.
+
+Transferable Skills:
+Complex Problem Solving (2.B.2.i): Identifying complex problems and reviewing related information to develop and evaluate options and implement solutions. Importance 3.75 on the O*NET IM scale; source date 08/2026.
+Programming (2.B.3.e): Writing computer programs for various purposes. Importance 3.75 on the O*NET IM scale; source date 08/2026.
+Judgment and Decision Making (2.B.4.e): Considering the relative costs and benefits of potential actions to choose the most appropriate one. Importance 3.38 on the O*NET IM scale; source date 08/2026.
+Time Management (2.B.5.a): Managing one's own time and the time of others. Importance 3.00 on the O*NET IM scale; source date 08/2026.
+Social Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.
+Coordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.
+
+Work Activities:
+Analyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.
+Working with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.
+Processing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.
+Interpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.
+Getting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.
+Making Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026.
