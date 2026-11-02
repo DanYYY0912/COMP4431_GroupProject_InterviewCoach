@@ -1,0 +1,10 @@
+import { chromium } from '@playwright/test';
+import fs from 'node:fs/promises';
+const browser = await chromium.launch();
+const page = await browser.newPage({viewport:{width:1440,height:1100},reducedMotion:'reduce'});
+await page.goto('http://127.0.0.1:8000');
+await page.getByRole('button',{name:'Start a practice interview'}).waitFor();
+await page.screenshot({path:'../artifacts/verification/dashboard.png',fullPage:true});
+await page.getByRole('button',{name:'Start a practice interview'}).click();
+await page.screenshot({path:'../artifacts/verification/setup.png',fullPage:true});
+await browser.close();

@@ -1,0 +1,10 @@
+Graduate Software Engineer — Hong Kong
+
+Join a small product team building reliable services for university learning tools.
+Responsibilities: implement Python REST APIs, design SQL queries, write automated tests,
+investigate performance issues, review pull requests, and explain technical decisions to teammates.
+Requirements: practical Python or TypeScript experience, knowledge of databases and testing,
+clear communication, teamwork, and willingness to learn from feedback.
+A strong interview example should describe your personal contribution, the technical tradeoff,
+and a measured or otherwise observable result. Professional experience is not required.
+This is a fictional, locally authored demonstration job description.

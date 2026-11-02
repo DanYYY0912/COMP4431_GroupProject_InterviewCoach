@@ -1,0 +1,41 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: voxprep
+      POSTGRES_USER: voxprep
+      POSTGRES_PASSWORD: local-development-only
+    ports:
+      - '127.0.0.1:54329:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U voxprep -d voxprep']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  app:
+    build: .
+    ports:
+      - '127.0.0.1:8000:8000'
+    environment:
+      DATABASE_URL: postgresql+psycopg://voxprep:local-development-only@db:5432/voxprep
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-demo}
+      LLAMA_BASE_URL: http://host.docker.internal:8080/v1
+      WHISPER_BASE_URL: http://host.docker.internal:8081
+      EMBEDDING_BASE_URL: ${CONTAINER_EMBEDDING_BASE_URL:-}
+      RERANKER_BASE_URL: ${CONTAINER_RERANKER_BASE_URL:-}
+      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
+      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'python', '-c', "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres-data:

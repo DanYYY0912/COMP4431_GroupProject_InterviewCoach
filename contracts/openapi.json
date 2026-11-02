@@ -1,0 +1,1104 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VoxPrep HK",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/job-profiles": {
+      "post": {
+        "summary": "Create Profile",
+        "operationId": "create_profile_api_job_profiles_post",
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions": {
+      "post": {
+        "summary": "Create Session",
+        "operationId": "create_session_api_sessions_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Sessions",
+        "operationId": "list_sessions_api_sessions_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  },
+                  "title": "Response List Sessions Api Sessions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}": {
+      "get": {
+        "summary": "Get Session",
+        "operationId": "get_session_api_sessions__session_id__get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Session",
+        "operationId": "delete_session_api_sessions__session_id__delete",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}/answer": {
+      "post": {
+        "summary": "Answer",
+        "operationId": "answer_api_sessions__session_id__answer_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerSubmission"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}/control": {
+      "post": {
+        "summary": "Control",
+        "operationId": "control_api_sessions__session_id__control_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Control"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}/report": {
+      "get": {
+        "summary": "Report",
+        "operationId": "report_api_sessions__session_id__report_get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/speech/token": {
+      "post": {
+        "summary": "Token",
+        "operationId": "token_api_speech_token_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpeechConsent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/speech/transcribe": {
+      "post": {
+        "summary": "Speech Transcribe",
+        "operationId": "speech_transcribe_api_speech_transcribe_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/methodology/metrics": {
+      "get": {
+        "summary": "Metrics",
+        "operationId": "metrics_api_methodology_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnswerSubmission": {
+        "properties": {
+          "turn_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Turn Id"
+          },
+          "transcript": {
+            "type": "string",
+            "maxLength": 12000,
+            "minLength": 1,
+            "title": "Transcript"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en-HK",
+              "zh-HK"
+            ],
+            "title": "Language"
+          },
+          "elapsed_seconds": {
+            "type": "number",
+            "maximum": 3600.0,
+            "minimum": 0.0,
+            "title": "Elapsed Seconds"
+          },
+          "corrected": {
+            "type": "boolean",
+            "title": "Corrected",
+            "default": false
+          },
+          "speech_metrics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClientSpeechMetrics"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "transcript",
+          "language",
+          "elapsed_seconds"
+        ],
+        "title": "AnswerSubmission"
+      },
+      "Citation": {
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "title": "Chunk Id"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "source",
+          "text"
+        ],
+        "title": "Citation"
+      },
+      "ClientSpeechMetrics": {
+        "properties": {
+          "pause_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pause Count"
+          },
+          "silence_seconds": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 3600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Silence Seconds"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ClientSpeechMetrics"
+      },
+      "CoachTurn": {
+        "properties": {
+          "interviewer_text": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Interviewer Text"
+          },
+          "question_type": {
+            "type": "string",
+            "enum": [
+              "opening",
+              "behavioral",
+              "technical",
+              "follow_up",
+              "closing"
+            ],
+            "title": "Question Type"
+          },
+          "targeted_competencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Targeted Competencies"
+          },
+          "adaptive_follow_up_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adaptive Follow Up Reason"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "maxItems": 4,
+            "title": "Citations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "interviewer_text",
+          "question_type",
+          "targeted_competencies",
+          "adaptive_follow_up_reason",
+          "citations"
+        ],
+        "title": "CoachTurn"
+      },
+      "CompetencyFeedback": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "evidence": {
+            "type": "string",
+            "title": "Evidence"
+          },
+          "feedback": {
+            "type": "string",
+            "title": "Feedback"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Citations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "evidence",
+          "feedback",
+          "citations"
+        ],
+        "title": "CompetencyFeedback"
+      },
+      "Control": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "pause",
+              "resume",
+              "skip",
+              "retry",
+              "end",
+              "cancel"
+            ],
+            "title": "Action"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "Control"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Profile": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "competencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Competencies"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "competencies",
+          "warnings",
+          "sources"
+        ],
+        "title": "Profile"
+      },
+      "Session": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "job_profile_id": {
+            "type": "string",
+            "title": "Job Profile Id"
+          },
+          "role_title": {
+            "type": "string",
+            "title": "Role Title"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en-HK",
+              "zh-HK"
+            ],
+            "title": "Language"
+          },
+          "difficulty": {
+            "type": "string",
+            "title": "Difficulty"
+          },
+          "question_count": {
+            "type": "integer",
+            "title": "Question Count"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "setup",
+              "ready",
+              "listening",
+              "transcribing",
+              "thinking",
+              "speaking",
+              "paused",
+              "completed",
+              "error"
+            ],
+            "title": "State"
+          },
+          "current_question": {
+            "type": "integer",
+            "title": "Current Question"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/Turn"
+            },
+            "type": "array",
+            "title": "Turns"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "job_profile_id",
+          "role_title",
+          "language",
+          "difficulty",
+          "question_count",
+          "state",
+          "current_question",
+          "turns",
+          "created_at",
+          "provider"
+        ],
+        "title": "Session"
+      },
+      "SessionInput": {
+        "properties": {
+          "job_profile_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Job Profile Id"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en-HK",
+              "zh-HK"
+            ],
+            "title": "Language",
+            "default": "en-HK"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "foundation",
+              "standard",
+              "stretch"
+            ],
+            "title": "Difficulty",
+            "default": "standard"
+          },
+          "question_count": {
+            "type": "integer",
+            "enum": [
+              3,
+              5,
+              8
+            ],
+            "title": "Question Count",
+            "default": 5
+          },
+          "store_transcript": {
+            "type": "boolean",
+            "const": true,
+            "title": "Store Transcript"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "job_profile_id",
+          "store_transcript"
+        ],
+        "title": "SessionInput"
+      },
+      "SessionReport": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "role_title": {
+            "type": "string",
+            "title": "Role Title"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en-HK",
+              "zh-HK"
+            ],
+            "title": "Language"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "star": {
+            "items": {
+              "$ref": "#/components/schemas/StarEvidence"
+            },
+            "type": "array",
+            "title": "Star"
+          },
+          "competencies": {
+            "items": {
+              "$ref": "#/components/schemas/CompetencyFeedback"
+            },
+            "type": "array",
+            "title": "Competencies"
+          },
+          "strengths": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Strengths"
+          },
+          "prioritized_improvement": {
+            "type": "string",
+            "title": "Prioritized Improvement"
+          },
+          "retry_exercise": {
+            "type": "string",
+            "title": "Retry Exercise"
+          },
+          "speech_metrics": {
+            "$ref": "#/components/schemas/SpeechMetrics"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Citations"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "role_title",
+          "language",
+          "summary",
+          "star",
+          "competencies",
+          "strengths",
+          "prioritized_improvement",
+          "retry_exercise",
+          "speech_metrics",
+          "citations",
+          "limitations"
+        ],
+        "title": "SessionReport"
+      },
+      "SpeechConsent": {
+        "properties": {
+          "consent": {
+            "type": "boolean",
+            "const": true,
+            "title": "Consent"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "consent"
+        ],
+        "title": "SpeechConsent"
+      },
+      "SpeechMetrics": {
+        "properties": {
+          "word_count": {
+            "type": "integer",
+            "title": "Word Count"
+          },
+          "duration_seconds": {
+            "type": "number",
+            "title": "Duration Seconds"
+          },
+          "words_per_minute": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Words Per Minute"
+          },
+          "filler_count": {
+            "type": "integer",
+            "title": "Filler Count"
+          },
+          "pause_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pause Count"
+          },
+          "silence_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Silence Seconds"
+          },
+          "answer_count": {
+            "type": "integer",
+            "title": "Answer Count"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "word_count",
+          "duration_seconds",
+          "words_per_minute",
+          "filler_count",
+          "pause_count",
+          "silence_seconds",
+          "answer_count"
+        ],
+        "title": "SpeechMetrics"
+      },
+      "StarEvidence": {
+        "properties": {
+          "element": {
+            "type": "string",
+            "enum": [
+              "Situation",
+              "Task",
+              "Action",
+              "Result"
+            ],
+            "title": "Element"
+          },
+          "present": {
+            "type": "boolean",
+            "title": "Present"
+          },
+          "evidence": {
+            "type": "string",
+            "title": "Evidence"
+          },
+          "coaching": {
+            "type": "string",
+            "title": "Coaching"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "element",
+          "present",
+          "evidence",
+          "coaching"
+        ],
+        "title": "StarEvidence"
+      },
+      "Turn": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "question": {
+            "$ref": "#/components/schemas/CoachTurn"
+          },
+          "answer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnswerSubmission"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "question",
+          "answer",
+          "created_at"
+        ],
+        "title": "Turn"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

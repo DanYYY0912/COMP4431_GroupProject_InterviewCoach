@@ -11,7 +11,7 @@ All JSON is snake_case. IDs are strings. Language is `en-HK` or `zh-HK`. Difficu
 ```typescript
 type Citation = {chunk_id: string; source: string; text: string};
 type CoachTurn = {interviewer_text: string; question_type: 'opening'|'behavioral'|'technical'|'follow_up'|'closing'; targeted_competencies: string[]; adaptive_follow_up_reason: string|null; citations: Citation[]};
-type AnswerSubmission = {transcript: string; language: 'en-HK'|'zh-HK'; elapsed_seconds: number; corrected: boolean; speech_metrics?: {pause_count?: number; silence_seconds?: number}};
+type AnswerSubmission = {turn_id?: string|null; transcript: string; language: 'en-HK'|'zh-HK'; elapsed_seconds: number; corrected: boolean; speech_metrics?: null | {pause_count?: number; silence_seconds?: number}};
 type Turn = {id: string; question: CoachTurn; answer: AnswerSubmission|null; created_at: string};
 type Profile = {id: string; title: string; competencies: string[]; warnings: string[]; sources: Citation[]};
 type Session = {id: string; job_profile_id: string; role_title: string; language: 'en-HK'|'zh-HK'; difficulty: string; question_count: number; state: string; current_question: number; turns: Turn[]; created_at: string; provider: string};
