@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
+from evaluation.metadata import training_metadata
 from evaluation.metrics import (
     citation_precision,
     cohens_kappa,
@@ -59,26 +60,11 @@ def write_result(suite, data):
     latest = {
         "status": "development_evidence_only",
         "provider": "configured_at_runtime",
-        "training": {
-            "status": "not_trained",
-            "base_model": "Qwen/Qwen3-4B-Instruct-2507",
-            "draft_examples": 1500,
-            "reviewed_examples": 0,
-            "adapter_available": False,
-        },
+        "training": training_metadata(),
         "evaluations": evaluations,
         "limitations": LIMITATIONS,
     }
-    run = Path("ml/runs/voxprep-qlora/model_manifest.json")
-    if run.is_file():
-        manifest = json.loads(run.read_text())
-        latest["training"] = {
-            "status": manifest["status"],
-            "base_model": manifest["base_model"],
-            "reviewed_examples": manifest["dataset"]["review_validation"]["reviewed"],
-            "adapter_available": True,
-            "best_validation_loss": manifest["best_validation_loss"],
-        }
+    if latest["training"]["status"] == "training_completed":
         latest["limitations"] = [s for s in LIMITATIONS if not s.startswith("No QLoRA")]
     (RESULTS / "latest.json").write_text(
         json.dumps(latest, indent=2, ensure_ascii=False)

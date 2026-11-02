@@ -23,7 +23,7 @@ The repository contains 1,500 **synthetic curriculum drafts**, not 1,500 reviewe
 | Assigned independent second review | 230 |
 | Completed human reviews | 0 |
 
-The second-review selection rounds up within each language/task stratum, producing 230 assignments, slightly more than 15%. `mixed` is a dataset label; the application still chooses `en-HK` or `zh-HK` per answer.
+The second-review selection rounds up within each language/task stratum of the full corpus, producing 230 assignments, slightly more than 15%. The quota is checked before splitting and training. Held-out subsets retain each example’s assigned review requirements; they are not forced to satisfy a newly sampled 15% quota. `mixed` is a dataset label; the application still chooses `en-HK` or `zh-HK` per answer.
 
 ## Review workflow
 

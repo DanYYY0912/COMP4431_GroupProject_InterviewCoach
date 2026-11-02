@@ -4,11 +4,105 @@
   "training": {
     "status": "not_trained",
     "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
     "draft_examples": 1500,
     "reviewed_examples": 0,
-    "adapter_available": false
+    "adapter_available": false,
+    "configuration": {
+      "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "data_dir": "ml/data/reviewed",
+      "output_dir": "ml/runs/voxprep-qlora",
+      "max_length": 2048,
+      "per_device_batch_size": 1,
+      "gradient_accumulation_steps": 32,
+      "learning_rate": 0.0002,
+      "num_train_epochs": 3,
+      "warmup_ratio": 0.05,
+      "lr_scheduler_type": "cosine",
+      "seed": 42,
+      "lora_r": 32,
+      "lora_alpha": 64,
+      "lora_dropout": 0.05,
+      "target_modules": "all-linear",
+      "eval_steps": 25,
+      "logging_steps": 5,
+      "expected_examples": 1500,
+      "notes": "Single CUDA GPU; effective batch 32. Training refuses unreviewed examples or data leakage. No run has been executed.",
+      "implementation_settings": {
+        "quantization": "4-bit NF4 with double quantization",
+        "assistant_only_loss": true,
+        "prompt_and_padding_label": -100,
+        "precision": "BF16 when CUDA supports it; FP16 otherwise",
+        "gradient_checkpointing": true,
+        "optimizer": "paged_adamw_8bit",
+        "checkpoint_selection": "Lowest validation loss; load_best_model_at_end",
+        "execution": "One CUDA GPU; no training run recorded",
+        "source": "ml/train.py"
+      }
+    },
+    "dataset_provenance": {
+      "path": "ml/data/drafts.jsonl",
+      "sha256": "65645b2cd6b8a8f1c24210d1000ce3be5639277923d8703f8dcef5a65196fc46",
+      "status": "Synthetic curriculum drafts; human review and deduplication required",
+      "source_kinds": [
+        "synthetic_curriculum_draft"
+      ],
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "language_counts": {
+        "zh-HK": 450,
+        "en-HK": 900,
+        "mixed": 150
+      },
+      "task_counts": {
+        "feedback": 525,
+        "report": 225,
+        "question": 600,
+        "safety": 150
+      },
+      "independent_second_review_assignments": 230,
+      "reviewed_examples": 0,
+      "split_policy": "80/10/10; connected role, source and template groups stay together",
+      "review_policy": "First human approval for every example; independent second review for at least 15% per full-corpus language/task stratum",
+      "guide": "docs/DATASET.md"
+    },
+    "model_card": {
+      "path": "docs/MODEL_CARD.md",
+      "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+      "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "license": "Apache-2.0 (upstream Qwen base)",
+      "adapter_status": "Not trained; no adapter available",
+      "intended_use": "Local English/Cantonese interview practice for Hong Kong technology graduates",
+      "excluded_uses": [
+        "Hiring decisions or candidate ranking",
+        "Emotion, appearance, personality, protected-trait or accent-quality scoring"
+      ],
+      "limitations": [
+        "No fine-tuning or assessed model-quality results yet",
+        "Citation identity and exact excerpts do not establish semantic support",
+        "Cantonese quality requires human assessment"
+      ]
+    }
   },
   "evaluations": [
+    {
+      "name": "local_services",
+      "status": "diagnostic_only_latency_targets_unmet",
+      "value": {
+        "english_first_complete_turn_seconds": 18.285,
+        "english_model_report_seconds": 74.116,
+        "speech_languages_smoke_tested": 2,
+        "reranker_correct_smoke_order": true,
+        "assessed_latency_gate_passed": false,
+        "cantonese_first_complete_turn_seconds": 23.396,
+        "cantonese_model_report_seconds": 65.135,
+        "final_question_generation_fallbacks": 0
+      },
+      "sample_size": 2,
+      "details": "evaluation/results/local_services.json"
+    },
     {
       "name": "retrieval",
       "status": "diagnostic_only",

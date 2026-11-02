@@ -43,6 +43,7 @@ def validate_splits(data_dir, expected_examples=1500):
     validation = validate_dataset(
         all_rows,
         require_review=True,
+        enforce_review_quota=True,
         check_duplicates=True,
         expected_count=expected_examples,
     )

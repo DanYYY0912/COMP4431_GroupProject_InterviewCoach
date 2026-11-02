@@ -325,7 +325,11 @@ def near_duplicate_pairs(rows, threshold=0.90, limit=20):
 
 
 def validate_dataset(
-    rows, require_review=False, check_duplicates=False, expected_count=None
+    rows,
+    require_review=False,
+    check_duplicates=False,
+    expected_count=None,
+    enforce_review_quota=False,
 ):
     errors = []
     seen = set()
@@ -371,7 +375,7 @@ def validate_dataset(
                 raise ValueError("missing provenance license")
         except (KeyError, ValueError, TypeError) as exc:
             errors.append(f"{rid}: {exc}")
-    if require_review:
+    if require_review and enforce_review_quota:
         import math
 
         strata = defaultdict(list)
@@ -500,6 +504,7 @@ def main():
     check = validate_dataset(
         rows,
         require_review=args.require_review or args.command == "split",
+        enforce_review_quota=True,
         check_duplicates=args.check_duplicates or args.command == "split",
     )
     if not check["valid"]:

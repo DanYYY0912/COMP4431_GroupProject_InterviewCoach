@@ -1,5 +1,14 @@
 {
-  "base_rag": {"base_url": "http://127.0.0.1:8082/v1", "model": "qwen3-base"},
-  "lora_only": {"base_url": "http://127.0.0.1:8080/v1", "model": "voxprep-qlora"},
-  "lora_rag": {"base_url": "http://127.0.0.1:8080/v1", "model": "voxprep-qlora"}
+  "base_rag": {
+    "base_url": "http://127.0.0.1:8084/v1",
+    "model": "qwen3-base"
+  },
+  "lora_only": {
+    "base_url": "http://127.0.0.1:8080/v1",
+    "model": "voxprep-qlora"
+  },
+  "lora_rag": {
+    "base_url": "http://127.0.0.1:8080/v1",
+    "model": "voxprep-qlora"
+  }
 }

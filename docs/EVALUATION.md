@@ -18,7 +18,7 @@ The smoke run validates twelve schema examples and five known metric calculation
 
 1. Complete real data review and QLoRA training. Use the final group-isolated test split, never the diagnostic prompt file bundled here.
 2. `python -m evaluation.run prepare --input ml/data/reviewed/test.jsonl --output evaluation/fixtures/model_prompts.jsonl`
-3. Run the base and exported fine-tuned GGUF in separate local llama.cpp servers. Copy `evaluation/model_endpoints.example.json` and set the endpoint/model identifiers for `base_rag`, `lora_only`, and `lora_rag`.
+3. Run the base and exported fine-tuned GGUF in separate local llama.cpp servers: the example uses port 8084 for the comparison base model and 8080 for the fine-tuned model. Ports 8082 and 8083 remain reserved for embeddings and reranking. Copy `evaluation/model_endpoints.example.json` and set the endpoint/model identifiers for `base_rag`, `lora_only`, and `lora_rag`.
 4. `python -m evaluation.run model --input evaluation/fixtures/model_prompts.jsonl --training-data ml/data/reviewed/train.jsonl --config PATH_TO_ENDPOINT_CONFIG`
 5. Retain the configuration, artifact hashes, `model_raw.jsonl`, and `model.json`. All variants use temperature 0, seed 42 and 1,536 maximum generated tokens. Base+RAG and LoRA+RAG receive the identical prompt and source context; LoRA-only receives the same request with retrieved context removed.
 

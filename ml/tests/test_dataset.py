@@ -88,3 +88,48 @@ class DatasetTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_held_out_subset_retains_assigned_reviews_without_resampling_quota():
+    # A global 15% assignment does not imply 15% in every later held-out sample.
+    seed = generate_drafts()[0]
+    seed["double_review_required"] = False
+    seed["reviews"] = [
+        {
+            "reviewer": "unit-reviewer-a",
+            "decision": "approved",
+            "reviewed_at": "2026-11-02T12:00:00Z",
+            "content_sha256": seed["content_sha256"],
+        }
+    ]
+    assert validate_dataset([seed], require_review=True)["valid"]
+    seed["double_review_required"] = True
+    result = validate_dataset([seed], require_review=True)
+    assert not result["valid"]
+    assert any("requires 2 independent" in error for error in result["errors"])
+
+
+def test_full_corpus_still_enforces_stratified_second_review_assignment():
+    seed = generate_drafts()[0]
+    rows = []
+    for i in range(20):
+        row = deepcopy(seed)
+        row["id"] = f"unit-{i}"
+        row["double_review_required"] = i < 3
+        row["reviews"] = [
+            {
+                "reviewer": reviewer,
+                "decision": "approved",
+                "reviewed_at": "2026-11-02T12:00:00Z",
+                "content_sha256": row["content_sha256"],
+            }
+            for reviewer in ("unit-reviewer-a", "unit-reviewer-b")[: 2 if i < 3 else 1]
+        ]
+        rows.append(row)
+    assert validate_dataset(rows, require_review=True, enforce_review_quota=True)[
+        "valid"
+    ]
+    rows[0]["double_review_required"] = False
+    result = validate_dataset(rows, require_review=True, enforce_review_quota=True)
+    assert not result["valid"]
+    assert any("fewer than 15%" in error for error in result["errors"])
