@@ -1,0 +1,1 @@
+{"model":"models/Qwen3-Reranker-0.6B-Q8_0.gguf","object":"list","usage":{"prompt_tokens":161,"total_tokens":161},"results":[{"index":0,"relevance_score":0.9895519614219666},{"index":1,"relevance_score":2.9602682843687944e-05}]}

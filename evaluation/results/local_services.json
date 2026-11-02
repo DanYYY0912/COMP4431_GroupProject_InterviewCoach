@@ -1,0 +1,24 @@
+{
+  "suite": "local_services",
+  "status": "diagnostic_only_latency_targets_unmet",
+  "recorded_at": "2026-11-02T14:37:09.512407+08:00",
+  "sample_size": 2,
+  "summary": {
+    "english_first_complete_turn_seconds": 18.285,
+    "english_model_report_seconds": 74.116,
+    "speech_languages_smoke_tested": 2,
+    "reranker_correct_smoke_order": true,
+    "assessed_latency_gate_passed": false,
+    "cantonese_first_complete_turn_seconds": 23.396,
+    "cantonese_model_report_seconds": 65.135,
+    "final_question_generation_fallbacks": 0
+  },
+  "limitations": [
+    "Synthetic integration inputs only, not participant or held-out evaluation.",
+    "First complete turn is not first-token latency. Timings taken during development with concurrent work.",
+    "An earlier Cantonese citation-ID failure is retained in raw evidence; the final full Cantonese flow passes after constraining allowed source IDs.",
+    "Azure not configured; speech smoke uses local Whisper with system-generated voices."
+  ],
+  "source": "evaluation/raw/local_services.json",
+  "model_manifest": "scripts/models.json"
+}

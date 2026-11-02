@@ -1,0 +1,18 @@
+{
+  "diagnostic_only": true,
+  "synthetic_inputs": true,
+  "source": "macOS system voice generated WAV clips, audio excluded from archive",
+  "not_a_quality_benchmark": true,
+  "results": {
+    "en": {
+      "text": " During a university project I built a Python API, wrote tests, and reduced the response time.\n"
+    },
+    "zh": {
+      "text": "在大學小組專題入面,我負責改善一個python A, P, I,\n我寫了測試,同隊友解釋修改,结果回应时间减少了三成。\n"
+    }
+  },
+  "limitations": [
+    "No human speakers. No reviewed reference transcripts or WER/CER study.",
+    "Cantonese output contains mixed traditional/simplified characters and changed wording."
+  ]
+}

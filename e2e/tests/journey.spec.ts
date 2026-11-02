@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { readFile } from 'node:fs/promises';
 
 for (const language of ['English', '廣東話']) {
   test(`complete ${language} practice and export`, async ({ page }) => {
@@ -70,4 +71,51 @@ test('resume, pause, skip, retry and microphone denial preserve typed practice',
   const deleted = await request.delete(`/api/sessions/${session.id}`);
   expect(deleted.status()).toBe(204);
   expect((await request.get(`/api/sessions/${session.id}`)).status()).toBe(404);
+});
+
+test('compare completed evidence and export the full saved transcript', async ({ page, request }) => {
+  const sessions: { id: string; role_title: string }[] = [];
+  const transcripts = [
+    'I helped on a Python project.',
+    'During our project I owned API testing. I added regression tests and reduced failures by 30 percent.',
+  ];
+  try {
+    for (let i = 0; i < 2; i++) {
+      const profile = await (await request.post('/api/job-profiles', { data: {
+        title: `Comparison fixture ${i + 1}`,
+        text: 'Graduate software engineer. Implement Python APIs, write tests, use SQL and explain technical decisions to teammates.',
+      } })).json();
+      const session = await (await request.post('/api/sessions', { data: {
+        job_profile_id: profile.id, language: 'en-HK', difficulty: 'standard',
+        question_count: 3, store_transcript: true,
+      } })).json();
+      sessions.push(session);
+      expect((await request.post(`/api/sessions/${session.id}/answer`, { data: {
+        turn_id: session.turns[0].id, transcript: transcripts[i],
+        language: 'en-HK', elapsed_seconds: 30, corrected: false,
+      } })).ok()).toBeTruthy();
+      expect((await request.post(`/api/sessions/${session.id}/control`, { data: { action: 'end' } })).ok()).toBeTruthy();
+    }
+    await page.goto('/');
+    for (const session of sessions) {
+      await page.getByRole('checkbox', { name: new RegExp(`^Compare ${session.role_title} from`) }).check();
+    }
+    await expect(page.getByRole('heading', { name: 'Compare your practice' })).toBeVisible();
+    await expect(page.getByRole('article', { name: `First session: ${sessions[0].role_title}` })).toContainText(transcripts[0]);
+    await expect(page.getByRole('article', { name: `Second session: ${sessions[1].role_title}` })).toContainText('30 percent');
+    const downloading = page.waitForEvent('download');
+    await page.getByRole('button', { name: `Export full session for ${sessions[0].role_title}`, exact: true }).click();
+    const download = await downloading;
+    const content = JSON.parse(await readFile((await download.path())!, 'utf8'));
+    expect(content.format).toBe('voxprep.session');
+    expect(content.session.id).toBe(sessions[0].id);
+    expect(content.session.turns[0].answer.transcript).toBe(transcripts[0]);
+    expect(content.session.turns[0].question.interviewer_text.length).toBeGreaterThan(0);
+    expect(content.report.session_id).toBe(sessions[0].id);
+    expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
+    await page.getByRole('button', { name: 'Clear comparison' }).click();
+    await expect(page.getByRole('heading', { name: 'Compare your practice' })).toHaveCount(0);
+  } finally {
+    for (const session of sessions) await request.delete(`/api/sessions/${session.id}`);
+  }
 });

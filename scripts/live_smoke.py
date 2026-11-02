@@ -1,5 +1,6 @@
 """Exercise actual local providers with synthetic answers. Not a quality benchmark."""
 
+import argparse
 import json
 import time
 from pathlib import Path
@@ -26,13 +27,20 @@ def request(path, payload=None, method=None):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--language", action="append", choices=["en-HK", "zh-HK"])
+    parser.add_argument(
+        "--output", type=Path, default=ROOT / "artifacts/verification/live-services.json"
+    )
+    args = parser.parse_args()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     results = {
         "diagnostic_only": True,
         "synthetic_inputs": True,
         "health": request("/api/health")[0],
         "sessions": [],
     }
-    for language in ["en-HK", "zh-HK"]:
+    for language in args.language or ["en-HK", "zh-HK"]:
         profile, upload_time = request(
             "/api/job-profiles",
             {
@@ -95,7 +103,7 @@ if __name__ == "__main__":
         finally:
             request(f"/api/sessions/{session['id']}", method="DELETE")
         results["sessions"].append(evidence)
-        (ROOT / "artifacts/verification/live-services.json").write_text(
+        args.output.write_text(
             json.dumps(results, ensure_ascii=False, indent=2)
         )
         print(

@@ -6,6 +6,8 @@ Use one lead presenter and a prepared three-question role scenario to show setup
 
 ## Before rehearsal
 
+The PPTX is portable and editable in PowerPoint or compatible slide software. `build_deck.mjs` is an optional source generator that uses the Codex-bundled `@oai/artifact-tool` authoring runtime; rebuilding that script requires that runtime. Running the interview application does not depend on it.
+
 1. Run `make test`, then the real evaluation commands supported by the available evidence.
 2. Start `make demo` and open `http://localhost:8000`.
 3. Run `make demo-reset` to create the fictional role fixture. This touches only fixture session IDs previously recorded by that command.

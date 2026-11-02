@@ -67,7 +67,7 @@ For browser tests, install Chromium once with `pnpm --dir e2e exec playwright in
 - English and Traditional Chinese Cantonese interview turns with selectable difficulty and 3, 5 or 8 questions.
 - Adaptive follow-ups, editable transcripts, pause/resume, skip/retry and typed fallback.
 - Original procedural 3D interviewer, speech animation, reduced-motion and static fallback.
-- STAR evidence, competency citations, speech summaries, practice history, export and deletion.
+- STAR evidence, competency citations, speech summaries, practice history, two-session comparison, full transcript/report export and deletion.
 - Structured model output validation, local retrieval and explicitly reported fallback behavior.
 - Dataset provenance and review gates, a QLoRA notebook and scripts, and evaluation pipelines.
 

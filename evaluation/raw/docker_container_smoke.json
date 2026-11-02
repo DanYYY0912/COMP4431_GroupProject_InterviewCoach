@@ -1,0 +1,46 @@
+{
+  "diagnostic_only": true,
+  "synthetic_inputs": true,
+  "deployment": "isolated Docker container on port 8011",
+  "provider": "demo",
+  "checks": {
+    "static_ui_assets": 2,
+    "languages": [
+      {
+        "language": "en-HK",
+        "three_answer_flow": "passed",
+        "report": "passed",
+        "citations": 6
+      },
+      {
+        "language": "zh-HK",
+        "three_answer_flow": "passed",
+        "report": "passed",
+        "citations": 5
+      }
+    ],
+    "delete_and_404": "passed",
+    "foreign_origin_rejected": "passed"
+  },
+  "health": {
+    "status": "ready",
+    "database": "ready",
+    "llm": "demo (not a language model)",
+    "speech": "Azure not configured; local Whisper ready",
+    "retrieval": "hybrid ready (12/12 chunks indexed); reranker ready",
+    "provider": "demo"
+  },
+  "native_service_http": {
+    "llama": 200,
+    "embedding": 200,
+    "reranker": 200,
+    "whisper": 200
+  },
+  "browser": {
+    "title": "VoxPrep HK — Your next interview starts here",
+    "heading": "A little practice.A lot more confidence.",
+    "page_errors": []
+  },
+  "temporary_container_removed": true,
+  "source_changes_required": false
+}

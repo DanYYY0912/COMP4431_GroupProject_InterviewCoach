@@ -6,7 +6,7 @@ The runnable application and automated checks are development evidence. The comp
 
 ## Application
 
-- [ ] English and Cantonese setup, interview, report, retry, resume, export and deletion pass in a clean browser.
+- [x] English and Cantonese setup, interview, report, retry, resume, report export and deletion pass in isolated browser contexts (development configuration; see `VERIFICATION.md`).
 - [ ] Actual Azure speech, editable captions, visemes and interruption verified on the presentation Mac.
 - [ ] Local Whisper, typed input, WebGL fallback, model timeout and DB restart verified.
 - [ ] Real hybrid retrieval and reranking measured with the intended models.
@@ -28,9 +28,9 @@ The runnable application and automated checks are development evidence. The comp
 ## Submission
 
 - [ ] Four names/IDs and actual contribution matrix completed.
-- [ ] Slides state actual implemented features, limitations and measured results.
+- [x] Slides state actual implemented features, limitations and measured results (`presentation/validation.json`; final classroom rehearsal remains below).
 - [ ] Seven-minute live rehearsal and Q&A preparation completed.
 - [ ] 60–90 second backup recording from final configuration retained.
-- [ ] Source ZIP checksum verified, secrets and personal transcripts excluded.
+- [x] Development source ZIP checksum and every manifest entry verified; credentials, session databases, private transcripts and base weights excluded. Rebuild after completing the remaining release gates.
 - [ ] Small trained adapter included separately with manifest/checksum if excluded from source packaging.
 - [ ] Clean-machine setup and final classroom Mac rehearsal passed.

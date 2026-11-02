@@ -1,0 +1,68 @@
+{
+  "diagnostic_only": true,
+  "synthetic_inputs": true,
+  "original_failure": "Near-match fabricated citation ID failed strict validation",
+  "fix": "Per-request allowed citation and competency enums; final validation unchanged",
+  "turns": [
+    {
+      "provider": "llama",
+      "component_seconds": 24.365,
+      "turn": {
+        "interviewer_text": "可唔可以講下你點樣用 Python 做一個數據分析項目，而你又點樣確保結果準確？",
+        "question_type": "behavioral",
+        "targeted_competencies": [
+          "Data analysis",
+          "Testing"
+        ],
+        "adaptive_follow_up_reason": "需要確認具體的技術實踐與驗證方法，以驗證數據分析與測試的結合點",
+        "citations": [
+          {
+            "chunk_id": "935c0c45-bf63-4aee-9ebe-5b0d9f4759ae-0-89f84ea7ff35",
+            "source": "Synthetic fixture",
+            "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+          },
+          {
+            "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+            "source": "onet31-15-1252.00.txt",
+            "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+          },
+          {
+            "chunk_id": "onet31-15-2051.00-0-e5974e83abae",
+            "source": "onet31-15-2051.00.txt",
+            "text": "O*NET® 31.0 — Data Scientists (15-2051.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nDevelop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.\n\nTask Statements:\nTask 21823: Analyze, manipulate, or process large sets of data using statistical software.\nTask 21828: Create graphs, charts, or other visualizations to convey the results of data analysis using specialized software.\nTask 21837: Test, validate, and reformulate models to ensure accurate prediction of outcomes of interest.\nTask 21829: Deliver oral or written presentations of the results of mathematical modeling and data analysis to management or other end users.\nTask 21836: Recommend data-driven solutions to key stakeholders.\nTask 21831: Identify business problems or management objectives that can be addressed through data analysis.\n\nEssential Skills:\nMathematics (2.A.1.e): Using mathematics to solve problems. Importance 4.38 on the O*NET IM scale; source date 08/2026.\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 4.25 on the O*NET IM scale; source date 08/2026.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.88 on the O*NET IM scale; source date 08/2026.\nSpeaking (2.A.1.d): Talking to others to convey information effectively. Importance 3."
+          }
+        ]
+      }
+    },
+    {
+      "provider": "llama",
+      "component_seconds": 20.825,
+      "turn": {
+        "interviewer_text": "你當時點樣識到 API 嘅速度慢，有咩證據支持呢個觀察？",
+        "question_type": "follow_up",
+        "targeted_competencies": [
+          "Testing",
+          "Data analysis"
+        ],
+        "adaptive_follow_up_reason": "需要確認觀察點嘅真實性同數據依據，以驗證個人貢獻嘅可信度",
+        "citations": [
+          {
+            "chunk_id": "935c0c45-bf63-4aee-9ebe-5b0d9f4759ae-0-89f84ea7ff35",
+            "source": "Synthetic fixture",
+            "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+          },
+          {
+            "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+            "source": "onet31-15-1252.00.txt",
+            "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+          },
+          {
+            "chunk_id": "onet31-15-2051.00-0-e5974e83abae",
+            "source": "onet31-15-2051.00.txt",
+            "text": "O*NET® 31.0 — Data Scientists (15-2051.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nDevelop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.\n\nTask Statements:\nTask 21823: Analyze, manipulate, or process large sets of data using statistical software.\nTask 21828: Create graphs, charts, or other visualizations to convey the results of data analysis using specialized software.\nTask 21837: Test, validate, and reformulate models to ensure accurate prediction of outcomes of interest.\nTask 21829: Deliver oral or written presentations of the results of mathematical modeling and data analysis to management or other end users.\nTask 21836: Recommend data-driven solutions to key stakeholders.\nTask 21831: Identify business problems or management objectives that can be addressed through data analysis.\n\nEssential Skills:\nMathematics (2.A.1.e): Using mathematics to solve problems. Importance 4.38 on the O*NET IM scale; source date 08/2026.\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 4.25 on the O*NET IM scale; source date 08/2026.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.88 on the O*NET IM scale; source date 08/2026.\nSpeaking (2.A.1.d): Talking to others to convey information effectively. Importance 3."
+          }
+        ]
+      }
+    }
+  ]
+}

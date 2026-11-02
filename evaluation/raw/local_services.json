@@ -1,0 +1,437 @@
+{
+  "diagnostic_only": true,
+  "synthetic_inputs": true,
+  "scope": "Development local service checks, not assessed benchmark. English measured before citation-enum fix; Cantonese measured after. Concurrent development load. Full-turn timings, not first-token latency.",
+  "sessions": [
+    {
+      "language": "en-HK",
+      "profile_seconds": 0.27,
+      "first_turn_seconds": 18.285,
+      "question_providers": [
+        "llama",
+        "llama",
+        "llama",
+        "llama"
+      ],
+      "first_question": {
+        "interviewer_text": "Can you share an example of a time when you used Python to solve a specific problem or improve a software process?",
+        "question_type": "behavioral",
+        "targeted_competencies": [
+          "Python"
+        ],
+        "adaptive_follow_up_reason": "To elicit a clear technical contribution, context, and measurable outcome as required by the job description and competency standards.",
+        "citations": [
+          {
+            "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+            "source": "Pasted job description",
+            "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+          }
+        ]
+      },
+      "answer_seconds": [
+        18.288,
+        26.213,
+        0.063
+      ],
+      "report_seconds": 74.116,
+      "report": {
+        "session_id": "6fe11b13-6a4c-4164-9b25-5d1521dc7f88",
+        "role_title": "Synthetic local integration check",
+        "language": "en-HK",
+        "summary": "You submitted 3 answers. Use the evidence below to focus your next practice round.",
+        "star": [
+          {
+            "element": "Situation",
+            "present": true,
+            "evidence": "During our university project I was responsible for a slow Python API.",
+            "coaching": "Clarify the context: What was the project goal? Who were the stakeholders?"
+          },
+          {
+            "element": "Task",
+            "present": true,
+            "evidence": "I was responsible for a slow Python API.",
+            "coaching": "Specify your exact task: Did you optimize performance, fix bugs, or improve scalability?"
+          },
+          {
+            "element": "Action",
+            "present": true,
+            "evidence": "I measured SQL queries, implemented an index and wrote tests.",
+            "coaching": "Detail the technical steps: How did you measure? What tools did you use?"
+          },
+          {
+            "element": "Result",
+            "present": true,
+            "evidence": "As a result response time fell by 30 percent.",
+            "coaching": "Quantify the impact: Was this measurable? How did it affect user experience?"
+          }
+        ],
+        "competencies": [
+          {
+            "name": "Python",
+            "evidence": "I was responsible for a slow Python API.",
+            "feedback": "Demonstrates hands-on Python experience in API development.",
+            "citations": [
+              {
+                "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+                "source": "Pasted job description",
+                "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+              }
+            ]
+          },
+          {
+            "name": "Databases",
+            "evidence": "I measured SQL queries, implemented an index",
+            "feedback": "Shows database optimization through indexing and query analysis.",
+            "citations": [
+              {
+                "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+                "source": "Pasted job description",
+                "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+              }
+            ]
+          },
+          {
+            "name": "Testing",
+            "evidence": "wrote tests",
+            "feedback": "Highlights implementation of tests to validate performance improvements.",
+            "citations": [
+              {
+                "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+                "source": "Pasted job description",
+                "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+              }
+            ]
+          }
+        ],
+        "strengths": [
+          "Response time fell by 30 percent — “As a result response time fell by 30 percent.”",
+          "Explained test results to teammates and documented the tradeoff — “I explained the test results to teammates and documented the tradeoff.”"
+        ],
+        "prioritized_improvement": "Add specific tools (e.g., SQLAlchemy, pgAdmin) or metrics (e.g., latency, query time) used in measuring SQL queries.",
+        "retry_exercise": "Rewrite the STAR example with explicit technical tools and measurable performance before and after the change.",
+        "speech_metrics": {
+          "word_count": 47,
+          "duration_seconds": 105.0,
+          "words_per_minute": 26.9,
+          "filler_count": 0,
+          "pause_count": null,
+          "silence_seconds": null,
+          "answer_count": 3
+        },
+        "citations": [
+          {
+            "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+            "source": "Pasted job description",
+            "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+          },
+          {
+            "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+            "source": "onet31-15-1252.00.txt",
+            "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+          },
+          {
+            "chunk_id": "onet31-15-2051.00-2-a92565c5fa53",
+            "source": "onet31-15-2051.00.txt",
+            "text": "*NET IM scale; source date 08/2026.\nSocial Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.\nCoordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.\n\nWork Activities:\nAnalyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.\nWorking with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.\nProcessing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.\nInterpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.\nGetting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.\nMaking Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026."
+          }
+        ],
+        "limitations": [
+          "Feedback was generated by the configured local language model. Exact transcript excerpts and source IDs were validated; human review is still needed to judge whether claims are supported.",
+          "English pace counts words; Cantonese pace counts characters. Typed/edited transcripts and manually timed answers do not measure speech accuracy. Missing pause measurements stay null.",
+          "This is practice coaching, not hiring, personality, emotion, accent-quality, or employability scoring."
+        ]
+      },
+      "completed": true,
+      "questions": [
+        {
+          "interviewer_text": "Can you share an example of a time when you used Python to solve a specific problem or improve a software process?",
+          "question_type": "behavioral",
+          "targeted_competencies": [
+            "Python"
+          ],
+          "adaptive_follow_up_reason": "To elicit a clear technical contribution, context, and measurable outcome as required by the job description and competency standards.",
+          "citations": [
+            {
+              "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+              "source": "Pasted job description",
+              "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+            }
+          ]
+        },
+        {
+          "interviewer_text": "Can you describe a time when you made a technical tradeoff in a software project, such as choosing between performance and maintainability in a Python application?",
+          "question_type": "technical",
+          "targeted_competencies": [
+            "Python",
+            "Software design"
+          ],
+          "adaptive_follow_up_reason": "The candidate's previous answer is too vague and lacks technical depth. A technical tradeoff question ensures alignment with the job's requirements for Python experience and software design decisions.",
+          "citations": [
+            {
+              "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+              "source": "Pasted job description",
+              "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+            }
+          ]
+        },
+        {
+          "interviewer_text": "Can you walk me through the technical tradeoff you made when implementing the SQL index, and how you validated its impact on performance?",
+          "question_type": "follow_up",
+          "targeted_competencies": [
+            "Databases",
+            "Testing"
+          ],
+          "adaptive_follow_up_reason": "The candidate mentioned measuring response time and implementing an index, but did not specify the tradeoff (e.g., write performance, storage cost) or how performance was validated (e.g., benchmarks, test cases), which are critical for a strong technical narrative per the job description's requirements.",
+          "citations": [
+            {
+              "chunk_id": "62aeddd4-b5b0-4d8b-8529-d7fbfa921031-0-89f84ea7ff35",
+              "source": "Pasted job description",
+              "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+            },
+            {
+              "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+              "source": "onet31-15-1252.00.txt",
+              "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+            },
+            {
+              "chunk_id": "onet31-15-2051.00-2-a92565c5fa53",
+              "source": "onet31-15-2051.00.txt",
+              "text": "*NET IM scale; source date 08/2026.\nSocial Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.\nCoordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.\n\nWork Activities:\nAnalyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.\nWorking with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.\nProcessing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.\nInterpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.\nGetting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.\nMaking Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "language": "zh-HK",
+      "profile_seconds": 0.582,
+      "first_turn_seconds": 23.396,
+      "question_providers": [
+        "llama",
+        "llama",
+        "llama",
+        "llama"
+      ],
+      "first_question": {
+        "interviewer_text": "你當時點樣用 Python 做到數據分析，而有咩證據顯示呢個做法改善咗結果？",
+        "question_type": "behavioral",
+        "targeted_competencies": [
+          "Data analysis",
+          "Python"
+        ],
+        "adaptive_follow_up_reason": "需要進一步確認具體的數據分析行為、個人貢獻及可觀察的結果，以符合要求中的技術取捨和可量度成果。",
+        "citations": [
+          {
+            "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+            "source": "Pasted job description",
+            "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+          },
+          {
+            "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+            "source": "onet31-15-1252.00.txt",
+            "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+          },
+          {
+            "chunk_id": "onet31-15-2051.00-2-a92565c5fa53",
+            "source": "onet31-15-2051.00.txt",
+            "text": "*NET IM scale; source date 08/2026.\nSocial Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.\nCoordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.\n\nWork Activities:\nAnalyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.\nWorking with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.\nProcessing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.\nInterpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.\nGetting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.\nMaking Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026."
+          }
+        ]
+      },
+      "answer_seconds": [
+        21.749,
+        18.404,
+        0.015
+      ],
+      "report_seconds": 65.135,
+      "report": {
+        "session_id": "85bcc183-f8a6-4264-ab31-7f58dbc125df",
+        "role_title": "Synthetic local integration check",
+        "language": "zh-HK",
+        "summary": "你完成咗 3 個答案。以下用你實際提交嘅內容幫你整理下一次練習。",
+        "star": [
+          {
+            "element": "Situation",
+            "present": true,
+            "evidence": "喺大學專題入面，我負責改善一個緩慢嘅 Python API。",
+            "coaching": "你點樣識得識別到 API 緩慢？有冇數據支持？"
+          },
+          {
+            "element": "Task",
+            "present": true,
+            "evidence": "我負責改善一個緩慢嘅 Python API。",
+            "coaching": "你當時要解決嘅具體問題點樣？有冇明確目標？"
+          },
+          {
+            "element": "Action",
+            "present": true,
+            "evidence": "我量度 SQL 查詢，加入索引，寫回歸測試。",
+            "coaching": "你點樣決定加入索引？有冇分析數據支持？"
+          },
+          {
+            "element": "Result",
+            "present": true,
+            "evidence": "結果回應時間減少咗三成。",
+            "coaching": "三成係點樣量度？有冇標準方法或工具？"
+          }
+        ],
+        "competencies": [
+          {
+            "name": "Python",
+            "evidence": "改善一個緩慢嘅 Python API",
+            "feedback": "你用 Python 做咗實際開發，有明確技術實踐。",
+            "citations": [
+              {
+                "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+                "source": "Pasted job description",
+                "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+              }
+            ]
+          },
+          {
+            "name": "Data analysis",
+            "evidence": "我量度 SQL 查詢，加入索引",
+            "feedback": "你分析查詢性能，顯示數據洞察能力。",
+            "citations": [
+              {
+                "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+                "source": "onet31-15-1252.00.txt",
+                "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+              }
+            ]
+          },
+          {
+            "name": "Testing",
+            "evidence": "寫回歸測試",
+            "feedback": "你主動設計測試，展現測試意識。",
+            "citations": [
+              {
+                "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+                "source": "Pasted job description",
+                "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+              }
+            ]
+          }
+        ],
+        "strengths": [
+          "量度 SQL 查詢，加入索引，寫回歸測試 — “我量度 SQL 查詢，加入索引，寫回歸測試。結果回應時間減少咗三成。”",
+          "我同隊友解釋測試結果，並記錄各個方案嘅取捨 — “我同隊友解釋測試結果，並記錄各個方案嘅取捨。”"
+        ],
+        "prioritized_improvement": "補充你量度查詢時間嘅具體方法，例如用 timeit 或查詢執行時間統計。",
+        "retry_exercise": "重寫一段 STAR，加入「你點樣識別問題」與「數據分析過程」，並引用工具名稱。",
+        "speech_metrics": {
+          "word_count": 74,
+          "duration_seconds": 105.0,
+          "words_per_minute": 42.3,
+          "filler_count": 0,
+          "pause_count": null,
+          "silence_seconds": null,
+          "answer_count": 3
+        },
+        "citations": [
+          {
+            "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+            "source": "Pasted job description",
+            "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+          },
+          {
+            "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+            "source": "onet31-15-1252.00.txt",
+            "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+          },
+          {
+            "chunk_id": "onet31-15-2051.00-2-a92565c5fa53",
+            "source": "onet31-15-2051.00.txt",
+            "text": "*NET IM scale; source date 08/2026.\nSocial Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.\nCoordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.\n\nWork Activities:\nAnalyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.\nWorking with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.\nProcessing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.\nInterpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.\nGetting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.\nMaking Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026."
+          }
+        ],
+        "limitations": [
+          "Feedback was generated by the configured local language model. Exact transcript excerpts and source IDs were validated; human review is still needed to judge whether claims are supported.",
+          "English pace counts words; Cantonese pace counts characters. Typed/edited transcripts and manually timed answers do not measure speech accuracy. Missing pause measurements stay null.",
+          "This is practice coaching, not hiring, personality, emotion, accent-quality, or employability scoring.",
+          "呢個工具只供練習，唔會評分口音、性格、情緒或受僱機會。"
+        ]
+      },
+      "completed": true,
+      "questions": [
+        {
+          "interviewer_text": "你當時點樣用 Python 做到數據分析，而有咩證據顯示呢個做法改善咗結果？",
+          "question_type": "behavioral",
+          "targeted_competencies": [
+            "Data analysis",
+            "Python"
+          ],
+          "adaptive_follow_up_reason": "需要進一步確認具體的數據分析行為、個人貢獻及可觀察的結果，以符合要求中的技術取捨和可量度成果。",
+          "citations": [
+            {
+              "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+              "source": "Pasted job description",
+              "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+            },
+            {
+              "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+              "source": "onet31-15-1252.00.txt",
+              "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+            },
+            {
+              "chunk_id": "onet31-15-2051.00-2-a92565c5fa53",
+              "source": "onet31-15-2051.00.txt",
+              "text": "*NET IM scale; source date 08/2026.\nSocial Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.\nCoordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.\n\nWork Activities:\nAnalyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.\nWorking with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.\nProcessing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.\nInterpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.\nGetting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.\nMaking Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026."
+            }
+          ]
+        },
+        {
+          "interviewer_text": "你當時點樣用 Python 做到呢個專題？",
+          "question_type": "follow_up",
+          "targeted_competencies": [
+            "Python",
+            "Teamwork",
+            "Communication"
+          ],
+          "adaptive_follow_up_reason": "Previous answer mentions a project but lacks technical detail on Python implementation, personal contribution, and team interaction. Follow-up probes specific technical actions and collaboration to meet job requirement of 'practical Python experience' and 'teamwork'.",
+          "citations": [
+            {
+              "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+              "source": "Pasted job description",
+              "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+            },
+            {
+              "chunk_id": "onet31-15-1252.00-0-8cd2f44b8b6a",
+              "source": "onet31-15-1252.00.txt",
+              "text": "O*NET® 31.0 — Software Developers (15-1252.00)\nSource: U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). https://www.onetcenter.org/database.html\nLicense: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . VoxPrep HK selected and reformatted these rows. USDOL/ETA has not approved, endorsed, or tested these modifications.\nThese US occupational descriptions provide practice context; they are not employer requirements or a Hong Kong hiring standard.\n\nResearch, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.\n\nTask Statements:\nTask 21662: Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.\nTask 21669: Develop or direct software system testing or validation procedures, programming, or documentation.\nTask 21664: Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.\nTask 21670: Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.\nTask 21673: Prepare reports or correspondence concerning project specifications, activities, or status.\nTask 21661: Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.\n\nEssential Skills:\nCritical Thinking (2.A.2.a): Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems. Importance 3.88 on the O*NET IM scale; source date 08/2025.\nReading Comprehension (2.A.1.a): Understanding written sentences and paragraphs in work-related documents. Importance 3.50 on the O*NET IM scale; source date 08/2025.\nActive Learning (2.A.2.b): Understanding the implications of new information for"
+            },
+            {
+              "chunk_id": "onet31-15-2051.00-2-a92565c5fa53",
+              "source": "onet31-15-2051.00.txt",
+              "text": "*NET IM scale; source date 08/2026.\nSocial Perceptiveness (2.B.1.a): Being aware of others' reactions and understanding why they react as they do. Importance 2.88 on the O*NET IM scale; source date 08/2026.\nCoordination (2.B.1.b): Adjusting actions in relation to others' actions. Importance 2.88 on the O*NET IM scale; source date 08/2026.\n\nWork Activities:\nAnalyzing Data or Information (4.A.2.a.4): Identifying the underlying principles, reasons, or facts of information by breaking down information or data into separate parts. Importance 4.83 on the O*NET IM scale; source date 08/2026.\nWorking with Computers (4.A.3.b.1): Using computers and computer systems (including hardware and software) to program, write software, set up functions, enter data, or process information. Importance 4.75 on the O*NET IM scale; source date 08/2026.\nProcessing Information (4.A.2.a.2): Compiling, coding, categorizing, calculating, tabulating, auditing, or verifying information or data. Importance 4.71 on the O*NET IM scale; source date 08/2026.\nInterpreting the Meaning of Information for Others (4.A.4.a.1): Translating or explaining what information means and how it can be used. Importance 4.48 on the O*NET IM scale; source date 08/2026.\nGetting Information (4.A.1.a.1): Observing, receiving, and otherwise obtaining information from all relevant sources. Importance 4.33 on the O*NET IM scale; source date 08/2026.\nMaking Decisions and Solving Problems (4.A.2.b.1): Analyzing information and evaluating results to choose the best solution and solve problems. Importance 4.33 on the O*NET IM scale; source date 08/2026."
+            }
+          ]
+        },
+        {
+          "interviewer_text": "你當時點樣識到 SQL 查詢係造成延遲嘅主要問題？",
+          "question_type": "follow_up",
+          "targeted_competencies": [
+            "Data analysis",
+            "Testing"
+          ],
+          "adaptive_follow_up_reason": "需要進一步確認數據分析過程，以驗證對問題根源嘅識別是否基於實際數據觀察，符合 job description 中「analyzing user needs」及「measured or otherwise observable result」嘅要求。",
+          "citations": [
+            {
+              "chunk_id": "890f7c70-5b26-4fa6-84f6-f6cc1a484dd8-0-89f84ea7ff35",
+              "source": "Pasted job description",
+              "text": "Graduate Software Engineer — Hong Kong\n\nJoin a small product team building reliable services for university learning tools.\nResponsibilities: implement Python REST APIs, design SQL queries, write automated tests,\ninvestigate performance issues, review pull requests, and explain technical decisions to teammates.\nRequirements: practical Python or TypeScript experience, knowledge of databases and testing,\nclear communication, teamwork, and willingness to learn from feedback.\nA strong interview example should describe your personal contribution, the technical tradeoff,\nand a measured or otherwise observable result. Professional experience is not required.\nThis is a fictional, locally authored demonstration job description."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "health": {
+    "status": "ready",
+    "database": "ready",
+    "llm": "ready (local model; training provenance in model manifest)",
+    "speech": "Azure not configured; local Whisper ready",
+    "retrieval": "hybrid ready (11/11 chunks indexed); reranker ready",
+    "provider": "llama"
+  }
+}
