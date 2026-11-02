@@ -10,6 +10,10 @@ Run `pnpm install --frozen-lockfile`, then `pnpm dev` with the API on `127.0.0.1
 
 Checks: `pnpm test`, `pnpm lint`, and `pnpm build`. The root `e2e/` suite exercises the integrated browser journey and accessibility checks. Routes use URL hashes so a static server can resume `/interview/:id` and `/report/:id` without special routing.
 
+History can compare two completed sessions side by side. Each column retains its role, language, observable answer data, STAR evidence, competency feedback and limitations; no aggregate quality score is generated. Full-session downloads are available in history and debrief and contain saved questions, transcripts, citations, session metadata and the completed report. Incomplete sessions export with `report: null`. Downloads are generated in the browser without contacting an external service.
+
+The methodology page reads runtime readiness from `/api/health` and displays the saved training configuration, dataset provenance and model card from the methodology record. These records remain separate from measured evaluation results.
+
 ## Speech and privacy
 
 - Azure recognition and synthesis use the official browser Speech SDK. The subscription key never enters the frontend. SDK telemetry is disabled for recognition.

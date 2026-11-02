@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
 import { exportJson, formatDuration } from '../lib/format';
+import { downloadSession } from '../lib/sessionExport';
 import type { Report as ReportType } from '../lib/types';
 import { ErrorNotice, Loading, Sources } from '../components/Common';
 
@@ -18,6 +19,7 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
   const [report, setReport] = useState<ReportType | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [exporting, setExporting] = useState(false);
   useEffect(() => {
     let active = true;
     api
@@ -40,6 +42,16 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
     } catch (e) {
       setError(errorMessage(e));
       setBusy(false);
+    }
+  }
+  async function exportSession() {
+    setExporting(true);
+    try {
+      await downloadSession(id);
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setExporting(false);
     }
   }
   if (!report)
@@ -68,12 +80,22 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
             {report.language === 'zh-HK' ? '廣東話' : 'English'}
           </p>
         </div>
-        <button
-          className="button secondary"
-          onClick={() => exportJson(report, `voxprep-debrief-${id}.json`)}
-        >
-          <Download size={17} /> Export report
-        </button>
+        <div className="report-downloads">
+          <button
+            className="button secondary"
+            onClick={() => exportJson(report, `voxprep-debrief-${id}.json`)}
+          >
+            <Download size={17} /> Export report
+          </button>
+          <button
+            className="button secondary"
+            disabled={exporting || busy}
+            onClick={() => void exportSession()}
+          >
+            <Download size={17} /> {exporting ? 'Preparing download…' : 'Export full session'}
+          </button>
+          <p>Includes saved questions and transcript. Keep the downloaded copy private.</p>
+        </div>
       </div>
       {error && <ErrorNotice message={error} onDismiss={() => setError('')} />}
       <section className="report-summary">

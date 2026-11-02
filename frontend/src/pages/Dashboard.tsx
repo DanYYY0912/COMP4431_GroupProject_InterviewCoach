@@ -4,6 +4,7 @@ import {
   AudioLines,
   BriefcaseBusiness,
   Clock3,
+  Download,
   FileText,
   Languages,
   Play,
@@ -13,13 +14,17 @@ import {
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
 import { formatDate } from '../lib/format';
+import { downloadSession } from '../lib/sessionExport';
 import type { Session } from '../lib/types';
 import { ErrorNotice, Loading } from '../components/Common';
+import { SessionComparison } from '../components/SessionComparison';
 
 export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selection, setSelection] = useState<string[]>([]);
+  const [exporting, setExporting] = useState<string | null>(null);
   useEffect(() => {
     let active = true;
     api
@@ -38,6 +43,9 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
     };
   }, []);
   const completed = sessions.filter((s) => s.state === 'completed');
+  const compared = selection
+    .map((id) => completed.find((session) => session.id === id))
+    .filter((session): session is Session => !!session);
   const answered = sessions.flatMap((s) => s.turns).filter((t) => t.answer).length;
   async function remove(session: Session) {
     if (
@@ -47,8 +55,19 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
     try {
       await api.delete(session.id);
       setSessions((current) => current.filter((s) => s.id !== session.id));
+      setSelection((current) => current.filter((id) => id !== session.id));
     } catch (e) {
       setError(errorMessage(e));
+    }
+  }
+  async function exportSession(id: string) {
+    setExporting(id);
+    try {
+      await downloadSession(id);
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setExporting(null);
     }
   }
   return (
@@ -132,6 +151,11 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
             <Plus size={16} /> New practice
           </button>
         </div>
+        {completed.length >= 2 && (
+          <p className="history-help">
+            Select two completed sessions to compare their evidence and feedback.
+          </p>
+        )}
         {loading ? (
           <Loading label="Loading your practice history…" />
         ) : sessions.length ? (
@@ -164,12 +188,39 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
                   <ArrowRight size={16} />
                 </button>
                 <button
+                  className="icon-button"
+                  aria-label={`Export full session for ${session.role_title}`}
+                  title="Download saved questions, transcript and debrief"
+                  disabled={exporting !== null}
+                  onClick={() => void exportSession(session.id)}
+                >
+                  <Download size={16} />
+                </button>
+                <button
                   className="icon-button delete-button"
                   aria-label={`Delete ${session.role_title} session`}
                   onClick={() => void remove(session)}
                 >
                   <Trash2 size={16} />
                 </button>
+                {session.state === 'completed' && completed.length >= 2 && (
+                  <label className="compare-select">
+                    <input
+                      type="checkbox"
+                      aria-label={`Compare ${session.role_title} from ${formatDate(session.created_at)}`}
+                      checked={selection.includes(session.id)}
+                      disabled={selection.length >= 2 && !selection.includes(session.id)}
+                      onChange={(event) =>
+                        setSelection((current) =>
+                          event.target.checked
+                            ? [...current, session.id].slice(0, 2)
+                            : current.filter((id) => id !== session.id),
+                        )
+                      }
+                    />
+                    Compare
+                  </label>
+                )}
               </article>
             ))}
           </div>
@@ -188,6 +239,19 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
           </div>
         )}
       </section>
+      {compared.length === 1 && (
+        <p className="comparison-prompt" role="status">
+          Choose one more completed session to open the comparison.
+        </p>
+      )}
+      {compared.length === 2 && (
+        <SessionComparison
+          key={`${compared[0].id}:${compared[1].id}`}
+          left={compared[0]}
+          right={compared[1]}
+          onClear={() => setSelection([])}
+        />
+      )}
       <section className="practice-tip">
         <span className="tip-mark">✳</span>
         <div>
