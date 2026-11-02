@@ -9,7 +9,11 @@ from app.main import create_app
 
 @pytest.fixture
 def client(tmp_path):
-    settings = Settings(database_url=f"sqlite:///{tmp_path}/test.db", model_provider="demo")
+    settings = Settings(
+        database_url=f"sqlite:///{tmp_path}/test.db",
+        model_provider="demo",
+        whisper_base_url="http://127.0.0.1:9",
+    )
     with TestClient(create_app(settings)) as client:
         yield client
 
