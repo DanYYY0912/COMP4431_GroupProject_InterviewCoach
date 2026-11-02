@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
-import type { Methodology as MethodologyData } from '../lib/types';
+import type { Health, Methodology as MethodologyData } from '../lib/types';
 import { ErrorNotice, Loading } from '../components/Common';
 
 const pipeline = [
@@ -23,15 +23,41 @@ function display(value: unknown) {
   if (typeof value === 'object') return JSON.stringify(value, null, 2);
   return String(value);
 }
+function MetadataRecord({ value }: { value: unknown }) {
+  if (!value || typeof value !== 'object' || Array.isArray(value))
+    return <p className="field-help">No saved record is available.</p>;
+  return (
+    <dl className="record-list">
+      {Object.entries(value).map(([key, item]) => (
+        <div key={key}>
+          <dt>{key.replaceAll('_', ' ')}</dt>
+          <dd>
+            <pre>{display(item)}</pre>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export function Methodology() {
   const [data, setData] = useState<MethodologyData | null>(null);
   const [error, setError] = useState('');
+  const [health, setHealth] = useState<Health | null>(null);
+  const [healthError, setHealthError] = useState('');
   useEffect(() => {
-    api
-      .methodology()
-      .then(setData)
-      .catch((e) => setError(errorMessage(e)));
+    let active = true;
+    void Promise.allSettled([api.methodology(), api.health()]).then(([record, runtime]) => {
+      if (!active) return;
+      if (record.status === 'fulfilled') setData(record.value);
+      else setError(errorMessage(record.reason));
+      if (runtime.status === 'fulfilled') setHealth(runtime.value);
+      else
+        setHealthError('Runtime health could not be checked. Saved methodology remains available.');
+    });
+    return () => {
+      active = false;
+    };
   }, []);
   return (
     <>
@@ -80,19 +106,36 @@ export function Methodology() {
               <GitBranch size={24} />
               <h2>Model & training record</h2>
               <p>
-                Qwen3-4B-Instruct-2507 is the target base model. The QLoRA workflow uses reviewed
-                bilingual examples and separated training, validation, and test data.
+                Training requires human-reviewed bilingual examples, isolated data splits and a CUDA
+                GPU. Draft examples do not count as approved training material. The saved records
+                below identify the base model and distinguish configuration from completed training.
               </p>
               <dl className="record-list">
-                {Object.entries(data.training).map(([key, value]) => (
-                  <div key={key}>
-                    <dt>{key.replaceAll('_', ' ')}</dt>
-                    <dd>
-                      <pre>{display(value)}</pre>
-                    </dd>
-                  </div>
-                ))}
+                {Object.entries(data.training)
+                  .filter(
+                    ([key]) => !['configuration', 'dataset_provenance', 'model_card'].includes(key),
+                  )
+                  .map(([key, value]) => (
+                    <div key={key}>
+                      <dt>{key.replaceAll('_', ' ')}</dt>
+                      <dd>
+                        <pre>{display(value)}</pre>
+                      </dd>
+                    </div>
+                  ))}
               </dl>
+              <details className="method-detail">
+                <summary>Inspect the saved QLoRA configuration</summary>
+                <MetadataRecord value={data.training.configuration} />
+              </details>
+              <details className="method-detail">
+                <summary>Dataset provenance & human review</summary>
+                <MetadataRecord value={data.training.dataset_provenance} />
+              </details>
+              <details className="method-detail">
+                <summary>Model card & intended use</summary>
+                <MetadataRecord value={data.training.model_card} />
+              </details>
             </section>
             <section className="panel">
               <Database size={24} />
@@ -116,9 +159,37 @@ export function Methodology() {
                 </li>
               </ul>
               <p className="field-help">
-                The methodology record reports the active retrieval configuration. The development
-                fallback may use lexical search instead of embeddings.
+                Runtime readiness below is checked on this computer. It is separate from measured
+                quality; the development fallback may use lexical search instead of embeddings.
               </p>
+              {healthError ? (
+                <p className="speech-notice" role="status">
+                  {healthError}
+                </p>
+              ) : health ? (
+                <dl className="record-list runtime-health">
+                  <div>
+                    <dt>Active retrieval</dt>
+                    <dd>{health.retrieval}</dd>
+                  </div>
+                  <div>
+                    <dt>Local model</dt>
+                    <dd>{health.llm}</dd>
+                  </div>
+                  <div>
+                    <dt>Database</dt>
+                    <dd>{health.database}</dd>
+                  </div>
+                  <div>
+                    <dt>Speech services</dt>
+                    <dd>{health.speech}</dd>
+                  </div>
+                </dl>
+              ) : (
+                <p className="field-help" role="status">
+                  Checking runtime readiness…
+                </p>
+              )}
             </section>
           </div>
           <section className="panel">
