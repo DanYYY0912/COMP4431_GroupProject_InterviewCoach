@@ -12,16 +12,14 @@ describe('API boundary', () => {
   it('reports a readable validation error', async () => {
     vi.stubGlobal(
       'fetch',
-      vi
-        .fn()
-        .mockResolvedValue(
-          new Response(
-            JSON.stringify({
-              detail: [{ loc: ['body', 'text'], msg: 'String should have at least 40 characters' }],
-            }),
-            { status: 422 },
-          ),
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            detail: [{ loc: ['body', 'text'], msg: 'String should have at least 40 characters' }],
+          }),
+          { status: 422 },
         ),
+      ),
     );
     await expect(request('/api/job-profiles')).rejects.toThrow(
       'String should have at least 40 characters',

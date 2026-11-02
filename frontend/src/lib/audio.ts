@@ -130,21 +130,42 @@ export async function azureRecognizer(
   language: Language,
   onText: (text: string, final: boolean) => void,
   onError: (message: string) => void,
+  signal?: AbortSignal,
 ) {
   const token = await api.token();
   const sdk = await import('microsoft-cognitiveservices-speech-sdk');
+  if (signal?.aborted) throw new DOMException('Recording canceled', 'AbortError');
   sdk.Recognizer.enableTelemetry(false);
   const config = sdk.SpeechConfig.fromAuthorizationToken(token.token, token.region);
   config.speechRecognitionLanguage = language;
   const azureStream = stream.clone();
-  const recognizer = new sdk.SpeechRecognizer(config, sdk.AudioConfig.fromStreamInput(azureStream));
+  let recognizer: InstanceType<typeof sdk.SpeechRecognizer>;
+  try {
+    recognizer = new sdk.SpeechRecognizer(config, sdk.AudioConfig.fromStreamInput(azureStream));
+  } catch (error) {
+    azureStream.getTracks().forEach((track) => track.stop());
+    throw error;
+  }
   let closed = false;
+  let rejectStart: ((reason: Error) => void) | null = null;
+  let startupTimer: ReturnType<typeof setTimeout> | null = null;
   const close = () => {
     if (closed) return;
     closed = true;
-    recognizer.close();
+    if (startupTimer) clearTimeout(startupTimer);
+    signal?.removeEventListener('abort', abort);
+    try {
+      recognizer.close();
+    } catch {
+      /* The microphone must still be released. */
+    }
     azureStream.getTracks().forEach((track) => track.stop());
   };
+  const abort = () => {
+    close();
+    rejectStart?.(new DOMException('Recording canceled', 'AbortError'));
+  };
+  signal?.addEventListener('abort', abort, { once: true });
   recognizer.recognizing = (_, event) => onText(event.result.text, false);
   recognizer.recognized = (_, event) => {
     if (event.result.reason === sdk.ResultReason.RecognizedSpeech) onText(event.result.text, true);
@@ -154,9 +175,18 @@ export async function azureRecognizer(
       onError('Azure speech stopped. Finish recording to try the local transcription fallback.');
   };
   try {
-    await new Promise<void>((resolve, reject) =>
-      recognizer.startContinuousRecognitionAsync(resolve, reject),
-    );
+    await new Promise<void>((resolve, reject) => {
+      rejectStart = reject;
+      startupTimer = setTimeout(
+        () => reject(new Error('Azure recognition startup timed out')),
+        15000,
+      );
+      recognizer.startContinuousRecognitionAsync(() => {
+        if (startupTimer) clearTimeout(startupTimer);
+        rejectStart = null;
+        resolve();
+      }, reject);
+    });
   } catch (error) {
     close();
     throw error;

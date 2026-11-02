@@ -16,15 +16,17 @@ export function useLiveSession(id: string) {
   useEffect(() => {
     let active = true;
     let ws: WebSocket | null = null;
+    let receivedSocketSnapshot = false;
+    const loadVersion = ++mutationVersion.current;
     api
       .session(id)
       .then((data) => {
-        if (!active) return;
+        if (!active || loadVersion !== mutationVersion.current) return;
         setSession(data);
         setState(data.state);
       })
       .catch((e) => {
-        if (active) setError(errorMessage(e));
+        if (active && loadVersion === mutationVersion.current) setError(errorMessage(e));
       });
     if (typeof WebSocket !== 'undefined') {
       ws = new WebSocket(
@@ -38,6 +40,12 @@ export function useLiveSession(id: string) {
           if (message.version !== 1) return;
           if (message.type === 'session') {
             const data = sessionSchema.parse(message.payload);
+            if (!receivedSocketSnapshot && pending.current) {
+              receivedSocketSnapshot = true;
+              return;
+            }
+            receivedSocketSnapshot = true;
+            mutationVersion.current++;
             setSession(data);
             setState(data.state);
             setBusy(false);
@@ -62,13 +70,22 @@ export function useLiveSession(id: string) {
       };
       ws.onclose = () => {
         if (active && pending.current) {
+          const recoveryVersion = ++mutationVersion.current;
+          if (timer.current) clearTimeout(timer.current);
           setError('Connection interrupted. Checking the saved session before you continue.');
           void api
             .session(id)
-            .then(setSession)
-            .catch((e) => setError(errorMessage(e)))
+            .then((data) => {
+              if (!active || recoveryVersion !== mutationVersion.current) return;
+              setSession(data);
+              setState(data.state);
+              setStreamText('');
+            })
+            .catch((e) => {
+              if (active && recoveryVersion === mutationVersion.current) setError(errorMessage(e));
+            })
             .finally(() => {
-              if (active) {
+              if (active && recoveryVersion === mutationVersion.current) {
                 setBusy(false);
                 pending.current = false;
               }
@@ -104,6 +121,13 @@ export function useLiveSession(id: string) {
         socket.current?.close();
       }, 90000);
       return;
+    }
+    // Once an HTTP mutation starts, a late socket handshake must not restore its older snapshot.
+    if (socket.current) {
+      socket.current.onmessage = null;
+      socket.current.onclose = null;
+      socket.current.close();
+      socket.current = null;
     }
     try {
       const data =

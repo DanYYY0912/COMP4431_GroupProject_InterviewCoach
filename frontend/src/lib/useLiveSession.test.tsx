@@ -30,6 +30,24 @@ const session: Session = {
   created_at: '2026-11-02T12:00:00Z',
   provider: 'demo',
 };
+class SocketStub {
+  static OPEN = 1;
+  static latest: SocketStub;
+  readyState = 1;
+  onmessage: ((event: { data: string }) => void) | null = null;
+  onclose: (() => void) | null = null;
+  constructor() {
+    SocketStub.latest = this;
+  }
+  send = vi.fn();
+  close() {
+    this.readyState = 3;
+    this.onclose?.();
+  }
+  receive(type: string, payload: unknown) {
+    this.onmessage?.({ data: JSON.stringify({ version: 1, type, payload }) });
+  }
+}
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
@@ -100,5 +118,64 @@ describe('live session recovery', () => {
       await pending;
     });
     expect(result.current.session?.state).toBe('paused');
+  });
+  it('does not let a delayed initial fetch roll back a newer socket snapshot', async () => {
+    vi.stubGlobal('WebSocket', SocketStub);
+    let resolveLoad!: (value: Session) => void;
+    vi.spyOn(api, 'session').mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveLoad = resolve;
+        }),
+    );
+    const { result } = renderHook(() => useLiveSession('s1'));
+    act(() => SocketStub.latest.receive('session', { ...session, current_question: 2 }));
+    expect(result.current.session?.current_question).toBe(2);
+    await act(async () => {
+      resolveLoad(session);
+    });
+    expect(result.current.session?.current_question).toBe(2);
+  });
+  it('restores both session and visible state after a dropped socket', async () => {
+    vi.stubGlobal('WebSocket', SocketStub);
+    vi.spyOn(api, 'session')
+      .mockResolvedValueOnce(session)
+      .mockResolvedValueOnce({ ...session, state: 'paused' });
+    const { result } = renderHook(() => useLiveSession('s1'));
+    await waitFor(() => expect(result.current.session?.id).toBe('s1'));
+    act(() => SocketStub.latest.receive('session', session));
+    await act(async () => {
+      await result.current.answer({
+        transcript: 'My draft',
+        language: 'en-HK',
+        elapsed_seconds: 30,
+        corrected: false,
+      });
+    });
+    act(() => {
+      SocketStub.latest.receive('state', { state: 'thinking' });
+      SocketStub.latest.close();
+    });
+    await waitFor(() => expect(result.current.session?.state).toBe('paused'));
+    expect(result.current.state).toBe('paused');
+    expect(result.current.busy).toBe(false);
+  });
+  it('keeps the HTTP result when a socket handshake arrives after fallback submission', async () => {
+    vi.stubGlobal('WebSocket', SocketStub);
+    vi.spyOn(api, 'session').mockResolvedValue(session);
+    vi.spyOn(api, 'answer').mockResolvedValue({ ...session, current_question: 2 });
+    const { result } = renderHook(() => useLiveSession('s1'));
+    await waitFor(() => expect(result.current.session?.id).toBe('s1'));
+    SocketStub.latest.readyState = 0;
+    await act(async () => {
+      await result.current.answer({
+        transcript: 'My answer',
+        language: 'en-HK',
+        elapsed_seconds: 10,
+        corrected: false,
+      });
+    });
+    act(() => SocketStub.latest.receive('session', session));
+    expect(result.current.session?.current_question).toBe(2);
   });
 });

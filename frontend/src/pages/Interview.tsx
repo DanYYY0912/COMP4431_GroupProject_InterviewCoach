@@ -29,6 +29,7 @@ const Avatar = lazy(() => import('../components/Avatar'));
 const statusLabels: Record<string, string> = {
   ready: 'Ready when you are',
   listening: 'Listening to your story',
+  initializing: 'Waiting for microphone permission',
   transcribing: 'Preparing your transcript',
   thinking: 'Thinking about your answer',
   speaking: 'Your interviewer is speaking',
@@ -66,13 +67,14 @@ export function Interview({
   const playback = useRef<(() => void) | null>(null);
   const recognized = useRef('');
   const recognitionFailed = useRef(false);
+  const recordingAbort = useRef<AbortController | null>(null);
   const generation = useRef(0);
   const [captions, setCaptions] = useState('');
   const turn = session?.turns[session.turns.length - 1];
   const paused = session?.state === 'paused';
   const displayState = paused ? 'paused' : speechState || (busy ? 'thinking' : live.state);
   const recording = speechState === 'listening';
-  const audioBusy = recording || speechState === 'transcribing';
+  const audioBusy = recording || speechState === 'transcribing' || speechState === 'initializing';
   useEffect(() => {
     if (session?.state === 'completed') navigate(`/report/${id}`);
   }, [session?.state, id, navigate]);
@@ -94,6 +96,7 @@ export function Interview({
   useEffect(
     () => () => {
       generation.current++;
+      recordingAbort.current?.abort();
       playback.current?.();
       void recognizer.current?.stop();
       void recorder.current?.stop();
@@ -133,14 +136,7 @@ export function Interview({
     stopSpeaking();
     const run = ++generation.current;
     setNotice('');
-    setTranscript('');
-    setCaptions('');
-    setCorrected(false);
-    setMetrics(null);
-    recognized.current = '';
-    recognitionFailed.current = false;
-    setStarted(true);
-    setElapsed(0);
+    setSpeechState('initializing');
     try {
       const capture = await recordMicrophone(setLevel);
       if (run !== generation.current) {
@@ -148,7 +144,17 @@ export function Interview({
         return;
       }
       recorder.current = capture;
+      setTranscript('');
+      setCaptions('');
+      setCorrected(false);
+      setMetrics(null);
+      recognized.current = '';
+      recognitionFailed.current = false;
+      setStarted(true);
+      setElapsed(0);
       setSpeechState('listening');
+      const abort = new AbortController();
+      recordingAbort.current = abort;
       if (speechConsent) {
         try {
           const azure = await azureRecognizer(
@@ -168,6 +174,7 @@ export function Interview({
                 setNotice(message);
               }
             },
+            abort.signal,
           );
           if (run !== generation.current || !capture.stream.active) {
             await azure.stop();
@@ -175,6 +182,7 @@ export function Interview({
           }
           recognizer.current = azure;
         } catch {
+          if (run !== generation.current) return;
           recognitionFailed.current = true;
           setNotice(
             'Azure recognition is unavailable. Your recording will be transcribed locally when you stop.',
@@ -182,6 +190,7 @@ export function Interview({
         }
       } else setNotice('Recording on this computer. Local transcription runs when you stop.');
     } catch {
+      if (run !== generation.current) return;
       setSpeechState('');
       setNotice('Microphone access is unavailable. Type your answer below to continue.');
     }
@@ -190,7 +199,10 @@ export function Interview({
     const capture = recorder.current;
     if (!capture) return;
     setSpeechState(discard ? '' : 'transcribing');
+    if (!recognizer.current) recordingAbort.current?.abort();
     await recognizer.current?.stop();
+    recordingAbort.current?.abort();
+    recordingAbort.current = null;
     recognizer.current = null;
     recorder.current = null;
     const result = await capture.stop();
@@ -223,6 +235,10 @@ export function Interview({
     return () => clearTimeout(timer);
   }, [recording]);
   async function control(action: 'pause' | 'resume' | 'skip' | 'retry' | 'end' | 'cancel') {
+    generation.current++;
+    recordingAbort.current?.abort();
+    recordingAbort.current = null;
+    setSpeechState('');
     stopSpeaking();
     if (recorder.current) await finishRecording(true);
     await live.control(action);
@@ -253,7 +269,7 @@ export function Interview({
     <>
       <div className="interview-top">
         <button className="back-link" onClick={() => navigate('/')}>
-          <ArrowLeft size={16} /> Save & leave
+          <ArrowLeft size={16} /> {transcript.trim() ? 'Leave & discard draft' : 'Leave practice'}
         </button>
         <ProviderBadge provider={session.provider} />
       </div>
@@ -491,7 +507,7 @@ export function Interview({
             </button>
             <button
               className="text-button finish"
-              disabled={audioBusy}
+              disabled={recording || speechState === 'transcribing'}
               onClick={() => void control('end')}
             >
               Finish & review <ArrowRight size={16} />
