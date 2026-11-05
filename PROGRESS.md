@@ -18,12 +18,11 @@ Updated: **2026-11-02T14:43:03+08:00 (Asia/Hong_Kong)**. See [verification](docs
 
 ## Immediate next targets
 
-1. Complete the remaining two team identities and record actual student contributions in [README.md](README.md) and the presentation script.
-2. Follow [external setup](docs/EXTERNAL_SETUP.md) to configure Azure and a Colab/Kaggle GPU. Keep credentials in the ignored local `.env` or notebook secret store.
-3. Rewrite and human-review the dataset, remove near duplicates, complete first reviews and the stratified second-review sample, then produce leakage-safe splits. The draft count is not a count of curated examples.
-4. Run genuine GPU training, retain the best adapter, loss curves, hashes and logs, export a merged GGUF and compare it with the retained base model.
-5. Address generation latency and execute the reviewed model/retrieval experiment, four-speaker speech study, avatar performance check and five-to-eight-person usability study. Record failures as well as successes.
-6. Rehearse the final seven-minute presentation on the classroom Mac and replace the backup with a recording of the final assessed configuration.
+1. Follow [external setup](docs/EXTERNAL_SETUP.md) to configure Azure and a Colab/Kaggle GPU. Keep credentials in the ignored local `.env` or notebook secret store.
+2. Rewrite and human-review the dataset, remove near duplicates, complete first reviews and the stratified second-review sample, then produce leakage-safe splits. The draft count is not a count of curated examples.
+3. Run genuine GPU training, retain the best adapter, loss curves, hashes and logs, export a merged GGUF and compare it with the retained base model.
+4. Address generation latency and execute the reviewed model/retrieval experiment, four-speaker speech study, avatar performance check and five-to-eight-person usability study. Record failures as well as successes.
+5. Rehearse the final seven-minute presentation on the classroom Mac and replace the backup with a recording of the final assessed configuration.
 
 ## Last verification
 

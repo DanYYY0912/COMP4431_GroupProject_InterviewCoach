@@ -112,9 +112,9 @@ The course requires a source ZIP, a PowerPoint file, a seven-minute English pres
 
 | Team member | English name | Student ID | Planned responsibility |
 | --- | --- | --- | --- |
-| 1 | YUEN Yiu Yeung | 23000594D | Product, UI, avatar |
-| 2 | SO Ngai Chun | 26131699D | Speech and audio evaluation |
-| 3 | _Add name_ | _Add student ID_ | Dataset, training, model evaluation |
-| 4 | _Add name_ | _Add student ID_ | Backend, retrieval, reliability |
+| 1 | SO Ngai Chun | 26131699D | Product, UI, avatar |
+| 2 | SHIH Richard | 25015663D | Speech and audio evaluation |
+| 3 | WONG Kin Chung | 24065065D | Dataset, training, model evaluation |
+| 4 | YUEN Yiu Yeung | 23000594D | Backend, retrieval, reliability |
 
 Responsibilities are proposed allocations, not claims of completed student contributions. Each student should record actual work and cross-review before submission.
