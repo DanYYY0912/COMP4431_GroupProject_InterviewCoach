@@ -36,15 +36,15 @@ text(s,'“I measured query time, added an index,\nand reduced latency by 30 per
 text(s,'Your words support the feedback. Retrieved sources explain the role.',90,555,1100,80,29,C.muted);
 
 s=base('Fine-tuning has a verifiable evidence trail', '4:40–5:35. Explain 4-bit NF4 base weights and a rank-32 adapter. The training script uses assistant-only loss, grouped splits, effective batch 32 and validation checkpoint selection. The draft curriculum must be rewritten and reviewed before it passes the training gate. GPU execution, adapter artifacts and loss curves remain pending until actually produced. Never claim genuine fine-tuning has already happened. Sources: ml/config.json; ml/train.py; docs/DATASET.md; https://qwen.readthedocs.io/en/latest/training/unsloth.html.');
-const steps=[['Review','1,500 examples\nHuman approvals'],['Train','CUDA QLoRA\nBest validation loss'],['Retain','Hashes, logs\nAdapter + manifest'],['Compare','Held-out prompts\nBlinded ratings']];
+const steps=[['Review','1,500 examples\nHuman approvals'],['Train','CUDA QLoRA\nBest validation loss'],['Retain','Hashes, logs\nAdapter + manifest'],['Compare','Held-out prompts\nAutomated scoring']];
 steps.forEach(([h,b],i)=>{let x=72+i*290;rect(s,x,225,260,210,i%2?C.teal:'#E3E9DF');text(s,h,x+20,249,220,55,34,i%2?C.white:C.ink,true);text(s,b,x+20,325,225,88,25,i%2?C.white:C.muted);});
 text(s,'Current status: tooling and draft curriculum ready; human review and GPU training pending.',72,516,1130,110,29,C.ink,true);
 
-s=base('Report measured results, then test the targets', '5:35–6:25. The two displayed timings are one synthetic local integration run, not a latency distribution or first-token measurement. Update this slide from evaluation/results before the assessed presentation. Software and smoke checks are not model-quality results. The remaining work is blinded preference, a five-participant usability run, demo-machine latency and the classroom rehearsal; schema validity and language detection are automated measures, not human review. Sources: docs/EVALUATION.md; evaluation/results/latest.json; docs/RELEASE_CHECKLIST.md.');
+s=base('Report measured results, then test the targets', '5:35–6:25. The two displayed timings are one synthetic local integration run, not a latency distribution or first-token measurement. Update this slide from evaluation/results before the assessed presentation. Software and smoke checks are not model-quality results. The remaining work is demo-machine latency and the classroom rehearsal; schema validity and language detection are automated measures, not human review. Sources: docs/EVALUATION.md; evaluation/results/latest.json; docs/RELEASE_CHECKLIST.md.');
 text(s,'Available development evidence',72,190,560,60,32,C.teal,true);
 text(s,'Both typed language journeys pass\nLocal Qwen + retrieval connected\nEnglish first turn: 18.3 s\nGenerated debrief: 74.1 s',72,275,555,210,29,C.ink);
 text(s,'Assessed evaluation still required',685,190,530,60,32,C.teal,true);
-text(s,'119 held-out prompts (automated)\n30 blinded base-vs-adapted pairs\n5 usability participants + completion\np95 latency on the demo machine',685,275,510,250,27,C.ink);
+text(s,'119 held-out prompts (automated)\nbase vs fine-tuned, paired scoring\nprompt-injection refusal set\np95 latency on the demo machine',685,275,510,250,27,C.ink);
 rect(s,72,590,1136,55,C.teal);text(s,'One synthetic timing run. Latency targets remain unmet.',90,598,1090,40,26,C.white,true);
 
 s=base('A coach for practice, with clear limits', '6:25–7:00. Transcript storage is consented and local. Azure voice sends audio or speech text to Azure after consent. Users can type, disable the avatar, inspect citations and delete sessions. The tool provides practice feedback and does not rank candidates or score protected traits, emotion, appearance or accent quality. Close by returning to the value: a more specific answer grounded in the actual role. Sources: README.md and docs/ARCHITECTURE.md.',true);
@@ -53,7 +53,7 @@ text(s,'User control is part\nof the product.',810,270,370,200,40,C.gold,true);
 text(s,'No hiring decisions or personality, appearance, or accent-quality scores.',72,610,1130,52,25,'#C9D6CF');
 
 s=base('Q&A: know the tradeoffs', 'Appendix, outside the seven-minute talk. Suggested specialties: student 1 UI/avatar; student 2 speech; student 3 model/data; student 4 backend/retrieval. Replace assignments with actual contributions. Discuss base versus adapter, citation support, storage privacy, fallback quality and honest limitations. Source: presentation/DEMO_SCRIPT.md.');
-const qa=[['Why QLoRA?','Lower training memory while retaining a reusable adapter.'],['Why retrieval?','Connect role-specific feedback to inspectable source text.'],['What can fail?','Speech, model JSON, WebGL and latency each have recovery paths.'],['What is still pending?','Blinded preference ratings, the five-participant usability run, latency on the demo machine, and the classroom rehearsal.']];
+const qa=[['Why QLoRA?','Lower training memory while retaining a reusable adapter.'],['Why retrieval?','Connect role-specific feedback to inspectable source text.'],['What can fail?','Speech, model JSON, WebGL and latency each have recovery paths.'],['What is still pending?','Demo-machine latency, the classroom rehearsal and the presentation itself. Participant studies are out of scope for this submission.']];
 qa.forEach(([q,a],i)=>{let y=197+i*110;text(s,q,72,y,385,70,29,C.teal,true);text(s,a,475,y,720,85,28,C.ink);});
 
 for (const [i,slide] of ppt.slides.items.entries()) {

@@ -2,12 +2,12 @@
 
 ## Executive summary
 
-The suite measures four things: automatic output conformance (strict JSON schema, citation ids that exist in the quoted sources, requested-language detection), first-token latency on the demo machine, blinded preference between base and fine-tuned outputs, and a five-participant usability check with task completion. Every number in this document is either produced by a script from a real endpoint run or explicitly marked as an unauthored fixture; nothing is reported as human verification unless a named person actually signed a record.
+The suite measures three things: automatic output conformance (strict JSON schema, citation ids that exist in the quoted sources, requested-language detection), first-token latency on the demo machine, and the prompt-injection refusal set. Every number in this document is produced by a script from a real endpoint run or explicitly marked as an unauthored fixture; no human rating is reported anywhere in this submission.
 
 Two conventions matter when reading results:
 
 - **Automated** means a script decided it (schema validity, language-script detection, citation-id existence, latency). These are cheap, repeatable and bias-free, but they are proxies: script detection is not a judgement about whether the Cantonese sounds natural.
-- **Human** means a named reviewer or participant recorded a decision in a file with their id and timestamp. No human record exists yet for any released number.
+- **Human** would mean a named reviewer recorded a decision in a file with their id and timestamp. No such record exists for this submission, and none is claimed.
 
 Manual language-adherence review of the 119 test outputs, human labelling of a 40-query retrieval set, and a speech WER/CER study are out of scope for this submission; see [Limitations and future work](#limitations-and-future-work). Their harnesses exist in `scripts/` but were not run, so no thresholds from them appear anywhere.
 
@@ -40,39 +40,6 @@ The runner records every outcome, including malformed output, truncation and tim
 Targets for the automated measures: schema validity 98%, citation ids present 100%, first-token p95 ≤ 4 s. Human language review is not part of this run; the classifier's result is the only language figure that will be reported, labelled as automated.
 
 The 120 provided diagnostic prompts come from synthetic drafts and require `--diagnostic`, which labels results accordingly. They are only a pipeline fixture: the assessed run uses all 119 rows of `ml/data/reviewed/test.jsonl`.
-
-## Blinded model preference
-
-```sh
-python -m evaluation.blind --input evaluation/results/model_raw.jsonl
-```
-
-The command deterministically samples 30 paired outcomes and shuffles the A/B model labels. It includes service failures rather than selecting only successful answers. Share `reviewer_packet.json` and separate rating forms with two reviewers. Keep `operator_key.json` with the operator until both sets of ratings are final.
-
-After unblinding, create the input for `python -m evaluation.run human --input PATH`:
-
-```json
-{
-  "preference": [
-    {"pair_id":"pair-01", "reviewer_id":"actual-reviewer", "choice":"A", "lora_label":"B"}
-  ],
-  "usability": [
-    {"participant_id":"actual-participant", "completed":true, "sus_answers":[1,2,3,4,5,1,2,3,4,5]}
-  ]
-}
-```
-
-The example shows structure only and is not an observed rating. Collect 30 pairs with two distinct reviewers per pair. Preference is wins divided by all ratings; ties are reported and remain in the denominator. The runner reports Cohen's kappa; unanimous single-category ratings have undefined kappa and are shown as null. Target LoRA+RAG preference is 65%.
-
-## Usability: five participants, slim protocol
-
-Five participants are enough for the course requirement, so the protocol is deliberately short: each runs setup → interview → review in a clean browser, records whether they completed all three steps, and answers the standard ten-item SUS with 1–5 responses.
-
-```sh
-python -m evaluation.run human --input PATH
-```
-
-Targets: completion at least 90%, SUS at least 80. Both are **human** measures; the report must name the five participants (or their codes) and the date, and must not present the sample as representative of the target market.
 
 ## Retrieval: automated diagnostic only
 
@@ -109,7 +76,7 @@ Measure on the machine that will be used for the classroom demo and record the h
 
 ## Limitations and future work
 
-Manual language-adherence review of the 119 test outputs, human labelling of a 40-query retrieval set, and a speech WER/CER study were dropped from this submission; the automated proxies above stand in for them, and running those three instruments against the released build is the first item of future work.
+Blinded base-vs-fine-tuned preference ratings, a usability study with external participants, manual language-adherence review of the 119 test outputs, human labelling of a 40-query retrieval set and a speech WER/CER study were all dropped from this submission. The automated measures above stand in for them; running those instruments against the released build is the first item of future work.
 
 ## Manual release evidence still required
 

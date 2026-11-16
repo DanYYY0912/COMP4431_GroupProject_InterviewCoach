@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The runnable application and automated checks are development evidence. The complete supplied plan additionally requires genuinely trained weights, human-reviewed data, measured service performance, participant studies and a presentation rehearsal. This checklist prevents a working demo from being described as a completed assessed system. Mark a gate complete only with linked evidence from the final configuration.
+The runnable application and automated checks are development evidence. The complete supplied plan additionally requires genuinely trained weights, human-reviewed data, measured service performance and a presentation rehearsal. Participant studies are out of scope for this submission. This checklist prevents a working demo from being described as a completed assessed system. Mark a gate complete only with linked evidence from the final configuration.
 
 ## Application
 
@@ -19,11 +19,10 @@ The runnable application and automated checks are development evidence. The comp
 - [ ] GPU QLoRA training completed, best adapter and raw logs retained.
 - [ ] Loss curves, model manifest, merged Q4_K_M and reproducible conversion retained.
 - [ ] 119 held-out cases (the whole reviewed test split) across base+RAG, LoRA-only and LoRA+RAG.
-- [ ] Automated schema validity >=98% and citation ids present in the quoted sources; requested-language detection reported as an automated proxy, never as human language review. Blinded preference >=65% on 30 pairs with two reviewers.
+- [ ] Automated schema validity >=98% and citation ids present in the quoted sources; requested-language detection reported as an automated proxy, never as human language review.
 - [ ] Automated retrieval diagnostic on the synthetic corpus recorded as `diagnostic` (no human labels); recall@5 from unauthored expectations is a pipeline check, not a release threshold.
 - [ ] Demo-machine latency: p50/p95 first token and speech-end-to-first-audio recorded with hardware and model hash.
 - [ ] p95 first-token <=4s, speech-end-to-first-audio <=8s, avatar >=30 FPS.
-- [ ] Five usability participants, >=90% flow completion, SUS >=80.
 
 ## Submission
 

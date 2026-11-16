@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-Use one lead presenter and a prepared three-question role scenario to show setup, an incomplete answer, an adaptive follow-up and the evidence-linked debrief. Explain the actual provider and evidence available on the presentation day. The PowerPoint contains speaker notes and an honest pending-evaluation slide. Replace pending evidence only after the corresponding training, measurements and participant reviews exist. Keep a 60–90 second recording of the final configuration as backup, and rehearse on the classroom Mac with the network disabled once.
+Use one lead presenter and a prepared three-question role scenario to show setup, an incomplete answer, an adaptive follow-up and the evidence-linked debrief. Explain the actual provider and evidence available on the presentation day. The PowerPoint contains speaker notes and an honest pending-evaluation slide. Replace pending evidence only after the corresponding training and measurements exist; participant studies are out of scope for this submission. Keep a 60–90 second recording of the final configuration as backup, and rehearse on the classroom Mac with the network disabled once.
 
 ## Before rehearsal
 
@@ -44,7 +44,7 @@ Cantonese alternative: “喺大學小組專題入面，我負責一個回應好
 - If model generation fails, show the visible fallback status and explain the failure. Do not describe fallback output as local model output.
 - If WebGL fails, use the static interviewer and keep the interview moving.
 - If the main app cannot continue, play the final backup recording and explain which configuration it used.
-- Keep the results slide honest if training or participant studies are still pending.
+- Keep the results slide honest: quote only numbers that a script produced, and say that no participant study was run.
 
 ## Q&A specialties and contribution log
 
