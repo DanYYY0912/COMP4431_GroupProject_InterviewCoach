@@ -22,3 +22,6 @@ tmp/
 
 # Codex presentation build dependency resolved per machine, never committed
 presentation/node_modules
+
+# Per-machine llama.cpp endpoint config for model evaluation
+evaluation/model_endpoints.local.json

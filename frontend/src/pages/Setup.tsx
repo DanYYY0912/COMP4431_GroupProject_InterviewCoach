@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage } from '../lib/api';
+import { pickVoice } from '../lib/audio';
 import type { Health, Language } from '../lib/types';
 import { ErrorNotice, Preflight } from '../components/Common';
 
@@ -35,7 +36,11 @@ export function Setup({
   const [error, setError] = useState('');
   const [health, setHealth] = useState<Health | null>(null);
   const [micStatus, setMicStatus] = useState('');
+  const [micEcho, setMicEcho] = useState('');
   const [speakerStatus, setSpeakerStatus] = useState('');
+  useEffect(() => () => {
+    if (micEcho) URL.revokeObjectURL(micEcho);
+  }, [micEcho]);
   useEffect(() => {
     api
       .health()
@@ -61,12 +66,38 @@ export function Setup({
     }
   }
   async function checkMic() {
+    // Record three seconds and play it straight back: a permission prompt alone does not prove
+    // the microphone actually captures sound.
+    let stream: MediaStream | null = null;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
-      setMicStatus('Microphone ready. No audio was saved.');
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (typeof MediaRecorder === 'undefined') {
+        setMicStatus('This browser cannot record audio. Typing still works.');
+        return;
+      }
+      setMicStatus('Recording three seconds — say something…');
+      const recorder = new MediaRecorder(stream);
+      const chunks: BlobPart[] = [];
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunks.push(event.data);
+      };
+      const stopped = new Promise<void>((resolve) => {
+        recorder.onstop = () => resolve();
+      });
+      recorder.start();
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      recorder.stop();
+      await stopped;
+      const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+      if (micEcho) URL.revokeObjectURL(micEcho);
+      setMicEcho(URL.createObjectURL(blob));
+      setMicStatus(
+        `Recorded ${Math.max(1, Math.round(blob.size / 1024))} KB. Play it back below — if you hear yourself, the microphone works. Nothing is uploaded.`,
+      );
     } catch {
       setMicStatus('Microphone unavailable. You can type every answer.');
+    } finally {
+      stream?.getTracks().forEach((track) => track.stop());
     }
   }
   function checkSpeaker() {
@@ -75,12 +106,18 @@ export function Setup({
       return;
     }
     speechSynthesis.cancel();
+    const voice = pickVoice(language);
+    if (!voice) {
+      setSpeakerStatus('No system voice found. Captions remain available.');
+      return;
+    }
     const utterance = new SpeechSynthesisUtterance(
       language === 'zh-HK' ? '你好，準備好練習未？' : 'Hello. Let’s practise your next interview.',
     );
-    utterance.lang = language;
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
     speechSynthesis.speak(utterance);
-    setSpeakerStatus('Playing a short speaker test.');
+    setSpeakerStatus(`Playing the speaker test with “${voice.name}” (${voice.lang}).`);
   }
   function chooseFile(selected: File | null) {
     if (selected && selected.size > 5 * 1024 * 1024) {
@@ -246,6 +283,15 @@ export function Setup({
               <p className="field-help" role="status">
                 {micStatus}
               </p>
+            )}
+            {micEcho && (
+              <audio
+                controls
+                autoPlay
+                src={micEcho}
+                aria-label="Your recorded microphone test"
+                style={{ width: '100%', marginTop: '0.5rem' }}
+              />
             )}
             {speakerStatus && (
               <p className="field-help" role="status">

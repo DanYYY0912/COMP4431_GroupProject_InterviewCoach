@@ -193,6 +193,12 @@ def demo_question(
     )
 
 
+HAN = re.compile(r"[\u3400-\u9fff]")
+
+
+class LanguageDrift(ValueError):
+    """Model answered in the wrong language. Retry once with a corrective turn, then fall back."""
+
 SYSTEM_PROMPT = """You are VoxPrep HK, a reflective interview practice coach for Hong Kong graduates.
 Return only the specified JSON schema. Ask one concise question in the requested language.
 For zh-HK use natural Cantonese written in Traditional Chinese; en-HK uses English.
@@ -291,7 +297,11 @@ def check_question_output(
     if not turn.targeted_competencies or not set(turn.targeted_competencies).issubset(competencies):
         raise ValueError("Invalid model competencies")
     if language == "zh-HK" and len(re.findall(r"[\u3400-\u9fff]", turn.interviewer_text)) < 5:
-        raise ValueError("Requested language was not respected")
+        raise LanguageDrift("Requested language was not respected")
+    # An English session must stay English: a 4B model asked for "en-HK" still slips into
+    # Chinese when the competency wording or the job description is Chinese.
+    if language == "en-HK" and HAN.search(turn.interviewer_text):
+        raise LanguageDrift("Requested language was not respected")
     return turn
 
 
@@ -330,9 +340,23 @@ def check_report_output(
     for strength in draft.strengths:
         if not any(strength.evidence in answer for answer in excerpts):
             raise ValueError("Unverifiable strength evidence")
-    combined = " ".join([draft.prioritized_improvement, draft.retry_exercise])
-    if language == "zh-HK" and len(re.findall(r"[\u3400-\u9fff]", combined)) < 5:
-        raise ValueError("Requested report language was not respected")
+    # Every piece of coaching prose has to match the session language, field by field: one
+    # stray English sentence in a zh-HK report is as wrong as Chinese in an en-HK one.
+    # Evidence fields are exempt - they are verbatim quotes, checked against the transcripts above.
+    coaching_fields = (
+        [item.coaching for item in draft.star]
+        + [item.feedback for item in draft.competencies]
+        + [strength.text for strength in draft.strengths]
+        + [draft.prioritized_improvement, draft.retry_exercise]
+    )
+    for field in coaching_fields:
+        prose = (field or "").strip()
+        if not prose:
+            continue
+        if language == "zh-HK" and not HAN.search(prose):
+            raise LanguageDrift("Requested report language was not respected")
+        if language == "en-HK" and HAN.search(prose):
+            raise LanguageDrift("Requested report language was not respected")
     return feedback
 
 
@@ -348,36 +372,56 @@ async def generate_question(
     fallback = demo_question(competencies, language, difficulty, index, previous, sources)
     if settings.model_provider == "demo":
         return fallback, "demo"
-    try:
-        async with httpx.AsyncClient(timeout=settings.model_timeout_seconds) as client:
-            response = await client.post(
-                f"{settings.llama_base_url}/chat/completions",
-                json={
-                    "model": settings.model_name,
-                    "messages": question_messages(
-                        competencies, language, difficulty, index, previous, sources
-                    ),
-                    "temperature": 0.3,
-                    "max_tokens": 480,
-                    "response_format": {
-                        "type": "json_schema",
-                        "json_schema": {
-                            "name": "CoachTurn",
-                            "strict": True,
-                            "schema": grounded_schema(ModelCoachTurn, competencies, sources),
+    messages = question_messages(competencies, language, difficulty, index, previous, sources)
+    # One corrective retry on language drift. A 4B asked for English still slips into Chinese when
+    # the job description is Chinese; re-asking with the last reply in context fixes it more often
+    # than falling straight back to the canned question, and costs one extra request.
+    for attempt in range(2):
+        try:
+            async with httpx.AsyncClient(timeout=settings.model_timeout_seconds) as client:
+                response = await client.post(
+                    f"{settings.llama_base_url}/chat/completions",
+                    json={
+                        "model": settings.model_name,
+                        "messages": messages,
+                        "temperature": 0.3,
+                        "max_tokens": 480,
+                        "response_format": {
+                            "type": "json_schema",
+                            "json_schema": {
+                                "name": "CoachTurn",
+                                "strict": True,
+                                "schema": grounded_schema(ModelCoachTurn, competencies, sources),
+                            },
                         },
                     },
-                },
-            )
-            response.raise_for_status()
-            draft = ModelCoachTurn.model_validate_json(
-                response.json()["choices"][0]["message"]["content"]
-            )
-        turn = check_question_output(draft, competencies, language, sources)
-        return turn, "llama"
-    except (httpx.HTTPError, ValidationError, ValueError, KeyError, IndexError, TypeError):
-        # A visible provider label prevents the deterministic recovery path being mistaken for inference.
-        return fallback, "demo-fallback"
+                )
+                response.raise_for_status()
+                draft = ModelCoachTurn.model_validate_json(
+                    response.json()["choices"][0]["message"]["content"]
+                )
+            turn = check_question_output(draft, competencies, language, sources)
+            return turn, "llama"
+        except LanguageDrift:
+            if attempt == 0:
+                messages = messages + [
+                    {
+                        "role": "user",
+                        "content": (
+                            "Your previous reply was in the wrong language. Answer again with the "
+                            "same JSON, in English only and with no Chinese characters."
+                            if language == "en-HK"
+                            else "Your previous reply was in the wrong language. Answer again with the "
+                            "same JSON, in natural Cantonese written in Traditional Chinese."
+                        ),
+                    }
+                ]
+                continue
+            return fallback, "demo-fallback"
+        except (httpx.HTTPError, ValidationError, ValueError, KeyError, IndexError, TypeError):
+            # A visible provider label prevents the deterministic recovery path being mistaken for inference.
+            return fallback, "demo-fallback"
+    return fallback, "demo-fallback"
 
 
 def make_report(session: Session, sources: list[Citation]) -> SessionReport:
