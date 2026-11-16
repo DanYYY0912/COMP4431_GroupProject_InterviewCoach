@@ -19,3 +19,6 @@ playwright-report/
 test-results/
 tmp/
 .coverage
+
+# Codex presentation build dependency resolved per machine, never committed
+presentation/node_modules

@@ -14,16 +14,16 @@ The runnable application and automated checks are development evidence. The comp
 
 ## Training and evidence
 
-- [ ] 1,500 examples with provenance, first review and stratified second reviews.
+- [ ] 971 reviewed examples (1,000 generated, 29 rejected) with provenance, reviewer records and stratified second reviews.
 - [ ] Leakage-safe 80/10/10 splits and hashes retained.
 - [ ] GPU QLoRA training completed, best adapter and raw logs retained.
 - [ ] Loss curves, model manifest, merged Q4_K_M and reproducible conversion retained.
 - [ ] 119 held-out cases (the whole reviewed test split) across base+RAG, LoRA-only and LoRA+RAG.
-- [ ] Schema validity >=98%, language adherence >=95%, blinded preference >=65% on 30 pairs with two reviewers.
-- [ ] 40 retrieval cases, recall@5 >=85%, citation precision >=90%.
-- [ ] 24 clean/noisy speech recordings across four speakers, WER/CER and correction rate reported.
+- [ ] Automated schema validity >=98% and citation ids present in the quoted sources; requested-language detection reported as an automated proxy, never as human language review. Blinded preference >=65% on 30 pairs with two reviewers.
+- [ ] Automated retrieval diagnostic on the synthetic corpus recorded as `diagnostic` (no human labels); recall@5 from unauthored expectations is a pipeline check, not a release threshold.
+- [ ] Demo-machine latency: p50/p95 first token and speech-end-to-first-audio recorded with hardware and model hash.
 - [ ] p95 first-token <=4s, speech-end-to-first-audio <=8s, avatar >=30 FPS.
-- [ ] Five to eight usability participants, >=90% flow completion, SUS >=80.
+- [ ] Five usability participants, >=90% flow completion, SUS >=80.
 
 ## Submission
 

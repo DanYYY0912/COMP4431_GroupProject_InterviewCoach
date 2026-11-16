@@ -51,7 +51,7 @@ Cantonese alternative: “喺大學小組專題入面，我負責一個回應好
 | Planned owner | Prepare to explain | Actual contribution evidence |
 | --- | --- | --- |
 | Student 1 | UI states, accessibility, original avatar and mouth animation | Add commits, review and tests after team work |
-| Student 2 | Azure tokens, language selection, visemes, Whisper and WER/CER | Add recordings, measurements and failure cases |
+| Student 2 | Azure tokens, language selection, visemes, Whisper transcription | Add failure cases and the demo-machine latency trace |
 | Student 3 | Data provenance, review, split leakage, NF4/LoRA and base comparison | Add review records, GPU logs and adapter hashes |
 | Student 4 | Ingestion, retrieval, citations, state recovery and privacy | Add integration tests and retrieval results |
 

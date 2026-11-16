@@ -1,7 +1,7 @@
 {
   "schemaVersion": "presentation-finalization.v1",
-  "finalSha256": "a89bd553ca939571df4f717285fc1a2b8ee5ab8ed71a98bd82f323aa2985236e",
-  "byteCount": 44993,
+  "finalSha256": "c309a1e96ab61a9219bbb4aa536c933cfb8cb662f82b67c9050ca83bd231d59d",
+  "byteCount": 45145,
   "packageIntegrity": {
     "chart_count": 0,
     "claim_boundary": "Structural package checks only; no slide text, notes, formulas, chart values, or native PowerPoint execution were inspected.",

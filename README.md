@@ -93,7 +93,7 @@ flowchart LR
 
 The supplied model is a public base model quantization. It is not a VoxPrep fine-tuned checkpoint. The draft data is synthetic and must pass human review before training. Follow [ml/](ml/) and [docs/DATASET.md](docs/DATASET.md) to review, split, train, preserve checkpoints, export, and measure base versus LoRA performance. Keep reviewed data, hashes, logs, loss curves, manifests and raw results with the final submission.
 
-No target percentage in the original plan is a measured result. Azure Speech and a training GPU are not yet set up; follow [the external setup guide](docs/EXTERNAL_SETUP.md) when ready. The methodology screen reads stored evaluation evidence and labels pending work. Participant speech recordings, blinded preference ratings, and usability studies cannot be replaced by generated test fixtures.
+No target percentage in the original plan is a measured result. Azure Speech and a training GPU are not yet set up; follow [the external setup guide](docs/EXTERNAL_SETUP.md) when ready. The methodology screen reads stored evaluation evidence and labels pending work. Blinded preference ratings and the five-participant usability run cannot be replaced by generated test fixtures. Automatic checks (strict schema validity, citation-id existence, script detection, latency) are reported as automated; none of them is a human rating, and manual language review, human retrieval labelling and a speech WER/CER study are out of scope for this submission.
 
 ## Troubleshooting
 

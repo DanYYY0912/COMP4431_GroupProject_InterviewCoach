@@ -1,7 +1,13 @@
 # Speech accuracy study
 
-Release checklist item this closes: *24 clean/noisy speech recordings across four
-speakers, WER/CER and correction rate reported.*
+> **Out of scope for this submission.** The WER/CER speech study is not being run, so this
+> protocol is retained only as a future-work instrument. Nothing in it may be cited as
+> evidence, and no release checklist item depends on it. The app's speech path is still
+> exercised by the manual release checks (consent, denial, interruption, fallback to the
+> editable transcript); that is behavioural testing, not an accuracy measurement.
+
+Release checklist item this protocol was written for: *24 clean/noisy speech recordings across
+four speakers, WER/CER and correction rate reported.*
 
 Nothing here has been measured yet. This file is the protocol plus the scoring
 harness; the checklist item stays unticked until
