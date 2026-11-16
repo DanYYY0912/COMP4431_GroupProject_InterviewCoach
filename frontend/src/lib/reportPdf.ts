@@ -4,35 +4,37 @@ import type { Report, Session } from './types';
 /**
  * Printable session report.
  *
- * The PDF is produced by the browser's own "Save as PDF" from a purpose-built print document,
- * not by a server-side PDF library: the styling is then the app's own palette, the output stays
- * selectable text, and no extra dependency enters the backend.
+ * The PDF is produced by the browser's own "Save as PDF" from a purpose-built print document:
+ * the styling stays the app's palette, the text stays selectable, and no PDF library is added.
+ *
+ * Layout rule: page 1 must answer "how did this go and what do I fix first". Sources, the
+ * transcript and the limitations are appendices, and long source passages are trimmed to one
+ * line each so the report never becomes a wall of government text.
+ *
+ * The only number in the report scores answer *structure* (STAR coverage, quoted evidence,
+ * pacing, fillers). The app may not score the person, so no ability or employability grade
+ * appears anywhere.
  */
 
-const PALETTE = {
+const C = {
   ink: '#203d34',
   teal: '#256456',
   cream: '#f6f4ed',
   gold: '#d8b779',
-  muted: '#52645e',
-  line: '#d9ddd6',
+  muted: '#5c6b64',
+  line: '#dfe3dc',
+  good: '#2f7a5f',
+  warn: '#c9861f',
+  bad: '#a8432c',
+  white: '#ffffff',
 };
 
-function escapeHtml(value: unknown): string {
+function esc(value: unknown): string {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
-}
-
-function paragraphs(text: string, className = ''): string {
-  return String(text ?? '')
-    .split(/\n{2,}/)
-    .map((chunk) => chunk.trim())
-    .filter(Boolean)
-    .map((chunk) => `<p class="${className}">${escapeHtml(chunk)}</p>`)
-    .join('');
 }
 
 function strengthText(value: unknown): string {
@@ -41,230 +43,329 @@ function strengthText(value: unknown): string {
   return '';
 }
 
-function metric(label: string, value: unknown, suffix = ''): string {
-  const shown = value === null || value === undefined ? '—' : `${value}${suffix}`;
-  return `<div class="metric"><span class="metric-value">${escapeHtml(shown)}</span><span class="metric-label">${escapeHtml(
-    label,
-  )}</span></div>`;
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
+/** Words per minute only means something against a band, so draw the band, not a bare number. */
+function wpmGauge(wpm: number | null): string {
+  const low = 90;
+  const high = 180;
+  const width = 320;
+  const bandStart = ((120 - low) / (high - low)) * width;
+  const bandEnd = ((150 - low) / (high - low)) * width;
+  const x = wpm === null ? 0 : clamp(((wpm - low) / (high - low)) * width, 0, width);
+  const tone =
+    wpm === null ? C.muted : wpm >= 120 && wpm <= 150 ? C.good : wpm >= 100 && wpm <= 170 ? C.warn : C.bad;
+  const verdict =
+    wpm === null
+      ? 'not measured in this session'
+      : wpm < 120
+        ? 'slower than the 120–150 wpm range most interviewers find easy to follow'
+        : wpm > 150
+          ? 'faster than the 120–150 wpm range most interviewers find easy to follow'
+          : 'inside the 120–150 wpm range most interviewers find easy to follow';
+  return `<figure class="gauge">
+    <svg viewBox="0 0 ${width} 54" width="100%" height="54" role="img" aria-label="Speaking rate ${
+      wpm === null ? 'unmeasured' : `${Math.round(wpm)} words per minute`
+    }">
+      <rect x="0" y="16" width="${width}" height="12" rx="6" fill="${C.line}"></rect>
+      <rect x="${bandStart}" y="16" width="${bandEnd - bandStart}" height="12" fill="${C.good}" opacity="0.3"></rect>
+      <rect x="0" y="16" width="${clamp(x, 6, width)}" height="12" rx="6" fill="${tone}"></rect>
+      <circle cx="${clamp(x, 8, width - 8)}" cy="22" r="9" fill="${C.white}" stroke="${tone}" stroke-width="4"></circle>
+      <text x="${bandStart}" y="10" font-size="9" fill="${C.good}">120</text>
+      <text x="${bandEnd}" y="10" font-size="9" fill="${C.good}">150</text>
+      <text x="0" y="50" font-size="9" fill="${C.muted}">${low}</text>
+      <text x="${width}" y="50" font-size="9" fill="${C.muted}" text-anchor="end">${high}+</text>
+    </svg>
+    <figcaption><strong style="color:${tone}">${wpm === null ? '—' : Math.round(wpm)} wpm</strong> · ${esc(
+      verdict,
+    )}</figcaption>
+  </figure>`;
+}
+
+function structureScore(report: Report): { score: number; grade: string; parts: [string, number, string][] } {
+  const starPresent = report.star.filter((item) => item.present).length;
+  const starPoints = Math.round((starPresent / 4) * 40);
+  const quoted = report.competencies.filter((item) => item.evidence).length;
+  const evidencePoints = report.competencies.length
+    ? Math.round((quoted / report.competencies.length) * 20)
+    : 0;
+  const wpm = report.speech_metrics.words_per_minute;
+  const pacePoints = wpm === null ? 10 : wpm >= 120 && wpm <= 150 ? 20 : wpm >= 100 && wpm <= 170 ? 13 : 6;
+  const minutes = Math.max(report.speech_metrics.duration_seconds / 60, 0.1);
+  const fillersPerMinute = report.speech_metrics.filler_count / minutes;
+  const fillerPoints = fillersPerMinute <= 2 ? 20 : fillersPerMinute <= 5 ? 12 : 5;
+  const score = starPoints + evidencePoints + pacePoints + fillerPoints;
+  return {
+    score,
+    grade: score >= 85 ? 'A' : score >= 70 ? 'B' : score >= 55 ? 'C' : 'D',
+    parts: [
+      ['STAR coverage', starPoints, `${starPresent} of 4 elements evidenced`],
+      ['Quoted evidence', evidencePoints, `${quoted} of ${report.competencies.length} competencies quoted`],
+      ['Pacing', pacePoints, wpm === null ? 'not measured' : `${Math.round(wpm)} wpm`],
+      ['Filler control', fillerPoints, `${report.speech_metrics.filler_count} fillers / ${minutes.toFixed(1)} min`],
+    ],
+  };
+}
+
+function starCard(item: Report['star'][number]): string {
+  const tone = item.present ? C.good : C.warn;
+  return `<article class="star-card" style="border-top-color:${tone}">
+    <header>
+      <span class="star-mark" style="background:${tone}">${item.present ? '✓' : '!'}</span>
+      <h4>${esc(item.element)}</h4>
+      <span class="star-state" style="color:${tone}">${item.present ? 'covered' : 'missing'}</span>
+    </header>
+    ${
+      item.evidence
+        ? `<blockquote>“${esc(item.evidence)}”</blockquote>`
+        : '<p class="muted">No sentence in your answer covered this element.</p>'
+    }
+    <p class="coaching">${esc(item.coaching)}</p>
+  </article>`;
+}
+
+function tile(label: string, value: string, note: string, tone: string = C.ink): string {
+  return `<div class="tile"><span class="tile-value" style="color:${tone}">${esc(value)}</span>
+    <span class="tile-label">${esc(label)}</span><span class="tile-note">${esc(note)}</span></div>`;
 }
 
 export function buildReportHtml(session: Session, report: Report | null, exportedAt = new Date()): string {
   const language = session.language === 'zh-HK' ? 'Cantonese (zh-HK)' : 'English (en-HK)';
-  const date = exportedAt.toLocaleString('en-HK', { dateStyle: 'medium', timeStyle: 'short' });
-  const answers = session.turns.filter((turn) => turn.answer);
-  const provider = session.provider || 'unknown';
+  const date = exportedAt.toLocaleDateString('en-HK', { dateStyle: 'medium' });
+  const answered = session.turns.filter((turn) => turn.answer).length;
+  const metrics = report?.speech_metrics ?? null;
+  const score = report ? structureScore(report) : null;
 
-  const star = (report?.star ?? [])
+  const stars = (report?.star ?? []).map(starCard).join('');
+  const strengths = (report?.strengths ?? []).map((item) => `<li>${esc(strengthText(item))}</li>`).join('');
+
+  // The strongest evidence containing a number is the most shareable line in the report.
+  const highlight =
+    (report?.star ?? [])
+      .map((item) => item.evidence)
+      .filter((evidence) => /\d/.test(evidence))
+      .sort((a, b) => b.length - a.length)[0] ?? '';
+
+  const competencyRows = (report?.competencies ?? [])
     .map(
-      (item) => `
-        <tr class="${item.present ? 'present' : 'missing'}">
-          <th>${escapeHtml(item.element)}</th>
-          <td>${item.present ? '✓' : '—'}</td>
-          <td class="evidence">${item.evidence ? `“${escapeHtml(item.evidence)}”` : '<span class="muted">No evidence quoted</span>'}</td>
-          <td>${escapeHtml(item.coaching)}</td>
-        </tr>`,
+      (item) => `<tr><th>${esc(item.name)}</th><td>${esc(item.feedback)}</td>
+        <td class="cite">${item.citations.length ? esc(item.citations[0].source.slice(0, 28)) : '—'}</td></tr>`,
     )
-    .join('');
-
-  const competencies = (report?.competencies ?? [])
-    .map(
-      (item) => `
-        <article class="card">
-          <h3>${escapeHtml(item.name)}</h3>
-          ${item.evidence ? `<p class="evidence">“${escapeHtml(item.evidence)}”</p>` : ''}
-          <p>${escapeHtml(item.feedback)}</p>
-          ${
-            item.citations.length
-              ? `<p class="sources">Sources: ${item.citations
-                  .map((citation) => `${escapeHtml(citation.source)} (${escapeHtml(citation.chunk_id)})`)
-                  .join(' · ')}</p>`
-              : ''
-          }
-        </article>`,
-    )
-    .join('');
-
-  const strengths = (report?.strengths ?? [])
-    .map((item) => `<li>${escapeHtml(strengthText(item))}</li>`)
     .join('');
 
   const transcript = session.turns
     .map(
-      (turn, index) => `
-        <section class="qa">
-          <header>
-            <span class="q-index">Q${index + 1}</span>
-            <span class="q-type">${escapeHtml(turn.question.question_type)}</span>
-            <span class="q-comps">${turn.question.targeted_competencies.map(escapeHtml).join(' · ')}</span>
-          </header>
-          <p class="question">${escapeHtml(turn.question.interviewer_text)}</p>
-          ${
-            turn.answer
-              ? `<p class="answer">${escapeHtml(turn.answer.transcript)}</p>
-                 <p class="meta">${turn.answer.elapsed_seconds}s · ${
-                   turn.answer.corrected ? 'edited transcript' : 'as spoken'
-                 }</p>`
-              : '<p class="answer muted">Not answered.</p>'
-          }
-        </section>`,
+      (turn, index) => `<section class="qa">
+        <header><span class="q">Q${index + 1}</span><span>${esc(turn.question.question_type)}</span>
+          <span>${turn.question.targeted_competencies.map(esc).join(' · ')}</span></header>
+        <p class="question">${esc(turn.question.interviewer_text)}</p>
+        ${
+          turn.answer
+            ? `<p class="answer">${esc(
+                turn.answer.transcript.length > 900
+                  ? `${turn.answer.transcript.slice(0, 900)}…`
+                  : turn.answer.transcript,
+              )}</p>
+               <p class="meta">${turn.answer.elapsed_seconds.toFixed(1)}s · ${turn.answer.corrected ? 'edited' : 'as spoken'}</p>`
+            : '<p class="answer muted">Not answered.</p>'
+        }
+      </section>`,
     )
     .join('');
 
-  const citations = (report?.citations ?? [])
-    .map(
-      (citation) => `
-        <li>
-          <strong>${escapeHtml(citation.source)}</strong>
-          <span class="muted">${escapeHtml(citation.chunk_id)}</span>
-          <p>${escapeHtml(citation.text)}</p>
-        </li>`,
-    )
+  const sources = (report?.citations ?? [])
+    .map((citation) => {
+      const passage = citation.text.replace(/\s+/g, ' ');
+      return `<li><strong>${esc(citation.source)}</strong> <span class="muted">${esc(citation.chunk_id)}</span>
+        <p class="snippet">${esc(passage.slice(0, 160))}${passage.length > 160 ? '…' : ''}</p></li>`;
+    })
     .join('');
 
-  const limitations = (report?.limitations ?? []).map((item) => `<li>${escapeHtml(item)}</li>`).join('');
+  const limitations = (report?.limitations ?? []).map((item) => `<li>${esc(item)}</li>`).join('');
 
-  const metrics = report?.speech_metrics;
-  const metricBlock = metrics
-    ? `<div class="metrics">
-         ${metric('Answers', metrics.answer_count)}
-         ${metric('Words', metrics.word_count)}
-         ${metric('Minutes', (metrics.duration_seconds / 60).toFixed(1))}
-         ${metric('Words / min', metrics.words_per_minute ?? '—')}
-         ${metric('Fillers', metrics.filler_count)}
-         ${metric('Pauses', metrics.pause_count ?? '—')}
-       </div>`
+  const scoreBlock = score
+    ? `<section class="score-band">
+        <div class="score-badge">
+          <span class="score-number">${score.score}<small>/100</small></span>
+          <span class="score-grade">structure ${score.grade}</span>
+        </div>
+        <div class="score-parts">
+          ${score.parts
+            .map(
+              ([label, points, note]) =>
+                `<div class="part"><span class="part-points">${points}</span><span class="part-label">${esc(
+                  label,
+                )}</span><span class="part-note">${esc(note)}</span></div>`,
+            )
+            .join('')}
+        </div>
+      </section>
+      <p class="disclaimer">Answer structure only — STAR coverage, quoted evidence, pacing and fillers. Not an assessment of you, your ability or your employability.</p>`
     : '';
 
+  const fillersPerMinute =
+    metrics && metrics.duration_seconds > 0 ? metrics.filler_count / Math.max(metrics.duration_seconds / 60, 0.1) : null;
+
   return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<title>VoxPrep HK — ${escapeHtml(session.role_title)}</title>
+<html lang="en"><head><meta charset="utf-8" />
+<title>VoxPrep HK — ${esc(session.role_title)}</title>
 <style>
-  @page { size: A4; margin: 16mm 14mm 18mm; }
+  @page { size: A4; margin: 14mm 13mm 16mm; }
   * { box-sizing: border-box; }
-  body {
-    margin: 0; color: ${PALETTE.ink}; background: #fff;
-    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10.5pt; line-height: 1.5;
-  }
-  h1, h2, h3 { margin: 0; font-weight: 650; letter-spacing: -0.01em; }
-  h1 { font-size: 24pt; }
-  h2 { font-size: 13pt; margin-bottom: 8px; }
-  h3 { font-size: 11pt; }
-  p { margin: 0 0 8px; }
-  .cover {
-    background: ${PALETTE.ink}; color: ${PALETTE.cream};
-    padding: 22mm 16mm; margin: -16mm -14mm 10mm; 
-  }
-  .cover .eyebrow { color: ${PALETTE.gold}; font-size: 9pt; letter-spacing: .18em; text-transform: uppercase; }
-  .cover h1 { color: #fff; margin: 6px 0 10px; }
-  .cover .sub { color: #cfe0d8; font-size: 11pt; }
-  .cover .facts { margin-top: 16px; display: flex; gap: 22px; font-size: 9.5pt; color: #cfe0d8; }
-  section { margin-bottom: 14px; break-inside: avoid; }
-  .section-title { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: ${PALETTE.line}; }
-  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
-  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid ${PALETTE.line}; vertical-align: top; }
-  tr.missing td, tr.missing th { color: ${PALETTE.muted}; }
-  td.evidence { font-style: italic; color: ${PALETTE.teal}; }
-  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .card { border: 1px solid ${PALETTE.line}; border-radius: 10px; padding: 10px 12px; break-inside: avoid; }
-  .card h3 { color: ${PALETTE.teal}; margin-bottom: 4px; }
-  .evidence { color: ${PALETTE.teal}; font-style: italic; }
-  .sources, .muted { color: ${PALETTE.muted}; font-size: 8.5pt; }
-  .metrics { display: flex; gap: 6px; flex-wrap: wrap; }
-  .metric { border: 1px solid ${PALETTE.line}; border-radius: 10px; padding: 8px 12px; min-width: 92px; }
-  .metric-value { display: block; font-size: 15pt; font-weight: 650; }
-  .metric-label { display: block; font-size: 8pt; color: ${PALETTE.muted}; text-transform: uppercase; letter-spacing: .08em; }
-  .qa { border-left: 3px solid ${PALETTE.gold}; padding: 4px 0 4px 12px; margin-bottom: 12px; break-inside: avoid; }
-  .qa header { display: flex; gap: 10px; font-size: 8.5pt; color: ${PALETTE.muted}; text-transform: uppercase; letter-spacing: .08em; }
-  .qa .question { font-weight: 600; margin: 4px 0 6px; }
-  .qa .answer { background: ${PALETTE.cream}; border-radius: 8px; padding: 8px 10px; }
-  .qa .meta { color: ${PALETTE.muted}; font-size: 8.5pt; margin-top: 4px; }
-  ul { margin: 0 0 8px 18px; padding: 0; }
-  li { margin-bottom: 4px; }
-  .callout { background: ${PALETTE.cream}; border-radius: 10px; padding: 10px 12px; }
-  .callout strong { color: ${PALETTE.teal}; }
-  .foot { margin-top: 16px; border-top: 1px solid ${PALETTE.line}; padding-top: 8px; color: ${PALETTE.muted}; font-size: 8pt; }
-  .page-break { break-before: page; }
-</style>
-</head>
+  body { margin:0; color:${C.ink}; font-family:'Helvetica Neue',Arial,sans-serif; font-size:10pt; line-height:1.45; }
+  h1,h2,h3,h4 { margin:0; font-weight:650; letter-spacing:-.01em; }
+  p { margin:0 0 6px; }
+  .muted { color:${C.muted}; }
+  /* Inset card, not full bleed: negative margins get cropped by the print page box. */
+  .cover { background:${C.cream}; color:${C.ink}; padding:11mm 12mm 9mm; margin:0 0 7mm; border-radius:14px; border:1px solid ${C.line}; border-left:6px solid ${C.teal}; }
+  .eyebrow { color:${C.teal}; font-size:7.5pt; letter-spacing:.2em; text-transform:uppercase; font-weight:600; }
+  .cover h1 { color:${C.ink}; font-size:21pt; margin:5px 0 4px; }
+  .cover .sub { color:${C.muted}; font-size:9.5pt; }
+  .facts { margin-top:8px; display:flex; gap:16px; font-size:7.5pt; color:${C.muted}; border-top:1px solid ${C.line}; padding-top:6px; }
+  .score-band { display:flex; gap:12px; border:1px solid ${C.line}; border-radius:14px; padding:11px; margin-bottom:5px; break-inside:avoid; }
+  .score-badge { background:${C.cream}; border:1px solid ${C.gold}; color:${C.ink}; border-radius:12px; padding:9px 15px; min-width:112px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .score-number { font-size:28pt; font-weight:700; line-height:1; }
+  .score-number small { font-size:9.5pt; font-weight:500; color:${C.muted}; }
+  .score-grade { font-size:7.5pt; color:${C.teal}; letter-spacing:.12em; text-transform:uppercase; margin-top:4px; }
+  .score-parts { display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; flex:1; }
+  .part { display:flex; flex-direction:column; }
+  .part-points { font-size:11.5pt; font-weight:700; color:${C.teal}; line-height:1.1; }
+  .part-label { font-size:8.5pt; font-weight:600; }
+  .part-note { font-size:7pt; color:${C.muted}; }
+  .disclaimer { font-size:7pt; color:${C.muted}; margin:0 0 10px; }
+  h2.section { font-size:11.5pt; margin:0 0 6px; display:flex; align-items:center; gap:8px; }
+  h2.section::after { content:''; flex:1; height:1px; background:${C.line}; }
+  section { margin-bottom:11px; break-inside:avoid; }
+  .stars { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .star-card { border:1px solid ${C.line}; border-top:3px solid ${C.good}; border-radius:11px; padding:8px 10px; break-inside:avoid; }
+  .star-card header { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+  .star-mark { width:15px; height:15px; border-radius:50%; color:#fff; font-size:8.5pt; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .star-card h4 { font-size:9.5pt; }
+  .star-state { margin-left:auto; font-size:7pt; text-transform:uppercase; letter-spacing:.1em; }
+  .star-card blockquote { margin:0 0 4px; padding-left:7px; border-left:2px solid ${C.line}; font-style:italic; color:${C.teal}; font-size:8.5pt; }
+  .star-card .coaching { font-size:8.5pt; margin:0; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+  .callout.action { background:${C.cream}; border:1px solid ${C.gold}; border-radius:13px; padding:11px 13px; }
+  .callout.action h3 { color:${C.teal}; font-size:7.5pt; text-transform:uppercase; letter-spacing:.12em; margin-bottom:3px; }
+  .callout.action p { margin:0; font-size:10.5pt; line-height:1.3; }
+  .cta { margin-top:7px; display:flex; align-items:center; gap:9px; background:#fff; border:1px solid ${C.teal}; color:${C.ink}; border-radius:999px; padding:8px 14px; font-size:9pt; }
+  .cta strong { color:${C.teal}; text-transform:uppercase; letter-spacing:.1em; font-size:7pt; }
+  ul { margin:0 0 5px 15px; padding:0; }
+  li { margin-bottom:2px; }
+  .tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .tile { border:1px solid ${C.line}; border-radius:9px; padding:7px 8px; }
+  .tile-value { display:block; font-size:14pt; font-weight:700; line-height:1.1; }
+  .tile-label { display:block; font-size:7pt; text-transform:uppercase; letter-spacing:.08em; color:${C.muted}; }
+  .tile-note { display:block; font-size:7pt; color:${C.muted}; }
+  figure.gauge { margin:4px 0 0; }
+  figure.gauge figcaption { font-size:8pt; color:${C.muted}; }
+  table { width:100%; border-collapse:collapse; font-size:8.5pt; }
+  th,td { text-align:left; padding:5px 6px; border-bottom:1px solid ${C.line}; vertical-align:top; }
+  th { font-weight:650; white-space:nowrap; }
+  td.cite { color:${C.muted}; font-size:7pt; width:26%; }
+  .highlight { border:1px solid ${C.line}; border-left:5px solid ${C.gold}; border-radius:10px; padding:9px 11px; }
+  .highlight .quote { font-size:11pt; font-style:italic; color:${C.teal}; margin-bottom:3px; }
+  .highlight .brand { font-size:7pt; letter-spacing:.16em; text-transform:uppercase; color:${C.muted}; }
+  .page-break { break-before:page; }
+  .qa { border-left:3px solid ${C.gold}; padding:1px 0 1px 9px; margin-bottom:8px; break-inside:avoid; }
+  .qa header { display:flex; gap:8px; font-size:7pt; color:${C.muted}; text-transform:uppercase; letter-spacing:.08em; }
+  .qa .q { font-weight:700; color:${C.teal}; }
+  .qa .question { font-weight:600; font-size:8.5pt; margin:2px 0 3px; }
+  .qa .answer { font-size:8pt; background:${C.cream}; border-radius:6px; padding:5px 7px; }
+  .qa .meta { font-size:7pt; color:${C.muted}; margin-top:2px; }
+  .sources-list { list-style:none; margin:0; padding:0; }
+  .sources-list li { margin-bottom:5px; break-inside:avoid; }
+  .snippet { font-size:7pt; color:${C.muted}; margin:1px 0 0; }
+  .foot { margin-top:10px; border-top:1px solid ${C.line}; padding-top:5px; font-size:6.5pt; color:${C.muted}; }
+</style></head>
 <body>
   <header class="cover">
     <div class="eyebrow">VoxPrep HK · interview practice report</div>
-    <h1>${escapeHtml(session.role_title)}</h1>
-    <div class="sub">${escapeHtml(language)} · ${escapeHtml(session.difficulty)} · ${answers.length} of ${
-    session.question_count
-  } answered</div>
-    <div class="facts">
-      <span>Generated ${escapeHtml(date)}</span>
-      <span>Model: ${escapeHtml(provider)}</span>
-      <span>Session ${escapeHtml(session.id.slice(0, 8))}</span>
-    </div>
+    <h1>${esc(session.role_title)}</h1>
+    <div class="sub">${esc(language)} · ${esc(session.difficulty)} · ${answered} of ${session.question_count} answered</div>
+    <div class="facts"><span>${esc(date)}</span><span>Model: ${esc(session.provider || 'unknown')}</span>
+      <span>Session ${esc(session.id.slice(0, 8))}</span></div>
   </header>
 
+  ${scoreBlock}
+
+  <section>
+    <h2 class="section">STAR coverage</h2>
+    <div class="stars">${stars || '<p class="muted">No STAR analysis was returned.</p>'}</div>
+  </section>
+
+  <div class="two-col">
+    <section>
+      <h2 class="section">What worked</h2>
+      ${strengths ? `<ul>${strengths}</ul>` : '<p class="muted">Nothing was quoted.</p>'}
+    </section>
+    <section>
+      <h2 class="section">Fix this first</h2>
+      <div class="callout action">
+        <h3>Priority improvement</h3>
+        <p>${esc(report?.prioritized_improvement ?? '—')}</p>
+      </div>
+      ${report ? `<div class="cta"><strong>Retry</strong><span>${esc(report.retry_exercise)}</span></div>` : ''}
+    </section>
+  </div>
+
   ${
-    report
+    metrics
       ? `<section>
-    <div class="section-title"><h2>Summary</h2></div>
-    ${paragraphs(report.summary)}
-  </section>
-
-  <section>
-    <div class="section-title"><h2>STAR evidence</h2></div>
-    <table>
-      <thead><tr><th>Element</th><th>Present</th><th>Evidence from your answer</th><th>Coaching</th></tr></thead>
-      <tbody>${star}</tbody>
-    </table>
-  </section>
-
-  <section>
-    <div class="section-title"><h2>Competencies</h2></div>
-    <div class="cards">${competencies || '<p class="muted">No competency feedback was returned.</p>'}</div>
-  </section>
-
-  <section>
-    <div class="section-title"><h2>What worked</h2></div>
-    ${strengths ? `<ul>${strengths}</ul>` : '<p class="muted">No strengths were quoted.</p>'}
-    <div class="callout">
-      <p><strong>Priority improvement.</strong> ${escapeHtml(report.prioritized_improvement)}</p>
-      <p><strong>Retry exercise.</strong> ${escapeHtml(report.retry_exercise)}</p>
+    <h2 class="section">Delivery</h2>
+    ${wpmGauge(metrics.words_per_minute)}
+    <div class="tiles" style="margin-top:7px">
+      ${tile('Answers', String(metrics.answer_count), 'completed')}
+      ${tile('Words', String(metrics.word_count), 'total spoken')}
+      ${tile(
+        'Fillers',
+        String(metrics.filler_count),
+        fillersPerMinute === null ? '—' : `${fillersPerMinute.toFixed(1)} / min`,
+        fillersPerMinute !== null && fillersPerMinute <= 2 ? C.good : C.warn,
+      )}
+      ${tile(
+        'Pauses',
+        metrics.pause_count === null || metrics.pause_count === undefined ? '—' : String(metrics.pause_count),
+        metrics.silence_seconds ? `${metrics.silence_seconds}s silence` : 'not measured',
+      )}
     </div>
-  </section>
-
-  <section>
-    <div class="section-title"><h2>Speech metrics</h2></div>
-    ${metricBlock}
-  </section>`
-      : `<section><div class="section-title"><h2>Debrief</h2></div><p class="muted">This session has no debrief yet, so only the transcript is printed.</p></section>`
-  }
-
-  <section class="page-break">
-    <div class="section-title"><h2>Full transcript</h2></div>
-    ${transcript || '<p class="muted">No questions were answered.</p>'}
-  </section>
-
-  ${
-    citations
-      ? `<section>
-    <div class="section-title"><h2>Sources cited</h2></div>
-    <ul class="sources-list">${citations}</ul>
   </section>`
       : ''
   }
 
   ${
-    limitations
-      ? `<section>
-    <div class="section-title"><h2>Limitations</h2></div>
-    <ul>${limitations}</ul>
-  </section>`
+    competencyRows
+      ? `<section><h2 class="section">Competencies</h2><table><tbody>${competencyRows}</tbody></table></section>`
       : ''
   }
 
-  <p class="foot">Generated locally by VoxPrep HK. This report is practice feedback, not an assessment of the person, and it is not a hiring recommendation.</p>
-</body>
-</html>`;
+  ${
+    highlight
+      ? `<section><h2 class="section">Your strongest evidence</h2>
+    <div class="highlight">
+      <p class="quote">“${esc(highlight.slice(0, 200))}${highlight.length > 200 ? '…' : ''}”</p>
+      <span class="brand">VoxPrep HK · practice highlight</span>
+    </div></section>`
+      : ''
+  }
+
+  <div class="page-break appendix">
+    <section>
+      <h2 class="section">Appendix A · transcript</h2>
+      ${transcript || '<p class="muted">No questions were answered.</p>'}
+    </section>
+    ${
+      sources
+        ? `<section><h2 class="section">Appendix B · sources cited</h2><ul class="sources-list">${sources}</ul></section>`
+        : ''
+    }
+    ${limitations ? `<section><h2 class="section">Appendix C · limitations</h2><ul>${limitations}</ul></section>` : ''}
+  </div>
+
+  <p class="foot">Generated locally by VoxPrep HK. Practice feedback only — not an assessment of the person and not a hiring recommendation.</p>
+</body></html>`;
 }
 
 /** Open the printable report; the reader saves it as PDF from the browser dialog. */
@@ -281,7 +382,6 @@ export async function printSessionReport(id: string): Promise<void> {
     URL.revokeObjectURL(url);
     throw new Error('Allow pop-ups for this site to open the printable report.');
   }
-  // Let the new document lay out before the print dialog opens.
   win.addEventListener('load', () => {
     window.setTimeout(() => {
       win.focus();
