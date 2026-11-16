@@ -39,9 +39,12 @@ export function Setup({
   const [retryNotice, setRetryNotice] = useState('');
   const [micEcho, setMicEcho] = useState('');
   const [speakerStatus, setSpeakerStatus] = useState('');
-  useEffect(() => () => {
-    if (micEcho) URL.revokeObjectURL(micEcho);
-  }, [micEcho]);
+  useEffect(
+    () => () => {
+      if (micEcho) URL.revokeObjectURL(micEcho);
+    },
+    [micEcho],
+  );
   useEffect(() => {
     // Deep link from the printed PDF: #/setup?retry=1&from=<session>&lang=<language>
     const query = window.location.hash.split('?')[1];
@@ -153,7 +156,6 @@ export function Setup({
         <div>
           <p className="eyebrow">LET’S MAKE IT RELEVANT</p>
           <h1>Set the scene.</h1>
-          <p className="lead">A real role. Your language. A little room to grow.</p>
         </div>
         <span className="step-marker">
           01 <span>/ 03</span>
@@ -188,7 +190,9 @@ export function Setup({
               value={text}
               disabled={!!file}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Graduate software engineer…\nResponsibilities, skills, and what the team is looking for."
+              placeholder={
+                'Graduate software engineer…\nResponsibilities, skills, and what the team is looking for.'
+              }
               maxLength={50000}
             />
             <div className="upload-row">
@@ -227,10 +231,10 @@ export function Setup({
               <div className="choice-row">
                 {(
                   [
-                    ['en-HK', 'English', 'Find the words that work.'],
-                    ['zh-HK', '廣東話', '用你熟悉嘅語言，講好你嘅故事。'],
+                    ['en-HK', 'English'],
+                    ['zh-HK', '廣東話'],
                   ] as const
-                ).map(([value, label, note]) => (
+                ).map(([value, label]) => (
                   <label
                     className={`choice-card ${language === value ? 'selected' : ''}`}
                     key={value}
@@ -243,7 +247,6 @@ export function Setup({
                       onChange={() => setLanguage(value)}
                     />
                     <strong>{label}</strong>
-                    <span>{note}</span>
                   </label>
                 ))}
               </div>
@@ -278,7 +281,7 @@ export function Setup({
         </div>
         <aside className="setup-aside">
           <section className="panel readiness-panel">
-            <h2>A moment to get ready</h2>
+            <h2>Before you start</h2>
             <Preflight health={health} />
             <div className="device-checks">
               <button
@@ -313,7 +316,7 @@ export function Setup({
             )}
             <div className="consent-section">
               <ShieldCheck size={23} />
-              <h3>Your story stays yours.</h3>
+              <h3>Privacy</h3>
               <label className="check-label">
                 <input
                   type="checkbox"
@@ -334,13 +337,8 @@ export function Setup({
                 />
                 <span>
                   Enable Azure voice. Audio and interviewer text may be sent to Microsoft Speech.
-                  This is optional.
                 </span>
               </label>
-              <p className="field-help">
-                With voice off, you can type every answer. The coach never rates your appearance,
-                accent, or employability.
-              </p>
             </div>
             <button
               className="button primary full"

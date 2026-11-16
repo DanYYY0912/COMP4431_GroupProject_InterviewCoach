@@ -83,18 +83,11 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
         <div className="report-downloads">
           <button
             className="button secondary"
-            onClick={() => void exportSession()}
-          >
-            <Download size={17} /> Save report as PDF
-          </button>
-          <button
-            className="button secondary"
             disabled={exporting || busy}
             onClick={() => void exportSession()}
           >
-            <Download size={17} /> {exporting ? 'Preparing PDF…' : 'Save full session as PDF'}
+            <Download size={17} /> {exporting ? 'Preparing PDF…' : 'Save report as PDF'}
           </button>
-          <p>Includes saved questions and transcript. Keep the downloaded copy private.</p>
         </div>
       </div>
       {error && <ErrorNotice message={error} onDismiss={() => setError('')} />}
@@ -103,9 +96,7 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
           <Sparkles size={24} />
         </span>
         <div>
-          <p className="eyebrow">PRACTICE IS PROGRESS</p>
           <h2>{report.summary}</h2>
-          <p>Feedback on the evidence in your answers — a guide for your next practice.</p>
         </div>
         <div className="answer-total">
           <strong>{metrics.answer_count}</strong>
@@ -148,10 +139,6 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
               </details>
             ))}
           </div>
-          <p className="field-help">
-            Evidence detection is an aid to reflection, not a grade. Check the cited wording
-            yourself.
-          </p>
         </section>
         <aside className="improvement-card">
           <div className="improvement-icon">
@@ -227,10 +214,6 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
               <span>recorded pauses</span>
             </div>
           </div>
-          <p className="field-help">
-            Typed-answer pace is not a speech measurement. Cantonese token counts differ from
-            English words; pauses are shown only when measured from audio.
-          </p>
         </section>
       </div>
       <section className="report-footnotes">
@@ -245,7 +228,6 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
         </details>
       </section>
       <div className="report-footer">
-        <p>Every attempt gives you something to build on.</p>
         <button className="button primary" onClick={() => navigate('/setup')}>
           Try another opportunity <ArrowRight size={17} />
         </button>
