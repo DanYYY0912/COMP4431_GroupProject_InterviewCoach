@@ -387,11 +387,13 @@ def command_push(args) -> None:
 
 
 def parse_status(output: str) -> tuple[str, str]:
-    match = re.search(r'has status "([A-Z_]+)"', output or "")
+    # Kaggle prints the enum member, e.g. 'has status "KernelWorkerStatus.RUNNING"'.
+    match = re.search(r'has status "([A-Za-z_.]+)"', output or "")
     if match is None:
         raise SystemExit(f"Unexpected `kaggle kernels status` output: {output!r}")
+    state = match.group(1).rsplit(".", 1)[-1].upper()
     failure = re.search(r'Failure message: "(.*)"', output)
-    return match.group(1), failure.group(1) if failure else ""
+    return state, failure.group(1) if failure else ""
 
 
 def poll_until_done(
