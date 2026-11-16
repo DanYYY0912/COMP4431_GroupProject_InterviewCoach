@@ -2,7 +2,7 @@
 
 **Participant questionnaire / 參加者問卷**
 Print pages 1–2 for the participant. Page 3 is the moderator copy and must not be
-shown to the participant. / 第 1–2 頁交俾參加者；第 3 頁係主持專用，唔好俾參加者睇。
+shown to the participant. / 第 1–2 頁交給參加者；第 3 頁為主持人專用，請勿讓參加者閱讀。
 
 This is the standard ten-item System Usability Scale (SUS) by John Brooke, kept in
 its original item order, with a Traditional Chinese (Hong Kong) translation beside
@@ -33,46 +33,46 @@ best matches your immediate reaction — not what you think the system should be
 There are no right or wrong answers. Please answer all ten statements and do not
 discuss them with the moderator until you have finished.
 
-**中文（香港）.** 多謝你試用 VoxPrep HK。請就你啱啱用過嘅系統，回答下面十條句子。
-每條句子只揀一個最符合你即時感覺嘅數字，唔需要諗「應該」係點。答案冇對錯。
-請全部十條都答，答完之前唔好同主持討論。
+**中文（香港）.** 感謝你試用 VoxPrep HK。請就你剛剛使用過的系統，回答下面十條陳述。
+每條陳述只選擇一個最符合你即時感受的數字，無需考慮系統「應該」如何。答案沒有對錯之分。
+請回答全部十條，並在完成前不要與主持人討論。
 
 ### Response scale / 評分尺度
 
 | 1 | 2 | 3 | 4 | 5 |
 | --- | --- | --- | --- | --- |
-| Strongly disagree<br>非常不同意 | Disagree<br>不同意 | Neither agree nor disagree<br>一半半／中立 | Agree<br>同意 | Strongly agree<br>非常同意 |
+| Strongly disagree<br>非常不同意 | Disagree<br>不同意 | Neither agree nor disagree<br>中立 | Agree<br>同意 | Strongly agree<br>非常同意 |
 
 <div style="break-after: page;"></div>
 
 ---
 
-## Page 2 — The ten statements / 十條句子
+## Page 2 — The ten statements / 十條陳述
 
-Circle one number per row. Do not skip a row. / 每行圈一個數字，唔好漏。
+Circle one number per row. Do not skip a row. / 每行圈選一個數字，請勿遺漏。
 
-| # | Statement (English) | 句子（中文） | 1 | 2 | 3 | 4 | 5 |
+| # | Statement (English) | 陳述（中文） | 1 | 2 | 3 | 4 | 5 |
 | ---: | --- | --- | :-: | :-: | :-: | :-: | :-: |
-| 1 | I think that I would like to use this system frequently. | 我認為我會經常想用呢個系統。 | ○ | ○ | ○ | ○ | ○ |
-| 2 | I found the system unnecessarily complex. | 我覺得呢個系統不必要地複雜。 | ○ | ○ | ○ | ○ | ○ |
-| 3 | I thought the system was easy to use. | 我覺得呢個系統容易用。 | ○ | ○ | ○ | ○ | ○ |
-| 4 | I think that I would need the support of a technical person to be able to use this system. | 我認為我需要技術人員協助先可以用到呢個系統。 | ○ | ○ | ○ | ○ | ○ |
-| 5 | I found the various functions in this system were well integrated. | 我覺得呢個系統嘅各項功能整合得幾好。 | ○ | ○ | ○ | ○ | ○ |
-| 6 | I thought there was too much inconsistency in this system. | 我覺得呢個系統有好多唔一致嘅地方。 | ○ | ○ | ○ | ○ | ○ |
-| 7 | I would imagine that most people would learn to use this system very quickly. | 我認為大部分人會好快學得識用呢個系統。 | ○ | ○ | ○ | ○ | ○ |
-| 8 | I found the system very cumbersome to use. | 我覺得呢個系統用起上嚟好笨拙。 | ○ | ○ | ○ | ○ | ○ |
-| 9 | I felt very confident using the system. | 我用呢個系統時覺得好有信心。 | ○ | ○ | ○ | ○ | ○ |
-| 10 | I needed to learn a lot of things before I could get going with this system. | 我要學好多嘢先可以開始用呢個系統。 | ○ | ○ | ○ | ○ | ○ |
+| 1 | I think that I would like to use this system frequently. | 我認為我會經常想使用這個系統。 | ○ | ○ | ○ | ○ | ○ |
+| 2 | I found the system unnecessarily complex. | 我覺得這個系統不必要地複雜。 | ○ | ○ | ○ | ○ | ○ |
+| 3 | I thought the system was easy to use. | 我覺得這個系統容易使用。 | ○ | ○ | ○ | ○ | ○ |
+| 4 | I think that I would need the support of a technical person to be able to use this system. | 我認為我需要技術人員的協助才能使用這個系統。 | ○ | ○ | ○ | ○ | ○ |
+| 5 | I found the various functions in this system were well integrated. | 我覺得這個系統的各項功能整合得很好。 | ○ | ○ | ○ | ○ | ○ |
+| 6 | I thought there was too much inconsistency in this system. | 我覺得這個系統有太多不一致的地方。 | ○ | ○ | ○ | ○ | ○ |
+| 7 | I would imagine that most people would learn to use this system very quickly. | 我認為大部分人會很快學會使用這個系統。 | ○ | ○ | ○ | ○ | ○ |
+| 8 | I found the system very cumbersome to use. | 我覺得這個系統使用起來非常繁瑣。 | ○ | ○ | ○ | ○ | ○ |
+| 9 | I felt very confident using the system. | 我使用這個系統時感到很有信心。 | ○ | ○ | ○ | ○ | ○ |
+| 10 | I needed to learn a lot of things before I could get going with this system. | 我需要學習很多東西才能開始使用這個系統。 | ○ | ○ | ○ | ○ | ○ |
 
 Participant signature is **not** collected. The anonymous ID above is the only
-identifier stored with these answers. / 唔會收集簽名；只得上面嘅匿名編號會同答案一齊保存。
+identifier stored with these answers. / 本問卷不收集簽名，只有上述匿名編號會與答案一併保存。
 
 ---
 ---
 
 <div style="break-before: page;"></div>
 
-## Page 3 — Moderator copy / 主持專用（participant must not see this page）
+## Page 3 — Moderator copy / 主持人專用（participant must not see this page）
 
 ### Session record
 
