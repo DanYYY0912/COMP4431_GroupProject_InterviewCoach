@@ -36,11 +36,24 @@ export function Setup({
   const [error, setError] = useState('');
   const [health, setHealth] = useState<Health | null>(null);
   const [micStatus, setMicStatus] = useState('');
+  const [retryNotice, setRetryNotice] = useState('');
   const [micEcho, setMicEcho] = useState('');
   const [speakerStatus, setSpeakerStatus] = useState('');
   useEffect(() => () => {
     if (micEcho) URL.revokeObjectURL(micEcho);
   }, [micEcho]);
+  useEffect(() => {
+    // Deep link from the printed PDF: #/setup?retry=1&from=<session>&lang=<language>
+    const query = window.location.hash.split('?')[1];
+    if (!query) return;
+    const params = new URLSearchParams(query);
+    if (params.get('retry') !== '1') return;
+    const lang = params.get('lang');
+    if (lang === 'zh-HK' || lang === 'en-HK') setLanguage(lang);
+    setRetryNotice(
+      'Continuing from your debrief. Paste the same job description again (or upload the file) and start the next round.',
+    );
+  }, []);
   useEffect(() => {
     api
       .health()
@@ -337,6 +350,11 @@ export function Setup({
               {busy ? 'Preparing your interview…' : 'Start my interview'} <ArrowRight size={18} />
             </button>
           </section>
+          {retryNotice && (
+            <p className="field-help" role="status" style={{ marginBottom: '0.75rem' }}>
+              {retryNotice}
+            </p>
+          )}
           {error && <ErrorNotice message={error} onDismiss={() => setError('')} />}
         </aside>
       </form>

@@ -14,7 +14,9 @@ import { Report } from './pages/Report';
 import { Methodology } from './pages/Methodology';
 
 function routePath() {
-  return window.location.hash.replace(/^#/, '') || '/';
+  // Deep links carry a query (e.g. #/setup?retry=1&from=<session>): route on the path only.
+  const raw = window.location.hash.replace(/^#/, '') || '/';
+  return raw.split('?')[0] || '/';
 }
 export default function App() {
   const [path, setPath] = useState(routePath);

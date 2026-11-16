@@ -109,6 +109,25 @@ function structureScore(report: Report): { score: number; grade: string; parts: 
   };
 }
 
+/** Vector ring: stays sharp when a reader zooms in on a phone. */
+function scoreRing(score: number, grade: string): string {
+  const radius = 31;
+  const circumference = 2 * Math.PI * radius;
+  const filled = (score / 100) * circumference;
+  const tone = score >= 85 ? C.good : score >= 70 ? C.teal : score >= 55 ? C.warn : C.bad;
+  return `<div class="score-badge">
+    <svg viewBox="0 0 88 88" width="88" height="88" role="img" aria-label="Answer structure ${score} out of 100">
+      <circle cx="44" cy="44" r="${radius}" fill="none" stroke="${C.line}" stroke-width="8"></circle>
+      <circle cx="44" cy="44" r="${radius}" fill="none" stroke="${tone}" stroke-width="8"
+        stroke-dasharray="${filled.toFixed(1)} ${(circumference - filled).toFixed(1)}"
+        stroke-linecap="round" transform="rotate(-90 44 44)"></circle>
+      <text x="44" y="45" text-anchor="middle" font-size="23" font-weight="700" fill="${C.ink}">${score}</text>
+      <text x="44" y="59" text-anchor="middle" font-size="8.5" fill="${C.muted}">/100</text>
+    </svg>
+    <span class="score-grade">structure ${grade}</span>
+  </div>`;
+}
+
 function starCard(item: Report['star'][number]): string {
   const tone = item.present ? C.good : C.warn;
   return `<article class="star-card" style="border-top-color:${tone}">
@@ -131,7 +150,13 @@ function tile(label: string, value: string, note: string, tone: string = C.ink):
     <span class="tile-label">${esc(label)}</span><span class="tile-note">${esc(note)}</span></div>`;
 }
 
-export function buildReportHtml(session: Session, report: Report | null, exportedAt = new Date()): string {
+export function buildReportHtml(
+  session: Session,
+  report: Report | null,
+  exportedAt = new Date(),
+  appUrl = 'http://localhost:5173',
+): string {
+  const base = appUrl.replace(/\/$/, '');
   const language = session.language === 'zh-HK' ? 'Cantonese (zh-HK)' : 'English (en-HK)';
   const date = exportedAt.toLocaleDateString('en-HK', { dateStyle: 'medium' });
   const answered = session.turns.filter((turn) => turn.answer).length;
@@ -187,10 +212,7 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
 
   const scoreBlock = score
     ? `<section class="score-band">
-        <div class="score-badge">
-          <span class="score-number">${score.score}<small>/100</small></span>
-          <span class="score-grade">structure ${score.grade}</span>
-        </div>
+        ${scoreRing(score.score, score.grade)}
         <div class="score-parts">
           ${score.parts
             .map(
@@ -214,21 +236,23 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
 <style>
   @page { size: A4; margin: 14mm 13mm 16mm; }
   * { box-sizing: border-box; }
-  body { margin:0; color:${C.ink}; font-family:'Helvetica Neue',Arial,sans-serif; font-size:10pt; line-height:1.45; }
+  body { margin:0; color:${C.ink}; font-family:'Helvetica Neue',Arial,sans-serif; font-size:10pt; line-height:1.45;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   h1,h2,h3,h4 { margin:0; font-weight:650; letter-spacing:-.01em; }
   p { margin:0 0 6px; }
   .muted { color:${C.muted}; }
   /* Inset card, not full bleed: negative margins get cropped by the print page box. */
-  .cover { background:${C.cream}; color:${C.ink}; padding:11mm 12mm 9mm; margin:0 0 7mm; border-radius:14px; border:1px solid ${C.line}; border-left:6px solid ${C.teal}; }
+  .cover { background:#ffffff; color:${C.ink}; padding:11mm 12mm 9mm; margin:0 0 7mm; border-radius:14px; border:1px solid ${C.line}; border-left:6px solid ${C.teal}; }
   .eyebrow { color:${C.teal}; font-size:7.5pt; letter-spacing:.2em; text-transform:uppercase; font-weight:600; }
   .cover h1 { color:${C.ink}; font-size:21pt; margin:5px 0 4px; }
   .cover .sub { color:${C.muted}; font-size:9.5pt; }
   .facts { margin-top:8px; display:flex; gap:16px; font-size:7.5pt; color:${C.muted}; border-top:1px solid ${C.line}; padding-top:6px; }
   .score-band { display:flex; gap:12px; border:1px solid ${C.line}; border-radius:14px; padding:11px; margin-bottom:5px; break-inside:avoid; }
-  .score-badge { background:${C.cream}; border:1px solid ${C.gold}; color:${C.ink}; border-radius:12px; padding:9px 15px; min-width:112px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .score-badge { display:flex; flex-direction:column; justify-content:center; align-items:center; padding:2px 8px; }
   .score-number { font-size:28pt; font-weight:700; line-height:1; }
   .score-number small { font-size:9.5pt; font-weight:500; color:${C.muted}; }
-  .score-grade { font-size:7.5pt; color:${C.teal}; letter-spacing:.12em; text-transform:uppercase; margin-top:4px; }
+  .score-badge { gap:5px; }
+  .score-grade { font-size:7pt; color:${C.teal}; letter-spacing:.12em; text-transform:uppercase; margin-top:1px; }
   .score-parts { display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; flex:1; }
   .part { display:flex; flex-direction:column; }
   .part-points { font-size:11.5pt; font-weight:700; color:${C.teal}; line-height:1.1; }
@@ -237,20 +261,22 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
   .disclaimer { font-size:7pt; color:${C.muted}; margin:0 0 10px; }
   h2.section { font-size:11.5pt; margin:0 0 6px; display:flex; align-items:center; gap:8px; }
   h2.section::after { content:''; flex:1; height:1px; background:${C.line}; }
-  section { margin-bottom:11px; break-inside:avoid; }
-  .stars { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .star-card { border:1px solid ${C.line}; border-top:3px solid ${C.good}; border-radius:11px; padding:8px 10px; break-inside:avoid; }
+  section { margin-bottom:13px; break-inside:avoid; }
+  .stars { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+  .star-card { border:1px solid ${C.line}; border-top:3px solid ${C.good}; border-radius:12px; padding:12px 14px; break-inside:avoid; }
   .star-card header { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
   .star-mark { width:15px; height:15px; border-radius:50%; color:#fff; font-size:8.5pt; font-weight:700; display:flex; align-items:center; justify-content:center; }
   .star-card h4 { font-size:9.5pt; }
   .star-state { margin-left:auto; font-size:7pt; text-transform:uppercase; letter-spacing:.1em; }
-  .star-card blockquote { margin:0 0 4px; padding-left:7px; border-left:2px solid ${C.line}; font-style:italic; color:${C.teal}; font-size:8.5pt; }
-  .star-card .coaching { font-size:8.5pt; margin:0; }
+  .star-card blockquote { margin:0 0 7px; padding-left:8px; border-left:2px solid ${C.line}; font-style:italic; color:${C.teal}; font-size:8.5pt; line-height:1.5; }
+  .star-card .coaching { font-size:8.5pt; margin:0; line-height:1.5; }
   .two-col { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
-  .callout.action { background:${C.cream}; border:1px solid ${C.gold}; border-radius:13px; padding:11px 13px; }
+  .callout.action { background:#ffffff; border:1px solid ${C.gold}; border-radius:13px; padding:11px 13px; }
   .callout.action h3 { color:${C.teal}; font-size:7.5pt; text-transform:uppercase; letter-spacing:.12em; margin-bottom:3px; }
   .callout.action p { margin:0; font-size:10.5pt; line-height:1.3; }
-  .cta { margin-top:7px; display:flex; align-items:center; gap:9px; background:#fff; border:1px solid ${C.teal}; color:${C.ink}; border-radius:999px; padding:8px 14px; font-size:9pt; }
+  .cta { margin-top:7px; display:flex; align-items:center; gap:9px; background:#fff; border:1px solid ${C.teal}; color:${C.ink}; border-radius:999px; padding:8px 14px; font-size:9pt; text-decoration:none; }
+  .cta em { margin-left:auto; font-style:normal; color:${C.teal}; font-size:11pt; }
+  .jump { font-size:7pt; font-weight:500; color:${C.teal}; text-decoration:none; border-bottom:1px dotted ${C.teal}; }
   .cta strong { color:${C.teal}; text-transform:uppercase; letter-spacing:.1em; font-size:7pt; }
   ul { margin:0 0 5px 15px; padding:0; }
   li { margin-bottom:2px; }
@@ -258,14 +284,22 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
   .tile { border:1px solid ${C.line}; border-radius:9px; padding:7px 8px; }
   .tile-value { display:block; font-size:14pt; font-weight:700; line-height:1.1; }
   .tile-label { display:block; font-size:7pt; text-transform:uppercase; letter-spacing:.08em; color:${C.muted}; }
-  .tile-note { display:block; font-size:7pt; color:${C.muted}; }
+  .tile-note { display:block; font-size:6.5pt; color:${C.muted}; opacity:.85; }
   figure.gauge { margin:4px 0 0; }
   figure.gauge figcaption { font-size:8pt; color:${C.muted}; }
   table { width:100%; border-collapse:collapse; font-size:8.5pt; }
   th,td { text-align:left; padding:5px 6px; border-bottom:1px solid ${C.line}; vertical-align:top; }
   th { font-weight:650; white-space:nowrap; }
   td.cite { color:${C.muted}; font-size:7pt; width:26%; }
-  .highlight { border:1px solid ${C.line}; border-left:5px solid ${C.gold}; border-radius:10px; padding:9px 11px; }
+  .share-card { position:relative; height:102mm; border:1px solid ${C.line}; border-radius:16px; background:#ffffff;
+    padding:16mm 15mm; display:flex; flex-direction:column; justify-content:center; break-inside:avoid;
+    box-shadow: 0 2mm 6mm rgba(32,61,52,.10); }
+  .share-kicker { font-size:8pt; letter-spacing:.18em; text-transform:uppercase; color:${C.teal}; font-weight:600; margin-bottom:6px; }
+  .share-card .quote { font-size:15pt; font-style:italic; color:${C.teal}; line-height:1.4; margin:0 0 10px; }
+  .share-meta { font-size:8pt; color:${C.muted}; }
+  .share-logo { position:absolute; right:15mm; bottom:12mm; font-size:15pt; font-weight:600; letter-spacing:-.01em; color:${C.ink}; }
+  .share-logo b { color:${C.gold}; font-weight:700; }
+  .share-hint { font-size:7pt; color:${C.muted}; margin-top:5px; }
   .highlight .quote { font-size:11pt; font-style:italic; color:${C.teal}; margin-bottom:3px; }
   .highlight .brand { font-size:7pt; letter-spacing:.16em; text-transform:uppercase; color:${C.muted}; }
   .page-break { break-before:page; }
@@ -273,14 +307,14 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
   .qa header { display:flex; gap:8px; font-size:7pt; color:${C.muted}; text-transform:uppercase; letter-spacing:.08em; }
   .qa .q { font-weight:700; color:${C.teal}; }
   .qa .question { font-weight:600; font-size:8.5pt; margin:2px 0 3px; }
-  .qa .answer { font-size:8pt; background:${C.cream}; border-radius:6px; padding:5px 7px; }
+  .qa .answer { font-size:8pt; background:#ffffff; border:1px solid ${C.line}; border-radius:6px; padding:5px 7px; }
   .qa .meta { font-size:7pt; color:${C.muted}; margin-top:2px; }
   .sources-list { list-style:none; margin:0; padding:0; }
   .sources-list li { margin-bottom:5px; break-inside:avoid; }
   .snippet { font-size:7pt; color:${C.muted}; margin:1px 0 0; }
   .foot { margin-top:10px; border-top:1px solid ${C.line}; padding-top:5px; font-size:6.5pt; color:${C.muted}; }
 </style></head>
-<body>
+<body id="top">
   <header class="cover">
     <div class="eyebrow">VoxPrep HK · interview practice report</div>
     <h1>${esc(session.role_title)}</h1>
@@ -292,7 +326,7 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
   ${scoreBlock}
 
   <section>
-    <h2 class="section">STAR coverage</h2>
+    <h2 class="section">STAR coverage <a class="jump" href="#appendix-a">(transcript · Appendix A)</a></h2>
     <div class="stars">${stars || '<p class="muted">No STAR analysis was returned.</p>'}</div>
   </section>
 
@@ -307,7 +341,15 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
         <h3>Priority improvement</h3>
         <p>${esc(report?.prioritized_improvement ?? '—')}</p>
       </div>
-      ${report ? `<div class="cta"><strong>Retry</strong><span>${esc(report.retry_exercise)}</span></div>` : ''}
+      ${
+        report
+          ? `<a class="cta" href="${base}/#/setup?retry=1&from=${encodeURIComponent(
+              session.id,
+            )}&lang=${encodeURIComponent(
+              session.language,
+            )}"><strong>Retry</strong><span>${esc(report.retry_exercise)}</span><em>›</em></a>`
+          : ''
+      }
     </section>
   </div>
 
@@ -344,21 +386,24 @@ export function buildReportHtml(session: Session, report: Report | null, exporte
   ${
     highlight
       ? `<section><h2 class="section">Your strongest evidence</h2>
-    <div class="highlight">
-      <p class="quote">“${esc(highlight.slice(0, 200))}${highlight.length > 200 ? '…' : ''}”</p>
-      <span class="brand">VoxPrep HK · practice highlight</span>
-    </div></section>`
+    <div class="share-card">
+      <span class="share-kicker">Strongest evidence</span>
+      <p class="quote">“${esc(highlight.slice(0, 190))}${highlight.length > 190 ? '…' : ''}”</p>
+      <span class="share-meta">${esc(session.role_title)} · ${esc(language)}</span>
+      <span class="share-logo">VoxPrep<b>HK</b></span>
+    </div>
+    <p class="share-hint">Screenshot this frame to share it — the 16:9 box is sized for a clean crop.</p></section>`
       : ''
   }
 
   <div class="page-break appendix">
-    <section>
-      <h2 class="section">Appendix A · transcript</h2>
+    <section id="appendix-a">
+      <h2 class="section">Appendix A · transcript <a class="jump" href="#top">(back to summary)</a></h2>
       ${transcript || '<p class="muted">No questions were answered.</p>'}
     </section>
     ${
       sources
-        ? `<section><h2 class="section">Appendix B · sources cited</h2><ul class="sources-list">${sources}</ul></section>`
+        ? `<section id="appendix-b"><h2 class="section">Appendix B · sources cited</h2><ul class="sources-list">${sources}</ul></section>`
         : ''
     }
     ${limitations ? `<section><h2 class="section">Appendix C · limitations</h2><ul>${limitations}</ul></section>` : ''}
@@ -375,7 +420,7 @@ export async function printSessionReport(id: string): Promise<void> {
   if (report && report.session_id !== session.id) {
     throw new Error('The debrief does not match this session. Reload before exporting.');
   }
-  const html = buildReportHtml(session, report);
+  const html = buildReportHtml(session, report, new Date(), window.location.origin);
   const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
   const win = window.open(url, '_blank');
   if (!win) {
