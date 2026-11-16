@@ -1,0 +1,325 @@
+{
+  "role_family": "pre_sales_consultant",
+  "stories": [
+    {
+      "id": "ps-01",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "In my first pre-sales role, a client demo was booked for Monday and the demo environment still had last quarter's data.",
+        "Task": "I had to make the demo believable without claiming it was their live system.",
+        "Action": "I reloaded the sample data, wrote three talking points per screen, and ran the demo twice with a colleague asking hard questions.",
+        "Result": "The demo ran without a hiccup, and the client asked for a follow-up workshop on two of the screens.",
+        "vague": "There was a demo to prepare and the data was old.",
+        "exaggerated": "I closed the deal during the demo by myself.",
+        "no_data": "The demo went fine and the client was interested."
+      },
+      "zh": {
+        "Situation": "第一份售前工作，星期一有客戶 demo，而 demo 環境仲係上一季嘅數據。",
+        "Task": "我要令 demo 可信，但唔可以講成係佢哋嘅正式系統。",
+        "Action": "我重載樣本數據，為每個畫面寫三個講點，再同同事預演兩次並由佢問難題。",
+        "Result": "demo 順利，客戶要求就其中兩個畫面開跟進工作坊。",
+        "vague": "有個 demo 要準備，數據又舊。",
+        "exaggerated": "我一個人喺 demo 期間成交咗。",
+        "no_data": "demo 順利，客戶有興趣。"
+      }
+    },
+    {
+      "id": "ps-02",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Software design",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "An RFP asked for twenty technical requirements in nine days, and six of them needed an answer from the engineering team.",
+        "Task": "I owned the technical section, and I had to get those six answers without overpromising.",
+        "Action": "I marked each requirement as supported, partly, or not today, sent the six questions in one batch, and left the weak answers visible.",
+        "Result": "The submission went in on time with three honest gaps, and the client asked about exactly those three in the first call.",
+        "vague": "There was an RFP and the deadline was tight.",
+        "exaggerated": "I wrote the winning bid single-handedly.",
+        "no_data": "We submitted on time and the client called us."
+      },
+      "zh": {
+        "Situation": "一份 RFP 有二十項技術要求，九日內要交，而其中六項要工程團隊回答。",
+        "Task": "我負責技術部分，要拿到嗰六個答案，但唔可以過度承諾。",
+        "Action": "我把每項標為支援、部分支援或暫時唔支援，一次過把六條問題交去工程，並保留弱項在文件內。",
+        "Result": "準時提交，三個缺口如實寫明，客戶第一次通話就問正嗰三項。",
+        "vague": "有份 RFP，死線好趕。",
+        "exaggerated": "我一個人寫咗中標方案。",
+        "no_data": "我哋準時提交，客戶有聯絡我哋。"
+      }
+    },
+    {
+      "id": "ps-03",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "In a client workshop, three departments described three different approval flows and the sales colleague wanted to quote the same day.",
+        "Task": "I had to stop the quote until one flow was agreed, and keep the client comfortable.",
+        "Action": "I drew all three flows, marked the two steps that differed, and proposed agreeing those two before pricing anything.",
+        "Result": "The client agreed the two steps in twenty minutes, and the quote went out a day later without a change request.",
+        "vague": "The client had different ideas about the approval flow.",
+        "exaggerated": "I designed the client's entire process in one workshop.",
+        "no_data": "In the end the quote went out after the workshop."
+      },
+      "zh": {
+        "Situation": "客戶工作坊入面，三個部門講咗三個唔同審批流程，而銷售同事想當日報價。",
+        "Task": "我要拖住報價直到議定一個流程，同時令客戶舒服。",
+        "Action": "我畫出三個流程，標出兩個有差異嘅步驟，建議先議定該兩步再定價。",
+        "Result": "客戶二十分鐘內議定兩步，報價遲一日出，亦冇 change request。",
+        "vague": "客戶對審批流程有唔同睇法。",
+        "exaggerated": "我一個工作坊就設計好客戶成個流程。",
+        "no_data": "最後工作坊之後報價出咗。"
+      }
+    },
+    {
+      "id": "ps-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Software design",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, a proof of concept ran for three weeks and the client's data could not answer two of the agreed questions.",
+        "Task": "I had to report the POC honestly, and still give the client a path forward.",
+        "Action": "I wrote what the POC proved, what the data could not support, and two options with cost and risk for each.",
+        "Result": "The client chose the smaller option, and the delivery team started with a realistic scope instead of a promise.",
+        "vague": "The proof of concept did not fully work.",
+        "exaggerated": "I turned a failing POC into a signed contract.",
+        "no_data": "The client chose a smaller scope and we went ahead."
+      },
+      "zh": {
+        "Situation": "做咗四年，一個 POC 做咗三星期，而客戶數據答唔到兩個已議定問題。",
+        "Task": "我要老實報告 POC 結果，同時仍然畀客戶一條路。",
+        "Action": "我寫明 POC 證明咗咩、數據支持唔到咩，再提出兩個方案各自成本同風險。",
+        "Result": "客戶揀較細方案，交付團隊由現實範圍開始而唔係由承諾開始。",
+        "vague": "POC 冇完全成功。",
+        "exaggerated": "我把一個失敗 POC 變成簽約。",
+        "no_data": "客戶揀咗較細範圍，我哋照做。"
+      }
+    },
+    {
+      "id": "ps-05",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In a demo, a client's IT manager asked whether our software would work with a system we had never tested against.",
+        "Task": "I had to answer in front of eight people without guessing.",
+        "Action": "I said we had not tested it, described the two integration options we use, and offered a short technical call with our engineer.",
+        "Result": "The call happened the next day, and the answer we gave was one the client could verify in their own test.",
+        "vague": "Someone asked a technical question I did not know.",
+        "exaggerated": "I handled a hostile question and won the room.",
+        "no_data": "We followed up with a technical call."
+      },
+      "zh": {
+        "Situation": "demo 期間，客戶 IT 經理問我們軟件會唔會同一個我哋從未測過嘅系統協作。",
+        "Task": "我要喺八個人面前答，但唔可以估。",
+        "Action": "我講明未測過，介紹我哋用嘅兩種整合方式，並提出同我方工程師開個技術通話。",
+        "Result": "通話第二日進行，我哋畀嘅答案客戶可以喺自己環境驗證。",
+        "vague": "有人問咗個我唔識嘅技術問題。",
+        "exaggerated": "我處理咗一個敵意問題並贏得全場。",
+        "no_data": "我哋跟進開咗技術通話。"
+      }
+    },
+    {
+      "id": "ps-06",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "A client asked for a dashboard with six custom reports in a two-week scope, and our delivery estimate was six weeks.",
+        "Task": "I had to bring the scope down without losing the reason they wanted it.",
+        "Action": "I asked what decision each report supported, found three were for the same weekly meeting, and proposed one combined view.",
+        "Result": "The scope went to two reports and three weeks, and the first version answered the weekly meeting from day one.",
+        "vague": "The client wanted more than we could deliver in the time.",
+        "exaggerated": "I cut the project scope in half and saved the deal.",
+        "no_data": "In the end we agreed a smaller scope."
+      },
+      "zh": {
+        "Situation": "客戶要一個 dashboard 有六份自訂報表，範圍兩星期，而我們交付估算係六星期。",
+        "Task": "我要收窄範圍，但唔可以失去佢哋原本嘅目的。",
+        "Action": "我問每份報表支持咩決定，發現三份都係為同一個每週會議，於是建議合成一個視圖。",
+        "Result": "範圍變成兩份報表三星期，第一版由第一日已答到每週會議需要。",
+        "vague": "客戶想要嘅嘢超過我哋時間做得到。",
+        "exaggerated": "我把項目範圍減半，救返單生意。",
+        "no_data": "最後議定較細範圍。"
+      }
+    },
+    {
+      "id": "ps-07",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "Five years in, the sales team had promised a client an integration that would need four months of work, in a two-month window.",
+        "Task": "I had to correct the promise without making the sales lead look bad in front of the client.",
+        "Action": "I met the sales lead first, agreed the accurate description, and then presented it together as a phased plan.",
+        "Result": "The client accepted the phased plan, and the first phase delivered the part they needed most.",
+        "vague": "There was a promise that did not match the timeline.",
+        "exaggerated": "I stopped the company from breaching a contract.",
+        "no_data": "In the end the plan was changed and the client accepted."
+      },
+      "zh": {
+        "Situation": "做咗五年，銷售團隊向客戶承諾一個要四個月工作嘅整合，但只有兩個月窗口。",
+        "Task": "我要修正承諾，但唔想令銷售 lead 喺客戶面前難做。",
+        "Action": "我先單獨見銷售 lead，議定準確講法，再一齊以分階段計劃向客戶簡報。",
+        "Result": "客戶接受分階段計劃，第一階段交付佢哋最需要嘅部分。",
+        "vague": "有個承諾同時間表唔對。",
+        "exaggerated": "我阻止公司違反合約。",
+        "no_data": "最後計劃調整，客戶接受。"
+      }
+    },
+    {
+      "id": "ps-08",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "In my internship, I was asked to prepare a demo of an API feature for a client who had never seen a technical diagram.",
+        "Task": "I had to explain it at their level and still be accurate.",
+        "Action": "I drew the request and response as two boxes, used their own order process as the example, and checked the wording with an engineer.",
+        "Result": "The client described the flow back to us correctly, and the engineer confirmed nothing was misstated.",
+        "vague": "I had to explain something technical to a non-technical client.",
+        "exaggerated": "I made a complex API simple enough for anyone to understand.",
+        "no_data": "The client understood the demo."
+      },
+      "zh": {
+        "Situation": "實習時要為一位從未睇過技術圖嘅客戶準備 API 功能 demo。",
+        "Task": "我要用佢嘅水平解釋，同時保持準確。",
+        "Action": "我把 request 同 response 畫成兩個方框，用佢哋自己嘅訂單流程做例子，再同工程師核對講法。",
+        "Result": "客戶可以正確講返個流程，工程師亦確認冇講錯。",
+        "vague": "我要向非技術客戶解釋技術嘢。",
+        "exaggerated": "我令複雜 API 變成任何人都明。",
+        "no_data": "客戶明白個 demo。"
+      }
+    },
+    {
+      "id": "ps-09",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "A handover to delivery was scheduled for one hour, and the delivery lead could not attend at the last minute.",
+        "Task": "I had to hand over without losing what the client had been told.",
+        "Action": "I wrote a two-page summary with the promises, the open questions and the client's own words, and sent it before the call.",
+        "Result": "The delivery lead confirmed every point by email, and the client heard nothing different in the kick-off.",
+        "vague": "The handover call did not have everyone in it.",
+        "exaggerated": "I created the team's whole handover process.",
+        "no_data": "In the end the handover worked out."
+      },
+      "zh": {
+        "Situation": "交付交接原定一小時，而交付 lead 臨時嚟唔到。",
+        "Task": "我要交接，但唔可以漏咗客戶聽過嘅承諾。",
+        "Action": "我寫兩頁摘要，列明承諾、未解決問題同客戶原話，通話前已發出。",
+        "Result": "交付 lead 用電郵逐點確認，kick-off 時客戶聽唔到任何唔同嘅講法。",
+        "vague": "交接會議唔齊人。",
+        "exaggerated": "我建立咗團隊成個交接流程。",
+        "no_data": "最後交接都做得成。"
+      }
+    },
+    {
+      "id": "ps-10",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "Six years in, a client wanted a single sign-on integration priced before their security team had approved the protocol.",
+        "Task": "I had to price it without making the number a commitment to something unapproved.",
+        "Action": "I gave a range with the assumption stated in one line, and marked the two decisions that would move the range.",
+        "Result": "Security chose the protocol we assumed, and the final quote landed inside the range.",
+        "vague": "We had to quote for something that was not fully decided.",
+        "exaggerated": "I predicted the client's security decision exactly.",
+        "no_data": "In the end the quote was close to what we gave."
+      },
+      "zh": {
+        "Situation": "做咗六年，客戶想喺佢哋安全團隊批出協議之前，就先為 single sign-on 整合定價。",
+        "Task": "我要報價，但唔可以令個數字變成對未批事項嘅承諾。",
+        "Action": "我畀一個範圍，一行寫明假設，並標出會令範圍移動嘅兩個決定。",
+        "Result": "安全團隊揀咗我哋假設嘅協議，最終報價落喺範圍之內。",
+        "vague": "要為未完全決定嘅事報價。",
+        "exaggerated": "我準確預測客戶嘅安全決定。",
+        "no_data": "最後報價同我哋畀嘅接近。"
+      }
+    },
+    {
+      "id": "ps-11",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I joined demos where the same three questions came up every time and nobody had written the answers down.",
+        "Task": "I wanted the answers ready before the next demo, without guessing at them.",
+        "Action": "I collected the three questions, asked the engineer for short answers, and put them on one page the whole team could use.",
+        "Result": "The next demo spent its time on the client's process instead of on the same basics.",
+        "vague": "The same questions came up in demos.",
+        "exaggerated": "I wrote the team's complete technical FAQ.",
+        "no_data": "After the page existed, demos went more smoothly."
+      },
+      "zh": {
+        "Situation": "做半年合約，我參與嘅 demo 每次都有同樣三條問題，而冇人寫低答案。",
+        "Task": "我想下次 demo 前有答案，但唔可以自己估。",
+        "Action": "我收集三條問題，請工程師畀簡短答案，再寫成一頁全隊都用得。",
+        "Result": "下次 demo 嘅時間用喺客戶流程上，而唔係重複基本問題。",
+        "vague": "demo 每次都有同樣問題。",
+        "exaggerated": "我寫咗團隊完整嘅技術 FAQ。",
+        "no_data": "有咗嗰頁之後 demo 順好多。"
+      }
+    },
+    {
+      "id": "ps-12",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "A client's IT team wanted our software to run inside their network, and our product only supported the hosted option.",
+        "Task": "I had to say no clearly and still find a way to move the deal forward.",
+        "Action": "I confirmed the constraint with the engineer, then proposed our API with their own internal front end as an option.",
+        "Result": "The client accepted the API option, and the deal moved to a technical review the following week.",
+        "vague": "The client wanted something we did not offer.",
+        "exaggerated": "I invented a new product line to close the deal.",
+        "no_data": "In the end we found another option they accepted."
+      },
+      "zh": {
+        "Situation": "客戶 IT 團隊想我們軟件喺佢哋網絡內部運行，而我哋產品只支援託管方案。",
+        "Task": "我要清楚講唔得，同時搵到方法令交易向前行。",
+        "Action": "我同工程師確認限制，再提出以我們 API 配佢哋自己內部前端嘅方案。",
+        "Result": "客戶接受 API 方案，交易下星期進入技術評審。",
+        "vague": "客戶想要我哋冇提供嘅嘢。",
+        "exaggerated": "我為成交創造咗一條新產品線。",
+        "no_data": "最後搵到另一個佢哋接受嘅方案。"
+      }
+    }
+  ]
+}

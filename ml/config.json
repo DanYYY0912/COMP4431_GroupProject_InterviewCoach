@@ -17,6 +17,6 @@
   "target_modules": "all-linear",
   "eval_steps": 10,
   "logging_steps": 2,
-  "expected_examples": 480,
-  "notes": "WS2 planned runtime-aligned corpus: 480 examples (216 question, 168 report, 96 safety); generation is pending, so confirm the actual reviewed count before training. Single CUDA GPU; effective batch 16 gives about 24 optimizer steps/epoch at 384 training rows. Evaluate/save every 10 and log every 2 steps for a useful small-corpus loss curve. Review, hash, deduplication and split gates remain mandatory. No training run has been executed."
+  "expected_examples": 971,
+  "notes": "Reviewed corpus after human review: 971 rows survive (29 AI-flagged rows were rejected by the reviewer and dropped by `ml.review merge --drop-rejected`). Original WS2 generation produced 1000 drafts (450 question, 350 report, 200 safety; 600 en-HK, 400 zh-HK) across 15 Hong Kong role families; 15% of rows carry a second independent review (148 rows). At effective batch 16 the 790 training rows give about 49 optimizer steps/epoch, so eval/save every 10 and log every 2 keep the loss curve readable. Review, hash, deduplication and split gates remain mandatory. No training run has been executed."
 }

@@ -1,0 +1,326 @@
+{
+  "role_family": "network_infra_engineer",
+  "stories": [
+    {
+      "id": "nw-01",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "In my first networking job, a new office area had no network because the switch port was never put on the correct VLAN.",
+        "Task": "I was asked to fix it during the move-in morning, with staff already at their desks.",
+        "Action": "I checked the port configuration against the site sheet, moved the port to the office VLAN, and confirmed the change with the mover's supervisor.",
+        "Result": "The area was online by ten, and I updated the site sheet so the next move would not repeat it.",
+        "vague": "A new area had no network and it needed sorting.",
+        "exaggerated": "I designed the office network from scratch on my own.",
+        "no_data": "After the change the area had network access."
+      },
+      "zh": {
+        "Situation": "第一份網絡工作，一個新辦公區冇網絡，因為 switch port 從來冇放喺正確 VLAN。",
+        "Task": "要喺搬入當日朝早搞返好，而同事已經坐喺位。",
+        "Action": "我對住 site sheet 檢查 port 設定，把 port 改去 office VLAN，再同搬遷主管確認。",
+        "Result": "十點前該區上到網，我亦更新 site sheet 令下次搬遷唔會再犯。",
+        "vague": "新區域冇網絡，要處理。",
+        "exaggerated": "我一個人由零設計咗成個辦公室網絡。",
+        "no_data": "改完之後該區有網絡。"
+      }
+    },
+    {
+      "id": "nw-02",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "About twenty people working from home reported the VPN dropping every fifteen minutes, and the helpdesk had run out of ideas.",
+        "Task": "I took the second-line ticket, and I had to find whether it was us, their home router, or the provider.",
+        "Action": "I traced the tunnel logs, found one ISP path timing out, and ran a test with a colleague on the same ISP to confirm.",
+        "Result": "It was the provider path, and after we reported it the drops stopped within two days.",
+        "vague": "People working from home had connection problems.",
+        "exaggerated": "I fixed the ISP's national network problem.",
+        "no_data": "After we reported it, the drops stopped."
+      },
+      "zh": {
+        "Situation": "大約二十位在家工作同事報 VPN 每十五分鐘斷線，helpdesk 已經冇新想法。",
+        "Task": "我接二線 ticket，要判斷係我哋、佢哋屋企 router，定係供應商問題。",
+        "Action": "我追 tunnel log，發現有一條 ISP 路徑 timeout，再請同一個 ISP 嘅同事一齊測確認。",
+        "Result": "係供應商路徑問題，我哋報上去之後兩日內斷線停止。",
+        "vague": "在家工作同事有連線問題。",
+        "exaggerated": "我修好咗 ISP 全港性網絡問題。",
+        "no_data": "報上去之後斷線停咗。"
+      }
+    },
+    {
+      "id": "nw-03",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "A business unit needed a firewall rule opened between two segments before a client demo on Friday.",
+        "Task": "I was the engineer on the change, and I had to get it approved and tested in three days.",
+        "Action": "I asked for the source, destination and port in writing, wrote the rule with the narrowest scope, and tested it on the lab copy first.",
+        "Result": "The rule went live Thursday evening and the demo worked, and the narrow scope meant nothing else was exposed.",
+        "vague": "A team needed a firewall change quickly.",
+        "exaggerated": "I opened the network to make the client happy.",
+        "no_data": "In the end the demo worked."
+      },
+      "zh": {
+        "Situation": "有個業務單位要喺星期五客戶 demo 前開一條 firewall 規則，打通兩個網段。",
+        "Task": "我負責該改動，要三日內拿到批核同完成測試。",
+        "Action": "我請對方書面提供來源、目的地同 port，寫成最窄範圍嘅規則，先喺 lab 副本測。",
+        "Result": "規則星期四晚生效，demo 順利，因為範圍窄亦冇曝露其他嘢。",
+        "vague": "有團隊要快速改 firewall。",
+        "exaggerated": "我開放咗網絡嚟令客戶滿意。",
+        "no_data": "最後 demo 成功。"
+      }
+    },
+    {
+      "id": "nw-04",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "Four years in, a failover drill showed the standby database would take two hours to take over, not the thirty minutes we promised.",
+        "Task": "I owned the drill result, and I had to report the real number and a plan rather than a target.",
+        "Action": "I timed each stage of the switchover, found the log shipping was a day behind, and changed the interval with the database owner.",
+        "Result": "The next drill took thirty-five minutes, and the fourth stage was still listed as the remaining risk.",
+        "vague": "The failover drill showed some timing issues.",
+        "exaggerated": "I built a fully resilient platform for the company.",
+        "no_data": "The next drill was faster."
+      },
+      "zh": {
+        "Situation": "做咗四年，一次 failover 演練顯示備用資料庫要兩小時才接上，而我哋承諾係三十分鐘。",
+        "Task": "我負責演練結果，要報真實數字同計劃，而唔係報目標。",
+        "Action": "我為切換每個階段計時，發現 log shipping 落後一日，於是同資料庫負責人改咗間隔。",
+        "Result": "下次演練三十五分鐘，而第四個階段仍然列為剩餘風險。",
+        "vague": "failover 演練顯示有啲時間問題。",
+        "exaggerated": "我為公司建立咗完全可靠嘅平台。",
+        "no_data": "下次演練快咗。"
+      }
+    },
+    {
+      "id": "nw-05",
+      "seniority": "entry",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my internship, the server room had unlabelled cables and a patch panel nobody could read.",
+        "Task": "I was given two afternoons to make it traceable, with no budget for new hardware.",
+        "Action": "I traced each cable with a tester, labelled both ends, and photographed the panel with a printed key.",
+        "Result": "The next fault took ten minutes to locate instead of an hour, and the photo key stayed on the wall.",
+        "vague": "The cabling was messy and hard to follow.",
+        "exaggerated": "I rebuilt the entire server room infrastructure.",
+        "no_data": "After labelling, finding a cable was easier."
+      },
+      "zh": {
+        "Situation": "實習時機房線纜冇標籤，patch panel 冇人睇得明。",
+        "Task": "我只有兩個下午，要令佢追蹤得到，而冇錢買新硬件。",
+        "Action": "我用 tester 逐條線追，兩端都貼標籤，再影相配一張列印索引貼牆。",
+        "Result": "下次故障十分鐘內定位，而唔係一個鐘，相片索引一直貼住。",
+        "vague": "啲線好亂，好難跟。",
+        "exaggerated": "我重建咗整個機房基建。",
+        "no_data": "貼標籤之後容易搵線。"
+      }
+    },
+    {
+      "id": "nw-06",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "We moved a file server between data stores and the application team found slow response on large reports afterwards.",
+        "Task": "I had to check the storage path and explain the change to them, without rolling back blindly.",
+        "Action": "I compared read latency before and after, found the new datastore was not the one on the fast tier, and asked for a move back on that one volume.",
+        "Result": "Report time returned to the old figure within a day, and the other volumes stayed where they were.",
+        "vague": "Reports were slow after a storage change.",
+        "exaggerated": "I fixed the whole storage architecture in one request.",
+        "no_data": "After the move back, the reports were fast again."
+      },
+      "zh": {
+        "Situation": "我哋把檔案伺服器搬去另一組 data store，之後應用團隊話大報表反應慢。",
+        "Task": "我要檢查儲存路徑並向佢哋解釋，而唔係盲目 rollback。",
+        "Action": "我比較改前改後讀取延遲，發現新 data store 唔喺快層，於是只要求搬返該一個 volume。",
+        "Result": "一日內報表時間返到舊水平，其他 volume 維持原位。",
+        "vague": "儲存改動之後報表變慢。",
+        "exaggerated": "我一個要求就修好整個儲存架構。",
+        "no_data": "搬返之後報表又快返。"
+      }
+    },
+    {
+      "id": "nw-07",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "Five years in, a vendor was due on site to replace a core switch and the branch could not lose the counter system for a whole day.",
+        "Task": "I had to plan the window and get the branch manager to accept it in writing.",
+        "Action": "I split the work into two evenings, wrote the sequence with a rollback step, and confirmed the counter close time with her.",
+        "Result": "Both evenings finished inside the window, and the counter system was up before opening on both days.",
+        "vague": "A switch replacement needed planning.",
+        "exaggerated": "I replaced the branch's core network single-handedly.",
+        "no_data": "The replacement went out over two evenings."
+      },
+      "zh": {
+        "Situation": "做咗五年，vendor 要上門換核心 switch，而分店唔可以成日冇收銀系統。",
+        "Task": "我要計劃時間窗，並要分店經理書面接受。",
+        "Action": "我把工作拆成兩個晚上，寫明次序同 rollback 步驟，再同佢確認收銀關閉時間。",
+        "Result": "兩個晚上都喺窗口內完成，兩日開門前收銀系統都已恢復。",
+        "vague": "換 switch 要計劃。",
+        "exaggerated": "我一個人換咗分店嘅核心網絡。",
+        "no_data": "用兩個晚上完成換機。"
+      }
+    },
+    {
+      "id": "nw-08",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "In my first role, the monitoring sent an alert every night at two because a backup job used all the disk for ten minutes.",
+        "Task": "I was asked to stop the false alerts without turning off the disk alert entirely.",
+        "Action": "I added a short suppression during the backup window and a separate threshold for that window, then watched it for a week.",
+        "Result": "Night alerts stopped, and a real disk growth a month later still triggered at the new threshold.",
+        "vague": "We got alerts at night that were not real problems.",
+        "exaggerated": "I rebuilt the whole monitoring system.",
+        "no_data": "After the change the night alerts stopped."
+      },
+      "zh": {
+        "Situation": "第一份工，監控每晚兩點都響，因為備份 job 會用盡磁碟十分鐘。",
+        "Task": "我要停止假警報，但唔可以整個關掉磁碟警報。",
+        "Action": "我喺備份時間窗加短暫抑制，並為該窗口設另一個門檻，再觀察一星期。",
+        "Result": "夜間警報停咗，一個月後真正嘅磁碟增長仍然喺新門檻觸發。",
+        "vague": "夜晚會有啲唔係真問題嘅警報。",
+        "exaggerated": "我重建咗成個監控系統。",
+        "no_data": "改完之後夜間警報停咗。"
+      }
+    },
+    {
+      "id": "nw-09",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "A branch office complained about slow file access, and the first answer from the business was to buy a new server.",
+        "Task": "I had to check the actual cause before anyone spent that money.",
+        "Action": "I measured latency from their desks, found the link was saturated at the start of the day, and proposed a local cache instead.",
+        "Result": "The cache removed most of the delay, and the server purchase was not needed that year.",
+        "vague": "The branch said file access was slow.",
+        "exaggerated": "I saved the company a large hardware purchase.",
+        "no_data": "After the cache the delay was much smaller."
+      },
+      "zh": {
+        "Situation": "一間分店投訴檔案存取慢，業務第一個答案係買新伺服器。",
+        "Task": "我要喺有人花錢之前查真正原因。",
+        "Action": "我喺佢哋座位量度延遲，發現條鏈路喺早上開工時飽和，於是建議本機 cache 代替。",
+        "Result": "cache 消除大部分延誤，該年唔需要買伺服器。",
+        "vague": "分店話檔案存取慢。",
+        "exaggerated": "我幫公司慳咗一大筆硬件開支。",
+        "no_data": "加 cache 之後延誤細咗好多。"
+      }
+    },
+    {
+      "id": "nw-10",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "Six years in, a patch window collided with month-end processing and the finance system had to be down for an hour.",
+        "Task": "I had to move the window and prove the new time would not collide again.",
+        "Action": "I listed every scheduled job in that hour, checked which ones touched the finance system, and proposed the fourth Tuesday instead.",
+        "Result": "The next three months ran without a collision, and the job list is now part of the patch plan.",
+        "vague": "The patch window clashed with month-end.",
+        "exaggerated": "I ended all scheduling conflicts across the company.",
+        "no_data": "After moving the window there were no more clashes."
+      },
+      "zh": {
+        "Situation": "做咗六年，patch window 撞正月結，財務系統要停一小時。",
+        "Task": "我要改時間，並證明新時間唔會再撞。",
+        "Action": "我列出該小時所有排程工作，查出邊啲會掂財務系統，再建議改去第四個星期二。",
+        "Result": "之後三個月都冇再撞，而工作清單已納入 patch 計劃。",
+        "vague": "patch window 同月結撞期。",
+        "exaggerated": "我終結咗公司所有排程衝突。",
+        "no_data": "改咗時間之後冇再撞。"
+      }
+    },
+    {
+      "id": "nw-11",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, a user kept asking me to plug personal devices into the office network.",
+        "Task": "I had to say no in a way that kept the working relationship.",
+        "Action": "I explained the guest network option, set it up in five minutes, and told him what the office network was for.",
+        "Result": "He used the guest network from then on, and he stopped asking other engineers.",
+        "vague": "There was a request I could not approve.",
+        "exaggerated": "I prevented a serious network security incident.",
+        "no_data": "In the end he used the guest network."
+      },
+      "zh": {
+        "Situation": "做半年合約，有位同事不停叫我幫佢把私人裝置接入辦公室網絡。",
+        "Task": "我要拒絕，但唔想破壞工作關係。",
+        "Action": "我解釋有 guest network，五分鐘幫佢設定好，再講清楚辦公室網絡嘅用途。",
+        "Result": "之後佢一直用 guest network，亦冇再問其他工程師。",
+        "vague": "有個要求我唔可以批。",
+        "exaggerated": "我阻止咗一次嚴重網絡安全事故。",
+        "no_data": "最後佢用 guest network。"
+      }
+    },
+    {
+      "id": "nw-12",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a school group, the IT teacher and I disagreed about whether the slow login was the network or the ageing computers.",
+        "Task": "We had to agree on a cause before the budget meeting, or the wrong thing would be replaced.",
+        "Action": "We measured login time on the same computers before and after moving one lab to a separate segment.",
+        "Result": "The measurement showed the network was the cause, and the segment change fixed the slow login for that lab.",
+        "vague": "Login was slow and we were not sure why.",
+        "exaggerated": "I proved the school's whole network was badly designed.",
+        "no_data": "After the change login was faster."
+      },
+      "zh": {
+        "Situation": "喺學校集團，我同 IT 老師對「登入慢係網絡定老電腦」有分歧。",
+        "Task": "預算會議前要議定原因，否則會換錯嘢。",
+        "Action": "我哋用同一批電腦，量度其中一間 lab 搬去獨立網段前後嘅登入時間。",
+        "Result": "量度顯示係網絡問題，該間 lab 改網段後登入變快。",
+        "vague": "登入慢，我哋唔確定原因。",
+        "exaggerated": "我證明咗學校成個網絡設計差。",
+        "no_data": "改完之後登入快咗。"
+      }
+    }
+  ]
+}

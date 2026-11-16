@@ -5,12 +5,12 @@
     "status": "not_trained",
     "base_model": "Qwen/Qwen3-4B-Instruct-2507",
     "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
-    "draft_examples": 1500,
+    "draft_examples": 1000,
     "reviewed_examples": 0,
     "adapter_available": false,
     "manifest_path": "ml/runs/voxprep-qlora/model_manifest.json",
     "manifest_available": false,
-    "expected_examples": 480,
+    "expected_examples": 1000,
     "configuration": {
       "base_model": "Qwen/Qwen3-4B-Instruct-2507",
       "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
@@ -30,8 +30,8 @@
       "target_modules": "all-linear",
       "eval_steps": 10,
       "logging_steps": 2,
-      "expected_examples": 480,
-      "notes": "WS2 planned runtime-aligned corpus: 480 examples (216 question, 168 report, 96 safety); generation is pending, so confirm the actual reviewed count before training. Single CUDA GPU; effective batch 16 gives about 24 optimizer steps/epoch at 384 training rows. Evaluate/save every 10 and log every 2 steps for a useful small-corpus loss curve. Review, hash, deduplication and split gates remain mandatory. No training run has been executed.",
+      "expected_examples": 1000,
+      "notes": "WS2 generated runtime-aligned corpus: 1000 examples (450 question, 350 report, 200 safety; 600 en-HK, 400 zh-HK) across 15 Hong Kong role families. Corpus size raised from the plan's 480 at the project owner's request so the adapter sees roughly 800 training rows instead of 384; at effective batch 16 that is about 50 optimizer steps/epoch, so eval/save every 10 and log every 2 keep the loss curve readable. The generated drafts are unreviewed by construction; the review count, hash, deduplication and split gates remain mandatory and no training run has been executed.",
       "implementation_settings": {
         "quantization": "4-bit NF4 with double quantization",
         "assistant_only_loss": true,
@@ -45,27 +45,25 @@
       }
     },
     "dataset_provenance": {
-      "path": "ml/data/drafts.jsonl",
-      "sha256": "65645b2cd6b8a8f1c24210d1000ce3be5639277923d8703f8dcef5a65196fc46",
+      "path": "ml/data/runtime_drafts.jsonl",
+      "sha256": "456c61769aa282d9b263042dcb5a392ee008cef58bee9168bcd5efac9640840f",
       "status": "Synthetic curriculum drafts; human review and deduplication required",
       "source_kinds": [
-        "synthetic_curriculum_draft"
+        "synthetic_runtime_aligned_draft"
       ],
       "licenses": [
         "CC0-1.0"
       ],
       "language_counts": {
-        "zh-HK": 450,
-        "en-HK": 900,
-        "mixed": 150
+        "en-HK": 600,
+        "zh-HK": 400
       },
       "task_counts": {
-        "feedback": 525,
-        "report": 225,
-        "question": 600,
-        "safety": 150
+        "question": 450,
+        "report": 350,
+        "safety": 200
       },
-      "independent_second_review_assignments": 230,
+      "independent_second_review_assignments": 151,
       "reviewed_examples": 0,
       "split_policy": "80/10/10; connected role, source and template groups stay together",
       "review_policy": "First human approval for every example; independent second review for at least 15% per full-corpus language/task stratum",

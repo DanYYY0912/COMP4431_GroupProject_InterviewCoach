@@ -1,0 +1,324 @@
+{
+  "role_family": "it_support_engineer",
+  "stories": [
+    {
+      "id": "sp-01",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "In my first helpdesk role, about forty tickets a day arrived with titles like cannot log in and no detail at all.",
+        "Task": "I was asked to improve first response time without refusing anyone's ticket.",
+        "Action": "I wrote five short reply templates that asked for the one detail I needed, and triaged by floor so I could batch walk-ins.",
+        "Result": "First response time went from about five hours to under two, and walk-in trips dropped because people replied with detail.",
+        "vague": "The ticket queue was busy and replies were slow.",
+        "exaggerated": "I redesigned the whole service desk process for the company.",
+        "no_data": "After the templates, replies got faster."
+      },
+      "zh": {
+        "Situation": "第一份 helpdesk 工作，每日大約四十張 ticket，標題得「登入唔到」呢類，完全冇細節。",
+        "Task": "我要改善首次回覆時間，但唔可以拒收任何人嘅 ticket。",
+        "Action": "我寫咗五款短回覆模板，每款問一個我需要嘅資料，再按樓層分流方便集中處理上門個案。",
+        "Result": "首次回覆由大約五個鐘縮到兩小時內，同事回覆有細節，我亦少咗走上走落。",
+        "vague": "queue 好忙，回覆好慢。",
+        "exaggerated": "我重新設計咗公司成個 service desk 流程。",
+        "no_data": "用咗模板之後回覆快咗。"
+      }
+    },
+    {
+      "id": "sp-02",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "An internal order tool kept locking about fifteen accounts a week, and the standard fix was to reset each one by hand.",
+        "Task": "I wanted to find the cause, and I had to check I was not just clearing the symptom.",
+        "Action": "I ran a SQL query on login attempts, found the tool retried with an old password three times, and reported it with the count per user.",
+        "Result": "The vendor changed the retry limit, and the lockouts dropped to about one a week.",
+        "vague": "Accounts kept getting locked and we reset them.",
+        "exaggerated": "I fixed the vendor's product for them.",
+        "no_data": "After the change there were far fewer lockouts."
+      },
+      "zh": {
+        "Situation": "一個內部訂單工具每星期鎖住大約十五個帳戶，標準做法係逐個手動解鎖。",
+        "Task": "我想找出原因，並要確認自己唔係只係止住症狀。",
+        "Action": "我用 SQL 查登入嘗試，發現個工具用舊密碼重試三次，於是連每個用戶次數一齊報上去。",
+        "Result": "vendor 改咗重試上限，鎖帳戶跌到每星期大約一次。",
+        "vague": "帳戶不停被鎖，我哋逐個解。",
+        "exaggerated": "我幫 vendor 修好咗佢個產品。",
+        "no_data": "改完之後鎖帳戶少咗好多。"
+      }
+    },
+    {
+      "id": "sp-03",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "At a trading firm, the whole fifth floor lost network printing on a Monday morning and eleven people called within ten minutes.",
+        "Task": "I was on floor support, and I had to give people a workaround before I had the root cause.",
+        "Action": "I told each caller the nearest working printer, checked the switch port, and found a duplicate address from a new device.",
+        "Result": "Printing was back in forty minutes, and the workaround meant nobody missed a client deadline that morning.",
+        "vague": "Printing stopped on one floor and there was a rush.",
+        "exaggerated": "I prevented a major business outage that morning.",
+        "no_data": "Printing came back and people carried on."
+      },
+      "zh": {
+        "Situation": "喺一間貿易公司，星期一早上全層五樓都印唔到嘢，十分鐘內十一個人打嚟。",
+        "Task": "我做樓層支援，要喺未知道根源之前先畀到替代方案。",
+        "Action": "我逐個話佢知最近邊部機可以用，再查 switch port，發現一部新機用咗重複 IP。",
+        "Result": "四十分鐘內恢復，替代方案令嗰朝冇人趕唔到客戶死線。",
+        "vague": "有一層印唔到嘢，好亂。",
+        "exaggerated": "我嗰朝阻止咗一次重大業務中斷。",
+        "no_data": "之後印表機恢復，大家繼續做。"
+      }
+    },
+    {
+      "id": "sp-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "Four years in, a payroll vendor closed our severity-one ticket after two days with a request to reproduce it ourselves.",
+        "Task": "I had to get the issue back into their queue with evidence strong enough that they could not close it again.",
+        "Action": "I recorded the failure, exported the application log with timestamps, and wrote a short timeline with what we had already ruled out.",
+        "Result": "They reopened it as their bug the same afternoon, and the fix arrived in the next patch.",
+        "vague": "The vendor was slow and we had to chase them.",
+        "exaggerated": "I made the vendor admit their product was broken beyond repair.",
+        "no_data": "Eventually they reopened the ticket and fixed it."
+      },
+      "zh": {
+        "Situation": "做咗四年，一個薪酬 vendor 兩日後就關咗我哋嘅 severity-one ticket，叫我哋自己重現。",
+        "Task": "我要把問題推返入佢哋 queue，並要有足夠證據令佢哋唔可以再關。",
+        "Action": "我錄低失敗過程，連時間戳匯出 application log，再寫一條短時間線列出我哋已排除嘅可能。",
+        "Result": "佢哋同日下午重開並確認為自己嘅 bug，修復喺下個 patch 到。",
+        "vague": "vendor 好慢，我哋要不停追。",
+        "exaggerated": "我逼到 vendor 承認佢個產品壞到不可修。",
+        "no_data": "最後佢哋重開 ticket 並修好。"
+      }
+    },
+    {
+      "id": "sp-05",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "My first month included setting up twenty new starters, and the joining instructions were a two-year-old email nobody had updated.",
+        "Task": "I was asked to run the setup, and I wanted the instructions to be right for the next group.",
+        "Action": "I followed the email step by step, marked the four steps that were wrong, and rewrote them with screenshots.",
+        "Result": "The next intake took half the time, and the team used the rewritten page instead of forwarding the old email.",
+        "vague": "The onboarding instructions were a bit out of date.",
+        "exaggerated": "I built the company's complete onboarding programme.",
+        "no_data": "After the rewrite, the next group was quicker to set up."
+      },
+      "zh": {
+        "Situation": "第一個月我要為二十位新同事做 setup，而入職指示係一封兩年冇更新嘅電郵。",
+        "Task": "我負責執行 setup，但想指示對下一批人啱用。",
+        "Action": "我照電郵逐步做，標出四個錯咗嘅步驟，再連截圖重寫。",
+        "Result": "下一批人時間減半，團隊亦改用新頁面而唔再轉發舊電郵。",
+        "vague": "入職指示有啲過時。",
+        "exaggerated": "我建立咗公司完整嘅入職計劃。",
+        "no_data": "重寫之後，下一批 setup 快咗。"
+      }
+    },
+    {
+      "id": "sp-06",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Teamwork",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a logistics firm, the evening shift handed over at six with no written notes, so the morning shift redid the same checks.",
+        "Task": "I proposed a short handover note, and I had to get both shifts to use it.",
+        "Action": "I started a shared note with three headings: open tickets, changes made, and next action, and filled it in for two weeks myself.",
+        "Result": "The morning shift stopped repeating checks, and the note became the record for a hardware fault that recurred three times.",
+        "vague": "Shift handover was mostly verbal.",
+        "exaggerated": "I ended all communication problems between shifts.",
+        "no_data": "After the notes, the morning shift repeated less work."
+      },
+      "zh": {
+        "Situation": "喺物流公司，夜班六點交更冇書面記錄，所以早班要重做同一批檢查。",
+        "Task": "我提出一個短交更記錄，並要兩班都肯用。",
+        "Action": "我開共用筆記，三個標題：開啟中 ticket、已做改動、下一步，自己連續兩星期填。",
+        "Result": "早班唔再重複檢查，而個記錄仲幫我哋追到一個出現三次嘅硬件問題。",
+        "vague": "交更多數靠口講。",
+        "exaggerated": "我終結咗兩班之間所有溝通問題。",
+        "no_data": "有記錄之後早班少做重複工作。"
+      }
+    },
+    {
+      "id": "sp-07",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Databases",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Five years in at a property group, the sales team's internal app showed the wrong price for about thirty listings.",
+        "Task": "I owned the second-line fix, and I had to be sure the database, the cache and the app agreed before saying it was solved.",
+        "Action": "I compared the price in the database, the cached value and the screen for each listing, then cleared only the stale cache rows.",
+        "Result": "All thirty listings matched the database, and we added a cache expiry so a stale price could not live for a day.",
+        "vague": "Some prices showed wrongly in the app.",
+        "exaggerated": "I rebuilt the whole pricing service by myself.",
+        "no_data": "After the fix the prices were right."
+      },
+      "zh": {
+        "Situation": "喺地產集團做咗五年，銷售團隊嘅內部 app 有大約三十個盤顯示錯價。",
+        "Task": "我負責二線修復，要確認資料庫、cache 同 app 三邊一致才可以講搞完。",
+        "Action": "我逐個盤比對資料庫價、cache 值同畫面，然後只清走過期嘅 cache 行。",
+        "Result": "三十個盤全部同資料庫一致，我哋仲加咗 cache 過期時間，令舊價唔會再擺一日。",
+        "vague": "app 有啲價錢顯示錯。",
+        "exaggerated": "我一個人重建咗成個定價服務。",
+        "no_data": "修好之後價錢正常。"
+      }
+    },
+    {
+      "id": "sp-08",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my internship, a manager asked me to give her team access to a shared folder that held salary files.",
+        "Task": "I had to help her without giving access I was not allowed to approve.",
+        "Action": "I explained what the folder contained, offered a narrower folder for her team's actual work, and asked her to confirm the request in writing to my supervisor.",
+        "Result": "Her team got the narrower access the same day, and the salary folder stayed restricted.",
+        "vague": "There was a request for folder access and I checked with my supervisor.",
+        "exaggerated": "I stopped a serious data breach on my own.",
+        "no_data": "In the end the team got access to a different folder."
+      },
+      "zh": {
+        "Situation": "實習時有位主管叫我開一個存有薪酬檔嘅共享 folder 畀佢團隊。",
+        "Task": "我要幫到佢，但又唔可以批我無權批嘅權限。",
+        "Action": "我解釋個 folder 有咩內容，提供一個只涵蓋佢團隊實際工作嘅較窄 folder，並請佢書面向我上司確認。",
+        "Result": "佢團隊當日拿到較窄嘅權限，薪酬 folder 維持限制。",
+        "vague": "有人要求 folder 權限，我跟上司確認。",
+        "exaggerated": "我一個人阻止咗一次嚴重資料外洩。",
+        "no_data": "最後團隊拿到另一個 folder 嘅權限。"
+      }
+    },
+    {
+      "id": "sp-09",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "At a school group, thirty laptops in a computer room would not join the wireless network after a firmware update.",
+        "Task": "I was second-line, and I needed them usable before the afternoon class.",
+        "Action": "I tested two machines with an older driver, then rolled that driver back through the room's management console in one batch.",
+        "Result": "All thirty joined the network by lunchtime, and the update was blocked for that model until the vendor replied.",
+        "vague": "The laptops had network problems after an update.",
+        "exaggerated": "I solved a network failure that had affected the whole campus.",
+        "no_data": "Before the class, the machines were working again."
+      },
+      "zh": {
+        "Situation": "喺一個學校集團，電腦室三十部手提電腦喺 firmware 更新後連唔到無線網絡。",
+        "Task": "我係二線，要喺下午課堂前令佢哋用得。",
+        "Action": "我先用兩部機試舊 driver，再經房間嘅管理 console 一次過回滾。",
+        "Result": "三十部喺午飯前全部連得上，該型號嘅更新亦暫時封鎖等 vendor 回覆。",
+        "vague": "更新之後啲電腦有網絡問題。",
+        "exaggerated": "我解決咗影響全個校園嘅網絡故障。",
+        "no_data": "上堂前啲機用得返。"
+      }
+    },
+    {
+      "id": "sp-10",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "Six years in, three departments kept asking for a report the system could not produce, and each had a slightly different idea of it.",
+        "Task": "I had to give them one answer instead of three, and be honest that a proper report needed a change.",
+        "Action": "I ran the numbers with a SQL query for each request, showed where the three differed, and logged a change request with the agreed definition.",
+        "Result": "Two departments accepted the existing view, and the third waited three weeks for the change instead of guessing.",
+        "vague": "People wanted a report that did not exist yet.",
+        "exaggerated": "I delivered a full reporting suite for three departments alone.",
+        "no_data": "In the end two teams used the existing view and one waited."
+      },
+      "zh": {
+        "Situation": "做咗六年，三個部門想要一份系統出唔到嘅報表，而每個部門嘅理解都少少唔同。",
+        "Task": "我要畀一個答案而唔係三個，並老實講正式報表要改系統。",
+        "Action": "我用 SQL 為每個要求跑數，展示三個版本邊度唔同，再把議定定義寫成 change request。",
+        "Result": "兩個部門接受現有 view，第三個等三星期改動而唔係自己估。",
+        "vague": "有人想要一份未存在嘅報表。",
+        "exaggerated": "我一個人為三個部門交咗整套報表。",
+        "no_data": "最後兩隊用現有 view，一隊等。"
+      }
+    },
+    {
+      "id": "sp-11",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "A user on the sales floor could not open the CRM on her laptop, and the same account worked on the shared desktop.",
+        "Task": "I had to find the difference between the two machines instead of reinstalling everything.",
+        "Action": "I compared the installed version, the proxy setting and the time zone, and found the laptop clock was eleven minutes behind.",
+        "Result": "Correcting the clock fixed the login, and I added a clock check to our first-line script.",
+        "vague": "One user could not open the app on one machine.",
+        "exaggerated": "I found a security flaw that affected the whole company.",
+        "no_data": "After a small change it worked."
+      },
+      "zh": {
+        "Situation": "有位門店同事喺自己手提電腦開唔到 CRM，但同一個帳戶喺共用桌面機正常。",
+        "Task": "我要找出兩部機嘅差異，而唔係重裝所有嘢。",
+        "Action": "我比對版本、proxy 設定同時間，發現手提電腦時鐘慢咗十一分鐘。",
+        "Result": "校正時鐘就登入得到，我仲把時鐘檢查加入一線腳本。",
+        "vague": "有個用戶喺一部機開唔到個 app。",
+        "exaggerated": "我發現一個影響全公司嘅安全漏洞。",
+        "no_data": "改咗個細設定之後就用得。"
+      }
+    },
+    {
+      "id": "sp-12",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "On a six-month contract at a manufacturer, the factory floor reported the same label printer jam every week and stopped raising it.",
+        "Task": "I was on the support desk, and I wanted the recurring fault recorded rather than absorbed.",
+        "Action": "I logged each report with a photo and a time, showed the pattern to the shift supervisor, and asked him to confirm the frequency.",
+        "Result": "The vendor replaced a worn roller, and the weekly jam stopped after about fifteen reports.",
+        "vague": "There was a printer that kept jamming.",
+        "exaggerated": "I saved the factory from constant downtime by myself.",
+        "no_data": "After the replacement the jams stopped."
+      },
+      "zh": {
+        "Situation": "喺一間製造廠做半年合約，廠房每星期都報同一部標籤機卡紙，後來索性唔報。",
+        "Task": "我坐 support desk，想呢個重複故障被記錄落嚟而唔係被吞掉。",
+        "Action": "我每次報告都記低時間同相片，把模式展示畀值班主管，請佢確認頻率。",
+        "Result": "vendor 換咗磨損嘅滾輪，大約十五次報告之後每星期卡紙停咗。",
+        "vague": "有部印表機不停卡紙。",
+        "exaggerated": "我一個人令工廠唔再停機。",
+        "no_data": "換完之後卡紙冇再出現。"
+      }
+    }
+  ]
+}

@@ -2,9 +2,9 @@
 
 ## Executive summary
 
-The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The app runs at `http://localhost:8000` with native Qwen, Whisper, embedding and reranking services and PostgreSQL. This is a working development submission, not a completed assessed release: Azure and a training GPU are not set up, the 1,500 synthetic drafts are unreviewed, and no fine-tuned adapter or participant results exist. Two team identities are filled in; two remain for the team to add.
+The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The app runs at `http://localhost:8000` with native Qwen, Whisper, embedding and reranking services and PostgreSQL. This is a working development submission, not a completed assessed release: Azure is unverified, the 1,000 runtime-aligned drafts are unreviewed, and no fine-tuned adapter or participant results exist. Two team identities are filled in; two remain for the team to add.
 
-Updated: **2026-11-02T14:43:03+08:00 (Asia/Hong_Kong)**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
+Updated: **2026-11-16T14:30:00+00:00**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
 
 ## Working state
 
@@ -19,14 +19,16 @@ Updated: **2026-11-02T14:43:03+08:00 (Asia/Hong_Kong)**. See [verification](docs
 ## Immediate next targets
 
 1. Follow [external setup](docs/EXTERNAL_SETUP.md) to configure Azure and a Colab/Kaggle GPU. Keep credentials in the ignored local `.env` or notebook secret store.
-2. Rewrite and human-review the dataset, remove near duplicates, complete first reviews and the stratified second-review sample, then produce leakage-safe splits. The draft count is not a count of curated examples.
+2. Human-review `ml/data/runtime_drafts.jsonl` (1,000 runtime-aligned rows, 151 assigned a second review), then produce leakage-safe splits. The draft count is not a count of curated examples.
 3. Run genuine GPU training, retain the best adapter, loss curves, hashes and logs, export a merged GGUF and compare it with the retained base model.
 4. Address generation latency and execute the reviewed model/retrieval experiment, four-speaker speech study, avatar performance check and five-to-eight-person usability study. Record failures as well as successes.
 5. Rehearse the final seven-minute presentation on the classroom Mac and replace the backup with a recording of the final assessed configuration.
 
 ## Last verification
 
-On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five Playwright journeys**, plus lint, type checks, production and Docker builds. The earlier integrated `make test` passed before the final additions; affected suites were rerun after those additions. Both real Qwen language flows completed with source-ID validation and model-generated reports. Container startup and both-language smoke journeys passed. [Verification](docs/VERIFICATION.md) records scope and evidence. Counts describe controlled software checks; they do not establish model quality or human-study thresholds.
+On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five Playwright journeys**, plus lint, type checks, production and Docker builds. The earlier integrated `make test` passed before the final additions; affected suites were rerun after those additions. Both real Qwen language flows completed with source-ID validation and model-generated reports. Container startup and both-language smoke journeys passed.
+
+On 2026-11-16, `pytest backend/tests ml/tests evaluation/tests scripts/tests` passed **197 tests plus 5 subtests**, and `ruff check backend ml evaluation scripts` reported no issues. That run covered the WS2 runtime-aligned corpus (1,000 rows, zero near-duplicates at 0.90, no row above 2,048 tokens), the prescreen triage tool, and the new retrieval-labelling, speech-scoring, SUS, latency and Kaggle-run harnesses. No training, human review, retrieval labelling, speech recording or usability session had been completed at that point. [Verification](docs/VERIFICATION.md) records scope and evidence. Counts describe controlled software checks; they do not establish model quality or human-study thresholds.
 
 ## Durable decisions and limits
 
@@ -43,3 +45,7 @@ On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five
 - **2026-11-02:** Read the supplied plan and both course PDFs; initialized source control and contracts. Built API, interface, local services, original avatar, data-review/training tooling and evaluation runners.
 - **2026-11-02:** Fixed migration adoption, nullable answer contracts, accessibility contrast/labels, Cantonese citation generation, microphone cancellation and stale session responses. Prepared validated slides, scripted backup and source packaging.
 - **2026-11-02:** User confirmed Azure and GPU are not configured; supplied two team identities and asked implementation to continue. External evidence gates remain explicit.
+- **2026-11-16:** Shipped WS1 (shared coach prompt builders and output validators in `backend/app/coach.py`), WS3 (`ml/review.py` terminal review tool) and WS5 (training config, Kaggle-first notebook, export path, `scripts/dev.py` `LORA_PATH`) to the fork's `main`.
+- **2026-11-16:** Generated the WS2 runtime-aligned corpus: 1,000 rows (450 question / 350 report / 200 safety; 600 en-HK / 400 zh-HK) across 15 Hong Kong role families, 180 stories and 30 fictional job descriptions. Every prompt comes from the app's own builders; zero near-duplicates at 0.90; no row above 2,048 tokens; `reviews` empty on every row.
+- **2026-11-16:** Added the measurement harnesses the release checklist was missing: DeepSeek prescreen triage for drafts, a 40-query retrieval labelling and scoring pipeline, a WER/CER speech-study scorer, a standard SUS usability scorer, a latency benchmark, and a one-command Kaggle training path. 197 tests pass; ruff clean. None of these harnesses has produced assessed evidence yet.
+- **2026-11-16:** Kaggle GPU access verified on a private diagnostic kernel (Tesla T4, 14.6 GiB, CUDA available); the stock image's transformers 5.x breaks bitsandbytes, so `ml/requirements-train.txt` pins are required. No training run has been executed.

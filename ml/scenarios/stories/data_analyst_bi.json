@@ -1,0 +1,324 @@
+{
+  "role_family": "data_analyst_bi",
+  "stories": [
+    {
+      "id": "da-01",
+      "seniority": "entry",
+      "competencies": [
+        "Data analysis",
+        "Databases",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first analyst role, the Monday sales dashboard showed higher revenue than finance, and nobody trusted it any more.",
+        "Task": "I was asked to find out which number was wrong, and to explain it in a way the business side could follow.",
+        "Action": "I compared row counts between the warehouse and the source system, found a join that duplicated refund lines, and rewrote the query with a deduplicated subquery.",
+        "Result": "The dashboard matched finance to the cent, and the weekly meeting stopped questioning the numbers.",
+        "vague": "The dashboard had some problems with the numbers for a while.",
+        "exaggerated": "I found every data problem in the company and fixed the whole report suite.",
+        "no_data": "After the fix the numbers looked right and people trusted the dashboard again."
+      },
+      "zh": {
+        "Situation": "第一份分析工作，星期一嘅 sales dashboard 收入比財務高，之後冇人信個報表。",
+        "Task": "我要查出邊個數字錯，並用業務同事听得明嘅方式解釋。",
+        "Action": "我比對倉庫同來源系統嘅筆數，發現一個 join 令退款行重複，再用去重 subquery 重寫條 query。",
+        "Result": "dashboard 同財務分毫不差，每週例會唔再質疑啲數字。",
+        "vague": "個 dashboard 啲數字有段時間都幾有問題。",
+        "exaggerated": "我搵出公司所有數據問題，仲修好晒成個報表系統。",
+        "no_data": "修好之後啲數字睇落對，大家又開始信個 dashboard。"
+      }
+    },
+    {
+      "id": "da-02",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Databases",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Two years in, the retention team kept asking why customers dropped off after the third order.",
+        "Task": "I owned the analysis for that question, and I had to give them a finding they could act on within the quarter.",
+        "Action": "I built a cohort view in SQL, split customers by first order month, and compared repeat rate by delivery district.",
+        "Result": "One district had a repeat rate about half of the others, which led to a delivery partner change that quarter.",
+        "vague": "We looked at retention for a bit but it was quite vague.",
+        "exaggerated": "My analysis saved the company a large amount of money that year.",
+        "no_data": "The retention picture became clearer and the team used it."
+      },
+      "zh": {
+        "Situation": "做咗兩年，retention 組不停問點解客人喺第三次落單之後就流失。",
+        "Task": "我負責呢個分析，要喺季度內交到一個佢哋可以行動嘅結論。",
+        "Action": "我用 SQL 做 cohort view，按首次落單月份分組，再比較唔同送貨區嘅回購率。",
+        "Result": "有一個區嘅回購率大約係其他區嘅一半，結果嗰季就換咗送貨伙伴。",
+        "vague": "我哋有睇過 retention，但都幾模糊。",
+        "exaggerated": "我嘅分析幫公司慳咗一大筆錢。",
+        "no_data": "retention 嘅情況清楚咗，團隊都有用。"
+      }
+    },
+    {
+      "id": "da-03",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "In a retail group, seven monthly reports were still built by hand in Excel and took a colleague two full days each month.",
+        "Task": "I was given the migration to Tableau, and I had to keep the figures identical while changing the tool.",
+        "Action": "I rebuilt each report, reconciled every total against the old file, and ran a short walkthrough for the people who used them.",
+        "Result": "Refresh went from two days to a scheduled run, and the old file matched the new one on all seven reports.",
+        "vague": "The monthly reports were manual and slow before.",
+        "exaggerated": "I automated the entire reporting function of the company.",
+        "no_data": "The reports refresh themselves now and people are used to it."
+      },
+      "zh": {
+        "Situation": "喺一間零售集團，七份月報仍然要人手用 Excel 做，同事每個月要花兩日。",
+        "Task": "我接手搬去 Tableau，換工具之餘數字要完全一樣。",
+        "Action": "我逐份重建，每個總數都同舊檔對一次，再同用報表嘅同事做一次簡短 walkthrough。",
+        "Result": "更新由兩日變成排程執行，七份報表新舊檔數字全部對得上。",
+        "vague": "之前月報要人手做，幾慢。",
+        "exaggerated": "我自動化咗公司成個報表部門。",
+        "no_data": "依家報表自己更新，同事都習慣咗。"
+      }
+    },
+    {
+      "id": "da-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Data analysis",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, sales and finance argued for a month about whether revenue should count a booking at order date or delivery date.",
+        "Task": "I had to settle one definition with both sides so that two teams stopped reporting different totals.",
+        "Action": "I ran a short workshop, wrote each option with its effect on two sample months, and asked both leads to sign one line.",
+        "Result": "We agreed on delivery date, and the two monthly packs reported the same revenue from the next month.",
+        "vague": "There was a disagreement about how to count revenue.",
+        "exaggerated": "I fixed the company's whole reporting argument in one meeting.",
+        "no_data": "In the end both teams used the same definition."
+      },
+      "zh": {
+        "Situation": "做咗四年，sales 同 finance 為收入應該按落單日定送貨日計，爭咗一個月。",
+        "Task": "我要同兩邊定一個定義，令兩隊唔再報唔同總數。",
+        "Action": "我開咗個短工作坊，把每個方案對兩個樣本月份嘅影響寫出嚟，再請兩位主管各簽一行字。",
+        "Result": "最後定咗按送貨日計，下個月起兩份月報嘅收入一致。",
+        "vague": "大家對點計收入有啲爭議。",
+        "exaggerated": "我一個會就解決咗公司成個報表爭議。",
+        "no_data": "最後兩隊都用同一個定義。"
+      }
+    },
+    {
+      "id": "da-05",
+      "seniority": "entry",
+      "competencies": [
+        "Databases",
+        "Problem solving",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "During my internship the stock report and the shop floor count disagreed by about two hundred items every week.",
+        "Task": "I was asked to find the gap before the audit, and to keep the check repeatable afterwards.",
+        "Action": "I wrote a reconciliation query that matched on item code and warehouse, then listed the unmatched rows for the store keeper to confirm.",
+        "Result": "Most of the gap came from items booked under two codes, and the weekly difference dropped below ten.",
+        "vague": "The stock figures did not match and it was confusing.",
+        "exaggerated": "I solved the company's inventory problem completely during my internship.",
+        "no_data": "The difference became much smaller after that."
+      },
+      "zh": {
+        "Situation": "實習時，庫存報表同舖面點數每星期差大約二百件。",
+        "Task": "我要喺 audit 之前找出差距，並令呢個檢查之後可以重複做。",
+        "Action": "我寫咗一條對帳 query，用 item code 加倉庫配對，再列出配唔到嘅行俾倉務同事確認。",
+        "Result": "大部分差距來自同一件貨有兩個 code，每星期差異之後跌到十件以內。",
+        "vague": "庫存數字對唔上，好混亂。",
+        "exaggerated": "我實習期間完全解決咗公司嘅庫存問題。",
+        "no_data": "之後差距細咗好多。"
+      }
+    },
+    {
+      "id": "da-06",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Databases",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "Five years in, six colleagues kept sending me the same four ad-hoc questions every week and each took about an hour.",
+        "Task": "I wanted the team to answer those questions without waiting for me, without losing control of the SQL.",
+        "Action": "I saved each query as a parameterised view, wrote a one-page guide with an example, and ran a lunchtime session.",
+        "Result": "Three of the four questions were answered in the team by the next month, which freed about four hours a week.",
+        "vague": "People kept asking me the same questions and it was quite busy.",
+        "exaggerated": "I turned the whole team into data analysts within a month.",
+        "no_data": "After the session, fewer people asked me and it saved time."
+      },
+      "zh": {
+        "Situation": "做咗五年，六位同事每星期都問同樣四個 ad-hoc 問題，每個要一個鐘。",
+        "Task": "我想團隊可以自己答，但 SQL 仍然受控。",
+        "Action": "我把每條 query 做成 parameterised view，寫一頁指南連例子，再開個午飯時間 session。",
+        "Result": "下個月起四個問題有三個團隊自己答到，每星期省返大約四個鐘。",
+        "vague": "同事不停問我同樣嘅問題，都幾忙。",
+        "exaggerated": "我一個月內令成個團隊變晒數據分析師。",
+        "no_data": "session 之後少咗人問我，慳返啲時間。"
+      }
+    },
+    {
+      "id": "da-07",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a bank's retail analytics team, the campaign list for a credit card promotion was pulled from three systems and 12 per cent of customers appeared twice.",
+        "Task": "I owned the list build, and I had to decide whether to delay the send or ship a list I could not defend.",
+        "Action": "I flagged the duplicate rate to the campaign owner, deduplicated on customer id with a documented rule, and gave them the count before and after.",
+        "Result": "The send went out one day later with no duplicate mailers, and the rule was reused for the next two campaigns.",
+        "vague": "The campaign list had some duplicates and we had to deal with it.",
+        "exaggerated": "I rebuilt the entire customer database for the bank.",
+        "no_data": "After the change the list was cleaner and the send went out."
+      },
+      "zh": {
+        "Situation": "喺銀行零售分析組，信用卡推廣嘅目標名單由三個系統抽出，有 12% 客人重複出現。",
+        "Task": "我負責建名單，要決定係延遲發送，定係交一份自己都解釋唔到嘅名單。",
+        "Action": "我向 campaign owner 報告重複率，用有記錄嘅規則按 customer id 去重，並交出前後數目。",
+        "Result": "發送遲一日，但冇客人收到兩封，而個規則之後兩個 campaign 都照用。",
+        "vague": "個名單有啲重複，我哋要處理。",
+        "exaggerated": "我重建咗銀行成個客戶資料庫。",
+        "no_data": "之後名單清潔咗，發送照出。"
+      }
+    },
+    {
+      "id": "da-08",
+      "seniority": "entry",
+      "competencies": [
+        "Databases",
+        "Data analysis",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first month at a logistics company, the weekly delivery-time report showed a district with an average of minus two hours.",
+        "Task": "I was asked to check the report before it went to the regional manager on Monday.",
+        "Action": "I traced the timestamps, found that overnight deliveries crossed midnight and were subtracted the wrong way, and recalculated with a date-aware difference.",
+        "Result": "The district average came back to a normal 38 hours, and I added a check for any negative duration in future runs.",
+        "vague": "One number in the report looked odd so I looked into it.",
+        "exaggerated": "I found a major flaw that the whole company had missed for years.",
+        "no_data": "After the fix the number looked normal and the report went out."
+      },
+      "zh": {
+        "Situation": "入職第一個月，物流公司每週送貨時間報表出現一個區平均係負兩小時。",
+        "Task": "我要喺星期一交去區域經理之前檢查清楚。",
+        "Action": "我追時間戳，發現通宵送貨跨過午夜，相減方向錯咗，於是用識別日期嘅差值重算。",
+        "Result": "該區平均變返正常嘅 38 小時，我仲加咗檢查，日後出現負時長就會報警。",
+        "vague": "報表有個數字怪怪，我去睇下。",
+        "exaggerated": "我發現咗一個公司多年都冇人見到嘅重大錯漏。",
+        "no_data": "修好之後數字正常，報表照出。"
+      }
+    },
+    {
+      "id": "da-09",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "Four years in, the sales director wanted a single funnel number for the board deck, but three teams counted a lead at different stages.",
+        "Task": "I had to produce one number I could defend, and get the three team leads to use the same definition.",
+        "Action": "I drew the three funnels side by side, showed the gap for two sample months, and proposed counting a lead at first contact.",
+        "Result": "The board deck carried one number, and the three leads agreed the definition in the same meeting.",
+        "vague": "The teams counted leads differently and it was confusing.",
+        "exaggerated": "I ended all reporting differences in the sales department.",
+        "no_data": "After the meeting everyone used the same number."
+      },
+      "zh": {
+        "Situation": "做咗四年，銷售總監想要一個漏斗數字放入董事會 deck，但三隊人喺唔同階段計 lead。",
+        "Task": "我要交一個解釋得到嘅數字，並令三位 team lead 用同一個定義。",
+        "Action": "我把三個漏斗並排畫出，展示兩個樣本月份嘅差距，再建議以首次接觸計 lead。",
+        "Result": "董事會 deck 只用一個數字，三位 lead 亦喺同一個會上同意定義。",
+        "vague": "各隊計 lead 方法唔同，好混亂。",
+        "exaggerated": "我令銷售部門所有報表差異消失。",
+        "no_data": "開完會之後大家都用同一個數。"
+      }
+    },
+    {
+      "id": "da-10",
+      "seniority": "entry",
+      "competencies": [
+        "Data analysis",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "As an intern at a retailer, I was asked how many loyalty members had not bought anything for a year.",
+        "Task": "It sounded like one query, but I had to check that the member and order tables joined on the right key first.",
+        "Action": "I sampled twenty members by hand, compared them with the query output, and fixed the join that was dropping members without orders.",
+        "Result": "The real figure was about twice my first answer, and the corrected query became the standard lapsed-member count.",
+        "vague": "I did a query and the answer needed some checking.",
+        "exaggerated": "I produced the definitive loyalty analysis for the whole company.",
+        "no_data": "After the correction the number was higher and the team used it."
+      },
+      "zh": {
+        "Situation": "喺零售商實習，有人問我有幾多會員一年冇買過嘢。",
+        "Task": "聽落只係一條 query，但我要先確認會員表同訂單表用啱 key join。",
+        "Action": "我手動抽廿個會員核對 query 結果，發現個 join 漏咗冇訂單嘅會員，然後修好。",
+        "Result": "真實數字大約係我第一次答案嘅兩倍，修正後嘅 query 成為標準嘅流失會員計法。",
+        "vague": "我跑咗條 query，個答案要再檢查。",
+        "exaggerated": "我做咗公司權威嘅會員分析。",
+        "no_data": "修正之後數字高咗，團隊有採用。"
+      }
+    },
+    {
+      "id": "da-11",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Data analysis",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "A shop manager insisted his branch was underperforming because of the location, and asked me to confirm it.",
+        "Task": "I had to answer honestly, which meant checking whether the numbers supported his story before I agreed with him.",
+        "Action": "I compared his branch with three similar ones by footfall band, and found his conversion rate was the outlier, not the traffic.",
+        "Result": "He stopped blaming the location and asked for help with staff rostering instead.",
+        "vague": "The manager had a theory about why his branch was weak.",
+        "exaggerated": "I proved the manager completely wrong in front of his boss.",
+        "no_data": "After the comparison the conversation moved on to something more useful."
+      },
+      "zh": {
+        "Situation": "有位店長堅持佢間分店表現差係因為位置，叫我幫佢確認。",
+        "Task": "我要老實答，即係要先睇數字有冇支持佢嘅講法，然後才同意。",
+        "Action": "我按人流級別同三間類似分店比較，發現問題係佢嘅轉換率，而唔係人流。",
+        "Result": "佢唔再怪位置，反而問我幫手睇排班。",
+        "vague": "個店長對分店表現有自己一套講法。",
+        "exaggerated": "我喺佢老闆面前證明佢完全錯。",
+        "no_data": "比較完之後，討論轉去更有用嘅方向。"
+      }
+    },
+    {
+      "id": "da-12",
+      "seniority": "mid",
+      "competencies": [
+        "Data analysis",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Five years in at a hospital group, the management wanted a monthly report on clinic waiting time but no team owned the source data.",
+        "Task": "I agreed to build the first version, on the condition that we wrote down who owns each field.",
+        "Action": "I met the clinic supervisors, mapped each field to a system, and marked the four fields nobody could confirm as unknown.",
+        "Result": "The report shipped with four fields marked unknown instead of invented, and the supervisors fixed two of them the next month.",
+        "vague": "We needed a waiting-time report and the data was unclear.",
+        "exaggerated": "I delivered a complete clinical analytics platform by myself.",
+        "no_data": "The report went out and the supervisors gradually filled the gaps."
+      },
+      "zh": {
+        "Situation": "喺一個醫療集團做咗五年，管理層想每月有診所等候時間報告，但冇團隊擁有來源數據。",
+        "Task": "我同意做第一版，條件係要寫清楚每個欄位邊個負責。",
+        "Action": "我同診所主管開會，把每個欄位對應到一個系統，四個冇人確認得到嘅欄位就標明 unknown。",
+        "Result": "報告帶住四個 unknown 出街而唔係作數，主管下個月補返其中兩個。",
+        "vague": "我哋要一份等候時間報告，但數據唔清楚。",
+        "exaggerated": "我一個人交咗一個完整嘅臨床分析平台。",
+        "no_data": "報告出咗，主管慢慢補返啲缺口。"
+      }
+    }
+  ]
+}

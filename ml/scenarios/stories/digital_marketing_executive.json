@@ -1,0 +1,325 @@
+{
+  "role_family": "digital_marketing_executive",
+  "stories": [
+    {
+      "id": "mk-01",
+      "seniority": "entry",
+      "competencies": [
+        "Data analysis",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first marketing role, a Meta campaign for a skincare client spent three thousand dollars with a click rate of 0.4 per cent.",
+        "Task": "I had to find out why before asking for more budget, and report it to the brand manager honestly.",
+        "Action": "I compared the ad sets by placement, found two thirds of the spend went to a placement with the worst rate, and shifted it to the two that worked.",
+        "Result": "The click rate rose to 1.1 per cent in the next week without extra spend, and the brand manager approved a second month.",
+        "vague": "The campaign was not doing well and we changed some things.",
+        "exaggerated": "I tripled the brand's revenue in one week.",
+        "no_data": "After the changes the campaign did better."
+      },
+      "zh": {
+        "Situation": "第一份 marketing 工作，一個護膚品牌嘅 Meta campaign 花了三千元，click rate 只有 0.4%。",
+        "Task": "我要喺要求加預算之前找出原因，並老實向品牌主管報告。",
+        "Action": "我按版位比較 ad set，發現三分二花費去咗表現最差嘅版位，於是轉去表現好嘅兩個。",
+        "Result": "下星期 click rate 升到 1.1%，冇加預算，品牌主管批准做多一個月。",
+        "vague": "個 campaign 表現麻麻，我哋改咗啲嘢。",
+        "exaggerated": "我一個星期令品牌收入翻三倍。",
+        "no_data": "改完之後 campaign 好啲。"
+      }
+    },
+    {
+      "id": "mk-02",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Two years in, the Looker Studio dashboard showed ROAS dropping for a retail client, and the sales lead wanted to pause everything.",
+        "Task": "I had to check whether the drop was real before anyone switched off a working campaign.",
+        "Action": "I checked the tracking tag, found a duplicated purchase event inflating the old figures, and rebuilt the report without it.",
+        "Result": "The corrected ROAS was still above target, and the campaign kept running through the sale period.",
+        "vague": "ROAS looked like it dropped and we discussed pausing.",
+        "exaggerated": "I saved the client a large amount of wasted spend.",
+        "no_data": "After checking, the campaign carried on."
+      },
+      "zh": {
+        "Situation": "做咗兩年，Looker Studio dashboard 顯示一個零售客戶 ROAS 下跌，銷售 lead 想全部暫停。",
+        "Task": "我要喺有人關掉仍然有效嘅 campaign 之前，確認跌幅係唔係真。",
+        "Action": "我查 tracking tag，發現一個重複嘅 purchase event 令舊數字虛高，於是重做報表。",
+        "Result": "修正後 ROAS 仍然高過目標，campaign 喺特賣期繼續跑。",
+        "vague": "ROAS 睇落跌咗，我哋討論要唔要暫停。",
+        "exaggerated": "我幫客戶慳咗一大筆浪費嘅開支。",
+        "no_data": "查完之後 campaign 繼續。"
+      }
+    },
+    {
+      "id": "mk-03",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "The KOL agency missed the content deadline twice for a launch, and our own designer had already built the landing page around their posts.",
+        "Task": "I had to keep the launch date and keep the agency relationship, without pretending the delay was fine.",
+        "Action": "I called the account manager, agreed two posts for the launch week and the rest a week later, and told our designer the new order.",
+        "Result": "The launch went out on the original date, and the agency delivered the remaining posts with a written schedule.",
+        "vague": "The agency was late with content.",
+        "exaggerated": "I fixed the agency's whole delivery process.",
+        "no_data": "In the end we launched on the original date."
+      },
+      "zh": {
+        "Situation": "KOL agency 為一個發佈會兩次漏 deadline，而我哋設計師已經按佢哋嘅帖文做好 landing page。",
+        "Task": "我要守住發佈日期，同時保住 agency 關係，但唔可以扮延誤冇問題。",
+        "Action": "我打電話畀 account manager，議定發佈週先出兩則，其餘遲一星期，再通知設計師新次序。",
+        "Result": "發佈會原定日期出街，agency 亦交咗書面時間表出餘下帖文。",
+        "vague": "agency 交內容遲。",
+        "exaggerated": "我修好咗 agency 成個交付流程。",
+        "no_data": "最後發佈會照原定日期出。"
+      }
+    },
+    {
+      "id": "mk-04",
+      "seniority": "mid",
+      "competencies": [
+        "Data analysis",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, an EDM to sixty thousand contacts had an open rate of eight per cent and the sales team said email was dead.",
+        "Task": "I had to test one hypothesis at a time, and I had only two sends before the quarter ended.",
+        "Action": "I split the list by last purchase recency, sent the same offer with two subject lines, and compared opens within each group.",
+        "Result": "The recent-buyer group opened at twenty-two per cent, and we cut the send list to that group for the next quarter.",
+        "vague": "Email performance was poor and people wanted to stop it.",
+        "exaggerated": "I revived the company's entire email channel.",
+        "no_data": "After the test we changed how we sent email."
+      },
+      "zh": {
+        "Situation": "做咗四年，一封寄畀六萬聯絡人嘅 EDM 開信率只有 8%，銷售團隊話 email 已經死。",
+        "Task": "我要一次只測一個假設，而季尾前只有兩次發送機會。",
+        "Action": "我按最近購買時間分組，用同一個優惠配兩個主題行，再喺每組內比較開信率。",
+        "Result": "近期買家組開信率 22%，下一季我們把發送名單收窄到呢一組。",
+        "vague": "email 表現差，有人想停。",
+        "exaggerated": "我令公司成個 email 渠道復活。",
+        "no_data": "測完之後我哋改咗發送方式。"
+      }
+    },
+    {
+      "id": "mk-05",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "In my internship, a colleague wanted to boost a social post the same afternoon with a budget we had not received approval for.",
+        "Task": "I had to slow it down without making her look careless in front of the team.",
+        "Action": "I asked what the post was meant to achieve, then suggested waiting one day for the approval email.",
+        "Result": "Approval came the next morning, and the boosted post hit its target cost per click in two days.",
+        "vague": "There was a question about whether we could boost a post.",
+        "exaggerated": "I prevented an unauthorised spend that would have caused trouble.",
+        "no_data": "In the end we waited and boosted the post."
+      },
+      "zh": {
+        "Situation": "實習時有位同事想當日下午就 boost 一個帖文，用一筆未批嘅預算。",
+        "Task": "我要拖住，但唔想令佢喺團隊面前似做錯事。",
+        "Action": "我問清楚個帖文想達到咩，再建議等一日拿批核電郵。",
+        "Result": "第二朝批核到，boost 嘅帖文兩日內達到目標 CPC。",
+        "vague": "有人問可唔可以 boost 個帖。",
+        "exaggerated": "我阻止咗一次會出事嘅未授權開支。",
+        "no_data": "最後等咗一日再 boost。"
+      }
+    },
+    {
+      "id": "mk-06",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Data analysis",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "A seasonal promotion needed five social posts, and the product team kept changing the offer description three days before launch.",
+        "Task": "I had to freeze one message so the design and copy could be finished.",
+        "Action": "I wrote the offer in one sentence, sent it to product and design together, and asked for a yes or a change by noon.",
+        "Result": "Everyone approved the sentence by noon, and the five posts shipped without a rewrite.",
+        "vague": "The offer description kept changing before launch.",
+        "exaggerated": "I ended all last-minute changes in the marketing team.",
+        "no_data": "After the freeze the posts went out on time."
+      },
+      "zh": {
+        "Situation": "一個季節性推廣要五則社交帖文，而產品團隊喺上線前三日不停改優惠描述。",
+        "Task": "我要凍結一個講法，令設計同文案做得完。",
+        "Action": "我把優惠寫成一句，同時發畀產品同設計，要求中午前答 yes 或提出改動。",
+        "Result": "中午前全部都同意嗰句，五則帖文冇重寫就出咗。",
+        "vague": "上線前優惠描述不停改。",
+        "exaggerated": "我終結咗 marketing 團隊所有臨尾改動。",
+        "no_data": "凍結之後帖文準時出。"
+      }
+    },
+    {
+      "id": "mk-07",
+      "seniority": "mid",
+      "competencies": [
+        "Data analysis",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Five years in, our agency's biggest client wanted a report on why their cost per acquisition rose while their own sales were flat.",
+        "Task": "I had to give an answer that was useful even though part of the story was outside our channels.",
+        "Action": "I split conversions by channel and device, showed the rise was concentrated on one device, and asked the client to check their checkout on it.",
+        "Result": "Their checkout broke on that device, and after the fix their CPA returned to the earlier level.",
+        "vague": "Their CPA went up and we looked into the channels.",
+        "exaggerated": "I found the client's site was completely broken.",
+        "no_data": "After the fix the CPA came back down."
+      },
+      "zh": {
+        "Situation": "做咗五年，agency 最大客戶想知點解 CPA 升但佢哋自己銷量冇升。",
+        "Task": "我要畀一個有用嘅答案，即使部分原因喺我哋渠道以外。",
+        "Action": "我按渠道同裝置拆分轉換，顯示升幅集中喺一個裝置，再請客戶檢查該裝置上嘅結帳流程。",
+        "Result": "該裝置上結帳壞咗，修好之後 CPA 返到之前水平。",
+        "vague": "CPA 升咗，我哋查渠道。",
+        "exaggerated": "我發現客戶個網站完全壞咗。",
+        "no_data": "修好之後 CPA 回落。"
+      }
+    },
+    {
+      "id": "mk-08",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first job, the weekly campaign report had fourteen metrics and the brand manager only read the first line.",
+        "Task": "I wanted a report that led with the one number that decided anything.",
+        "Action": "I asked her which number would change her next action, then put that number, its change and one reason at the top.",
+        "Result": "She started replying to the report with decisions, and two lower metrics were dropped entirely.",
+        "vague": "The report had too many numbers in it.",
+        "exaggerated": "I rebuilt the company's whole reporting standard.",
+        "no_data": "After the change she replied to the reports."
+      },
+      "zh": {
+        "Situation": "第一份工，每週 campaign 報告有十四個指標，而品牌主管只睇第一行。",
+        "Task": "我想報告以一個真正影響決定嘅數字為主。",
+        "Action": "我問佢邊個數字會改變佢下一個行動，再把該數字、變化同一個原因放喺最上面。",
+        "Result": "佢開始回覆報告並作出決定，兩個較低層指標整個刪走。",
+        "vague": "報告數字太多。",
+        "exaggerated": "我重建咗公司成個報告標準。",
+        "no_data": "改完之後佢會回覆報告。"
+      }
+    },
+    {
+      "id": "mk-09",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Two brands in the same group wanted the same Instagram slot in the same week, and our small team could only produce one set of assets.",
+        "Task": "I had to sequence them and keep both brand managers informed.",
+        "Action": "I checked each brand's stock levels, found one could wait a week, and wrote a short note to both with the reason and the new dates.",
+        "Result": "Both brands accepted the order, and neither lost their planned promotion window.",
+        "vague": "Two brands wanted the same slot.",
+        "exaggerated": "I resolved a conflict between two major brands.",
+        "no_data": "In the end both brands posted in turn."
+      },
+      "zh": {
+        "Situation": "同一個集團兩個品牌同一星期想要同一個 Instagram 檔期，而我們細團隊只做得出一套素材。",
+        "Task": "我要排先後，並令兩位品牌主管都知情。",
+        "Action": "我查每個品牌嘅庫存，發現其中一個可以等一星期，於是寫短訊向兩邊講原因同新日期。",
+        "Result": "兩個品牌都接受次序，亦冇人錯過原定推廣窗口。",
+        "vague": "兩個品牌想要同一個檔期。",
+        "exaggerated": "我解決咗兩個大品牌之間嘅衝突。",
+        "no_data": "最後兩個品牌輪住出。"
+      }
+    },
+    {
+      "id": "mk-10",
+      "seniority": "mid",
+      "competencies": [
+        "Data analysis",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Six years in, a client wanted to double the budget on a campaign with a cost per acquisition already above their target.",
+        "Task": "I had to give a recommendation they could act on, which meant saying no to the easy answer.",
+        "Action": "I modelled the last four weeks at double budget, showed the CPA would rise further, and proposed a smaller test on a new audience instead.",
+        "Result": "The client took the smaller test, and the new audience reached their target CPA within ten days.",
+        "vague": "The client wanted to spend more on a campaign.",
+        "exaggerated": "I stopped the client from wasting a large budget.",
+        "no_data": "In the end they tried a different audience and it worked better."
+      },
+      "zh": {
+        "Situation": "做咗六年，客戶想在 CPA 已超出目標嘅 campaign 上加倍預算。",
+        "Task": "我要畀一個佢可以行動嘅建議，即係要拒絕最容易嘅答案。",
+        "Action": "我用過去四星期模擬加倍預算嘅效果，顯示 CPA 會再升，再建議改為喺新受眾做細規模測試。",
+        "Result": "客戶採用細測試，新受眾十日內達到目標 CPA。",
+        "vague": "客戶想喺一個 campaign 花更多錢。",
+        "exaggerated": "我阻止客戶浪費一大筆預算。",
+        "no_data": "最後佢哋試另一個受眾，效果好啲。"
+      }
+    },
+    {
+      "id": "mk-11",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I was asked to write bilingual copy for a campaign and the Chinese and English versions had different offers.",
+        "Task": "I had to catch the mismatch before publication, without holding up the schedule.",
+        "Action": "I put both versions side by side, listed the two differences, and asked the product owner which offer was correct before rewriting.",
+        "Result": "One version had an old discount, and both were corrected the same afternoon.",
+        "vague": "The two language versions were not the same.",
+        "exaggerated": "I prevented a serious legal problem for the client.",
+        "no_data": "In the end both versions were corrected."
+      },
+      "zh": {
+        "Situation": "做半年合約時，我要為一個 campaign 寫中英雙語文案，而兩個版本優惠唔同。",
+        "Task": "我要喺發佈前發現落差，但唔可以拖住時間表。",
+        "Action": "我把兩版並排，列出兩處差異，再問產品負責人邊個優惠才對，然後重寫。",
+        "Result": "其中一版用咗舊折扣，兩版同一日下午改正。",
+        "vague": "兩個語言版本唔一樣。",
+        "exaggerated": "我幫客戶避免咗一個嚴重法律問題。",
+        "no_data": "最後兩版都改正。"
+      }
+    },
+    {
+      "id": "mk-12",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "A launch video was due Friday and the designer was on leave from Wednesday with the file half finished.",
+        "Task": "I had to get it finished without asking her to work on leave.",
+        "Action": "I asked her for a five-minute handover on Tuesday, found the remaining work was two captions, and did them from the brand guide myself.",
+        "Result": "The video shipped Friday on brand, and the handover note was added to our launch checklist.",
+        "vague": "The video was nearly finished when the designer went on leave.",
+        "exaggerated": "I produced the whole launch video by myself.",
+        "no_data": "In the end the video went out on Friday."
+      },
+      "zh": {
+        "Situation": "一段發佈影片星期五要交，而設計師星期三開始放假，個檔做咗一半。",
+        "Task": "我要令佢完成，但唔可以叫佢放假期間做嘢。",
+        "Action": "我星期二請佢用五分鐘交低，發現只剩兩個字幕，於是按品牌指引自己做。",
+        "Result": "影片星期五準時出而且合乎品牌，交低嘅備註亦加入咗我哋發佈 checklist。",
+        "vague": "設計師放假嗰時影片差唔多完成。",
+        "exaggerated": "我一個人做咗成段發佈影片。",
+        "no_data": "最後影片星期五出咗。"
+      }
+    }
+  ]
+}

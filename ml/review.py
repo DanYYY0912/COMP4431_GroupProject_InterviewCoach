@@ -246,12 +246,14 @@ def record_decision(row, reviewer, decision, directory, reason=""):
     return record
 
 
-def merge(rows, reviews_dir, edits_dir, output):
+def merge(rows, reviews_dir, edits_dir, output, drop_rejected=False):
     rows = apply_edits(rows, edits_dir)
     records = load_records(reviews_dir)
     known = {row["id"] for row in rows}
     if any(r["example_id"] not in known for r in records):
         raise ValueError("Review log contains IDs absent from the input")
+    kept = []
+    dropped = []
     for row in rows:
         row["reviews"] = [
             {k: v for k, v in r.items() if k != "example_id"}
@@ -259,13 +261,17 @@ def merge(rows, reviews_dir, edits_dir, output):
         ]
         if errors := automatic_checks(row):
             raise ValueError(f"{row['id']}: " + "; ".join(errors))
+        if drop_rejected and any(r["decision"] == "rejected" for r in row["reviews"]):
+            dropped.append(row)
+            continue
+        kept.append(row)
     atomic_write(
         output,
         "".join(
-            json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows
+            json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in kept
         ),
     )
-    return rows
+    return kept
 
 
 def status(rows, records):
@@ -316,9 +322,12 @@ def evidence_spans(output):
             yield from evidence_spans(value)
 
 
-def display_example(row):
+def display_example(row, compact=False):
     user = json.loads(row["messages"][1]["content"])
     assistant = json.loads(row["messages"][-1]["content"])
+    if compact:
+        _display_compact(row, user, assistant)
+        return
     print(f"\n{row['id']} | task={row['task']} | language={row['language']}")
     shown = copy.deepcopy(user)
     for key in ("quoted_sources", "job_sources"):
@@ -350,6 +359,70 @@ def display_example(row):
     )
 
 
+def _display_compact(row, user, assistant):
+    """Condensed view: one screen, ~5 seconds per row. Same gates, fewer characters."""
+    head = [row["id"], row["task"], row["language"]]
+    if row.get("role_family"):
+        head.append(row["role_family"])
+    if row.get("seniority"):
+        head.append(row["seniority"])
+    if row.get("missing_star_element"):
+        head.append(f"missing={row['missing_star_element']}")
+    if row.get("double_review_required"):
+        head.append("2nd review")
+    print("\n" + " | ".join(head))
+
+    previous = user.get("previous_answer") or {}
+    answers = user.get("quoted_answer_excerpts") or [
+        previous.get("transcript", user.get("answer", ""))
+    ]
+    answers = [a for a in answers if a]
+    if answers:
+        print("CANDIDATE")
+        for answer in answers:
+            print("  " + (answer[:400] + (" …" if len(answer) > 400 else "")))
+
+    if row["task"] in ("question", "safety"):
+        print("TARGET QUESTION")
+        print(f"  {assistant.get('interviewer_text', '')}")
+        print(
+            "  type="
+            + str(assistant.get("question_type"))
+            + " | comps="
+            + ", ".join(assistant.get("targeted_competencies") or [])
+            + " | cites="
+            + str(len(assistant.get("citation_ids") or []))
+        )
+        reason = assistant.get("adaptive_follow_up_reason")
+        if reason:
+            print("  why: " + reason[:200])
+    else:
+        print("TARGET REPORT")
+        for item in assistant.get("star") or []:
+            mark = "P" if item.get("present") else "-"
+            ev = (item.get("evidence") or "").replace("\n", " ")
+            print(f"  [{mark}] {item.get('element'):9s} {ev[:110]}")
+            if item.get("coaching"):
+                print(f"                  coaching: {item['coaching'][:110]}")
+        if assistant.get("competencies"):
+            print(
+                "  comps: "
+                + "; ".join(
+                    f"{c.get('name')} ← {(c.get('evidence') or '')[:50]}"
+                    for c in assistant["competencies"]
+                )
+            )
+        if assistant.get("prioritized_improvement"):
+            print("  improve: " + assistant["prioritized_improvement"][:160])
+
+    errors = automatic_checks(row)
+    print(
+        "CHECKS: "
+        + ("; ".join(errors) if errors else "pass (human judgement still required)")
+    )
+    print("[a]pprove  [r]eject  [e]dit  [s]kip  [q]uit")
+
+
 def edit_in_editor(row, directory):
     editor = os.environ.get("EDITOR")
     if not editor or not shlex.split(editor):
@@ -368,55 +441,156 @@ def edit_in_editor(row, directory):
         return save_edit(row, json.loads(path.read_text(encoding="utf-8")), directory)
 
 
+def _review_single(row, args, reviewer):
+    """One row, one decision. Returns 'done', 'skip' or 'quit'."""
+    while True:
+        display_example(row, compact=getattr(args, "compact", False))
+        try:
+            command = (
+                input("[a] approve [r] reject [e] edit [s] skip [q] quit: ")
+                .strip()
+                .lower()
+            )
+            if command == "q":
+                return "quit"
+            if command == "s":
+                return "skip"
+            if command == "e":
+                edit_in_editor(row, args.edits_dir)
+                fresh = next(
+                    r
+                    for r in apply_edits(read_jsonl(args.input), args.edits_dir)
+                    if r["id"] == row["id"]
+                )
+                row = fresh
+                continue
+            if command in ("a", "r"):
+                reason = (
+                    input("Rejection reason (required): ").strip()
+                    if command == "r"
+                    else ""
+                )
+                fresh = next(
+                    r
+                    for r in apply_edits(read_jsonl(args.input), args.edits_dir)
+                    if r["id"] == row["id"]
+                )
+                if fresh["content_sha256"] != row["content_sha256"]:
+                    raise ValueError(
+                        "Content changed while reviewing; review the new target first"
+                    )
+                record_decision(
+                    row,
+                    reviewer,
+                    "approved" if command == "a" else "rejected",
+                    args.reviews_dir,
+                    reason,
+                )
+                return "done"
+        except (ValueError, OSError, subprocess.CalledProcessError) as exc:
+            print(f"Not saved: {exc}")
+
+
+def _start_batch(args, reviewer, ids, size):
+    """Show `size` rows at once, then one confirmation for the batch.
+
+    The reviewer still decides; this only removes the per-row prompt. Confirmation must
+    retype the batch size, so a stray Enter cannot approve anything. Rows whose content
+    changed under an edit are skipped instead of being silently approved.
+    """
+    index = 0
+    while index < len(ids):
+        rows = apply_edits(read_jsonl(args.input), args.edits_dir)
+        records = load_records(args.reviews_dir)
+        by_id = {r["id"]: r for r in rows}
+        batch, cursor = [], index
+        while cursor < len(ids) and len(batch) < size:
+            row = by_id[ids[cursor]]
+            cursor += 1
+            if eligible(row, records, reviewer, args.second, args.revisit):
+                batch.append(row)
+        if not batch:
+            index = cursor
+            continue
+        print(f"\n===== BATCH  rows {index + 1}-{cursor} of {len(ids)}: {len(batch)} to approve")
+        for row in batch:
+            display_example(row, compact=True)
+        answer = input(
+            f"Approve all {len(batch)}? [y] yes / [n] reject all / [o]ne-by-one "
+            f"/ [s]kip batch / [q]uit  (or type {len(batch)}): "
+        ).strip().lower()
+        if answer == "q":
+            return
+        if answer == "s":
+            index = cursor
+            continue
+        if answer == "n":
+            reason = input("Shared rejection reason (required): ").strip()
+            if not reason:
+                print("A rejection reason is required - nothing saved for this batch.")
+                continue
+            confirm = input(f"Type {len(batch)} to confirm rejecting {len(batch)}: ").strip()
+            if confirm != str(len(batch)):
+                print("Not confirmed - nothing saved for this batch.")
+                continue
+            saved = 0
+            for row in batch:
+                fresh = next(
+                    r
+                    for r in apply_edits(read_jsonl(args.input), args.edits_dir)
+                    if r["id"] == row["id"]
+                )
+                if fresh["content_sha256"] != row["content_sha256"]:
+                    print(f"{row['id']}: content changed while reviewing; skipped")
+                    continue
+                record_decision(row, reviewer, "rejected", args.reviews_dir, reason)
+                saved += 1
+            print(f"rejected {saved}/{len(batch)}")
+            index = cursor
+            continue
+        if answer == "o":
+            for row in batch:
+                outcome = _review_single(row, args, reviewer)
+                if outcome == "quit":
+                    return
+            index = cursor
+            continue
+        if answer not in (str(len(batch)), "y"):
+            print("Not confirmed - nothing saved for this batch. Showing it again.")
+            continue
+        saved = 0
+        for row in batch:
+            fresh = next(
+                r
+                for r in apply_edits(read_jsonl(args.input), args.edits_dir)
+                if r["id"] == row["id"]
+            )
+            if fresh["content_sha256"] != row["content_sha256"]:
+                print(f"{row['id']}: content changed while reviewing; skipped")
+                continue
+            record_decision(row, reviewer, "approved", args.reviews_dir, "")
+            saved += 1
+        print(f"approved {saved}/{len(batch)}")
+        index = cursor
+
+
 def start(args):
     reviewer = reviewer_name(args.reviewer)
-    ids = {r["id"] for r in shard_rows(read_jsonl(args.input), args.shard)}
-    for example_id in [r["id"] for r in read_jsonl(args.input) if r["id"] in ids]:
+    ids = [r["id"] for r in shard_rows(read_jsonl(args.input), args.shard)]
+    batch = int(getattr(args, "batch", 0) or 0)
+    if batch > 1:
+        return _start_batch(args, reviewer, ids, batch)
+    for example_id in ids:
         while True:
             rows = apply_edits(read_jsonl(args.input), args.edits_dir)
             row = next(r for r in rows if r["id"] == example_id)
             records = load_records(args.reviews_dir)
             if not eligible(row, records, reviewer, args.second, args.revisit):
                 break
-            display_example(row)
-            try:
-                command = (
-                    input("[a] approve [r] reject [e] edit [s] skip [q] quit: ")
-                    .strip()
-                    .lower()
-                )
-                if command == "q":
-                    return
-                if command == "s":
-                    break
-                if command == "e":
-                    edit_in_editor(row, args.edits_dir)
-                    continue
-                if command in ("a", "r"):
-                    reason = (
-                        input("Rejection reason (required): ").strip()
-                        if command == "r"
-                        else ""
-                    )
-                    fresh = next(
-                        r
-                        for r in apply_edits(read_jsonl(args.input), args.edits_dir)
-                        if r["id"] == example_id
-                    )
-                    if fresh["content_sha256"] != row["content_sha256"]:
-                        raise ValueError(
-                            "Content changed while reviewing; review the new target first"
-                        )
-                    record_decision(
-                        row,
-                        reviewer,
-                        "approved" if command == "a" else "rejected",
-                        args.reviews_dir,
-                        reason,
-                    )
-                    break
-            except (ValueError, OSError, subprocess.CalledProcessError) as exc:
-                print(f"Not saved: {exc}")
+            outcome = _review_single(row, args, reviewer)
+            if outcome == "quit":
+                return
+            break
 
 
 def main():
@@ -436,8 +610,25 @@ def main():
             p.add_argument(
                 "--revisit", action="store_true", help="Revisit own rejected examples"
             )
+            p.add_argument(
+                "--compact",
+                action="store_true",
+                help="Condensed one-screen view (~5s per row) instead of the full JSON",
+            )
+            p.add_argument(
+                "--batch",
+                type=int,
+                default=0,
+                metavar="N",
+                help="Show N rows at once and confirm them together (N must be retyped)",
+            )
         if command == "merge":
             p.add_argument("--output", type=Path)
+            p.add_argument(
+                "--drop-rejected",
+                action="store_true",
+                help="Omit rows any reviewer rejected, so rejected examples never reach training",
+            )
     args = parser.parse_args()
     args.reviews_dir = args.reviews_dir or args.input.parent / "reviews"
     args.edits_dir = args.edits_dir or args.input.parent / "edits"
@@ -445,14 +636,19 @@ def main():
         if args.command == "start":
             start(args)
         elif args.command == "merge":
-            rows = merge(
-                read_jsonl(args.input),
+            original = read_jsonl(args.input)
+            kept = merge(
+                original,
                 args.reviews_dir,
                 args.edits_dir,
                 args.output or args.input,
+                drop_rejected=getattr(args, "drop_rejected", False),
             )
+            dropped = len(original) - len(kept)
             print(
-                f"Merged {len(rows)} examples; run ml.dataset validate --require-review --check-duplicates next."
+                f"Merged {len(kept)} examples"
+                + (f", dropped {dropped} rejected" if dropped else "")
+                + "; run ml.dataset validate --require-review --check-duplicates next."
             )
         else:
             rows = apply_edits(read_jsonl(args.input), args.edits_dir)

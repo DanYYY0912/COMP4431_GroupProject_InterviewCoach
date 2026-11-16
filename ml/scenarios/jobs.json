@@ -1,0 +1,275 @@
+{
+  "_note": "All job descriptions below are fictional and written for this project: no real employer, person, address or brand is named, and no text is copied from any posting. They exist only so the generator can reproduce the app's real ingestion + lexical retrieval path. Role families, competency mix and seniority mix follow the Hong Kong market evidence recorded in docs/DATASET.md.",
+  "families": [
+    {
+      "role_family": "backend_software_engineer",
+      "market_basis": "Largest HK technology specialisation: Java 297, .NET 61, C# 33 postings (May-Jun 2024 sample); middle-level and 1-3 years dominate.",
+      "jobs": [
+        {
+          "id": "jd-backend-01",
+          "language": "en-HK",
+          "title": "Graduate Backend Software Engineer",
+          "text": "Graduate Backend Software Engineer\nEntry level. You will join a small engineering team building internal transaction services with Java and Spring Boot, plus some legacy .NET services.\n- Build and maintain REST API endpoints, and keep the database schema consistent with the service contract.\n- Write unit tests and integration tests for each endpoint before release.\n- Debug production issues on the day they are reported, and join the weekly rotation for release support.\n- Work with the team on code review, and keep the decision notes in the ticket.\nRequirements: one year or less of hands-on coding, a computing degree or equivalent, and the ability to work in a team. SQL is required."
+        },
+        {
+          "id": "jd-backend-02",
+          "language": "zh-HK",
+          "title": "見習後端軟件工程師",
+          "text": "見習後端軟件工程師\n入門級職位，用 Java 同 Spring Boot 開發內部交易服務。\n－ 開發同維護 REST API，確保資料庫結構同介面一致。\n－ 每次發佈前寫單元測試。\n－ 收到問題當日除錯，同團隊輪流支援發佈。\n要求：一年或以下編程經驗，識 SQL。"
+        }
+      ]
+    },
+    {
+      "role_family": "web_developer",
+      "market_basis": "Web Development 35 postings, plus front-end work inside other categories; junior full-stack is the common entry route.",
+      "jobs": [
+        {
+          "id": "jd-web-01",
+          "language": "en-HK",
+          "title": "Junior Web Developer",
+          "text": "Junior Web Developer\nWe are a small design studio that builds marketing sites for local shops.\n- Build responsive pages with a modern JavaScript framework, and keep the component API simple for other developers.\n- Write automated tests for the enquiry and order forms before each release.\n- Work with the designer in a two-person team, and communicate changes clearly at the weekly review.\n- Explain technical limits to non-technical clients in plain language.\nRequirements: a portfolio of at least two pages you built yourself. Fresh graduates and one year of experience are both welcome."
+        },
+        {
+          "id": "jd-web-02",
+          "language": "zh-HK",
+          "title": "初級網頁開發員",
+          "text": "初級網頁開發員\n幫本地小店做宣傳網站嘅小型設計工作室。\n－ 用現代框架做響應式頁面，保持組件 API 簡單。\n－ 每次發佈前為表格寫自動測試。\n－ 同設計師兩人團隊合作，每週評審時清楚溝通改動。\n要求：有兩頁自己整嘅作品，應屆畢業生或一年經驗。"
+        }
+      ]
+    },
+    {
+      "role_family": "data_analyst_bi",
+      "market_basis": "data analyst 17 + business intelligence analyst 3 postings; SQL 88%, Excel 51%, Tableau 33%, Power BI 25% skill frequency across 349 HK data postings.",
+      "jobs": [
+        {
+          "id": "jd-da-01",
+          "language": "en-HK",
+          "title": "Junior Data Analyst (Business Intelligence)",
+          "text": "Junior Data Analyst (Business Intelligence)\nYou will support the commercial side of the business with weekly sales and stock reporting.\n- Write SQL to pull figures from the warehouse, and check that row counts reconcile with the source system.\n- Maintain the Tableau and Power BI dashboards that business users open every Monday morning.\n- Turn a vague request into a clear question, then present the finding to the stakeholder who asked for it.\n- Investigate why a number moved before you report it, and say what you checked.\n- Treat an unclear reporting request as a problem to clarify, not something to guess.\nRequirements: strong Excel, one year of SQL practice, and an eye for detail."
+        },
+        {
+          "id": "jd-da-02",
+          "language": "zh-HK",
+          "title": "初級數據分析員（商業智能）",
+          "text": "初級數據分析員（商業智能）\n支援業務部門做每週銷售同庫存報表。\n－ 用 SQL 從倉庫取數，核對筆數一致。\n－ 維護 Tableau 同 Power BI dashboard。\n－ 向 stakeholder 匯報結果；要求唔清就當係要解決嘅問題。\n要求：Excel 熟練，一年 SQL 經驗。"
+        }
+      ]
+    },
+    {
+      "role_family": "data_engineer_etl",
+      "market_basis": "data engineer 11 postings; ETL 25%, Spark 30, Hadoop 29, Airflow 12 keyword hits; SQL 88% and Python 52% baseline.",
+      "jobs": [
+        {
+          "id": "jd-de-01",
+          "language": "en-HK",
+          "title": "Junior Data Engineer",
+          "text": "Junior Data Engineer\n- Build and maintain ETL pipelines that move data from vendor file drops into the analytics warehouse.\n- Write Python jobs orchestrated with Airflow, and keep each load idempotent so a rerun does not duplicate rows.\n- Model tables in SQL so that analysts can join them without guessing keys.\n- Expose a small internal API for the reporting group to request a refresh.\nRequirements: Python, SQL, and one year of experience with batch pipelines. Exposure to Spark or Hadoop is a plus."
+        },
+        {
+          "id": "jd-de-02",
+          "language": "zh-HK",
+          "title": "初級數據工程師",
+          "text": "初級數據工程師\n－ 建立 ETL pipeline，把數據由供應商檔案搬入分析倉庫。\n－ 用 Python 寫 job，由 Airflow 排程，重跑唔會重複。\n－ 用 SQL 設計表；提供細型內部 API 讓報表組要求重新整理。\n要求：Python、SQL，一年批次 pipeline 經驗。"
+        }
+      ]
+    },
+    {
+      "role_family": "ml_ai_engineer",
+      "market_basis": "AI 37 postings and machine learning in 33% of HK data postings; Python 52% baseline; mostly middle level.",
+      "jobs": [
+        {
+          "id": "jd-ml-01",
+          "language": "en-HK",
+          "title": "Junior Machine Learning Engineer",
+          "text": "Junior Machine Learning Engineer\n- Train and evaluate models on tabular and text data with Python and a standard machine learning library.\n- Own the offline evaluation: split the data honestly, report precision and recall, and state what the baseline was.\n- Package a model behind a small HTTP API so the product group can call it.\n- Read the data carefully before modelling, and document what you excluded and why.\nRequirements: one year of practical machine learning work, Python, and basic statistics."
+        },
+        {
+          "id": "jd-ml-02",
+          "language": "zh-HK",
+          "title": "初級機器學習工程師",
+          "text": "初級機器學習工程師\n－ 用 Python 同機器學習套件為表格式同文字數據訓練模型。\n－ 負責離線評估：誠實分割數據，報告 precision 同 recall。\n－ 把模型包成 HTTP API 讓產品組呼叫。\n要求：一年機器學習實務、Python、基本統計。"
+        }
+      ]
+    },
+    {
+      "role_family": "qa_uat_engineer",
+      "market_basis": "Testing/QA/UAT work is spread across many HK junior postings (business analyst / data analyst / UAT / QA titles); QA is often the entry point into delivery teams.",
+      "jobs": [
+        {
+          "id": "jd-qa-01",
+          "language": "en-HK",
+          "title": "Junior QA / UAT Engineer",
+          "text": "Junior QA / UAT Engineer\n- Write test cases from the requirement document, then run them before each release.\n- Reproduce a defect with clear steps, logs and screenshots so a developer can fix it quickly.\n- Run UAT sessions with business users, and confirm the sign-off in writing.\n- Work with the development team to agree which defects block the release.\n- Chase a problem until you can reproduce it consistently.\nRequirements: meticulous and patient, comfortable communicating with both users and developers. One year of testing experience or a fresh graduate."
+        },
+        {
+          "id": "jd-qa-02",
+          "language": "zh-HK",
+          "title": "初級 QA／UAT 工程師",
+          "text": "初級 QA／UAT 工程師\n－ 按需求文件寫測試個案，發佈前逐項執行。\n－ 用清楚步驟同截圖重現 defect。\n－ 同業務用戶做 UAT，用書面確認 sign-off。\n－ 同開發團隊一齊定邊個 defect 要阻住發佈；重現唔到就慢慢除錯。\n要求：細心，識同用戶同開發溝通。"
+        }
+      ]
+    },
+    {
+      "role_family": "it_support_engineer",
+      "market_basis": "IT Support 240 postings, the largest single non-language specialisation in the May-Jun 2024 HK sample; junior-weighted.",
+      "jobs": [
+        {
+          "id": "jd-support-01",
+          "language": "en-HK",
+          "title": "IT Support Engineer (Internal Systems)",
+          "text": "IT Support Engineer (Internal Systems)\n- Handle tickets from office users: password resets, shared drive access, laptops that will not start.\n- Troubleshoot and solve first-line issues yourself, and escalate with logs when the cause is deeper.\n- Run a simple SQL query to check an account or order state before you reply.\n- Explain the fix in plain language, and write the steps into the knowledge base.\n- Rotate with the team for floor support during office hours.\nRequirements: one year of helpdesk experience or a fresh graduate, patient, and able to communicate clearly in writing."
+        },
+        {
+          "id": "jd-support-02",
+          "language": "zh-HK",
+          "title": "IT 支援工程師（內部系統）",
+          "text": "IT 支援工程師（內部系統）\n－ 處理同事嘅 ticket：密碼、共享磁碟、開唔到機嘅電腦。\n－ 先自己排查同解決一線問題，查唔到就帶 log 升級。\n－ 回覆前用簡單 SQL 查帳戶狀態，再寫入知識庫。\n－ 同團隊輪流做樓層支援。\n要求：一年 helpdesk 經驗或應屆畢業生，書面溝通清楚。"
+        }
+      ]
+    },
+    {
+      "role_family": "business_system_analyst",
+      "market_basis": "Business Analysis 45 + system analyst 2 postings; requirement writing and stakeholder work dominate the junior-middle band.",
+      "jobs": [
+        {
+          "id": "jd-ba-01",
+          "language": "en-HK",
+          "title": "Junior Business Systems Analyst",
+          "text": "Junior Business Systems Analyst\n- Run interviews with business users, then write user stories that a developer can build from.\n- Map the current process, measure where time is lost using simple data from the team's own reports, and suggest one change.\n- Present the options and your recommendation to stakeholders in a short written note.\n- Work with the delivery team to confirm scope before development starts.\n- Enjoy untangling a problem that arrives as a vague complaint.\nRequirements: strong written English and Cantonese, one year of analyst experience or a fresh graduate."
+        },
+        {
+          "id": "jd-ba-02",
+          "language": "zh-HK",
+          "title": "初級業務系統分析員",
+          "text": "初級業務系統分析員\n－ 同業務用戶做訪談，寫成開發同事可以照做嘅 user story。\n－ 用團隊報表嘅數據量度邊一步最嘥時間。\n－ 向 stakeholder 匯報方案同建議。\n－ 同事只講「有問題」嘅時候，逐步問清楚再解決。\n要求：中英文書寫流利。"
+        }
+      ]
+    },
+    {
+      "role_family": "cloud_devops_engineer",
+      "market_basis": "Cloud 43 postings; Azure in 20% and AWS in 17% of HK data postings; Docker 14, Kubernetes and pipeline work usually at middle level.",
+      "jobs": [
+        {
+          "id": "jd-cloud-01",
+          "language": "en-HK",
+          "title": "Junior Cloud / DevOps Engineer",
+          "text": "Junior Cloud / DevOps Engineer\n- Package a small internal API service with Docker, then deploy it through the company Azure pipeline.\n- Keep each deployment reproducible: one command, one log, and a test stage that runs before production.\n- Watch the dashboards for errors, and debug a failed deployment from the pipeline log.\n- Look after the managed database: backups, restore drills, and a simple access rule.\nRequirements: one year with Linux or cloud tooling, or a fresh graduate with a home lab. Azure or AWS exposure is a plus."
+        },
+        {
+          "id": "jd-cloud-02",
+          "language": "zh-HK",
+          "title": "初級雲端／DevOps 工程師",
+          "text": "初級雲端／DevOps 工程師\n－ 用 Docker 打包內部 API 服務，經 Azure pipeline 部署。\n－ 部署要可重複：正式環境前先跑測試階段。\n－ 睇 dashboard 有冇錯誤，部署失敗就由 pipeline log 除錯。\n－ 照顧代管資料庫：備份同還原演練。\n要求：一年 Linux 或雲端經驗。"
+        }
+      ]
+    },
+    {
+      "role_family": "mobile_app_developer",
+      "market_basis": "Mobile work appears through Web Development 35, ERP 30 and app-support postings; small HK teams hire one junior mobile developer to sit with backend and operations.",
+      "jobs": [
+        {
+          "id": "jd-mobile-01",
+          "language": "en-HK",
+          "title": "Junior Mobile App Developer",
+          "text": "Junior Mobile App Developer\n- Build screens for an Android app that field staff use to log site visits, and call the existing JSON API.\n- Write unit tests for the form validation, and check the app on two screen sizes before you hand it over.\n- Communicate release notes to the operations lead, and confirm the roll-out date in writing.\n- Fix reported problems quickly, and ask for a screenshot when the description is unclear.\nRequirements: one year of Kotlin or Swift, or a fresh graduate with a published side project."
+        },
+        {
+          "id": "jd-mobile-02",
+          "language": "zh-HK",
+          "title": "初級手機應用程式開發員",
+          "text": "初級手機應用程式開發員\n－ 為 Android app 開發介面，接駁現有 JSON API。\n－ 為表格驗證寫單元測試，交貨前在兩個屏幕尺寸檢查。\n－ 向營運主管溝通發佈內容，書面確認推出日期。\n－ 收到問題就盡快解決。\n要求：一年 Kotlin 或 Swift 經驗。"
+        }
+      ]
+    },
+    {
+      "role_family": "security_analyst_soc",
+      "market_basis": "HK security demand: Security 40, Information Security 37, Cyber Security 36, Cybersecurity 30, Network Security 15, IT Security 8 postings (~166); certification demand CISA/CISM 167, CISSP 119, CEH 36, OSCP 18, ISO 27001 11.",
+      "jobs": [
+        {
+          "id": "jd-security-01",
+          "language": "en-HK",
+          "title": "Junior Security Analyst (SOC)",
+          "text": "Junior Security Analyst (SOC)\nYou will join a two-person security team covering office hours, with an on-call rotation for alerts.\n- Triage SIEM alerts from Splunk, and decide within the shift whether each alert is a false positive or an incident.\n- Investigate phishing reports, pull the mail headers, and write the incident timeline in the ticket before you hand over.\n- Run the monthly vulnerability scan with Nessus and follow up the findings with the system owners.\n- Test the firewall rule change on a lab copy before anyone touches production.\n- Debug an unusual login pattern with the network colleague, and keep a SQL table of who holds which account.\n- Communicate the risk in plain language to a manager who is not technical, and keep the evidence for the ISO 27001 audit in one folder.\nRequirements: one year in a SOC, or a fresh graduate with a security module. CISA, CISSP or CEH study is supported but not required."
+        },
+        {
+          "id": "jd-security-02",
+          "language": "zh-HK",
+          "title": "初級資訊安全分析師（SOC）",
+          "text": "初級資訊安全分析師（SOC）\n－ 處理 Splunk 嘅 SIEM alert，判斷係 false positive 定 incident。\n－ 調查釣魚電郵，寫清楚 incident timeline。\n－ 改 firewall rule 之前，先喺 lab 副本做測試。\n－ 用 SQL 記錄邊個持有邊個帳戶；同網絡同事除錯異常登入。\n－ 用簡單講法向非技術主管溝通風險。\n要求：一年 SOC 經驗，或修過安全相關科目。"
+        }
+      ]
+    },
+    {
+      "role_family": "network_infra_engineer",
+      "market_basis": "HK infrastructure demand: Network 77, Networks & Systems Administration 404, IT Infrastructure 29; tools Firewalls 199, Cisco 129, VMware 184, Linux 233, Windows 308; certs CCNA/CCNP 322, ITIL 120.",
+      "jobs": [
+        {
+          "id": "jd-network-01",
+          "language": "en-HK",
+          "title": "Junior Network and Infrastructure Engineer",
+          "text": "Junior Network and Infrastructure Engineer\n- Configure switch VLANs and firewall rules from an approved change request, and arrange the patch window with the office manager.\n- Troubleshoot a VPN tunnel that keeps dropping for staff working from home, and solve it before the next morning.\n- Look after the Windows and Linux servers on VMware, and keep the backup database ready for a failover drill.\n- Communicate each change to the users affected, and confirm the result with them afterwards.\n- Work in a small team with the vendor when a fault needs escalation.\nRequirements: CCNA level knowledge, one year of hands-on networking, or a fresh graduate with a home lab."
+        },
+        {
+          "id": "jd-network-02",
+          "language": "zh-HK",
+          "title": "初級網絡及基建工程師",
+          "text": "初級網絡及基建工程師\n－ 按批核嘅 change request 設定 VLAN 同 firewall rule，約好 patch window。\n－ 排查同事在家工作斷線嘅 VPN tunnel，並盡快解決。\n－ 用 VMware 管理 Windows 同 Linux server，令備份資料庫可做 failover。\n－ 同團隊一齊跟 vendor；每次改動都同受影響同事溝通。\n要求：有 CCNA 程度知識。"
+        }
+      ]
+    },
+    {
+      "role_family": "it_project_coordinator",
+      "market_basis": "HK demand: Project Management 105 + IT Project Management 18, Programme & Project Management 281; tools Jira 126; certs PMP 177, PRINCE2 55, ITIL 120.",
+      "jobs": [
+        {
+          "id": "jd-pm-01",
+          "language": "en-HK",
+          "title": "Junior IT Project Coordinator",
+          "text": "Junior IT Project Coordinator\n- Keep the Jira sprint board and the RAID log current, and follow up each action with its owner before stand-up.\n- Book the UAT window with the business team, and chase sign-off before the go-live checklist is signed.\n- Track project data such as defect counts and milestone dates, and put one page in front of stakeholders every Friday.\n- Turn a blocked dependency into a clear problem statement with two options, then ask for a decision.\n- Work with the vendor on the statement of work, and keep the change log aligned with what was agreed.\n- Expect some OT during the release week; we plan the roster together.\nRequirements: organised, comfortable writing in English and Chinese, one year of coordination work or a fresh graduate."
+        },
+        {
+          "id": "jd-pm-02",
+          "language": "zh-HK",
+          "title": "初級 IT 項目統籌",
+          "text": "初級 IT 項目統籌\n－ 保持 Jira sprint board 同 RAID log 最新。\n－ 同業務團隊約 UAT 時間窗，go-live 前追齊 sign-off。\n－ 追蹤項目數據，例如 defect 數目同里程碑日期，每星期向 stakeholder 交一頁更新。\n－ 被卡住嘅依賴整理成清楚嘅問題，附兩個方案再請人決定，唔好等問題自己解決。\n要求：有條理，中英文書寫順暢。"
+        }
+      ]
+    },
+    {
+      "role_family": "digital_marketing_executive",
+      "market_basis": "HK junior digital/performance marketing work: SEO, SEM/Google Ads, Meta ads, GA4 and Looker Studio reporting, EDM, KOL coordination, bilingual copy; small in-house teams pair it with sales targets.",
+      "jobs": [
+        {
+          "id": "jd-marketing-01",
+          "language": "en-HK",
+          "title": "Digital Marketing Executive (Junior)",
+          "text": "Digital Marketing Executive (Junior)\n- Run Google Ads and Meta campaigns for two retail brands, and keep the daily budget inside the approved plan.\n- Read GA4 and Looker Studio data every week, and report CTR, CPA and ROAS in one page for the brand manager.\n- Write bilingual copy for EDM and social posts, and coordinate the content calendar with the KOL agency.\n- Work with the design team on assets, and communicate the brief before the deadline, not after.\n- When a campaign underperforms, find the problem before you ask for more budget.\nRequirements: one year of digital marketing or a fresh graduate with a portfolio. Comfortable with numbers, and with Cantonese and English copy."
+        },
+        {
+          "id": "jd-marketing-02",
+          "language": "zh-HK",
+          "title": "初級數碼營銷主任",
+          "text": "初級數碼營銷主任\n－ 為兩個零售品牌執行 Google Ads 同 Meta campaign。\n－ 每星期睇 GA4 同 Looker Studio 數據，交一頁 CTR、CPA 同 ROAS。\n－ 寫中英雙語 EDM 同帖文文案，同 KOL agency 協調內容日曆。\n－ 同設計團隊溝通 brief；campaign 表現差就先搵問題再解決。\n要求：一年數碼營銷經驗或應屆畢業生。"
+        }
+      ]
+    },
+    {
+      "role_family": "pre_sales_consultant",
+      "market_basis": "HK demand: Consultants 146 + Sales - Pre & Post 73 postings; junior entry is usually through support or implementation, then demo and proposal work.",
+      "jobs": [
+        {
+          "id": "jd-presales-01",
+          "language": "en-HK",
+          "title": "Junior Pre-Sales Consultant",
+          "text": "Junior Pre-Sales Consultant\n- Prepare and run product demos for client teams, and answer questions on how the software fits their existing process.\n- Write the technical section of an RFP response: scope, assumptions, integration points and a short API overview.\n- Run a client workshop to agree scope and pricing with our sales colleague, then hand the project over to delivery.\n- Work in a small team with the implementation engineer, and confirm what was promised in writing the same day.\n- Turn an unclear requirement into a concrete problem statement before you quote for it.\nRequirements: confident presenting to a small audience, one year in consulting or product support, or a fresh graduate. Cantonese and English are both needed."
+        },
+        {
+          "id": "jd-presales-02",
+          "language": "zh-HK",
+          "title": "初級售前顧問",
+          "text": "初級售前顧問\n－ 為客戶準備同主持 product demo，解釋軟件如何配合流程。\n－ 撰寫 RFP 技術部分：範圍、假設同簡短 API 概覽。\n－ 同銷售同事搞客戶工作坊，議定範圍同價格。\n－ 同實施工程師組成細團隊，當日書面確認承諾；要求唔清就先解決清楚再報價。\n要求：可以向小團隊做簡報並匯報結果，需要廣東話同英文。"
+        }
+      ]
+    }
+  ]
+}
