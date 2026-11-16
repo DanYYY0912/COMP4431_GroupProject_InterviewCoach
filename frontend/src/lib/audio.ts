@@ -220,7 +220,16 @@ type PlaybackCallbacks = {
 };
 /** Ranked names that actually sound good on macOS/Chrome. */
 const VOICE_PREFERENCE: Record<string, string[]> = {
-  'zh-HK': ['善怡', 'Sin-ji', 'Google 粤語（香港）', 'Google 粵語（香港）', 'Google Cantonese'],
+  // The network voice is markedly more natural than the compact on-device one, so it goes first;
+  // 善怡 (yue-HK) is the fallback when offline.
+  'zh-HK': [
+    'Google 粤語（香港）',
+    'Google 粵語（香港）',
+    'Google Cantonese',
+    '善怡',
+    'Sin-ji',
+    'Sinji',
+  ],
   'en-HK': [
     'Google US English',
     'Google UK English Female',
@@ -247,22 +256,33 @@ export function pickVoice(language: string): SpeechSynthesisVoice | null {
   if (!('speechSynthesis' in window)) return null;
   const voices = speechSynthesis.getVoices().filter((voice) => !NOVELTY.test(voice.name));
   if (!voices.length) return null;
-  for (const name of VOICE_PREFERENCE[language] ?? []) {
-    const match = voices.find((voice) =>
-      voice.name.toLowerCase().includes(name.toLowerCase()),
-    );
-    if (match) return match;
-  }
   const families =
-    language === 'zh-HK' ? ['yue-hk', 'zh-hk', 'yue', 'zh-tw', 'zh-cn'] : ['en-hk', 'en-us', 'en-gb', 'en'];
+    language === 'zh-HK'
+      ? ['yue-hk', 'zh-hk', 'yue', 'zh-tw', 'zh-cn']
+      : ['en-hk', 'en-us', 'en-gb', 'en'];
   const rank = (voice: SpeechSynthesisVoice) => {
     const lang = voice.lang.toLowerCase();
     const index = families.findIndex((family) => lang.startsWith(family));
     return index === -1 ? 99 : index;
   };
-  const candidates = voices.filter((voice) => rank(voice) < 99);
-  candidates.sort((a, b) => rank(a) - rank(b) || Number(b.localService) - Number(a.localService));
-  return candidates[0] ?? null;
+  const inFamily = voices.filter((voice) => rank(voice) < 99);
+  if (!inFamily.length) return null;
+  // Chrome joins the brand with a non-breaking space ("Google\u00a0粤語（香港）"), so compare
+  // names with nbsp and ordinary whitespace collapsed.
+  const key = (value: string) => value.replace(/\u00a0/g, ' ').toLowerCase().replace(/\s+/g, '');
+  // A Google network voice is a neural voice and sounds far less mechanical than the compact
+  // on-device one, so it wins whenever it exists for this language family.
+  const google = inFamily.filter((voice) => /google/i.test(key(voice.name)));
+  if (google.length) return google.sort((a, b) => rank(a) - rank(b))[0];
+  for (const name of VOICE_PREFERENCE[language] ?? []) {
+    const wanted = key(name);
+    const match = inFamily.find((voice) => key(voice.name).includes(wanted));
+    if (match) return match;
+  }
+  const ordered = [...inFamily].sort(
+    (a, b) => rank(a) - rank(b) || Number(b.localService) - Number(a.localService),
+  );
+  return ordered[0] ?? null;
 }
 
 export function playQuestion(
@@ -302,7 +322,7 @@ export function playQuestion(
     // Speak with the voice's own language tag: a yue-HK voice given lang="zh-HK" can still be
     // routed to a Mandarin engine.
     utterance.lang = voice.lang;
-    utterance.rate = language === 'zh-HK' ? 0.95 : 1;
+    utterance.rate = 1;
     utterance.onstart = () => {
       if (stopped) return;
       callbacks.onStart();
