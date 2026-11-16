@@ -18,7 +18,7 @@ The runnable application and automated checks are development evidence. The comp
 - [ ] Leakage-safe 80/10/10 splits and hashes retained.
 - [ ] GPU QLoRA training completed, best adapter and raw logs retained.
 - [ ] Loss curves, model manifest, merged Q4_K_M and reproducible conversion retained.
-- [ ] 120 held-out cases across base+RAG, LoRA-only and LoRA+RAG.
+- [ ] 119 held-out cases (the whole reviewed test split) across base+RAG, LoRA-only and LoRA+RAG.
 - [ ] Schema validity >=98%, language adherence >=95%, blinded preference >=65% on 30 pairs with two reviewers.
 - [ ] 40 retrieval cases, recall@5 >=85%, citation precision >=90%.
 - [ ] 24 clean/noisy speech recordings across four speakers, WER/CER and correction rate reported.

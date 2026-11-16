@@ -270,6 +270,11 @@ def test_reviews_are_empty_and_provenance_is_honest():
 
 
 def test_double_review_sampling_is_stratified_and_rounds_up():
+    from ml.runtime_dataset import SECOND_REVIEW_TOPUP
+
+    topup = set()
+    if SECOND_REVIEW_TOPUP.exists():
+        topup = {e["id"] for e in json.loads(SECOND_REVIEW_TOPUP.read_text())["rows"]}
     strata = defaultdict(list)
     for row in ROWS:
         strata[(row["language"], row["task"])].append(row)
@@ -277,10 +282,13 @@ def test_double_review_sampling_is_stratified_and_rounds_up():
     for key, group in strata.items():
         required = math.ceil(len(group) * DOUBLE_REVIEW_RATE)
         flagged = sum(bool(row["double_review_required"]) for row in group)
+        # Rejected rows shrink a stratum, so 15% can demand more second reviews than the
+        # original sampling produced; the documented top-up list closes that gap.
+        extra = sum(1 for row in group if row["id"] in topup)
+        assert flagged == required + extra, key
         assert flagged >= required, key
-        assert flagged == required, key
         total += flagged
-    assert total == sum(bool(row["double_review_required"]) for row in ROWS) == 151
+    assert total == sum(bool(row["double_review_required"]) for row in ROWS) == 151 + len(topup)
 
 
 def test_every_row_fits_the_training_token_limit():

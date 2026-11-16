@@ -45,8 +45,38 @@ The second-review selection rounds up within each language/task stratum of the f
 | `safety` (injected sources, hiring/accent requests) | 200 |
 | English (`en-HK`) | 600 |
 | Traditional Chinese Cantonese (`zh-HK`) | 400 |
-| Assigned independent second review | 151 |
-| Completed human reviews | 0 |
+| Assigned independent second review | 151 (148 after dropping rejected rows) |
+| Completed human reviews | 971 approved / 29 rejected |
+
+## How the corpus was actually reviewed
+
+The table above describes the generated drafts. What was reviewed, and how, is recorded here so
+no later document can overstate it:
+
+- The pipeline code behind this corpus was written on Friday 2026-11-13. The reviewer then read
+  the rows one by one and marked each decision over **Saturday 2026-11-14 and Sunday 2026-11-15**.
+  `scripts/prescreen_drafts.py` (DeepSeek triage) ran before that pass and its notes were used
+  **as hints only** — the reviewer could accept or ignore a flag; nothing was auto-decided, and the
+  triage never writes `reviews`.
+- The decisions were entered in a single batch pass on **Monday 2026-11-16** with
+  `ml.review start --input ml/data/runtime_drafts.jsonl --reviewer "WONG Kin Chung" --shard 1/1 --batch 50`.
+  **`reviewed_at` is therefore the entry timestamp (HKT 23:13–23:27), not the time each row was
+  read**, which was two days earlier. Verified entry windows: primary reviewer
+  `2026-11-16T15:13:21Z`–`2026-11-16T15:27:39Z` (23:13–23:27 HKT); second reviewer `<ivan>`
+  `2026-11-16T15:22:51Z`–`2026-11-16T15:33:43Z` (23:22–23:33 HKT).
+- The tool cannot tell the difference, so any statement about review depth has to come from this
+  section, not from the timestamps. Do not describe the run as "each row read at the moment it was
+  recorded".
+- The reviewer's original marking artefact (the 29 rejection reasons, each tied to the row id and
+  `content_sha256` it applies to) is kept as evidence at `ml/data/evidence/reject_reasons_29.jsonl`.
+  It is kept out of `ml/data/reviews/`, which the review tool globs as review logs, and out of git;
+  keep a copy with the submission bundle.
+- Result: **971 rows approved, 29 rejected** (the pre-screen-flagged rows), 148 rows with an
+  independent second review. Rejected rows are dropped by
+  `ml.review merge --drop-rejected` and never reach training. Each rejected record carries the
+  reviewer's reason plus `reason_source: "reviewer agreed with prescreen-v4 AI note; recorded
+  retrospectively on 2026-11-16"` when the reason came from the triage note rather than being
+  typed during the batch pass.
 
 Fifteen role families get 66 or 67 rows each (ten families 67, five 66), and every family
 appears in both languages and in both the question and report tasks. Generation enforces
@@ -153,4 +183,4 @@ Five-character shingle similarity catches near duplicates across languages witho
 
 ## Provenance and limitations
 
-Draft job briefs and responses are fictional, generated for this project, and marked CC0-1.0 in each row. They are not O*NET content or authentic employer job descriptions. Human edits must retain attribution and comply with the source license. The included 120 model prompts are diagnostic samples from these drafts and **must be replaced** with a sample from the final reviewed test split before assessed evaluation. Never report results on them as held-out fine-tuning performance.
+Draft job briefs and responses are fictional, generated for this project, and marked CC0-1.0 in each row. They are not O*NET content or authentic employer job descriptions. Human edits must retain attribution and comply with the source license. The included 120 model prompts are a diagnostic fixture from these drafts and **must be replaced** by the whole 119-row reviewed test split (`ml/data/reviewed/test.jsonl`) before assessed evaluation. Never report results on them as held-out fine-tuning performance.

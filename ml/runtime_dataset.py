@@ -43,6 +43,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SCENARIOS = Path(__file__).resolve().parent / "scenarios"
 KNOWLEDGE = ROOT / "knowledge"
 DEFAULT_OUTPUT = ROOT / "ml" / "data" / "runtime_drafts.jsonl"
+# Explicit list of extra second-review assignments needed after rejected rows shrink a stratum.
+SECOND_REVIEW_TOPUP = ROOT / "ml" / "data" / "second_review_topup.json"
 
 STAR = ("Situation", "Task", "Action", "Result")
 STAR_ZH = {"Situation": "背景", "Task": "任務", "Action": "行動", "Result": "結果"}
@@ -1101,12 +1103,31 @@ def count_table(rows: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def apply_second_review_topup(rows, path=None):
+    """Extra second-review assignments required once rejected rows leave a stratum short.
+
+    Rejecting reviewed rows shrinks the corpus, so "15% of each stratum, rounded up" can demand
+    more second reviews than the original sampling produced. This file lists the extra ids and
+    why, so the data file stays a deterministic function of the generator plus that explicit,
+    reviewable list instead of hand-edited flags.
+    """
+    path = path or SECOND_REVIEW_TOPUP
+    if not path.exists():
+        return rows
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    ids = {entry["id"] for entry in payload.get("rows", [])}
+    for row in rows:
+        if row["id"] in ids:
+            row["double_review_required"] = True
+    return rows
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--seed", type=int, default=SEED)
     args = parser.parse_args(argv)
-    rows = generate_rows(args.seed)
+    rows = apply_second_review_topup(generate_rows(args.seed))
     write_jsonl(args.output, rows)
     print(count_table(rows))
     families = Counter(row["role_family"] for row in rows)

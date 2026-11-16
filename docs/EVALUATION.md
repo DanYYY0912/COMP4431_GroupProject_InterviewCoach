@@ -14,7 +14,7 @@ python -m evaluation.run smoke
 
 The smoke run validates twelve schema examples and five known metric calculations. It does not call a model, synthesize speech, or measure user satisfaction. `evaluation/results/smoke.json` records exactly what ran.
 
-## Model experiment: 120 held-out prompts
+## Model experiment: the whole reviewed test split (119 rows)
 
 1. Complete real data review and QLoRA training. Use the final group-isolated test split, never the diagnostic prompt file bundled here.
 2. `python -m evaluation.run prepare --input ml/data/reviewed/test.jsonl --output evaluation/fixtures/model_prompts.jsonl`
@@ -24,7 +24,7 @@ The smoke run validates twelve schema examples and five known metric calculation
 
 The runner records all 360 outcomes, including malformed output, truncation and timeouts. JSON validity is scored against a strict task schema. First-token latency is measured from request start to the first nonempty streamed content; failed requests are counted separately and cannot disappear from the denominator. The protocol uses preselected, fixed source contexts so the model comparison does not mix in changing retrieval quality. Benchmark retrieval independently.
 
-Target schema validity is 98%. The script-language proxy is diagnostic only. Reviewers must assess actual requested-language adherence, especially colloquial Traditional-Chinese Cantonese; target 95%. Add a `language_reviews` array to the human input with one final record per prompt: `example_id`, `reviewer_id`, and boolean `adheres`. The runner reports this actual human measure separately from its script proxy. The 120 provided diagnostic prompts come from synthetic drafts and require `--diagnostic`, which labels results accordingly.
+Target schema validity is 98%. The script-language proxy is diagnostic only. Reviewers must assess actual requested-language adherence, especially colloquial Traditional-Chinese Cantonese; target 95%. Add a `language_reviews` array to the human input with one final record per prompt: `example_id`, `reviewer_id`, and boolean `adheres`. The runner reports this actual human measure separately from its script proxy. The 120 provided diagnostic prompts come from synthetic drafts and require `--diagnostic`, which labels results accordingly. They are only a pipeline fixture: the assessed run uses all 119 rows of `ml/data/reviewed/test.jsonl` and reports that number, never a rounded 120.
 
 ## Blinded model preference
 

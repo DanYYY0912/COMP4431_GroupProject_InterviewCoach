@@ -1,0 +1,18 @@
+{
+  "reason": "29 pre-screen-flagged rows were rejected by the reviewer and dropped by `ml.review merge --drop-rejected`. Five of them carried an independent second review, which left the (en-HK, question) stratum at 39 of the 41 second reviews that 15% of the surviving 268 rows requires. These two rows restore the quota on the corpus that actually trains; both were subsequently given a real second review by the second reviewer, so the records are genuine.",
+  "rows": [
+    {
+      "id": "rt-qu-en-0001",
+      "language": "en-HK",
+      "task": "question",
+      "why": "restores (en-HK, question) to ceil(0.15 * 268) = 41 second reviews"
+    },
+    {
+      "id": "rt-qu-en-0002",
+      "language": "en-HK",
+      "task": "question",
+      "why": "restores (en-HK, question) to ceil(0.15 * 268) = 41 second reviews"
+    }
+  ],
+  "recorded_at": "2026-11-16T16:05:00Z"
+}
