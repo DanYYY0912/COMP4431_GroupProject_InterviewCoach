@@ -29,6 +29,116 @@ const C = {
   white: '#ffffff',
 };
 
+const LABELS = {
+  en: {
+    eyebrow: 'VoxPrep HK · interview practice report',
+    model: 'Model',
+    session: 'Session',
+    star: 'STAR coverage',
+    starJump: '(transcript · Appendix A)',
+    noStar: 'No STAR analysis was returned.',
+    worked: 'What worked',
+    nothingQuoted: 'Nothing was quoted.',
+    fixFirst: 'Fix this first',
+    priority: 'Priority improvement',
+    retry: 'Retry',
+    delivery: 'Delivery',
+    answers: 'Answers',
+    answersNote: 'completed',
+    words: 'Words',
+    wordsNote: 'total spoken',
+    fillers: 'Fillers',
+    pauses: 'Pauses',
+    notMeasured: 'not measured',
+    competencies: 'Competencies',
+    strongest: 'Your strongest evidence',
+    shareKicker: 'Strongest evidence',
+    shareHint: 'Screenshot this frame to share it — the 16:9 box is sized for a clean crop.',
+    appendixA: 'Appendix A · transcript',
+    appendixB: 'Appendix B · sources cited',
+    appendixC: 'Appendix C · limitations',
+    back: '(back to summary)',
+    noAnswers: 'No questions were answered.',
+    foot: 'Generated locally by VoxPrep HK. Practice feedback only — not an assessment of the person and not a hiring recommendation.',
+    structure: 'STRUCTURE',
+    disclaimer:
+      'Answer structure only — STAR coverage, quoted evidence, pacing and fillers. Not an assessment of you, your ability or your employability.',
+    perMin: '/ min',
+    answeredOf: (a: number, n: number) => `${a} of ${n} answered`,
+    langName: 'English (en-HK)',
+    diff: { foundation: 'foundation', standard: 'standard', stretch: 'stretch' } as Record<string, string>,
+    wpmUnit: 'wpm',
+    gaugeIn: 'inside the 120–150 wpm range most interviewers find easy to follow',
+    gaugeSlow: 'slower than the 120–150 wpm range most interviewers find easy to follow',
+    gaugeFast: 'faster than the 120–150 wpm range most interviewers find easy to follow',
+    gaugeNone: 'not measured in this session',
+    starNames: { Situation: 'Situation', Task: 'Task', Action: 'Action', Result: 'Result' } as Record<string, string>,
+    covered: 'covered',
+    missing: 'missing',
+    partStar: 'STAR coverage',
+    partEvidence: 'Quoted evidence',
+    partPacing: 'Pacing',
+    partFillers: 'Filler control',
+    of4: (n: number) => `${n} of 4 elements evidenced`,
+    ofComps: (q: number, n: number) => `${q} of ${n} competencies quoted`,
+    fillersIn: (f: number, m: string) => `${f} fillers / ${m} min`,
+  },
+  'zh-HK': {
+    eyebrow: 'VoxPrep HK · 面試練習報告',
+    model: '模型',
+    session: '場次',
+    star: 'STAR 覆蓋',
+    starJump: '（逐字稿 · 附錄 A）',
+    noStar: '未收到 STAR 分析。',
+    worked: '做得好的地方',
+    nothingQuoted: '未引用到具體句子。',
+    fixFirst: '先改呢一點',
+    priority: '優先改善',
+    retry: '再試一次',
+    delivery: '表達節奏',
+    answers: '回答',
+    answersNote: '已完成',
+    words: '字詞',
+    wordsNote: '總字數',
+    fillers: '填充詞',
+    pauses: '停頓',
+    notMeasured: '未量度',
+    competencies: '能力項',
+    strongest: '你最有力的證據',
+    shareKicker: '最強證據',
+    shareHint: '截圖呢個框就可以分享 — 16:9 尺寸，方便裁切。',
+    appendixA: '附錄 A · 逐字稿',
+    appendixB: '附錄 B · 引用來源',
+    appendixC: '附錄 C · 限制',
+    back: '（返回摘要）',
+    noAnswers: '未有任何回答。',
+    foot: '由 VoxPrep HK 本機生成。只屬練習回饋，並非對個人嘅評分，亦非招聘建議。',
+    structure: '結構',
+    disclaimer:
+      '只計答案結構：STAR 覆蓋、引用證據、語速、填充詞。並非評估你個人、能力或就業能力。',
+    perMin: '／分鐘',
+    answeredOf: (a: number, n: number) => `已回答 ${a} / ${n}`,
+    langName: '廣東話 (zh-HK)',
+    diff: { foundation: '基礎', standard: '標準', stretch: '挑戰' } as Record<string, string>,
+    wpmUnit: '字／分鐘',
+    gaugeIn: '喺 120–150 字／分鐘範圍內，面試官最容易跟得上',
+    gaugeSlow: '慢過 120–150 字／分鐘，面試官會覺得節奏偏慢',
+    gaugeFast: '快過 120–150 字／分鐘，面試官可能跟唔上',
+    gaugeNone: '今次未量度',
+    starNames: { Situation: '背景', Task: '任務', Action: '行動', Result: '結果' } as Record<string, string>,
+    covered: '已覆蓋',
+    missing: '缺少',
+    partStar: 'STAR 覆蓋',
+    partEvidence: '引用證據',
+    partPacing: '語速',
+    partFillers: '填充詞控制',
+    of4: (n: number) => `4 項中 ${n} 項有證據`,
+    ofComps: (q: number, n: number) => `${n} 項能力中 ${q} 項有引用`,
+    fillersIn: (f: number, m: string) => `${f} 個填充詞／${m} 分鐘`,
+  },
+};
+type Labels = (typeof LABELS)['en'];
+
 function esc(value: unknown): string {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -48,7 +158,7 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 /** Words per minute only means something against a band, so draw the band, not a bare number. */
-function wpmGauge(wpm: number | null): string {
+function wpmGauge(wpm: number | null, L: Labels): string {
   const low = 90;
   const high = 180;
   const width = 320;
@@ -58,13 +168,7 @@ function wpmGauge(wpm: number | null): string {
   const tone =
     wpm === null ? C.muted : wpm >= 120 && wpm <= 150 ? C.good : wpm >= 100 && wpm <= 170 ? C.warn : C.bad;
   const verdict =
-    wpm === null
-      ? 'not measured in this session'
-      : wpm < 120
-        ? 'slower than the 120–150 wpm range most interviewers find easy to follow'
-        : wpm > 150
-          ? 'faster than the 120–150 wpm range most interviewers find easy to follow'
-          : 'inside the 120–150 wpm range most interviewers find easy to follow';
+    wpm === null ? L.gaugeNone : wpm < 120 ? L.gaugeSlow : wpm > 150 ? L.gaugeFast : L.gaugeIn;
   return `<figure class="gauge">
     <svg viewBox="0 0 ${width} 54" width="100%" height="54" role="img" aria-label="Speaking rate ${
       wpm === null ? 'unmeasured' : `${Math.round(wpm)} words per minute`
@@ -84,7 +188,7 @@ function wpmGauge(wpm: number | null): string {
   </figure>`;
 }
 
-function structureScore(report: Report): { score: number; grade: string; parts: [string, number, string][] } {
+function structureScore(report: Report, L: Labels): { score: number; grade: string; parts: [string, number, string][] } {
   const starPresent = report.star.filter((item) => item.present).length;
   const starPoints = Math.round((starPresent / 4) * 40);
   const quoted = report.competencies.filter((item) => item.evidence).length;
@@ -101,16 +205,16 @@ function structureScore(report: Report): { score: number; grade: string; parts: 
     score,
     grade: score >= 85 ? 'A' : score >= 70 ? 'B' : score >= 55 ? 'C' : 'D',
     parts: [
-      ['STAR coverage', starPoints, `${starPresent} of 4 elements evidenced`],
-      ['Quoted evidence', evidencePoints, `${quoted} of ${report.competencies.length} competencies quoted`],
-      ['Pacing', pacePoints, wpm === null ? 'not measured' : `${Math.round(wpm)} wpm`],
-      ['Filler control', fillerPoints, `${report.speech_metrics.filler_count} fillers / ${minutes.toFixed(1)} min`],
+      [L.partStar, starPoints, L.of4(starPresent)],
+      [L.partEvidence, evidencePoints, L.ofComps(quoted, report.competencies.length)],
+      [L.partPacing, pacePoints, wpm === null ? L.notMeasured : `${Math.round(wpm)} ${L.wpmUnit}`],
+      [L.partFillers, fillerPoints, L.fillersIn(report.speech_metrics.filler_count, minutes.toFixed(1))],
     ],
   };
 }
 
 /** Vector ring: stays sharp when a reader zooms in on a phone. */
-function scoreRing(score: number, grade: string): string {
+function scoreRing(score: number, grade: string, L: Labels): string {
   const radius = 31;
   const circumference = 2 * Math.PI * radius;
   const filled = (score / 100) * circumference;
@@ -124,17 +228,17 @@ function scoreRing(score: number, grade: string): string {
       <text x="44" y="45" text-anchor="middle" font-size="23" font-weight="700" fill="${C.ink}">${score}</text>
       <text x="44" y="59" text-anchor="middle" font-size="8.5" fill="${C.muted}">/100</text>
     </svg>
-    <span class="score-grade">structure ${grade}</span>
+    <span class="score-grade">${L.structure} ${grade}</span>
   </div>`;
 }
 
-function starCard(item: Report['star'][number]): string {
+function starCard(item: Report['star'][number], L: Labels): string {
   const tone = item.present ? C.good : C.warn;
   return `<article class="star-card" style="border-top-color:${tone}">
     <header>
       <span class="star-mark" style="background:${tone}">${item.present ? '✓' : '!'}</span>
-      <h4>${esc(item.element)}</h4>
-      <span class="star-state" style="color:${tone}">${item.present ? 'covered' : 'missing'}</span>
+      <h4>${esc(L.starNames[item.element] ?? item.element)}</h4>
+      <span class="star-state" style="color:${tone}">${item.present ? L.covered : L.missing}</span>
     </header>
     ${
       item.evidence
@@ -157,13 +261,14 @@ export function buildReportHtml(
   appUrl = 'http://localhost:5173',
 ): string {
   const base = appUrl.replace(/\/$/, '');
+  const L = LABELS[session.language === 'zh-HK' ? 'zh-HK' : 'en'];
   const language = session.language === 'zh-HK' ? 'Cantonese (zh-HK)' : 'English (en-HK)';
-  const date = exportedAt.toLocaleDateString('en-HK', { dateStyle: 'medium' });
+  const date = exportedAt.toLocaleDateString(session.language === 'zh-HK' ? 'zh-HK' : 'en-HK', { dateStyle: 'medium' });
   const answered = session.turns.filter((turn) => turn.answer).length;
   const metrics = report?.speech_metrics ?? null;
-  const score = report ? structureScore(report) : null;
+  const score = report ? structureScore(report, L) : null;
 
-  const stars = (report?.star ?? []).map(starCard).join('');
+  const stars = (report?.star ?? []).map((item) => starCard(item, L)).join('');
   const strengths = (report?.strengths ?? []).map((item) => `<li>${esc(strengthText(item))}</li>`).join('');
 
   // The strongest evidence containing a number is the most shareable line in the report.
@@ -212,7 +317,7 @@ export function buildReportHtml(
 
   const scoreBlock = score
     ? `<section class="score-band">
-        ${scoreRing(score.score, score.grade)}
+        ${scoreRing(score.score, score.grade, L)}
         <div class="score-parts">
           ${score.parts
             .map(
@@ -224,7 +329,7 @@ export function buildReportHtml(
             .join('')}
         </div>
       </section>
-      <p class="disclaimer">Answer structure only — STAR coverage, quoted evidence, pacing and fillers. Not an assessment of you, your ability or your employability.</p>`
+      <p class="disclaimer">${L.disclaimer}</p>`
     : '';
 
   const fillersPerMinute =
@@ -316,29 +421,31 @@ export function buildReportHtml(
 </style></head>
 <body id="top">
   <header class="cover">
-    <div class="eyebrow">VoxPrep HK · interview practice report</div>
+    <div class="eyebrow">${L.eyebrow}</div>
     <h1>${esc(session.role_title)}</h1>
-    <div class="sub">${esc(language)} · ${esc(session.difficulty)} · ${answered} of ${session.question_count} answered</div>
-    <div class="facts"><span>${esc(date)}</span><span>Model: ${esc(session.provider || 'unknown')}</span>
-      <span>Session ${esc(session.id.slice(0, 8))}</span></div>
+    <div class="sub">${esc(L.langName)} · ${esc(L.diff[session.difficulty] ?? session.difficulty)} · ${esc(
+      L.answeredOf(answered, session.question_count),
+    )}</div>
+    <div class="facts"><span>${esc(date)}</span><span>${L.model}: ${esc(session.provider || 'unknown')}</span>
+      <span>${L.session} ${esc(session.id.slice(0, 8))}</span></div>
   </header>
 
   ${scoreBlock}
 
   <section>
-    <h2 class="section">STAR coverage <a class="jump" href="#appendix-a">(transcript · Appendix A)</a></h2>
-    <div class="stars">${stars || '<p class="muted">No STAR analysis was returned.</p>'}</div>
+    <h2 class="section">${L.star} <a class="jump" href="#appendix-a">${L.starJump}</a></h2>
+    <div class="stars">${stars || '<p class="muted">' + L.noStar + '</p>'}</div>
   </section>
 
   <div class="two-col">
     <section>
-      <h2 class="section">What worked</h2>
-      ${strengths ? `<ul>${strengths}</ul>` : '<p class="muted">Nothing was quoted.</p>'}
+      <h2 class="section">${L.worked}</h2>
+      ${strengths ? `<ul>${strengths}</ul>` : '<p class="muted">' + L.nothingQuoted + '</p>'}
     </section>
     <section>
-      <h2 class="section">Fix this first</h2>
+      <h2 class="section">${L.fixFirst}</h2>
       <div class="callout action">
-        <h3>Priority improvement</h3>
+        <h3>${L.priority}</h3>
         <p>${esc(report?.prioritized_improvement ?? '—')}</p>
       </div>
       ${
@@ -347,7 +454,7 @@ export function buildReportHtml(
               session.id,
             )}&lang=${encodeURIComponent(
               session.language,
-            )}"><strong>Retry</strong><span>${esc(report.retry_exercise)}</span><em>›</em></a>`
+            )}"><strong>${L.retry}</strong><span>${esc(report.retry_exercise)}</span><em>›</em></a>`
           : ''
       }
     </section>
@@ -356,21 +463,21 @@ export function buildReportHtml(
   ${
     metrics
       ? `<section>
-    <h2 class="section">Delivery</h2>
-    ${wpmGauge(metrics.words_per_minute)}
+    <h2 class="section">${L.delivery}</h2>
+    ${wpmGauge(metrics.words_per_minute, L)}
     <div class="tiles" style="margin-top:7px">
-      ${tile('Answers', String(metrics.answer_count), 'completed')}
-      ${tile('Words', String(metrics.word_count), 'total spoken')}
+      ${tile(L.answers, String(metrics.answer_count), L.answersNote)}
+      ${tile(L.words, String(metrics.word_count), L.wordsNote)}
       ${tile(
-        'Fillers',
+        L.fillers,
         String(metrics.filler_count),
-        fillersPerMinute === null ? '—' : `${fillersPerMinute.toFixed(1)} / min`,
+        fillersPerMinute === null ? '—' : `${fillersPerMinute.toFixed(1)} ${L.perMin}`,
         fillersPerMinute !== null && fillersPerMinute <= 2 ? C.good : C.warn,
       )}
       ${tile(
-        'Pauses',
+        L.pauses,
         metrics.pause_count === null || metrics.pause_count === undefined ? '—' : String(metrics.pause_count),
-        metrics.silence_seconds ? `${metrics.silence_seconds}s silence` : 'not measured',
+        metrics.silence_seconds ? `${metrics.silence_seconds}s silence` : L.notMeasured,
       )}
     </div>
   </section>`
@@ -379,37 +486,37 @@ export function buildReportHtml(
 
   ${
     competencyRows
-      ? `<section><h2 class="section">Competencies</h2><table><tbody>${competencyRows}</tbody></table></section>`
+      ? `<section><h2 class="section">${L.competencies}</h2><table><tbody>${competencyRows}</tbody></table></section>`
       : ''
   }
 
   ${
     highlight
-      ? `<section><h2 class="section">Your strongest evidence</h2>
+      ? `<section><h2 class="section">${L.strongest}</h2>
     <div class="share-card">
-      <span class="share-kicker">Strongest evidence</span>
+      <span class="share-kicker">${L.shareKicker}</span>
       <p class="quote">“${esc(highlight.slice(0, 190))}${highlight.length > 190 ? '…' : ''}”</p>
       <span class="share-meta">${esc(session.role_title)} · ${esc(language)}</span>
       <span class="share-logo">VoxPrep<b>HK</b></span>
     </div>
-    <p class="share-hint">Screenshot this frame to share it — the 16:9 box is sized for a clean crop.</p></section>`
+    <p class="share-hint">${L.shareHint}</p></section>`
       : ''
   }
 
   <div class="page-break appendix">
     <section id="appendix-a">
-      <h2 class="section">Appendix A · transcript <a class="jump" href="#top">(back to summary)</a></h2>
-      ${transcript || '<p class="muted">No questions were answered.</p>'}
+      <h2 class="section">${L.appendixA} <a class="jump" href="#top">${L.back}</a></h2>
+      ${transcript || '<p class="muted">' + L.noAnswers + '</p>'}
     </section>
     ${
       sources
-        ? `<section id="appendix-b"><h2 class="section">Appendix B · sources cited</h2><ul class="sources-list">${sources}</ul></section>`
+        ? `<section id="appendix-b"><h2 class="section">${L.appendixB}</h2><ul class="sources-list">${sources}</ul></section>`
         : ''
     }
-    ${limitations ? `<section><h2 class="section">Appendix C · limitations</h2><ul>${limitations}</ul></section>` : ''}
+    ${limitations ? `<section><h2 class="section">${L.appendixC}</h2><ul>${limitations}</ul></section>` : ''}
   </div>
 
-  <p class="foot">Generated locally by VoxPrep HK. Practice feedback only — not an assessment of the person and not a hiring recommendation.</p>
+  <p class="foot">${L.foot}</p>
 </body></html>`;
 }
 
