@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
 import { formatDate } from '../lib/format';
-import { downloadSession } from '../lib/sessionExport';
+import { printSessionReport } from '../lib/reportPdf';
 import type { Session } from '../lib/types';
 import { ErrorNotice, Loading } from '../components/Common';
 import { SessionComparison } from '../components/SessionComparison';
@@ -63,7 +63,7 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
   async function exportSession(id: string) {
     setExporting(id);
     try {
-      await downloadSession(id);
+      await printSessionReport(id);
     } catch (e) {
       setError(errorMessage(e));
     } finally {

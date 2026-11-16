@@ -10,8 +10,8 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
-import { exportJson, formatDuration } from '../lib/format';
-import { downloadSession } from '../lib/sessionExport';
+import { formatDuration } from '../lib/format';
+import { printSessionReport } from '../lib/reportPdf';
 import type { Report as ReportType } from '../lib/types';
 import { ErrorNotice, Loading, Sources } from '../components/Common';
 
@@ -47,7 +47,7 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
   async function exportSession() {
     setExporting(true);
     try {
-      await downloadSession(id);
+      await printSessionReport(id);
     } catch (e) {
       setError(errorMessage(e));
     } finally {
@@ -83,16 +83,16 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
         <div className="report-downloads">
           <button
             className="button secondary"
-            onClick={() => exportJson(report, `voxprep-debrief-${id}.json`)}
+            onClick={() => void exportSession()}
           >
-            <Download size={17} /> Export report
+            <Download size={17} /> Save report as PDF
           </button>
           <button
             className="button secondary"
             disabled={exporting || busy}
             onClick={() => void exportSession()}
           >
-            <Download size={17} /> {exporting ? 'Preparing download…' : 'Export full session'}
+            <Download size={17} /> {exporting ? 'Preparing PDF…' : 'Save full session as PDF'}
           </button>
           <p>Includes saved questions and transcript. Keep the downloaded copy private.</p>
         </div>
