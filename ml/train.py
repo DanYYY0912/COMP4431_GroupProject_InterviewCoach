@@ -144,7 +144,13 @@ def main():
     }
     # HF PEFT quantization guide: NF4 + double quantization + k-bit preparation.
     # https://huggingface.co/docs/peft/developer_guides/quantization
-    bf16 = torch.cuda.is_bf16_supported()
+    # PyTorch reports bf16 "support" including fp32 emulation, which is what a T4 (sm_75) gets:
+    # true in the check, but every matmul runs emulated and training crawls. Only trust native
+    # support (sm_80+), otherwise use fp16.
+    try:
+        bf16 = torch.cuda.is_bf16_supported(including_emulation=False)
+    except TypeError:  # torch < 2.3 has no such argument and never reports emulation
+        bf16 = torch.cuda.is_bf16_supported()
     dtype = torch.bfloat16 if bf16 else torch.float16
     quant = BitsAndBytesConfig(
         load_in_4bit=True,
