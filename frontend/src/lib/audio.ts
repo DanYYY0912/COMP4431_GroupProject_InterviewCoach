@@ -121,63 +121,128 @@ type PlaybackCallbacks = {
   onStart: () => void;
   onEnd: () => void;
   onNotice: (text: string) => void;
+  onViseme?: (openness: number) => void;
 };
+
+// Browser boundaries identify words/characters, not phonemes. These cues are only
+// approximate mouth shapes; the renderer supplies motion while speech is active.
+function boundaryOpenness(text: string, index: number): number {
+  const word =
+    text
+      .slice(index)
+      .match(/^[\p{L}\p{N}]+/u)?.[0]
+      ?.toLowerCase() || '';
+  if (/^[bmp]/.test(word)) return 0.12;
+  if (/^[a]/.test(word)) return 0.95;
+  if (/^[ei]/.test(word)) return 0.5;
+  if (/^[ou]/.test(word)) return 0.75;
+  if (/[a]/.test(word)) return 0.85;
+  return word ? 0.65 : 0.1;
+}
+
 export function playQuestion(
   text: string,
   language: Language,
   callbacks: PlaybackCallbacks,
 ): () => void {
   let stopped = false;
+  let started = false;
+  let requested = false;
+  let voicesTimer: ReturnType<typeof setTimeout> | undefined;
+  let startTimer: ReturnType<typeof setTimeout> | undefined;
   const synthesis = 'speechSynthesis' in window ? window.speechSynthesis : null;
+  const clearVoiceWait = () => {
+    clearTimeout(voicesTimer);
+    synthesis?.removeEventListener('voiceschanged', voicesChanged);
+  };
   const finish = () => {
     if (stopped) return;
     stopped = true;
+    clearVoiceWait();
+    clearTimeout(startTimer);
+    callbacks.onViseme?.(0);
     callbacks.onEnd();
   };
   const stop = () => {
     if (stopped) return;
     finish();
-    synthesis?.cancel();
+    if (requested) synthesis?.cancel();
   };
   if (!synthesis) {
     callbacks.onNotice('Speech playback is unavailable. Read the question on screen.');
     finish();
     return stop;
   }
-  const voices = synthesis
-    .getVoices()
-    .filter(
-      (voice) =>
-        voice.localService &&
-        (voice.lang.toLowerCase() === language.toLowerCase() ||
-          (language === 'en-HK' && voice.lang.toLowerCase().startsWith('en'))),
-    );
-  if (!voices.length) {
-    callbacks.onNotice(
-      'No local voice is available for this language. Read the question on screen.',
-    );
-    finish();
-    return stop;
+  const speech = synthesis;
+  function requestPlayback(): boolean {
+    if (stopped || requested) return true;
+    const voice = speech.getVoices().find((candidate) => {
+      const locale = candidate.lang.replace('_', '-').toLowerCase();
+      return (
+        candidate.localService &&
+        (locale === language.toLowerCase() ||
+          (language === 'en-HK' && locale.startsWith('en')) ||
+          (language === 'zh-HK' && (locale === 'yue' || locale.startsWith('yue-'))))
+      );
+    });
+    if (!voice) return false;
+    clearVoiceWait();
+    requested = true;
+    try {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = voice.lang;
+      utterance.rate = 0.93;
+      utterance.voice = voice;
+      utterance.onstart = () => {
+        if (stopped || started) return;
+        started = true;
+        clearTimeout(startTimer);
+        callbacks.onStart();
+        callbacks.onViseme?.(0.65);
+      };
+      utterance.onboundary = (event) => {
+        if (!stopped && started) callbacks.onViseme?.(boundaryOpenness(text, event.charIndex));
+      };
+      utterance.onend = finish;
+      utterance.onerror = (event) => {
+        if (stopped) return;
+        callbacks.onNotice(
+          event.error === 'not-allowed'
+            ? 'Your browser blocked audio playback. Select Read question to try again, or read the question on screen.'
+            : 'Speaker playback failed. Select Read question to try again, or read the question on screen.',
+        );
+        finish();
+      };
+      startTimer = setTimeout(() => {
+        if (stopped || started) return;
+        callbacks.onNotice(
+          'Audio did not start. Select Read question to try again, or read the question on screen.',
+        );
+        stop();
+      }, 4000);
+      speech.speak(utterance);
+    } catch {
+      callbacks.onNotice(
+        'Speaker playback failed. Select Read question to try again, or read the question on screen.',
+      );
+      stop();
+    }
+    return true;
   }
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = language;
-  utterance.rate = 0.93;
-  utterance.voice = voices[0];
-  utterance.onstart = () => {
-    if (stopped) return;
-    callbacks.onStart();
-  };
-  utterance.onend = finish;
-  utterance.onerror = () => {
-    if (stopped) return;
-    callbacks.onNotice('Speaker playback failed. You can read the question on screen.');
-    finish();
-  };
-  try {
-    synthesis.speak(utterance);
-  } catch {
-    callbacks.onNotice('Speaker playback failed. You can read the question on screen.');
-    finish();
+  function voicesChanged() {
+    requestPlayback();
+  }
+  if (!requestPlayback()) {
+    speech.addEventListener('voiceschanged', voicesChanged);
+    voicesTimer = setTimeout(() => {
+      if (requestPlayback()) return;
+      callbacks.onNotice(
+        'No local voice is available for this language. Read the question on screen.',
+      );
+      finish();
+    }, 1500);
+    // A voice list can become available between the first check and listener setup.
+    requestPlayback();
   }
   return stop;
 }

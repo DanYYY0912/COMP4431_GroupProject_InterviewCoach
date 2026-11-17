@@ -22,7 +22,7 @@ import { formatDuration } from '../lib/format';
 import { useLiveSession } from '../lib/useLiveSession';
 import { ErrorNotice, Loading, ProviderBadge, Sources } from '../components/Common';
 
-import { InterviewerPortrait } from '../components/InterviewerPortrait';
+import { Interviewer3D } from '../components/Interviewer3D';
 const statusLabels: Record<string, string> = {
   ready: 'Ready when you are',
   listening: 'Listening to your story',
@@ -44,11 +44,15 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
   const [elapsed, setElapsed] = useState(0);
   const [started, setStarted] = useState(false);
   const [speechState, setSpeechState] = useState('');
+  const [speechCue, setSpeechCue] = useState(0);
+  const [autoRead, setAutoRead] = useState(true);
   const [level, setLevel] = useState(0);
   const [notice, setNotice] = useState('');
   const [metrics, setMetrics] = useState<RecordedAnswer | null>(null);
   const recorder = useRef<Awaited<ReturnType<typeof recordMicrophone>> | null>(null);
   const playback = useRef<(() => void) | null>(null);
+  const playbackGeneration = useRef(0);
+  const readTurns = useRef(new Set<string>());
   const transcriptionAbort = useRef<AbortController | null>(null);
   const generation = useRef(0);
   const turn = session?.turns[session.turns.length - 1];
@@ -65,7 +69,11 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
     setMetrics(null);
     setElapsed(0);
     setStarted(false);
+    playbackGeneration.current++;
     playback.current?.();
+    playback.current = null;
+    setSpeechCue(0);
+    setSpeechState((current) => (current === 'speaking' ? '' : current));
   }, [turn?.id]);
   useEffect(() => {
     if (!started || paused || busy || speechState === 'speaking' || speechState === 'transcribing')
@@ -76,6 +84,7 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
   useEffect(
     () => () => {
       generation.current++;
+      playbackGeneration.current++;
       transcriptionAbort.current?.abort();
       playback.current?.();
       void recorder.current?.stop();
@@ -83,20 +92,56 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
     [],
   );
   function stopSpeaking() {
+    playbackGeneration.current++;
     playback.current?.();
     playback.current = null;
-    if (speechState === 'speaking') setSpeechState('');
+    setSpeechCue(0);
+    setSpeechState((current) => (current === 'speaking' ? '' : current));
   }
   function speak() {
-    if (!turn || !session) return;
+    if (!turn || !session || paused || busy || audioBusy || session.state === 'completed') return;
+    readTurns.current.add(turn.id);
     stopSpeaking();
+    const run = ++playbackGeneration.current;
     setNotice('');
     playback.current = playQuestion(turn.question.interviewer_text, session.language, {
-      onStart: () => setSpeechState('speaking'),
-      onEnd: () => setSpeechState(''),
-      onNotice: setNotice,
+      onStart: () => {
+        if (run !== playbackGeneration.current) return;
+        setSpeechState('speaking');
+        setSpeechCue(0.65);
+      },
+      onViseme: (value) => {
+        if (run === playbackGeneration.current) setSpeechCue(Math.max(0, Math.min(1, value)));
+      },
+      onEnd: () => {
+        if (run !== playbackGeneration.current) return;
+        setSpeechState((current) => (current === 'speaking' ? '' : current));
+        setSpeechCue(0);
+      },
+      onNotice: (message) => {
+        if (run === playbackGeneration.current) setNotice(message);
+      },
     });
   }
+  const readAutomatically = useEffectEvent(() => {
+    if (autoRead && turn && !readTurns.current.has(turn.id)) speak();
+  });
+  useEffect(() => {
+    if (!autoRead || !turn?.id || paused || busy || audioBusy || session?.state === 'completed')
+      return;
+    // Defer one microtask so StrictMode cleanup cancels its first setup before any audio starts.
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) readAutomatically();
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [autoRead, turn?.id, paused, busy, audioBusy, session?.state]);
+  const stopPlaybackForState = useEffectEvent(stopSpeaking);
+  useEffect(() => {
+    if (paused || session?.state === 'completed') stopPlaybackForState();
+  }, [paused, session?.state]);
   async function beginRecording() {
     if (!session || paused || busy || audioBusy) return;
     stopSpeaking();
@@ -214,11 +259,27 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
       {live.error && <ErrorNotice message={live.error} onDismiss={() => live.setError('')} />}
       <div className="interview-grid">
         <section className="interviewer-panel" aria-label="Interviewer">
-          <InterviewerPortrait />
+          <Interviewer3D
+            interviewer={session.interviewer}
+            state={displayState}
+            speaking={speechState === 'speaking'}
+            speechCue={speechCue}
+          />
           <div className="coach-state" role="status">
             <span className={`status-dot ${displayState === 'listening' ? 'pulse' : ''}`} />
             {statusLabels[displayState] || 'Ready when you are'}
           </div>
+          <label className="check-label">
+            <input
+              type="checkbox"
+              checked={autoRead}
+              onChange={(event) => {
+                setAutoRead(event.target.checked);
+                if (!event.target.checked) stopSpeaking();
+              }}
+            />
+            <span>Read questions automatically</span>
+          </label>
           <div className="waveform" role="img" aria-label="Microphone activity">
             {Array.from({ length: 32 }, (_, i) => (
               <span key={i} style={{ height: `${4 + level * (8 + ((i * 13) % 29))}px` }} />
