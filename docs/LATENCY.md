@@ -22,7 +22,6 @@ never fills in a tool-measured field from typed input.
 From the repository root:
 
 ```bash
-cd "/Users/wong/Yr3 sem1/COMP4431 Artificial Intelligence/Project/COMP4431_GroupProject_InterviewCoach"
 make dev
 ```
 

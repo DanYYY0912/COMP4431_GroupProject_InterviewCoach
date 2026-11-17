@@ -25,3 +25,7 @@ presentation/node_modules
 
 # Per-machine llama.cpp endpoint config for model evaluation
 evaluation/model_endpoints.local.json
+
+# Machine-specific or duplicated build outputs
+presentation/validation.json
+evaluation/results/model_raw.jsonl

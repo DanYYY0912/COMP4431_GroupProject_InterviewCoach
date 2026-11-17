@@ -41,12 +41,7 @@ def load_env_key() -> str:
     key = os.environ.get("DEEPSEEK_API_KEY", "")
     if key:
         return key
-    env_path = Path.home() / ".hermes" / "profiles" / "programmer" / ".env"
-    if env_path.exists():
-        for line in env_path.read_text().splitlines():
-            if line.startswith("DEEPSEEK_API_KEY="):
-                return line.split("=", 1)[1].strip().strip('"')
-    raise SystemExit("DEEPSEEK_API_KEY not found in environment or profile .env")
+    raise SystemExit("Set DEEPSEEK_API_KEY in the environment to run the pre-screen")
 
 
 def parse_row(row: dict) -> tuple[dict, dict]:
