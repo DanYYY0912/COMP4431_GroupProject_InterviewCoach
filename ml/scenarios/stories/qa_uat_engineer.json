@@ -1,0 +1,326 @@
+{
+  "role_family": "qa_uat_engineer",
+  "stories": [
+    {
+      "id": "qa-01",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "At an insurance company, the release for a claims form had no test cases until three days before go-live.",
+        "Task": "I was the junior on the UAT team, and I had to cover the important paths without pretending I had covered everything.",
+        "Action": "I wrote cases from the requirement list, marked eight as must-run, and listed four areas we would not test in time.",
+        "Result": "The must-run cases found twelve defects before release, and the four untested areas were named in the sign-off note.",
+        "vague": "There was a release and testing was quite rushed.",
+        "exaggerated": "I tested the entire system and found every defect it had.",
+        "no_data": "The release went out after we ran what we could."
+      },
+      "zh": {
+        "Situation": "喺保險公司，一個理賠表格版本喺上線前三日都未有測試個案。",
+        "Task": "我係 UAT 團隊嘅新人，要覆蓋重要路徑，但唔可以假裝全部覆蓋咗。",
+        "Action": "我按需求清單寫個案，標出八個 must-run，並列出四個趕唔切測嘅範圍。",
+        "Result": "must-run 個案喺發佈前捉到十二個 defect，四個未測範圍亦寫明喺 sign-off 註記。",
+        "vague": "有個版本，測試時間好趕。",
+        "exaggerated": "我測完成個系統，搵到晒所有 defect。",
+        "no_data": "做完做得到嘅部分之後，版本就出咗。"
+      }
+    },
+    {
+      "id": "qa-02",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "At a bank, the regression suite took five hours and the team started skipping it before small releases.",
+        "Task": "I wanted a shorter smoke set that still caught the failures we cared about.",
+        "Action": "I looked at the last sixty defects, grouped them by area, and built a thirty-case smoke set covering the three riskiest areas.",
+        "Result": "Smoke ran in twenty-two minutes and caught nine of the last ten serious defects when I replayed history.",
+        "vague": "The regression suite was too long so people skipped it.",
+        "exaggerated": "I replaced the entire regression suite with a perfect short list.",
+        "no_data": "The shorter set was used before releases afterwards."
+      },
+      "zh": {
+        "Situation": "喺銀行，regression suite 要跑五個鐘，團隊開始喺細版本前跳過唔跑。",
+        "Task": "我想做一套短啲嘅 smoke set，但仍然捉到我哋關心嘅失敗。",
+        "Action": "我睇過去六十個 defect，按範圍分組，再做一套三十個個案、覆蓋最高風險三個範圍嘅 smoke set。",
+        "Result": "smoke 二十二分鐘跑完，用歷史重播時捉到十個嚴重 defect 之中九個。",
+        "vague": "regression suite 太長，所以有人跳過。",
+        "exaggerated": "我用一份完美嘅短清單取代咗整個 regression suite。",
+        "no_data": "之後版本前都用短嗰套。"
+      }
+    },
+    {
+      "id": "qa-03",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "A developer kept closing my defect as works as designed, and we had gone back and forth three times in the tracker.",
+        "Task": "I needed a decision on whether it was a defect, without turning it into an argument about who was right.",
+        "Action": "I reproduced it with a screen recording, showed the requirement line it broke, and asked the product owner to decide in the ticket.",
+        "Result": "The product owner confirmed it was a defect against the requirement, and the developer fixed it the next day.",
+        "vague": "There was a disagreement about a defect and it dragged on.",
+        "exaggerated": "I forced the developer to admit they were wrong.",
+        "no_data": "In the end it was fixed and the ticket closed."
+      },
+      "zh": {
+        "Situation": "有位開發同事不停把我報嘅 defect 當 works as designed 關掉，我哋喺 tracker 來回三次。",
+        "Task": "我要有個結論究竟係唔係 defect，但唔想變成爭邊個啱。",
+        "Action": "我錄影重現，指出佢違反咗邊行需求，再請 product owner 喺 ticket 內決定。",
+        "Result": "product owner 確認係違反需求嘅 defect，開發同事第二日修好。",
+        "vague": "有個 defect 有爭議，拖咗一陣。",
+        "exaggerated": "我逼到開發同事承認自己錯。",
+        "no_data": "最後修好，ticket 關咗。"
+      }
+    },
+    {
+      "id": "qa-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "Four years in, UAT for a finance system involved eleven business users across three departments and no agreed definition of done.",
+        "Task": "I owned the UAT plan, and I had to get one sign-off the auditors would accept.",
+        "Action": "I wrote a checklist per department, booked two fixed sessions, and recorded each decision with a name and a date.",
+        "Result": "Sign-off came two days before the deadline, and the audit trail answered every later question about who approved what.",
+        "vague": "UAT involved a lot of people and it was hard to coordinate.",
+        "exaggerated": "I ran the whole UAT programme for the company on my own.",
+        "no_data": "In the end we got the sign-off before the deadline."
+      },
+      "zh": {
+        "Situation": "做咗四年，一個財務系統嘅 UAT 涉及三個部門十一位業務用戶，而 done 嘅定義從未講清楚。",
+        "Task": "我負責 UAT 計劃，要拿到一份審計接受嘅 sign-off。",
+        "Action": "我為每個部門寫 checklist，約兩個固定場次，每個決定都記低姓名同日期。",
+        "Result": "sign-off 喺死線前兩日拿到，之後有人問邊個批咗咩都查得返。",
+        "vague": "UAT 好多人參與，好難協調。",
+        "exaggerated": "我一個人負責公司整個 UAT 計劃。",
+        "no_data": "最後死線前拿到 sign-off。"
+      }
+    },
+    {
+      "id": "qa-05",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "In my internship, the mobile page passed on the newest phone but failed on the two older models the store staff actually used.",
+        "Task": "I was asked to check the page properly, and to report the result without overstating what I had covered.",
+        "Action": "I borrowed the two older handsets, wrote a five-step script per screen, and logged what failed with a photo of each screen.",
+        "Result": "Three layout faults were found and fixed before the store trial, and the script stayed with the team.",
+        "vague": "The page had some issues on older phones.",
+        "exaggerated": "I certified the app for every Android device in the market.",
+        "no_data": "After the checks, the trial ran without layout complaints."
+      },
+      "zh": {
+        "Situation": "實習時個手機頁喺最新款電話正常，但門店同事實際用嘅兩款舊機就出事。",
+        "Task": "我要認真檢查個頁，並老實報告我覆蓋咗咩。",
+        "Action": "我借咗兩部舊機，為每個畫面寫五步腳本，失敗嘅地方逐個影相記錄。",
+        "Result": "門店試用前搵到三個排版問題並修好，腳本亦留咗喺團隊。",
+        "vague": "個頁喺舊機會有啲問題。",
+        "exaggerated": "我為市面上所有 Android 機認證咗個 app。",
+        "no_data": "檢查完之後，試用期間冇排版投訴。"
+      }
+    },
+    {
+      "id": "qa-06",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Our small automated suite failed about one run in three for reasons that were never the product's fault.",
+        "Task": "I wanted a suite we could trust, and I had to stop the team ignoring red runs.",
+        "Action": "I moved fixed waits to explicit conditions, isolated the shared test account, and deleted two tests that asserted nothing useful.",
+        "Result": "Flaky runs dropped to about one in twenty, and a red run started meaning something again.",
+        "vague": "The automated tests were unreliable sometimes.",
+        "exaggerated": "I made the test suite completely stable forever.",
+        "no_data": "After the changes, fewer runs failed for no reason."
+      },
+      "zh": {
+        "Situation": "我哋細型自動測試每三次就有一次失敗，而原因從來唔係產品問題。",
+        "Task": "我想要一套信得過嘅測試，並要令團隊唔再無視紅色結果。",
+        "Action": "我把固定等待改成條件等待，隔離共用測試帳戶，再刪走兩個唔驗證任何有意義內容嘅測試。",
+        "Result": "誤報由三次一次跌到廿次一次，紅色結果再次有意思。",
+        "vague": "自動測試有時唔可靠。",
+        "exaggerated": "我令測試套件永遠完全穩定。",
+        "no_data": "改完之後，無故失敗少咗好多。"
+      }
+    },
+    {
+      "id": "qa-07",
+      "seniority": "mid",
+      "competencies": [
+        "Testing",
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "Five years in at a hospital group, a booking release slipped three times because the defect list was never agreed.",
+        "Task": "I proposed a severity definition, and I had to get developers and clinical users to accept the same rule.",
+        "Action": "I wrote four severity levels with a real example each, applied it to the open list in a joint session, and recorded the disagreements.",
+        "Result": "The list went from sixty open defects to eleven blockers, and the release went out the following week.",
+        "vague": "The release kept slipping because of defects.",
+        "exaggerated": "I fixed the release process for the whole hospital group.",
+        "no_data": "After the session the release went out."
+      },
+      "zh": {
+        "Situation": "喺醫療集團做咗五年，一個預約系統版本因為 defect 清單從未講清楚，連續延期三次。",
+        "Task": "我提出嚴重程度定義，並要開發同事同前線臨床用戶接受同一套規則。",
+        "Action": "我寫四個嚴重級別，每個配一個真實例子，喺聯合會議即場套用到開啟中嘅清單，並記低分歧。",
+        "Result": "清單由六十個開啟中 defect 收窄到十一個 blocker，下星期就出到版本。",
+        "vague": "版本因為 defect 不停延遲。",
+        "exaggerated": "我修好咗整個醫療集團嘅發佈流程。",
+        "no_data": "開完會之後版本出咗。"
+      }
+    },
+    {
+      "id": "qa-08",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first job, a business user reported that the report was wrong, and the developer could not reproduce it.",
+        "Task": "I sat between them, and I needed the exact steps before anyone changed code.",
+        "Action": "I asked the user to share her filter settings, found she used a date range nobody had tested, and reproduced it in ten minutes.",
+        "Result": "The defect was real and limited to that range, and the fix went out in the next patch.",
+        "vague": "There was a disagreement about whether the report was wrong.",
+        "exaggerated": "I proved the developer had never tested the report at all.",
+        "no_data": "In the end the bug was found and fixed."
+      },
+      "zh": {
+        "Situation": "第一份工，業務用戶話報表錯，但開發同事重現唔到。",
+        "Task": "我坐喺中間，要喺改 code 之前拿到確實步驟。",
+        "Action": "我請用戶分享篩選設定，發現佢用咗一個冇人測過嘅日期範圍，十分鐘就重現到。",
+        "Result": "個 bug 真係存在而且只限該範圍，下一個 patch 修好。",
+        "vague": "有爭議究竟報表係唔係錯。",
+        "exaggerated": "我證明咗開發同事從來冇測過個報表。",
+        "no_data": "最後搵到個 bug 並修好。"
+      }
+    },
+    {
+      "id": "qa-09",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a logistics company, the release checklist lived in one person's head and he went on leave for two weeks.",
+        "Task": "I offered to write it down, and I had to check each step with him before he left.",
+        "Action": "I sat with him for two hours, wrote twelve steps with the expected result for each, and tested the list by running it myself.",
+        "Result": "The release during his leave went out on time, and two steps in the list turned out to be unnecessary.",
+        "vague": "The release process was not written down anywhere.",
+        "exaggerated": "I wrote the definitive release process for the company.",
+        "no_data": "The release happened while he was away and it worked."
+      },
+      "zh": {
+        "Situation": "喺物流公司，發佈 checklist 只存在一個人腦裡面，而佢放假兩星期。",
+        "Task": "我提出寫低佢，並要喺佢放假前逐步核對。",
+        "Action": "我同佢坐兩個鐘，寫十二步並列明每步預期結果，再自己跑一次驗證份清單。",
+        "Result": "佢放假期間版本準時出，而清單入面有兩步原來唔需要。",
+        "vague": "發佈流程冇寫低。",
+        "exaggerated": "我寫咗公司權威嘅發佈流程。",
+        "no_data": "佢唔喺度嗰次版本照出得到。"
+      }
+    },
+    {
+      "id": "qa-10",
+      "seniority": "mid",
+      "competencies": [
+        "Testing",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "Six years in, a data migration was signed off by testing, then failed in production because nobody tested a resumed run.",
+        "Task": "I owned the post-incident fix, and I had to add the missing case without blaming the tester who signed off.",
+        "Action": "I added interrupted-and-resumed cases to the migration script, ran them on a copy, and added the case to the shared checklist.",
+        "Result": "The rerun worked on the second attempt, and the checklist now has a resume case that any project can reuse.",
+        "vague": "A migration failed in production and we looked into it.",
+        "exaggerated": "I found the single mistake that caused the whole outage.",
+        "no_data": "After the fix the rerun worked and the checklist was updated."
+      },
+      "zh": {
+        "Situation": "做咗六年，一次數據遷移測試簽收之後喺 production 失敗，因為冇人測過中斷後重跑。",
+        "Task": "我負責事後修補，要補上缺咗嘅個案，但唔怪責簽收嘅測試同事。",
+        "Action": "我為遷移腳本加中斷再續跑嘅個案，喺副本跑一次，再把個案加入共用 checklist。",
+        "Result": "第二次重跑成功，checklist 亦多咗一個任何項目都用得著嘅續跑個案。",
+        "vague": "有次遷移喺 production 失敗，我哋去查。",
+        "exaggerated": "我搵出咗導致整次故障嘅唯一錯誤。",
+        "no_data": "修好之後重跑成功，checklist 亦更新咗。"
+      }
+    },
+    {
+      "id": "qa-11",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Teamwork",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "On a six-month contract at a vendor, I joined a project where testing started only after the build was finished.",
+        "Task": "I wanted to start earlier, and I needed the developer to accept a small change in how we worked.",
+        "Action": "I asked for the acceptance criteria at the start of each ticket and reviewed them with him for ten minutes.",
+        "Result": "Half of the tickets had a clarified criterion before code started, and rework in the last two weeks nearly disappeared.",
+        "vague": "Testing started very late on that project.",
+        "exaggerated": "I changed the whole delivery model of the vendor.",
+        "no_data": "Starting earlier helped and there was less rework."
+      },
+      "zh": {
+        "Situation": "喺 vendor 做半年合約，我加入一個項目，測試要等 build 完成才開始。",
+        "Task": "我想早啲開始，並要開發同事接受一個細微嘅工作方式改變。",
+        "Action": "我要求每個 ticket 開頭就有 acceptance criteria，再同佢花十分鐘一齊睇。",
+        "Result": "一半 ticket 喺開始寫 code 前已釐清標準，最後兩星期嘅重做幾乎消失。",
+        "vague": "嗰個項目測試開始得好遲。",
+        "exaggerated": "我改變咗 vendor 成個交付模式。",
+        "no_data": "早啲開始有幫助，重做少咗。"
+      }
+    },
+    {
+      "id": "qa-12",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a government-adjacent contractor, we had to show evidence that a fixed defect stayed fixed for the next release.",
+        "Task": "I had to design a regression check the client's auditor would accept as evidence.",
+        "Action": "I kept the original reproduction steps as a numbered case, linked it to the defect id, and ran it in every release with the output saved.",
+        "Result": "The auditor accepted the saved outputs for twelve cases, and two of them failed later and were caught before release.",
+        "vague": "We needed to show that defects were actually fixed.",
+        "exaggerated": "I made the contractor fully audit-ready on my own.",
+        "no_data": "The auditor accepted our evidence and the checks kept running."
+      },
+      "zh": {
+        "Situation": "喺政府相關承辦商，我哋要證明修好嘅 defect 喺下個版本仍然修好。",
+        "Task": "我要設計一個客戶審計員接受作為證據嘅回歸檢查。",
+        "Action": "我把原本重現步驟做成編號個案，連結 defect id，每次發佈都跑並保存輸出。",
+        "Result": "審計員接受十二個個案嘅輸出，其中兩個之後再失敗，喺發佈前就被捉到。",
+        "vague": "我哋要展示 defect 真係修好咗。",
+        "exaggerated": "我一個人令承辦商完全達到審計要求。",
+        "no_data": "審計員接受證據，檢查一直有跑。"
+      }
+    }
+  ]
+}

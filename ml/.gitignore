@@ -1,3 +1,6 @@
 runs/
 data/reviewed/
 __pycache__/
+
+# reviewed_examples.jsonl, reviews/ and edits/ are human-authored source evidence.
+# Keep them trackable; only generated splits and GPU run outputs are ignored.

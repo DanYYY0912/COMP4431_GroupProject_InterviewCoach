@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 import pytest
 from fastapi.testclient import TestClient
@@ -211,3 +212,63 @@ def test_websocket_pause_interrupts_generation_without_committing(client, monkey
         assert result["payload"]["state"] == "paused"
         assert len(result["payload"]["turns"]) == 1
         assert result["payload"]["turns"][0]["answer"] is None
+
+
+def test_single_answer_report_summary_is_singular(client):
+    session = create_session(client)
+    url = f"/api/sessions/{session['id']}"
+    assert (
+        client.post(
+            url + "/answer",
+            json={
+                "transcript": "I wrote Python tests.",
+                "language": "en-HK",
+                "elapsed_seconds": 20,
+            },
+        ).status_code
+        == 200
+    )
+    assert client.post(url + "/control", json={"action": "end"}).status_code == 200
+    assert client.get(url + "/report").json()["summary"].startswith("You submitted 1 answer.")
+
+
+def test_methodology_uses_current_manifest_instead_of_old_snapshot(client, tmp_path, monkeypatch):
+    import app.main as main
+
+    (tmp_path / "ml").mkdir()
+    config = {
+        "base_model": "test-only/base",
+        "revision": "b" * 40,
+        "output_dir": "ml/runs/test-only",
+    }
+    (tmp_path / "ml/config.json").write_text(json.dumps(config))
+    monkeypatch.setattr(main, "ROOT", tmp_path)
+    url = "/api/methodology/metrics"
+    assert client.get(url).json()["training"]["status"] == "not_trained"
+    run = tmp_path / config["output_dir"]
+    run.mkdir(parents=True)
+    # Artificial software-test manifest only; never copied to repository run evidence.
+    manifest = {
+        "status": "training_completed",
+        "base_model": "test-only/base",
+        "base_revision": "b" * 40,
+        "training_config": config,
+        "dataset": {"review_validation": {"reviewed": 480}},
+        "best_validation_loss": 1.2,
+    }
+    (run / "model_manifest.json").write_text(json.dumps(manifest))
+    result = client.get(url).json()
+    assert result["training"]["status"] == "training_completed"
+    assert result["training"]["adapter_available"] is False
+    assert not any(line.startswith("No QLoRA training") for line in result["limitations"])
+    (run / "model_manifest.json").unlink()
+    assert client.get(url).json()["training"]["status"] == "not_trained"
+
+
+def test_minimal_packaged_methodology_needs_no_training_source(client, tmp_path, monkeypatch):
+    import app.main as main
+
+    monkeypatch.setattr(main, "ROOT", tmp_path)
+    result = client.get("/api/methodology/metrics")
+    assert result.status_code == 200
+    assert result.json()["training"]["status"] == "not_trained"

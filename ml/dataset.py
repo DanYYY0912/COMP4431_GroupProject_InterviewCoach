@@ -282,16 +282,44 @@ def generate_drafts():
     return rows
 
 
-def normalized_text(row):
-    # IDs and numbers are not evidence of semantic uniqueness.
-    user = json.loads(row["messages"][1]["content"])
-    text = " ".join(
-        [
-            user.get("answer", ""),
-            user.get("instruction", ""),
-            *(s["text"] for s in user.get("job_sources", [])),
+def _assistant_focus(messages):
+    """The assistant target's own words, without the shared source passages."""
+    for message in reversed(messages or []):
+        if message.get("role") != "assistant":
+            continue
+        try:
+            payload = json.loads(message["content"])
+        except (TypeError, ValueError):
+            return [message.get("content") or ""]
+        if not isinstance(payload, dict):
+            return [message.get("content") or ""]
+        focus = [
+            payload.get("interviewer_text"),
+            payload.get("prioritized_improvement"),
+            payload.get("retry_exercise"),
         ]
-    )
+        return [item for item in focus if isinstance(item, str)]
+    return []
+
+
+def normalized_text(row):
+    """Candidate wording plus the assistant's main text; never the shared source passages.
+
+    The runtime prompt keys are ``previous_answer.transcript`` and
+    ``quoted_answer_excerpts``. The legacy ``answer`` key is still read so old drafts stay
+    comparable, but job sources and instructions are excluded: they are shared context,
+    not evidence that two examples differ.
+    """
+    user = json.loads(row["messages"][1]["content"])
+    parts = []
+    previous = user.get("previous_answer")
+    if isinstance(previous, dict) and isinstance(previous.get("transcript"), str):
+        parts.append(previous["transcript"])
+    parts.extend(item for item in user.get("quoted_answer_excerpts") or [] if isinstance(item, str))
+    if isinstance(user.get("answer"), str):
+        parts.append(user["answer"])
+    parts.extend(_assistant_focus(row.get("messages")))
+    text = " ".join(part for part in parts if part)
     text = re.sub(r"\d+", "#", text.casefold())
     return re.sub(r"\s+", " ", text).strip()
 

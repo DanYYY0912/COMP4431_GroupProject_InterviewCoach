@@ -69,9 +69,6 @@ export function Methodology() {
             <br />
             <em>Open to scrutiny.</em>
           </h1>
-          <p className="lead">
-            How your coach works, what has been measured, and what is still to come.
-          </p>
         </div>
         <FlaskConical className="heading-icon" size={48} strokeWidth={1.3} />
       </div>

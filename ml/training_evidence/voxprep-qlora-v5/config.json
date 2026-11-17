@@ -1,0 +1,22 @@
+{
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "data_dir": "ml/data/reviewed",
+  "output_dir": "ml/runs/voxprep-qlora",
+  "max_length": 2048,
+  "per_device_batch_size": 1,
+  "gradient_accumulation_steps": 16,
+  "learning_rate": 0.0002,
+  "num_train_epochs": 1,
+  "warmup_ratio": 0.05,
+  "lr_scheduler_type": "cosine",
+  "seed": 42,
+  "lora_r": 32,
+  "lora_alpha": 64,
+  "lora_dropout": 0.05,
+  "target_modules": "all-linear",
+  "eval_steps": 10,
+  "logging_steps": 2,
+  "expected_examples": 971,
+  "notes": "Reviewed corpus after human review: 971 rows survive (29 AI-flagged rows were rejected by the reviewer and dropped by `ml.review merge --drop-rejected`). Original WS2 generation produced 1000 drafts (450 question, 350 report, 200 safety; 600 en-HK, 400 zh-HK) across 15 Hong Kong role families; 15% of rows carry a second independent review (148 rows). At effective batch 16 the 790 training rows give about 49 optimizer steps/epoch, so eval/save every 10 and log every 2 keep the loss curve readable. Review, hash, deduplication and split gates remain mandatory. num_train_epochs is 1, not 3: the first Kaggle run measured 310 s per optimizer step on a T4 (rows average about 1,800 tokens, so 16 accumulated micro-batches per step), which puts three epochs at roughly 13 hours against a 12-hour session cap. One epoch is 50 steps, about 4.5 hours, and still gives the format, language and citation contract the adapter is for."
+}

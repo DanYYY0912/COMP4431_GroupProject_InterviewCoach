@@ -19,7 +19,6 @@ ROOT_FILES = {
     "Dockerfile",
     "compose.yaml",
     "README.md",
-    "PROGRESS.md",
     "LICENSE",
     "requirements.lock",
     "pytest.ini",
@@ -298,7 +297,7 @@ def package(root=ROOT):
                 "training_manifest": str(TRAINING_RUN / "model_manifest.json")
                 if training
                 else None,
-                "limitations": "Review PROGRESS.md for unmet assessed release gates. A packaged adapter proves artifact integrity, not model quality. Base weights, checkpoints, credentials and personal session data are excluded.",
+                "limitations": "See docs/EVALUATION.md for measured results and their limits. A packaged adapter proves artifact integrity, not model quality. Base weights, checkpoints, credentials and personal session data are excluded.",
             }
             manifest_info = zipfile.ZipInfo(
                 "VoxPrep-HK/SUBMISSION_MANIFEST.json", date_time=(2026, 11, 2, 0, 0, 0)

@@ -1,0 +1,320 @@
+{
+  "role_family": "data_engineer_etl",
+  "stories": [
+    {
+      "id": "de-01",
+      "seniority": "entry",
+      "competencies": [
+        "Python",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "At a trading company, vendor files arrived by SFTP at different times, and a rerun used to load the same rows twice.",
+        "Task": "I was given the nightly load, and my task was to make a rerun safe at any hour.",
+        "Action": "I added a load key per file and date, wrote the Python job to delete and reload one partition, and tested a double run on purpose.",
+        "Result": "Two deliberate reruns produced identical row counts, and the analyst stopped reconciling duplicates by hand.",
+        "vague": "The load had some duplication issues when files came late.",
+        "exaggerated": "I rebuilt the whole data platform for the company.",
+        "no_data": "After the change reruns stopped creating duplicates."
+      },
+      "zh": {
+        "Situation": "喺一間貿易公司，供應商檔案經 SFTP 唔同時間到，重跑一次就會載入兩次。",
+        "Task": "我接手每晚載入，任務係任何時間重跑都要安全。",
+        "Action": "我為每個檔案同日期加 load key，用 Python 只刪同重載一個 partition，再故意試一次連續跑兩遍。",
+        "Result": "兩次故意重跑得出完全一樣嘅筆數，分析同事唔再需要人手對重複。",
+        "vague": "檔案遲到嗰時，載入有啲重複問題。",
+        "exaggerated": "我重建咗公司成個數據平台。",
+        "no_data": "改完之後重跑唔會再出重複。"
+      }
+    },
+    {
+      "id": "de-02",
+      "seniority": "early",
+      "competencies": [
+        "Python",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In a retail group, a Spark job that joined sales to product data failed every night with an out-of-memory error on the driver.",
+        "Task": "I owned that job, and I had to bring it back within the two-hour window before the morning report.",
+        "Action": "I read the plan, replaced a wide join with a broadcast of the small product table, and repartitioned sales by store date.",
+        "Result": "The job finished in twenty minutes with no memory error, and it ran clean for the following month.",
+        "vague": "The Spark job kept failing and we were not sure why.",
+        "exaggerated": "I fixed the cluster's entire performance problem by myself.",
+        "no_data": "After the change the job finished without failing."
+      },
+      "zh": {
+        "Situation": "喺一間零售集團，個 Spark job 要 join 銷售同產品數據，每晚都因 driver out-of-memory 失敗。",
+        "Task": "我負責嗰個 job，要喺早上報告前嘅兩小時窗口內搞返好。",
+        "Action": "我睇執行計劃，把細嘅產品表改成 broadcast，再按 store 同日期 repartition 個大表。",
+        "Result": "個 job 二十分鐘跑完，冇再 out-of-memory，之後一個月都乾淨。",
+        "vague": "個 Spark job 不停失敗，我哋都唔確定原因。",
+        "exaggerated": "我一個人修好咗整個 cluster 嘅效能問題。",
+        "no_data": "改完之後個 job 冇再失敗。"
+      }
+    },
+    {
+      "id": "de-03",
+      "seniority": "early",
+      "competencies": [
+        "Python",
+        "Data analysis",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "While loading a warehouse for a marketing team, one campaign file had negative click counts and nobody noticed for a week.",
+        "Task": "I proposed a quality gate before publish, and I had to keep it fast enough for the nightly window.",
+        "Action": "I wrote four Python checks: row count, null keys, non-negative metrics, and duplicate campaign rows, and made a failure stop the publish.",
+        "Result": "The gate blocked three bad loads in the first month, and the team saw the reason in one line.",
+        "vague": "There were some data quality issues in the warehouse.",
+        "exaggerated": "I built a complete data quality platform for the department.",
+        "no_data": "After the checks, bad loads were stopped before anyone used them."
+      },
+      "zh": {
+        "Situation": "幫 marketing 團隊載入倉庫時，有個 campaign 檔嘅 click 數係負數，一星期都冇人發現。",
+        "Task": "我提出發佈前加質量檢查，但要快到趕得上每晚窗口。",
+        "Action": "我用 Python 寫四個檢查：筆數、key 有冇 null、指標唔可以負、campaign 行有冇重複，失敗就停止發佈。",
+        "Result": "第一個月就擋咗三次壞載入，團隊睇一行原因就知咩事。",
+        "vague": "倉庫嘅數據質量有啲問題。",
+        "exaggerated": "我為部門建立咗一套完整嘅數據質量平台。",
+        "no_data": "加檢查之後，壞載入未被人用就已經擋住。"
+      }
+    },
+    {
+      "id": "de-04",
+      "seniority": "mid",
+      "competencies": [
+        "Databases",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "Four years in at a bank, a vendor renamed two columns in a feed we had used unchanged for three years.",
+        "Task": "I had to keep the warehouse loading and explain to two downstream teams why their reports changed.",
+        "Action": "I added a schema check that fails at arrival, wrote a mapping for the old names, and gave each team a one-week window with a sample extract.",
+        "Result": "The feed loaded through the rename, and neither team was surprised on the Monday.",
+        "vague": "A vendor changed something in the feed and we had to adapt.",
+        "exaggerated": "I prevented a bank-wide reporting failure single-handedly.",
+        "no_data": "After the mapping the feed loaded and the reports were fine."
+      },
+      "zh": {
+        "Situation": "喺銀行做咗四年，供應商把用咗三年嘅 feed 其中兩個欄位改名。",
+        "Task": "我要令倉庫繼續載入，並向兩個下游團隊解釋佢哋報告點解變。",
+        "Action": "我加咗收到檔案即驗 schema 嘅檢查，寫舊名對應表，再畀每隊一個星期同一份樣本 extract。",
+        "Result": "feed 過渡到新名照載入，兩個團隊星期一都冇被嚇到。",
+        "vague": "供應商改咗 feed 啲嘢，我哋要跟。",
+        "exaggerated": "我一個人阻止咗全銀行報表出事。",
+        "no_data": "做完對應之後 feed 照載入，報告正常。"
+      }
+    },
+    {
+      "id": "de-05",
+      "seniority": "entry",
+      "competencies": [
+        "Databases",
+        "Python",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first role at a logistics firm, the daily stock snapshot was a full reload of a table that grew by a million rows a month.",
+        "Task": "I was asked to keep the report fresh without letting the load time grow every month.",
+        "Action": "I changed it to an incremental load on the last modified timestamp, and checked the totals against the old full reload for two weeks.",
+        "Result": "The load went from twenty minutes to under two, and the totals matched the old method exactly.",
+        "vague": "The daily load was getting slower over time.",
+        "exaggerated": "I redesigned the company's entire warehouse.",
+        "no_data": "The load became faster and the numbers still matched."
+      },
+      "zh": {
+        "Situation": "第一份工喺物流公司，每日庫存快照都係全表重載，而張表每月增加一百萬行。",
+        "Task": "我要令報告保持最新，但載入時間唔可以每個月都變長。",
+        "Action": "我改成按 last modified 時間做增量載入，並連續兩星期同舊嘅全量重載對總數。",
+        "Result": "載入由二十分鐘變兩分鐘以內，總數同舊方法完全一致。",
+        "vague": "每日載入越嚟越慢。",
+        "exaggerated": "我重新設計咗公司成個倉庫。",
+        "no_data": "載入快咗，數字仍然對得上。"
+      }
+    },
+    {
+      "id": "de-06",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Python"
+      ],
+      "en": {
+        "Situation": "At a fintech, an ingestion job called a partner API that returned a rate-limit error about once a week and the job simply stopped.",
+        "Task": "I owned the job, and I had to make a transient partner error recoverable without hiding a real failure.",
+        "Action": "I added bounded retries with backoff, a dead-letter file for rows still failing, and an alert only when the dead-letter file was non-empty.",
+        "Result": "Weekly manual reruns stopped, and the two genuine failures we saw were flagged the same hour.",
+        "vague": "The job sometimes stopped when the partner API had problems.",
+        "exaggerated": "I made the partner integration completely fault tolerant forever.",
+        "no_data": "After the change we stopped rerunning it by hand."
+      },
+      "zh": {
+        "Situation": "喺一間 fintech，攝取 job 每星期大約有一次撞到 partner API 嘅 rate-limit，個 job 就直接停。",
+        "Task": "我負責嗰個 job，要令短暫錯誤可以復原，但又唔可以遮住真失敗。",
+        "Action": "我加咗有上限嘅 retry 同 backoff，仍然失敗嘅行寫入 dead-letter 檔，只有該檔非空才發 alert。",
+        "Result": "每星期人手重跑停咗，兩次真失敗都喺同一小時被標示出嚟。",
+        "vague": "partner API 有問題嗰時個 job 會停。",
+        "exaggerated": "我令 partner 整合永遠完全容錯。",
+        "no_data": "改完之後唔再需要人手重跑。"
+      }
+    },
+    {
+      "id": "de-07",
+      "seniority": "mid",
+      "competencies": [
+        "Databases",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "Five years in at a bank, analysts had built a habit of copying customer contact columns into their own tables for convenience.",
+        "Task": "I had to reduce that exposure without stopping their work, and without claiming we were fully compliant.",
+        "Action": "I added masked views for the four contact fields, mapped who used the raw columns, and moved each consumer across with them present.",
+        "Result": "Raw column use dropped from eleven tables to two, and the two exceptions were documented for the risk owner.",
+        "vague": "There were some concerns about customer columns being copied around.",
+        "exaggerated": "I made the bank fully compliant with every data rule.",
+        "no_data": "After the change fewer tables held the raw columns."
+      },
+      "zh": {
+        "Situation": "喺銀行做咗五年，分析同事習慣把客戶聯絡欄位複製到自己嘅表方便用。",
+        "Task": "我要減少呢個曝露風險，但唔可以阻住佢哋做嘢，亦唔可以聲稱我哋完全合規。",
+        "Action": "我為四個聯絡欄位加 masked view，查出邊個用原始欄位，再逐個同用家一齊搬過去。",
+        "Result": "用原始欄位嘅表由十一張減到兩張，兩個例外亦已記錄交風險負責人。",
+        "vague": "有人關注客戶欄位被周圍複製。",
+        "exaggerated": "我令銀行完全符合所有數據規定。",
+        "no_data": "改完之後少咗表存原始欄位。"
+      }
+    },
+    {
+      "id": "de-08",
+      "seniority": "entry",
+      "competencies": [
+        "Python",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "For a university course feedback project, the same student could submit the form twice on a weak connection.",
+        "Task": "I was responsible for the ETL that fed the summary page, and my goal was a count the course office could trust.",
+        "Action": "I deduplicated on student and form id with the latest timestamp, and printed a before-and-after count into the job log.",
+        "Result": "The duplicate rate was under half a per cent after the fix, and the office stopped asking which number was right.",
+        "vague": "There were some duplicate submissions in the feedback data.",
+        "exaggerated": "I built a production-grade analytics pipeline as a student project.",
+        "no_data": "After the dedupe the count was cleaner and people stopped asking."
+      },
+      "zh": {
+        "Situation": "大學課程意見專題，網絡差嘅時候同一個學生可以交兩次表。",
+        "Task": "我負責餵數據去摘要頁嘅 ETL，目標係課程辦公室信得過嘅數。",
+        "Action": "我按 student 加 form id 用最新時間去重，並把前後筆數印入 job log。",
+        "Result": "修好之後重複率低過半個百分比，辦公室唔再問邊個數先啱。",
+        "vague": "意見數據有啲重複提交。",
+        "exaggerated": "我學生專題都做到 production 級分析 pipeline。",
+        "no_data": "去重之後數字清潔咗，大家唔再問。"
+      }
+    },
+    {
+      "id": "de-09",
+      "seniority": "early",
+      "competencies": [
+        "Databases",
+        "Python",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "On a one-year contract, I was asked to backfill two years of order history into a warehouse that had no partition yet.",
+        "Task": "I had to do it without locking the live table during office hours, and without guessing missing months.",
+        "Action": "I created a partitioned table by month, loaded it in monthly chunks overnight, and left the two months with no source files empty and reported.",
+        "Result": "The backfill finished in five nights, and the empty months were listed for the business rather than filled with estimates.",
+        "vague": "There was a backfill job and it took some planning.",
+        "exaggerated": "I migrated two years of company history on my own with no issues.",
+        "no_data": "The backfill completed and the missing months were reported."
+      },
+      "zh": {
+        "Situation": "做一年合約期間，我被要求把兩年訂單歷史補入一個未 partition 嘅倉庫。",
+        "Task": "我要喺辦公時間唔鎖住 live table 嘅情況下做，亦唔可以估缺失嘅月份。",
+        "Action": "我建立按月 partition 嘅表，通宵逐個月載入，兩個完全冇來源檔嘅月份就留空並上報。",
+        "Result": "補數五個晚上完成，空白月份係報俾業務知，而唔係用估算填。",
+        "vague": "有個補數 job，要啲計劃。",
+        "exaggerated": "我一個人搬咗公司兩年歷史，完全冇問題。",
+        "no_data": "補數完成，缺失月份有上報。"
+      }
+    },
+    {
+      "id": "de-10",
+      "seniority": "mid",
+      "competencies": [
+        "Software design",
+        "Python"
+      ],
+      "en": {
+        "Situation": "At a bank, the Airflow DAG for regulatory reporting breached its service level about twice a month, and nobody could say why.",
+        "Task": "I owned the DAG, and I had to find the pattern and tell the reporting owner what would actually change.",
+        "Action": "I added task duration logging, found one upstream file arriving after our start time, and moved our start plus added an arrival sensor.",
+        "Result": "Breaches dropped to none in the next two months, and the sensor removed the guesswork.",
+        "vague": "The DAG missed its deadline sometimes and it was hard to explain.",
+        "exaggerated": "I ended all delays in the regulatory reporting process.",
+        "no_data": "After the change the DAG stopped missing its deadline."
+      },
+      "zh": {
+        "Situation": "喺銀行，負責監管報告嘅 Airflow DAG 每月大約兩次違反 SLA，而冇人講得出原因。",
+        "Task": "我負責個 DAG，要找出模式，並向報告負責人講清楚實際會改咩。",
+        "Action": "我加 task 時長記錄，發現有一個上游檔案喺我哋開始之後才到，於是推遲開始並加 arrival sensor。",
+        "Result": "之後兩個月零違規，sensor 亦令唔需要再猜。",
+        "vague": "個 DAG 有時趕唔到死線，好難解釋。",
+        "exaggerated": "我終結咗監管報告流程所有延誤。",
+        "no_data": "改完之後 DAG 冇再趕唔到。"
+      }
+    },
+    {
+      "id": "de-11",
+      "seniority": "entry",
+      "competencies": [
+        "Databases",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first job, two warehouse tables that should have matched differed by about forty thousand rows every night.",
+        "Task": "I was asked to find out which table was wrong, not just to make the numbers agree.",
+        "Action": "I wrote a query that grouped both tables by day and status, then sampled five mismatched days and traced each back to a load log.",
+        "Result": "One table dropped rows when the status field was null, and after the fix the nightly difference was zero.",
+        "vague": "Two tables did not match and it caused confusion.",
+        "exaggerated": "I solved the company's reconciliation problem permanently.",
+        "no_data": "After the fix the two tables matched."
+      },
+      "zh": {
+        "Situation": "第一份工，兩張本應一致嘅倉庫表每晚相差大約四萬行。",
+        "Task": "我要查出邊張表錯，而唔係只令兩個數一樣。",
+        "Action": "我寫 query 按日期同狀態分組比較兩張表，再抽五日差異逐日追返去 load log。",
+        "Result": "有一張表喺 status 為 null 時漏行，修好之後每晚差異變零。",
+        "vague": "兩張表對唔上，搞到好混亂。",
+        "exaggerated": "我永久解決咗公司嘅對帳問題。",
+        "no_data": "修好之後兩張表一致。"
+      }
+    },
+    {
+      "id": "de-12",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "A client at a data agency asked for real-time dashboards for a promotion that ran for ten days only.",
+        "Task": "I had to advise on what was worth building, and say plainly what the extra cost bought them.",
+        "Action": "I compared our batch refresh time with their decision cadence, showed the gap was one morning, and proposed a cheaper hourly refresh.",
+        "Result": "They took the hourly option, and the project came in under the budget they had set aside for real time.",
+        "vague": "The client wanted real-time data and it was a discussion.",
+        "exaggerated": "I talked the client out of a project and saved them a fortune.",
+        "no_data": "In the end they chose the simpler option and were happy."
+      },
+      "zh": {
+        "Situation": "數據 agency 一個客戶想要 real-time dashboard，但個推廣只做十日。",
+        "Task": "我要講清楚咩值得做，並老實講額外成本換到咩。",
+        "Action": "我比較我哋 batch 更新時間同佢哋決策節奏，顯示差距只係一個早上，再建議平啲嘅每小時更新。",
+        "Result": "佢哋揀咗每小時方案，項目造價低過原定留畀 real-time 嘅預算。",
+        "vague": "客戶想要 real-time 數據，我哋討論咗一輪。",
+        "exaggerated": "我勸到客戶唔做個項目，幫佢慳咗一大筆。",
+        "no_data": "最後佢哋揀咗簡單方案，都幾滿意。"
+      }
+    }
+  ]
+}

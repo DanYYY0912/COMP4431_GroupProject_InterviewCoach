@@ -1,0 +1,320 @@
+{
+  "role_family": "cloud_devops_engineer",
+  "stories": [
+    {
+      "id": "cl-01",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first DevOps role, our service image was 1.4 GB and every deploy took nine minutes on the office connection.",
+        "Task": "I was asked to make deploys faster, and I had to prove nothing broke.",
+        "Action": "I moved to a multi-stage build, dropped two build tools from the runtime image, and ran the same smoke test before and after.",
+        "Result": "The image came down to 210 MB, deploys took three minutes, and the smoke test result was identical.",
+        "vague": "The container image was big and deploys were slow.",
+        "exaggerated": "I rebuilt the whole pipeline and halved all our costs.",
+        "no_data": "After the change deploys were quicker."
+      },
+      "zh": {
+        "Situation": "第一份 DevOps 工作，服務 image 有 1.4 GB，每次部署喺公司網絡要九分鐘。",
+        "Task": "我要令部署快啲，並要證明冇整壞任何嘢。",
+        "Action": "我改用 multi-stage build，從 runtime image 移走兩個 build 工具，改前改後都跑同一個 smoke test。",
+        "Result": "image 細到 210 MB，部署三分鐘，smoke test 結果完全一樣。",
+        "vague": "個 container image 好大，部署好慢。",
+        "exaggerated": "我重做咗整條 pipeline，令所有成本減半。",
+        "no_data": "改完之後部署快咗。"
+      }
+    },
+    {
+      "id": "cl-02",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Software design",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "At a bank, a bad config change reached production twice because the pipeline had no stage between build and deploy.",
+        "Task": "I owned the pipeline, and I wanted a cheap check that would have caught both changes.",
+        "Action": "I added a stage that starts the container with the new config and fails if the health endpoint does not answer in ten seconds.",
+        "Result": "Both earlier faults would have failed that stage, and two later bad configs did fail it before production.",
+        "vague": "Bad config reached production a couple of times.",
+        "exaggerated": "I made the bank's pipeline fully safe against any change.",
+        "no_data": "After the stage was added, bad configs were stopped earlier."
+      },
+      "zh": {
+        "Situation": "喺銀行，錯嘅 config 兩次直接到咗 production，因為 pipeline 喺 build 同 deploy 之間乜都冇。",
+        "Task": "我負責條 pipeline，要一個便宜檢查，可以捉到嗰兩次改動。",
+        "Action": "我加一個 stage：用新 config 起 container，十秒內 health endpoint 冇回應就 fail。",
+        "Result": "之前兩次錯誤都會 fail 呢個 stage，之後兩次壞 config 亦真喺 production 前被擋。",
+        "vague": "錯 config 有幾次到咗 production。",
+        "exaggerated": "我令銀行 pipeline 對任何改動都完全安全。",
+        "no_data": "加咗 stage 之後，壞 config 早咗被擋。"
+      }
+    },
+    {
+      "id": "cl-03",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "One Monday, an expired certificate took down an internal API for about forty minutes before anyone noticed.",
+        "Task": "I was on call, and I had to restore service and then make sure the next expiry was not silent.",
+        "Action": "I replaced the certificate, added an alert thirty days before expiry, and wrote a one-page list of every certificate we own.",
+        "Result": "The next expiry passed with two reminders, and the certificate list showed two more we had forgotten.",
+        "vague": "A certificate expired and the service was down for a while.",
+        "exaggerated": "I prevented all future outages in the department.",
+        "no_data": "After the change nobody was caught by an expiry again."
+      },
+      "zh": {
+        "Situation": "有個星期一，一條證書過期令內部 API 斷咗大約四十分鐘才有人發現。",
+        "Task": "我 on call，要恢復服務，然後確保下次過期唔會再無聲無息。",
+        "Action": "我換咗證書，加咗到期前三十日嘅 alert，再寫一頁清單列出所有我們擁有嘅證書。",
+        "Result": "下次到期前有兩次提醒，清單仲顯示多兩條我們忘記咗嘅證書。",
+        "vague": "有證書過期，服務斷咗一陣。",
+        "exaggerated": "我阻止咗部門未來所有故障。",
+        "no_data": "改完之後冇再被過期證書殺個措手不及。"
+      }
+    },
+    {
+      "id": "cl-04",
+      "seniority": "mid",
+      "competencies": [
+        "Databases",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, our cloud bill rose forty per cent over three months and nobody could say which service caused it.",
+        "Task": "I had to find the cause and propose a fix the team would accept, without switching anything off unilaterally.",
+        "Action": "I grouped cost by service and tag, found one non-production database running at production size, and priced three options.",
+        "Result": "Resizing that database removed most of the increase, and the team agreed a monthly cost review.",
+        "vague": "The cloud bill went up and we were not sure why.",
+        "exaggerated": "I cut the company's cloud spend in half by myself.",
+        "no_data": "After the change the bill was closer to normal."
+      },
+      "zh": {
+        "Situation": "做咗四年，雲端帳單三個月內升咗四成，而冇人講得出係邊個服務。",
+        "Task": "我要找出原因，並提出團隊接受嘅方案，但唔可以自己單方面關掉任何東西。",
+        "Action": "我按服務同 tag 分組成本，發現一個非正式環境資料庫用住正式環境嘅規格，再為三個方案報價。",
+        "Result": "調整該資料庫規格去掉大部分升幅，團隊亦同意每月做成本檢視。",
+        "vague": "雲端帳單升咗，我哋都唔清楚原因。",
+        "exaggerated": "我一個人令公司雲端開支減半。",
+        "no_data": "改完之後帳單接近正常。"
+      }
+    },
+    {
+      "id": "cl-05",
+      "seniority": "entry",
+      "competencies": [
+        "Software design"
+      ],
+      "en": {
+        "Situation": "In my internship, the deployment steps lived in a chat thread and each person ran them slightly differently.",
+        "Task": "I was asked to write them down, and I had to check each step with the person who usually ran it.",
+        "Action": "I ran the deployment twice while taking notes, then rewrote the steps with the exact command and the expected output.",
+        "Result": "Two people followed the new page without asking for help, and one step that was optional got removed.",
+        "vague": "Deployment steps were only in chat messages.",
+        "exaggerated": "I automated the entire deployment process for the team.",
+        "no_data": "After the page was written, other people could follow it."
+      },
+      "zh": {
+        "Situation": "實習時部署步驟只存在 chat thread，每個人做法都少少唔同。",
+        "Task": "有人叫我寫低，而我要同平時負責嘅同事逐步核對。",
+        "Action": "我一邊做兩次部署一邊記錄，再重寫成有實際指令同預期輸出嘅步驟。",
+        "Result": "有兩位同事跟新頁面做都唔需要問人，一個可有可無嘅步驟亦被刪走。",
+        "vague": "部署步驟只喺 chat 裡面。",
+        "exaggerated": "我為團隊自動化咗成個部署流程。",
+        "no_data": "頁面寫好之後，其他人跟得到。"
+      }
+    },
+    {
+      "id": "cl-06",
+      "seniority": "early",
+      "competencies": [
+        "Databases",
+        "Problem solving",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "We had never restored a database backup, and the first drill showed the restore took four hours instead of one.",
+        "Task": "I owned the drill, and I had to report the real time rather than the time we had assumed.",
+        "Action": "I timed each stage of the restore, found the slow step was index rebuild, and moved it to after the data check.",
+        "Result": "The second drill finished in seventy minutes, and the report stated both the old and new times.",
+        "vague": "The backup restore was slower than expected.",
+        "exaggerated": "I made our disaster recovery bulletproof.",
+        "no_data": "The second drill was faster and we wrote the times down."
+      },
+      "zh": {
+        "Situation": "我哋從來冇真正還原過資料庫備份，第一次演練顯示要四個鐘，而唔係以為嘅一個鐘。",
+        "Task": "我負責演練，要報告真實時間而唔係假設嘅時間。",
+        "Action": "我為每個還原階段計時，發現最慢係重建 index，於是把它移去數據核對之後。",
+        "Result": "第二次演練七十分鐘完成，報告同時寫明新舊時間。",
+        "vague": "備份還原比預期慢。",
+        "exaggerated": "我令災難復原萬無一失。",
+        "no_data": "第二次演練快咗，我哋記低咗時間。"
+      }
+    },
+    {
+      "id": "cl-07",
+      "seniority": "mid",
+      "competencies": [
+        "Software design",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Five years in, developers asked for production access weekly and each request took two days of approvals.",
+        "Task": "I wanted them to debug faster without handing out standing production rights.",
+        "Action": "I built a time-boxed access flow with a reason field and automatic expiry after four hours, then ran it with two volunteers.",
+        "Result": "Median approval time dropped to thirty minutes, and every session was logged with its reason.",
+        "vague": "Production access requests were slow and people complained.",
+        "exaggerated": "I removed all risk from production access.",
+        "no_data": "After the change access was granted faster."
+      },
+      "zh": {
+        "Situation": "做咗五年，開發同事每星期都要 production 權限，每次批核要兩日。",
+        "Task": "我想佢哋除錯快啲，但唔可以派長期 production 權限。",
+        "Action": "我做咗一個有時限嘅申請流程，要填原因、四小時後自動失效，再同兩位自願同事試行。",
+        "Result": "批核中位數縮到三十分鐘，每次 session 都連原因記錄。",
+        "vague": "production 權限申請好慢，同事有投訴。",
+        "exaggerated": "我消除咗 production 權限所有風險。",
+        "no_data": "改完之後權限批得快咗。"
+      }
+    },
+    {
+      "id": "cl-08",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Software design",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first month, we deployed a service that worked in staging and crashed on start in production because of a missing environment variable.",
+        "Task": "I was asked to make that class of failure impossible to miss before deploy.",
+        "Action": "I added a startup check that lists every required variable and exits with all missing names, plus a test that runs the check with none set.",
+        "Result": "The next missing variable was reported by name in the pipeline log, and the deploy stopped on its own.",
+        "vague": "A deploy failed because of a missing setting.",
+        "exaggerated": "I made all our services immune to configuration errors.",
+        "no_data": "After the change the next missing setting was caught automatically."
+      },
+      "zh": {
+        "Situation": "第一個月，我們部署一個服務，喺 staging 正常但 production 一開就 crash，因為少咗一個環境變數。",
+        "Task": "我要令呢類失敗喺部署前一定睇得見。",
+        "Action": "我加啟動檢查，列出所有必需變數並在缺少時連名退出，再寫一個完全冇設定值嘅測試。",
+        "Result": "下一次缺變數喺 pipeline log 有名有姓，部署自己停咗。",
+        "vague": "有次部署因為少咗設定而失敗。",
+        "exaggerated": "我令所有服務對設定錯誤免疫。",
+        "no_data": "改完之後下次缺設定自動被捉。"
+      }
+    },
+    {
+      "id": "cl-09",
+      "seniority": "early",
+      "competencies": [
+        "Databases",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "At a property group, the nightly database backup ran at the same time as a reporting job and both slowed to a crawl.",
+        "Task": "I had to separate them, and agree the new window with the reporting owner.",
+        "Action": "I moved the backup two hours later, documented the new window, and watched both jobs for a week.",
+        "Result": "Backup time fell from ninety minutes to twenty-five, and the morning report arrived before the office opened.",
+        "vague": "Two jobs ran at the same time and both were slow.",
+        "exaggerated": "I optimised the whole database estate for the company.",
+        "no_data": "After the change both jobs were faster."
+      },
+      "zh": {
+        "Situation": "喺地產集團，每晚備份同一個報表 job 同時跑，兩邊都慢到離譜。",
+        "Task": "我要分開佢哋，並同報表負責人議定新時間窗。",
+        "Action": "我把備份推遲兩小時，寫低新窗口，再觀察兩個 job 一個星期。",
+        "Result": "備份由九十分鐘減到廿五分鐘，早上報表喺開門前已到。",
+        "vague": "兩個 job 同時跑，兩邊都慢。",
+        "exaggerated": "我為公司優化咗整個資料庫群。",
+        "no_data": "改完之後兩個 job 都快咗。"
+      }
+    },
+    {
+      "id": "cl-10",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "Six years in, a load test before a sale showed our service fell over at twice normal traffic.",
+        "Task": "I had to give an honest capacity number to the business, not a comfortable one.",
+        "Action": "I ran the test three times with different instance counts, plotted the failure point, and reported a safe limit with a margin.",
+        "Result": "The business scaled the campaign to fit the limit, and the service held through the sale without throttling anyone.",
+        "vague": "The load test showed some performance problems.",
+        "exaggerated": "I made the service handle unlimited traffic.",
+        "no_data": "After the test, the sale ran without problems."
+      },
+      "zh": {
+        "Situation": "做咗六年，大特賣前嘅壓力測試顯示服務喺兩倍正常流量就倒下。",
+        "Task": "我要畀業務一個誠實嘅容量數字，而唔係好聽嘅數字。",
+        "Action": "我用唔同 instance 數目跑三次，畫出失效點，再報告一個有餘裕嘅安全上限。",
+        "Result": "業務按上限調整 campaign 規模，特賣期間服務撐住，亦冇 throttle 任何人。",
+        "vague": "壓力測試顯示有啲效能問題。",
+        "exaggerated": "我令服務可以承受無限流量。",
+        "no_data": "測完之後特賣冇出問題。"
+      }
+    },
+    {
+      "id": "cl-11",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I joined a team whose staging environment had drifted so far from production that testing meant little.",
+        "Task": "I was asked to help, and I had to be honest that a full fix was bigger than my contract.",
+        "Action": "I wrote down every difference I found in config and package versions, then rebuilt staging from the same image as production.",
+        "Result": "Twelve differences were removed, and the next two releases passed staging and production with the same result.",
+        "vague": "Staging and production were not the same.",
+        "exaggerated": "I rebuilt the whole environment strategy for the company.",
+        "no_data": "After the rebuild, staging results matched production."
+      },
+      "zh": {
+        "Situation": "做半年合約，我加入一個團隊，佢哋 staging 同 production 差異大到測試冇乜意義。",
+        "Task": "有人叫我幫手，而我要老實講完整修好超出我合約範圍。",
+        "Action": "我寫低所有 config 同套件版本差異，再用同 production 一樣嘅 image 重建 staging。",
+        "Result": "十二個差異被消除，之後兩個版本喺 staging 同 production 結果一致。",
+        "vague": "staging 同 production 唔一樣。",
+        "exaggerated": "我為公司重建咗成個環境策略。",
+        "no_data": "重建之後 staging 結果同 production 對得上。"
+      }
+    },
+    {
+      "id": "cl-12",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "At a logistics company, a nightly container restart caused a five-minute gap in tracking updates and drivers called the hotline.",
+        "Task": "I owned the schedule, and I had to remove the gap without a maintenance window the business would reject.",
+        "Action": "I switched to a rolling restart with a readiness check, and ran it during office hours on purpose to prove the gap was gone.",
+        "Result": "Tracking updates stopped having gaps, and the hotline calls about missing updates ended.",
+        "vague": "There were short gaps in tracking data every night.",
+        "exaggerated": "I eliminated all downtime for the tracking platform.",
+        "no_data": "After the change the gaps stopped."
+      },
+      "zh": {
+        "Situation": "喺物流公司，每晚 container 重啟令追蹤更新有五分鐘空檔，司機打爆熱線。",
+        "Task": "我負責個排程，要消除空檔，但唔可以用業務一定反對嘅維護窗口。",
+        "Action": "我改成有 readiness check 嘅 rolling restart，並故意喺辦公時間跑一次證明空檔消失。",
+        "Result": "追蹤更新唔再有空檔，關於冇更新的熱線電話亦停咗。",
+        "vague": "每晚追蹤數據都有短暫空檔。",
+        "exaggerated": "我消除咗追蹤平台所有停機。",
+        "no_data": "改完之後空檔冇再出現。"
+      }
+    }
+  ]
+}

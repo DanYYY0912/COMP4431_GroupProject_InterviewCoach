@@ -4,6 +4,20 @@ from fastapi import HTTPException
 from .config import Settings
 
 
+def _to_traditional_hk(text: str) -> str:
+    """Whisper writes Cantonese in Simplified Chinese; the app speaks Traditional (HK).
+
+    OpenCC is optional on purpose: without it the transcript is still usable, just in the wrong
+    script, so the endpoint degrades instead of failing. Install `opencc-python-reimplemented`
+    to get the conversion.
+    """
+    try:
+        from opencc import OpenCC
+    except ImportError:
+        return text
+    return OpenCC("s2hk").convert(text)
+
+
 async def speech_token(settings: Settings) -> dict:
     if not settings.azure_speech_key or not settings.azure_speech_region:
         raise HTTPException(
@@ -53,13 +67,23 @@ async def transcribe(content: bytes, filename: str, language: str, settings: Set
                     "language": "en" if language == "en-HK" else "yue",
                     "response_format": "json",
                     "temperature": "0.0",
+                    # Ask for Traditional Chinese output; the script conversion below is the
+                    # guarantee, this only biases the decode.
+                    **(
+                        {"prompt": "香港廣東話，繁體中文書寫。"}
+                        if language == "zh-HK"
+                        else {}
+                    ),
                 },
             )
             response.raise_for_status()
             text = response.json().get("text")
             if not isinstance(text, str) or len(text) > 12000:
                 raise ValueError("Invalid transcription response")
-            return {"text": text.strip(), "provider": "whisper.cpp"}
+            cleaned = text.strip()
+            if language == "zh-HK":
+                cleaned = _to_traditional_hk(cleaned)
+            return {"text": cleaned, "provider": "whisper.cpp"}
     except (httpx.HTTPError, ValueError, TypeError) as exc:
         raise HTTPException(
             503,

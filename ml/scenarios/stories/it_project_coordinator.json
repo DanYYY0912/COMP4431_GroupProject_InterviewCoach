@@ -1,0 +1,324 @@
+{
+  "role_family": "it_project_coordinator",
+  "stories": [
+    {
+      "id": "pc-01",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first coordination role, the sprint board had forty cards in progress and nobody trusted the status column.",
+        "Task": "I was asked to make the board useful before the next steerco, in two weeks.",
+        "Action": "I asked each developer for their real status, updated the board once a day, and published a weekly count of cards by age.",
+        "Result": "Cards older than two weeks dropped from nineteen to four, and the steerco stopped asking for a separate status email.",
+        "vague": "The board was messy and nobody updated it.",
+        "exaggerated": "I fixed the delivery process for the whole department.",
+        "no_data": "After the change the board was more reliable."
+      },
+      "zh": {
+        "Situation": "第一份統籌工作，sprint board 有四十張卡喺 in progress，而冇人信 status 欄。",
+        "Task": "我要喺下次 steerco 前令個 board 有用，兩星期內完成。",
+        "Action": "我逐個問開發同事真實狀態，每日更新一次 board，再每週公布按卡齡分佈嘅數目。",
+        "Result": "超過兩星期嘅卡由十九張減到四張，steerco 唔再要求另外出狀態電郵。",
+        "vague": "個 board 好亂，冇人更新。",
+        "exaggerated": "我修好咗部門成個交付流程。",
+        "no_data": "改完之後 board 可靠啲。"
+      }
+    },
+    {
+      "id": "pc-02",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "At a bank, the UAT window was booked for the week half the business team was on leave.",
+        "Task": "I noticed it two weeks ahead, and I had to move it without blaming the person who booked it.",
+        "Action": "I checked three alternative weeks, asked the business lead which one worked, and rebooked with the developer's agreement.",
+        "Result": "UAT ran with all eight users present, and sign-off came on the first day of the window.",
+        "vague": "The UAT window was not well planned.",
+        "exaggerated": "I saved the project from a complete schedule slip.",
+        "no_data": "After moving the window, UAT went ahead."
+      },
+      "zh": {
+        "Situation": "喺銀行，UAT 時間窗book咗喺業務團隊一半人放假嗰個星期。",
+        "Task": "我兩星期前發現，要搬走但唔怪責負責book嘅同事。",
+        "Action": "我查咗三個替代星期，問業務 lead 邊個得，再同開發同事議定後重book。",
+        "Result": "UAT 八位用戶全部出席，sign-off 喺窗口第一日就到。",
+        "vague": "UAT 時間窗計劃得唔好。",
+        "exaggerated": "我令項目免於完全延期。",
+        "no_data": "改期之後 UAT 順利進行。"
+      }
+    },
+    {
+      "id": "pc-03",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "A vendor delivered two extra reports that were never in the statement of work and then sent an invoice for them.",
+        "Task": "I had to respond without damaging a relationship we needed for the next phase.",
+        "Action": "I compared the invoice lines with the signed statement, sent the two references, and proposed keeping the reports as optional extras.",
+        "Result": "The invoice was corrected the same week, and the reports were added to phase two formally.",
+        "vague": "The vendor billed us for something extra.",
+        "exaggerated": "I caught the vendor trying to overcharge the company.",
+        "no_data": "In the end the invoice was corrected."
+      },
+      "zh": {
+        "Situation": "一個 vendor 多交咗兩份從來唔喺 statement of work 內嘅報表，然後為佢哋開發票。",
+        "Task": "我要回應，但唔想破壞下一階段仍然需要嘅關係。",
+        "Action": "我把發票項目同已簽 statement 對比，附上兩處引用，再建議把報表當可選額外項目。",
+        "Result": "發票同一星期更正，報表正式加入第二階段。",
+        "vague": "vendor 為額外嘢收費。",
+        "exaggerated": "我抓到 vendor 想多收公司錢。",
+        "no_data": "最後發票更正咗。"
+      }
+    },
+    {
+      "id": "pc-04",
+      "seniority": "mid",
+      "competencies": [
+        "Data analysis",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, the RAID log had sixty open risks and the go-live checklist was three weeks behind.",
+        "Task": "I had to get the log down to something a steering group could act on before the decision meeting.",
+        "Action": "I grouped risks by likelihood and impact, merged the duplicates, and wrote one line per decision the group needed to make.",
+        "Result": "Sixty risks became eleven decisions, and the group closed nine of them in a single hour.",
+        "vague": "The RAID log was long and nobody read it.",
+        "exaggerated": "I removed every risk from the project.",
+        "no_data": "After the cleanup the group made decisions faster."
+      },
+      "zh": {
+        "Situation": "做咗四年，RAID log 有六十個開啟中風險，go-live checklist 落後三星期。",
+        "Task": "我要喺決策會議前把 log 收窄到督導組可以行動嘅程度。",
+        "Action": "我按可能性同影響分組，合併重複項，再為每個需要小組決定嘅事寫一行。",
+        "Result": "六十個風險變成十一項決定，小組一小時內關掉九項。",
+        "vague": "RAID log 太長，冇人睇。",
+        "exaggerated": "我消除咗項目所有風險。",
+        "no_data": "清理之後小組決策快咗。"
+      }
+    },
+    {
+      "id": "pc-05",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first month, three managers asked for a Friday status update in three different formats.",
+        "Task": "I wanted one page that answered all three, without writing three emails.",
+        "Action": "I asked each manager what they actually did with the update, then built one page with progress, blockers and next dates only.",
+        "Result": "All three accepted the single page, and two of them stopped holding a separate weekly call.",
+        "vague": "Managers wanted updates in different formats.",
+        "exaggerated": "I redesigned reporting for the whole programme.",
+        "no_data": "After the change one page was enough."
+      },
+      "zh": {
+        "Situation": "第一個月，三位經理要星期五狀態更新，但三種格式。",
+        "Task": "我想要一頁可以答齊三個，而唔想寫三封電郵。",
+        "Action": "我問每位經理實際會用更新做咩，再設計一頁只有進度、阻塞同下個日期。",
+        "Result": "三位都接受單頁，其中兩位更取消咗自己每週會議。",
+        "vague": "經理要唔同格式嘅更新。",
+        "exaggerated": "我重新設計咗整個計劃嘅匯報方式。",
+        "no_data": "改完之後一頁就夠。"
+      }
+    },
+    {
+      "id": "pc-06",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "During release week the team needed two evenings of OT and nobody had agreed who would cover the Friday.",
+        "Task": "I had to fill the roster in a way people accepted, not just assign the newest person.",
+        "Action": "I asked for constraints first, found two people with childcare on Friday, and rotated the Friday slot between three volunteers.",
+        "Result": "Cover was in place before release week, and the same rotation was used for the next two releases.",
+        "vague": "Release week needed extra hours and the roster was unclear.",
+        "exaggerated": "I eliminated overtime for the team.",
+        "no_data": "In the end cover was arranged and the release went out."
+      },
+      "zh": {
+        "Situation": "發佈週需要兩晚 OT，而星期五邊個 cover 從未議定。",
+        "Task": "我要編到大家接受，而唔係直接派畀最新嘅同事。",
+        "Action": "我先問每人限制，發現兩位星期五要照顧小朋友，於是喺三位自願者之間輪流星期五。",
+        "Result": "發佈週前 cover 已落實，同一輪法之後兩個版本照用。",
+        "vague": "發佈週要加班，roster 唔清楚。",
+        "exaggerated": "我消除咗團隊所有 OT。",
+        "no_data": "最後 cover 安排好，版本出咗。"
+      }
+    },
+    {
+      "id": "pc-07",
+      "seniority": "mid",
+      "competencies": [
+        "Data analysis",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Five years in, a project reported green for three months and then missed go-live by five weeks.",
+        "Task": "I had to find what the status was hiding, and change the report so it could not hide again.",
+        "Action": "I compared milestone dates with the actual completion dates, then added a second column for the last date each milestone moved.",
+        "Result": "The board could see three milestones had moved twice, and the next project escalated two weeks earlier.",
+        "vague": "The project looked fine and then slipped.",
+        "exaggerated": "I exposed a project that was failing badly.",
+        "no_data": "After the change the board saw problems earlier."
+      },
+      "zh": {
+        "Situation": "做咗五年，一個項目連續三個月報綠燈，然後上線遲咗五星期。",
+        "Task": "我要找出 status 遮住咩，並改報表令佢唔可以再遮。",
+        "Action": "我比對里程碑計劃日期同實際完成日期，再加一欄記錄每個里程碑最後一次改期日期。",
+        "Result": "委員會見到三個里程碑都改過兩次，下一個項目早兩星期升級。",
+        "vague": "項目睇落冇事，然後就延期。",
+        "exaggerated": "我揭發咗一個嚴重失敗嘅項目。",
+        "no_data": "改完之後委員會早啲見到問題。"
+      }
+    },
+    {
+      "id": "pc-08",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I joined a project whose decisions were in chat threads and nobody could find the last approved one.",
+        "Task": "I was asked to keep a decision log, and I had to make it something people would actually update.",
+        "Action": "I started a table with date, decision, owner and link, and filled the last three weeks from the chat history myself.",
+        "Result": "Two decisions turned out to be contradictory, and the team picked one in ten minutes with the log open.",
+        "vague": "Decisions were hard to find.",
+        "exaggerated": "I introduced governance to the whole programme.",
+        "no_data": "After the log existed, decisions were easier to find."
+      },
+      "zh": {
+        "Situation": "做半年合約，我加入一個項目，決定全部散落喺 chat，冇人搵到最後批嘅版本。",
+        "Task": "有人叫我維護 decision log，而我要令佢成為大家真會更新嘅嘢。",
+        "Action": "我開一張表有日期、決定、負責人同連結，自己由 chat 歷史補齊三星期。",
+        "Result": "發現兩個決定互相矛盾，團隊打開 log 十分鐘就揀定一個。",
+        "vague": "決定好難搵。",
+        "exaggerated": "我為整個計劃引入管治。",
+        "no_data": "有 log 之後決定容易搵。"
+      }
+    },
+    {
+      "id": "pc-09",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "A project manager asked why the testing phase always took twice as long as planned.",
+        "Task": "I had to answer from our own records rather than from an opinion about testers.",
+        "Action": "I pulled the last four projects, compared planned and actual days per phase, and found the delay came from environment availability.",
+        "Result": "The next plan included four environment days, and the testing phase finished inside it.",
+        "vague": "Testing always took longer than planned.",
+        "exaggerated": "I found the single reason all our projects were late.",
+        "no_data": "After the change testing took the planned time."
+      },
+      "zh": {
+        "Situation": "有位項目經理想知點解測試階段每次都花計劃嘅兩倍時間。",
+        "Task": "我要用我哋自己嘅紀錄回答，而唔係對測試同事嘅意見。",
+        "Action": "我抽最近四個項目，比較各階段計劃同實際日數，發現延誤來自環境可用性。",
+        "Result": "下一份計劃預留四日環境時間，測試階段喺範圍內完成。",
+        "vague": "測試成日都比計劃長。",
+        "exaggerated": "我搵出咗所有項目延誤嘅唯一原因。",
+        "no_data": "改完之後測試用計劃時間。"
+      }
+    },
+    {
+      "id": "pc-10",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Six years in, a go-live was blocked because the security team had not received the evidence pack they needed.",
+        "Task": "I had to unblock it without skipping their review and without blaming either side.",
+        "Action": "I listed the six items they needed, collected four the same afternoon, and got the vendor to send the remaining two by noon.",
+        "Result": "Security signed off the next morning, and the evidence list became a standard part of every go-live checklist.",
+        "vague": "The go-live was blocked by a missing review.",
+        "exaggerated": "I pushed security to approve the release.",
+        "no_data": "In the end the release went ahead."
+      },
+      "zh": {
+        "Situation": "做咗六年，一次上線被卡住，因為安全團隊未收到需要嘅證據包。",
+        "Task": "我要解開但唔可以跳過佢哋審核，亦唔想怪任何一方。",
+        "Action": "我列出佢哋需要嘅六項，當日下午收齊四項，再叫 vendor 中午前交餘下兩項。",
+        "Result": "安全團隊第二朝簽核，證據清單亦成為每次上線 checklist 標準部分。",
+        "vague": "上線被一個未完成嘅審核卡住。",
+        "exaggerated": "我逼到安全團隊批版本。",
+        "no_data": "最後版本照出。"
+      }
+    },
+    {
+      "id": "pc-11",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first job, the programme had eleven projects and no shared view of which were actually on track.",
+        "Task": "I was asked to build the view, and I had to accept that two projects had no reliable dates.",
+        "Action": "I collected the last update from each lead, marked the two with no date as unknown, and sent the page with those two highlighted.",
+        "Result": "The two unknowns were addressed in the next meeting, and the page was reused every fortnight.",
+        "vague": "There was no single view of the projects.",
+        "exaggerated": "I built the programme's entire reporting suite.",
+        "no_data": "After the page existed, people could see the status."
+      },
+      "zh": {
+        "Situation": "第一份工，計劃有十一個項目，但冇一個共用嘅進度視圖。",
+        "Task": "有人叫我做呢個視圖，而我要接受其中兩個項目冇可靠日期。",
+        "Action": "我向每個 lead 收最近更新，把兩個冇日期嘅標為 unknown，再連標示寄出。",
+        "Result": "兩個 unknown 喺下次會議被處理，而該頁每兩星期重用。",
+        "vague": "冇一個統一嘅項目視圖。",
+        "exaggerated": "我做咗計劃完整嘅匯報套件。",
+        "no_data": "有咗嗰頁之後，大家睇到狀態。"
+      }
+    },
+    {
+      "id": "pc-12",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Two workstreams needed the same developer in the same week and both leads had already promised their dates to clients.",
+        "Task": "I had to find an option both could live with, without escalating on the same day.",
+        "Action": "I listed what each stream actually needed in that week, found only one day of real overlap, and proposed splitting that day by half.",
+        "Result": "Both dates held, and the split-day arrangement was used again the following month.",
+        "vague": "Two teams needed the same person.",
+        "exaggerated": "I resolved a resourcing conflict that could have stopped the programme.",
+        "no_data": "In the end both teams kept their dates."
+      },
+      "zh": {
+        "Situation": "兩個 workstream 同一星期都要同一位開發同事，而兩位 lead 都已向客戶承諾日期。",
+        "Task": "我要搵一個雙方都接受嘅方案，而唔係當日就升級。",
+        "Action": "我列出兩邊該星期實際需要咩，發現真正重疊只有一日，於是提出把該日對半分。",
+        "Result": "兩個日期都守得住，而對半分嘅安排下個月再用。",
+        "vague": "兩隊要同一個人。",
+        "exaggerated": "我解決咗一個可能令計劃停頓嘅資源衝突。",
+        "no_data": "最後兩隊都守到日期。"
+      }
+    }
+  ]
+}

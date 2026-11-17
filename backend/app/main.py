@@ -13,7 +13,7 @@ from sqlalchemy import select, text
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.datastructures import UploadFile
 
-from .config import Settings
+from .config import ROOT, Settings
 from .db import Base, ChunkRecord, JobRecord, SessionRecord, make_database, new_id
 from .ingestion import MAX_FILE_BYTES, chunk_text, extract_file, profile_metadata, validate_text
 from .retrieval import index_chunks, seed_knowledge
@@ -335,17 +335,39 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/api/methodology/metrics")
     async def metrics():
+        # Minimal packaged runtimes need not include the training source/dependencies.
+        training = None
+        if (ROOT / "ml/config.json").is_file():
+            from evaluation.metadata import training_metadata
+
+            training = training_metadata(ROOT)
         if settings.evaluation_path.exists():
             try:
                 data = json.loads(settings.evaluation_path.read_text())
                 if isinstance(data, dict) and isinstance(data.get("evaluations"), list):
-                    return {**data, "provider": settings.model_provider}
+                    current_training = training or {
+                        **data.get("training", {}),
+                        "status": "not_trained",
+                        "adapter_available": False,
+                        "manifest_available": False,
+                    }
+                    limitations = data.get("limitations", [])
+                    if current_training["status"] == "training_completed":
+                        limitations = [
+                            line for line in limitations if not line.startswith("No QLoRA training")
+                        ]
+                    return {
+                        **data,
+                        "provider": settings.model_provider,
+                        "training": current_training,
+                        "limitations": limitations,
+                    }
             except (ValueError, OSError):
                 pass
         return {
             "status": "not_evaluated",
             "provider": settings.model_provider,
-            "training": {"status": "not_trained", "adapter_available": False},
+            "training": training or {"status": "not_trained", "adapter_available": False},
             "evaluations": [],
             "limitations": [
                 "No measured quality results have been imported.",

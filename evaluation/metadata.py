@@ -9,8 +9,20 @@ from ml.dataset import read_jsonl, validate_dataset
 
 
 def training_metadata(root=Path(".")):
+    root = Path(root)
     config = json.loads((root / "ml/config.json").read_text())
-    draft_path = root / "ml/data/drafts.jsonl"
+    draft_path = next(
+        (
+            root / path
+            for path in (
+                "ml/data/reviewed_examples.jsonl",
+                "ml/data/runtime_drafts.jsonl",
+                "ml/data/drafts.jsonl",
+            )
+            if (root / path).is_file()
+        ),
+        root / "ml/data/runtime_drafts.jsonl",
+    )
     drafts = read_jsonl(draft_path) if draft_path.exists() else []
     reviews = validate_dataset(drafts)
     metadata = {
@@ -20,6 +32,9 @@ def training_metadata(root=Path(".")):
         "draft_examples": len(drafts),
         "reviewed_examples": reviews["reviewed"],
         "adapter_available": False,
+        "manifest_path": str(Path(config["output_dir"]) / "model_manifest.json"),
+        "manifest_available": False,
+        "expected_examples": config.get("expected_examples"),
         "configuration": {
             **config,
             "implementation_settings": {
@@ -35,7 +50,7 @@ def training_metadata(root=Path(".")):
             },
         },
         "dataset_provenance": {
-            "path": "ml/data/drafts.jsonl",
+            "path": str(draft_path.relative_to(root)),
             "sha256": hashlib.sha256(draft_path.read_bytes()).hexdigest()
             if drafts
             else None,
@@ -73,7 +88,33 @@ def training_metadata(root=Path(".")):
     run = root / config["output_dir"]
     manifest_path = run / "model_manifest.json"
     if manifest_path.is_file():
-        manifest = json.loads(manifest_path.read_text())
+        try:
+            manifest = json.loads(manifest_path.read_text())
+            if manifest.get("status") == "training_completed":
+                # A partial/corrupt file must never turn configuration into a training claim.
+                from ml.train import validate_revision
+
+                validate_revision(manifest["base_revision"])
+                if not isinstance(manifest["base_model"], str) or not isinstance(
+                    manifest["training_config"], dict
+                ):
+                    raise ValueError("Invalid training identity/configuration")
+                reviewed = manifest["dataset"]["review_validation"]["reviewed"]
+                if (
+                    not isinstance(reviewed, int)
+                    or isinstance(reviewed, bool)
+                    or reviewed < 1
+                ):
+                    raise ValueError("Missing reviewed training examples")
+                loss = manifest["best_validation_loss"]
+                if loss is not None and (
+                    not isinstance(loss, (float, int)) or isinstance(loss, bool)
+                ):
+                    raise ValueError("Invalid validation loss")
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            metadata["manifest_error"] = "Training manifest is unreadable or incomplete"
+            return metadata
+        metadata["manifest_available"] = True
         if manifest.get("status") == "training_completed":
             metadata.update(
                 {
@@ -109,3 +150,39 @@ def training_metadata(root=Path(".")):
                 }
             )
     return metadata
+
+
+def refresh_latest(root=Path(".")):
+    """Update training evidence without modifying measured evaluation records."""
+    root = Path(root)
+    path = root / "evaluation/results/latest.json"
+    data = (
+        json.loads(path.read_text())
+        if path.is_file()
+        else {
+            "status": "development_evidence_only",
+            "provider": "configured_at_runtime",
+            "evaluations": [],
+            "limitations": [],
+        }
+    )
+    data["training"] = training_metadata(root)
+    if data["training"]["status"] == "training_completed":
+        data["limitations"] = [
+            line
+            for line in data.get("limitations", [])
+            if not line.startswith("No QLoRA training")
+        ]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+    return data
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Refresh Methodology training metadata from local evidence"
+    )
+    parser.add_argument("--root", type=Path, default=Path("."))
+    refresh_latest(parser.parse_args().root)

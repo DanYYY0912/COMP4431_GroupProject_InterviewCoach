@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage } from '../lib/api';
+import { pickVoice } from '../lib/audio';
 import type { Health, Language } from '../lib/types';
 import { ErrorNotice, Preflight } from '../components/Common';
 
@@ -35,7 +36,27 @@ export function Setup({
   const [error, setError] = useState('');
   const [health, setHealth] = useState<Health | null>(null);
   const [micStatus, setMicStatus] = useState('');
+  const [retryNotice, setRetryNotice] = useState('');
+  const [micEcho, setMicEcho] = useState('');
   const [speakerStatus, setSpeakerStatus] = useState('');
+  useEffect(
+    () => () => {
+      if (micEcho) URL.revokeObjectURL(micEcho);
+    },
+    [micEcho],
+  );
+  useEffect(() => {
+    // Deep link from the printed PDF: #/setup?retry=1&from=<session>&lang=<language>
+    const query = window.location.hash.split('?')[1];
+    if (!query) return;
+    const params = new URLSearchParams(query);
+    if (params.get('retry') !== '1') return;
+    const lang = params.get('lang');
+    if (lang === 'zh-HK' || lang === 'en-HK') setLanguage(lang);
+    setRetryNotice(
+      'Continuing from your debrief. Paste the same job description again (or upload the file) and start the next round.',
+    );
+  }, []);
   useEffect(() => {
     api
       .health()
@@ -61,12 +82,38 @@ export function Setup({
     }
   }
   async function checkMic() {
+    // Record three seconds and play it straight back: a permission prompt alone does not prove
+    // the microphone actually captures sound.
+    let stream: MediaStream | null = null;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
-      setMicStatus('Microphone ready. No audio was saved.');
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (typeof MediaRecorder === 'undefined') {
+        setMicStatus('This browser cannot record audio. Typing still works.');
+        return;
+      }
+      setMicStatus('Recording three seconds — say something…');
+      const recorder = new MediaRecorder(stream);
+      const chunks: BlobPart[] = [];
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunks.push(event.data);
+      };
+      const stopped = new Promise<void>((resolve) => {
+        recorder.onstop = () => resolve();
+      });
+      recorder.start();
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      recorder.stop();
+      await stopped;
+      const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+      if (micEcho) URL.revokeObjectURL(micEcho);
+      setMicEcho(URL.createObjectURL(blob));
+      setMicStatus(
+        `Recorded ${Math.max(1, Math.round(blob.size / 1024))} KB. Play it back below — if you hear yourself, the microphone works. Nothing is uploaded.`,
+      );
     } catch {
       setMicStatus('Microphone unavailable. You can type every answer.');
+    } finally {
+      stream?.getTracks().forEach((track) => track.stop());
     }
   }
   function checkSpeaker() {
@@ -75,12 +122,18 @@ export function Setup({
       return;
     }
     speechSynthesis.cancel();
+    const voice = pickVoice(language);
+    if (!voice) {
+      setSpeakerStatus('No system voice found. Captions remain available.');
+      return;
+    }
     const utterance = new SpeechSynthesisUtterance(
       language === 'zh-HK' ? '你好，準備好練習未？' : 'Hello. Let’s practise your next interview.',
     );
-    utterance.lang = language;
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
     speechSynthesis.speak(utterance);
-    setSpeakerStatus('Playing a short speaker test.');
+    setSpeakerStatus(`Playing the speaker test with “${voice.name}” (${voice.lang}).`);
   }
   function chooseFile(selected: File | null) {
     if (selected && selected.size > 5 * 1024 * 1024) {
@@ -103,7 +156,6 @@ export function Setup({
         <div>
           <p className="eyebrow">LET’S MAKE IT RELEVANT</p>
           <h1>Set the scene.</h1>
-          <p className="lead">A real role. Your language. A little room to grow.</p>
         </div>
         <span className="step-marker">
           01 <span>/ 03</span>
@@ -138,7 +190,9 @@ export function Setup({
               value={text}
               disabled={!!file}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Graduate software engineer…\nResponsibilities, skills, and what the team is looking for."
+              placeholder={
+                'Graduate software engineer…\nResponsibilities, skills, and what the team is looking for.'
+              }
               maxLength={50000}
             />
             <div className="upload-row">
@@ -177,10 +231,10 @@ export function Setup({
               <div className="choice-row">
                 {(
                   [
-                    ['en-HK', 'English', 'Find the words that work.'],
-                    ['zh-HK', '廣東話', '用你熟悉嘅語言，講好你嘅故事。'],
+                    ['en-HK', 'English'],
+                    ['zh-HK', '廣東話'],
                   ] as const
-                ).map(([value, label, note]) => (
+                ).map(([value, label]) => (
                   <label
                     className={`choice-card ${language === value ? 'selected' : ''}`}
                     key={value}
@@ -193,7 +247,6 @@ export function Setup({
                       onChange={() => setLanguage(value)}
                     />
                     <strong>{label}</strong>
-                    <span>{note}</span>
                   </label>
                 ))}
               </div>
@@ -228,7 +281,7 @@ export function Setup({
         </div>
         <aside className="setup-aside">
           <section className="panel readiness-panel">
-            <h2>A moment to get ready</h2>
+            <h2>Before you start</h2>
             <Preflight health={health} />
             <div className="device-checks">
               <button
@@ -247,6 +300,15 @@ export function Setup({
                 {micStatus}
               </p>
             )}
+            {micEcho && (
+              <audio
+                controls
+                autoPlay
+                src={micEcho}
+                aria-label="Your recorded microphone test"
+                style={{ width: '100%', marginTop: '0.5rem' }}
+              />
+            )}
             {speakerStatus && (
               <p className="field-help" role="status">
                 {speakerStatus}
@@ -254,7 +316,7 @@ export function Setup({
             )}
             <div className="consent-section">
               <ShieldCheck size={23} />
-              <h3>Your story stays yours.</h3>
+              <h3>Privacy</h3>
               <label className="check-label">
                 <input
                   type="checkbox"
@@ -275,13 +337,8 @@ export function Setup({
                 />
                 <span>
                   Enable Azure voice. Audio and interviewer text may be sent to Microsoft Speech.
-                  This is optional.
                 </span>
               </label>
-              <p className="field-help">
-                With voice off, you can type every answer. The coach never rates your appearance,
-                accent, or employability.
-              </p>
             </div>
             <button
               className="button primary full"
@@ -291,6 +348,11 @@ export function Setup({
               {busy ? 'Preparing your interview…' : 'Start my interview'} <ArrowRight size={18} />
             </button>
           </section>
+          {retryNotice && (
+            <p className="field-help" role="status" style={{ marginBottom: '0.75rem' }}>
+              {retryNotice}
+            </p>
+          )}
           {error && <ErrorNotice message={error} onDismiss={() => setError('')} />}
         </aside>
       </form>
