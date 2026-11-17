@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The browser sends interview and job-description requests to one local API. The API stores source chunks and session state, retrieves supporting material, validates model JSON and returns cited interview turns. Qwen and Whisper run natively so Apple Metal remains available. PostgreSQL is the normal database, with a labelled SQLite development fallback. Three fictional human portraits are bundled as local image assets. Appearance selection is stored in the browser and never changes session settings or sends an API request. Inference can use the four servers selected in Settings; choosing external servers sends the corresponding task inputs to them. This application targets a single local user and must not be exposed publicly without a separate security design.
+The browser sends interview and job-description requests to one local API. The API stores source chunks and session state, retrieves supporting material, validates model JSON and returns cited interview turns. Qwen and Whisper run natively so Apple Metal remains available. PostgreSQL is the normal database, with a labelled SQLite development fallback. Jamie’s fictional portrait and an offline precomputed face mesh are bundled locally. Appearance is selected in setup and persisted with the session; migration `0003` defaults older sessions to Jamie. Three.js renders a frontal portrait-textured facial surface, with static-image fallback. Inference can use the four servers selected in Settings; choosing external servers sends the corresponding task inputs to them. This application targets a single local user and must not be exposed publicly without a separate security design.
 
 ## Decisions
 
@@ -17,7 +17,9 @@ The browser sends interview and job-description requests to one local API. The A
 
 Starting an interview stores its session and transcript locally by default. The setup page collects a job description and interview options, with a read-only status summary; there is no separate storage checkbox. Job descriptions, source chunks, turns and metrics remain in the selected local database. The browser holds editable drafts during the interview. Session export is user initiated. Deletion removes the selected session and its turns. The last session referencing a job also deletes that private job profile and its chunks. A profile created during an abandoned setup can remain without a session and should be cleared before reusing the database for sensitive material. Audio goes through the local backend to the configured ASR server, or to local Whisper when ASR is blank. It is not retained as a normal application artifact. Agent receives prompts and answer excerpts; embedding/reranking servers receive source passages and queries. These services can be external when configured by the user.
 
-Question playback uses only local browser/system voices. Availability depends on the OS and browser; typed interaction remains available when no local voice is installed.
+Question playback uses only local browser/system voices. Each new turn reads automatically unless disabled; manual replay remains available. Actual playback events drive approximate mouth cues. Availability depends on the OS and browser; typed interaction remains available when no local voice is installed. Pause, microphone use and navigation cancel playback and animation. Reduced-motion preference keeps the face still.
+
+Setup progress follows the profile and session API stages, with an indeterminate bar and elapsed time. A synchronous submission guard prevents duplicates; errors retain the form and late responses do not navigate. The 3D renderer loads lazily and disposes its resources on hide, failure or teardown.
 
 ## Retrieval and source policy
 

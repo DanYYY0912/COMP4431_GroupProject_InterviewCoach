@@ -78,11 +78,11 @@ English uses corpus word error rate; Cantonese uses corpus character error rate.
 
 ## Manual release evidence still required
 
-- Portrait loading, face selection and correct listening/thinking/speaking status on the presentation Mac. The static-portrait interface supersedes the original 3D-avatar FPS target.
+- Jamie’s setup preview, correct listening/thinking/speaking status, and animated 3D frame timing on the presentation Mac. The renderer targets roughly 30 FPS; target-hardware frame-rate and perceived lip-sync measurements remain required.
 - TTS and visemes stop together on repeat, interruption, pause, navigation and cancellation.
-- Denied microphone, invalid ASR credentials, network loss, portrait loading failure and model restart recovery.
+- Denied microphone, invalid ASR credentials, network loss, portrait/mesh loading and WebGL failure and model restart recovery.
 - Incorrect language choice, noise, silence, long answers, corrupt/oversized/scanned files and prompt-injection attempts.
-- Keyboard-only journey, captions, reduced motion, AA contrast and a portrait-hidden journey.
+- Keyboard-only journey, captions, reduced motion, AA contrast and an interviewer-hidden journey.
 - Clean-machine rehearsal, a 60–90 second backup recording and final package inspection.
 
 Use actual recordings, browser traces and reviewer notes as evidence. The existence of a test script or a passing synthetic diagnostic is not a substitute for these observations.

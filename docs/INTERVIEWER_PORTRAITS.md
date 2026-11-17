@@ -1,34 +1,35 @@
-# Interviewer portraits
+# Jamie’s 3D interviewer
 
 ## Executive summary
 
-Three fictional adult portraits replace the procedural 3D avatar. Users choose Alex, Jamie or Sam during an interview; the browser remembers the appearance without changing the interview or voice settings. The images are bundled locally and require no external image service at runtime. These are generated depictions, not photographs of actual interviewers. Question playback remains available, with no simulated lip movement.
+Jamie is the only included appearance, as requested by the user. Setup previews Jamie before starting and saves the choice with the session. The locally bundled fictional portrait is mapped onto an animated 3D facial surface, with subtle head motion, blinking and approximate speech-driven mouth movement. The camera remains frontal: this is a shallow reconstruction from one image, not a scanned or complete rotatable head. Static portrait fallback keeps interviews usable without WebGL.
 
-## Assets and generation
+## Runtime behavior
 
-Generated with the built-in image-generation tool on 2026-11-18. The final Alex and Sam portraits follow the user's request for more glamorous adult female appearances. The initial rejected variants are not included in the application. Source PNGs are copied into the project; original generator outputs remain outside the repository.
+The frontend lazily loads Three.js, `jamie.png` and `jamie.mesh.json`. No webcam, runtime face detection or external image service is used. Local browser speech reads each new question once by default, with an opt-out checkbox and manual replay. Actual speech start/end and boundary events drive mouth motion. Boundaries are browser-dependent, so mouth movement is an approximate speaking animation, not phoneme-accurate lip sync. Missing or blocked local voices leave the written question available and do not pretend speech is playing.
 
-### Alex
+Pause and reduced-motion preferences stop animation. Hide releases the renderer; showing it creates a new scene. Mesh/image failure and context loss fall back to the image. Sessions created before this feature default to Jamie through migration `0003`.
 
-File: `frontend/public/interviewers/alex.png`.
+## Mesh provenance
 
-Final prompt:
+The offline generator uses [Google’s Face Landmarker](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker) and the [canonical MediaPipe face topology](https://github.com/google-ai-edge/mediapipe/blob/a908d668c730da128dfa8d9f6bd25d519d006692/mediapipe/modules/face_geometry/data/canonical_face_model.obj). The generated mesh contains 468 detected facial landmarks and 64 portrait-border vertices, with 980 triangles. Removing the 18 inner-mouth cap triangles creates an aperture; a separate dark interior is rendered behind the moving lips. Earcut joins the outer portrait frame to the face oval. Small projected folds in the facial topology are retained and rendered double-sided.
 
-> Use case: photorealistic-natural. Create one highly photorealistic portrait of a fictional adult woman, clearly 28 years old, for a selectable virtual interviewer. The user wants a more sexy, glamorous and feminine look: strikingly beautiful face with natural adult proportions, confident slightly alluring eye contact, softly parted lips with a small warm smile, tasteful polished makeup, softly defined brows and subtle rose lip gloss. Long silky dark brown hair with a loose side part, tucked behind one ear, fine small gold earrings. She wears an elegant fitted ivory blazer over a black V-neck silk top with a tasteful modest neckline; attractive styling but fully clothed, no nudity. Head and shoulders down to mid-chest, facing the camera, seated professional portrait. Soft light gray studio background, flattering soft daylight with subtle directional shape, realistic skin texture, natural pores, crisp eyes, warm true-to-life color, no plastic skin or exaggerated anatomy. Portrait 3:4 framing, entire hair/top of head visible with small headroom, shoulders visible, centered. No hands, text, watermark, border, logos, collage. A new fictional adult person, not a celebrity.
+The asset records source PNG, generator, model and topology hashes, preprocessing package versions, image dimensions and geometry validation results. Tests verify boundary continuity, coverage, valid indices, finite coordinates, source integrity and the mouth aperture. The source PNG is unchanged. MediaPipe topology attribution and Apache-2.0 license are bundled beside the assets; the preprocessing model is excluded from Docker and the source archive.
 
-### Jamie
+Regenerate only when changing the portrait or generator:
 
-File: `frontend/public/interviewers/jamie.png`.
+```sh
+python3.12 -m venv artifacts/avatar-tools
+artifacts/avatar-tools/bin/pip install -r scripts/requirements-avatar.txt
+artifacts/avatar-tools/bin/python scripts/build_interviewer_faces.py --download-model
+```
 
-Final prompt:
+The initial model download is verified against its pinned SHA-256. Omit `--download-model` on subsequent offline runs. The optional environment is separate from the application. Its MediaPipe 0.10.21 universal2 wheel contains working arm64 code but incorrectly declares an x86_64 internal wheel tag; `pip check` reports that upstream packaging mismatch on Apple Silicon. Actual arm64 extraction was verified. The shipped app does not depend on that Python environment.
+
+## Portrait generation
+
+`frontend/public/interviewers/jamie.png` is a fictional adult image generated with the built-in image tool on 2026-11-18, not a photograph of an actual interviewer. Alex and Sam were removed at the user’s request and are not selectable or packaged. The portrait’s source SHA-256 is `216109c1e4a6059f279fb44930302fca03337188332e9983638858e1590deb91`.
+
+Original generation prompt:
 
 > Use case: photorealistic-natural. Asset type: a fictional virtual interviewer's portrait displayed in a local interview-practice app. Make ONE highly realistic natural photograph, portrait orientation, head and shoulders to mid-chest, subject centered looking directly at the camera at eye level, whole head and hair fully visible with modest headroom. Plain soft light gray studio background. Soft daylight, realistic pores and facial texture, natural proportions, understated professional expression with a gentle closed-mouth smile, business casual clothing. Believable ordinary professional, not fashion model, no beauty filter. Crisp clear face, subtle depth of field. No text, no watermark, no logos, no borders, no graphic elements, no headphones, no hands visible. This must be a new fictional adult person, not resembling a celebrity. Subject: an East Asian man in his late thirties with neatly styled short dark hair, clean-shaven, wearing a navy blazer over a pale blue open-collar shirt with no tie, calm attentive approachable expression.
-
-### Sam
-
-File: `frontend/public/interviewers/sam.png`.
-
-Final prompt:
-
-> Use case: photorealistic-natural. Create one highly photorealistic portrait of a fictional adult woman, clearly 30 years old, for a selectable virtual interviewer. Glamorous, sexy, confident and feminine, in the style of an elegant contemporary fashion headshot while still appropriate for a professional interview. Beautiful balanced natural adult facial anatomy, warm hazel-brown eyes looking directly into camera, inviting slight smile, full natural lips with muted peach lipstick, tasteful luminous makeup. Shoulder-length chestnut-brown hair in soft loose waves, asymmetric side part, small elegant earrings. Tailored black blazer with an elegant muted burgundy silk V-neck camisole, tasteful modest neckline, fully clothed. Head and shoulders to mid-chest, straight-on eye-level camera, whole hair and head in frame, small headroom, portrait3:4 composition centered. Light gray studio background matching a professional portrait set. Soft natural studio light, realistic detailed skin and fine hair, flattering without smoothing skin into plastic, no exaggerated anatomy. No nudity, hands, text, watermark, border, logos, collage. A new fictional adult person, not a celebrity.
-

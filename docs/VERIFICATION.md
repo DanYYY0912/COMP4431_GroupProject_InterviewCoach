@@ -2,11 +2,25 @@
 
 ## Executive summary
 
-The application has passed controlled automated checks and real local-service smoke tests on this Mac. These checks establish runnable software and integration behavior. They do not establish the plan's fine-tuning, human-review, speech-quality, latency or usability thresholds. Current validation covers the November 18 Azure removal, simplified setup and rebuilt Docker application. Logs under `artifacts/verification/` remain on the development Mac; distributable synthetic raw service evidence is retained under `evaluation/raw/`.
+The application has passed controlled automated checks and real local-service smoke tests on this Mac. These checks establish runnable software and integration behavior. They do not establish the plan's fine-tuning, human-review, speech-quality, latency or usability thresholds. Current validation includes the November 18 Jamie-only 3D interviewer and staged startup progress, following the Azure removal and simplified setup. Logs under `artifacts/verification/` remain on the development Mac; distributable synthetic raw service evidence is retained under `evaluation/raw/`.
 
-## Portraits and port 4431 — 2026-11-18
+## Jamie 3D interviewer and startup progress — 2026-11-18
 
-The current app replaces the primitive 3D avatar with three locally bundled, fictional human portraits. The choice persists in the browser without changing the session or question. Hide/show, image failure and unavailable browser storage have regression coverage. Speech playback and microphone cancellation remain functional; Three.js and simulated mouth animation are removed.
+The current UI uses only Jamie, previewed in setup and persisted per session. The photo textures a shallow 3D facial surface with a real mouth aperture, eyelid deformation and restrained head movement. Mouth motion starts only after local speech playback starts; pause, stop, navigation and microphone use cancel it. Automatic question reading can be disabled. This is approximate speaking animation from one portrait, not a complete head reconstruction or phoneme-perfect lip sync.
+
+Checks passed: **156 Python tests, 70 frontend tests and nine Playwright journeys**, plus lint, type checking and production build. The ordinary Python suite skips one optional PostgreSQL test. Mesh tests verify topology, coverage and provenance; frontend tests verify speech cancellation, duplicate-start prevention and renderer cleanup. Browser tests cover slow preparation, real canvas loading, appearance persistence, controlled speech events and accessibility. The E2E server now migrates its isolated SQLite database before starting.
+
+Visually inspected `artifacts/verification/interview-preparation.png`, `interview-3d-speaking.png`, and the idle/speaking renderer previews. The human portrait remains recognizable, and speech opens the mouth without reverting to the primitive avatar. The lazy renderer chunk is approximately 472 KB (119 KB gzip), separate from the main UI; the mesh is approximately 32 KB. Paused/reduced-motion scenes avoid repeated geometry uploads and rendering. The scene targets roughly 30 FPS; hardware frame-time and audible voice/lip-sync quality are not established by headless tests.
+
+Runtime inference does not use MediaPipe. Its optional preprocessing environment ran successfully on Apple Silicon; its upstream wheel metadata warning is documented in the asset guide. Source PNG, model, topology and generator hashes are retained. Python results: `artifacts/verification/jamie-python-tests.log`; build output: `jamie-frontend-build.log`.
+
+The final source image was rebuilt and started in the actual Compose stack at **http://localhost:4431**. Both services are healthy, PostgreSQL is at migration `0003`, and all three preexisting session IDs remain present with Jamie as their default appearance. The private settings file retained its exact hash, `0600` mode and UID 1000 ownership; all four configurations remain present and API keys stay redacted. Served PNG/mesh bytes match local assets, allowed-origin checks accept port 4431, and runtime `pip check` passes. Evidence: `jamie-3d-docker-final-build.log`, `jamie-3d-docker-start.log` and `jamie-3d-docker-runtime.json` under `artifacts/verification/`.
+
+A separate container from the final image ran with fresh SQLite and demo inference, without private settings or shared volumes. It passed startup progress, disabled duplicate start, actual WebGL rendering, changing canvas pixels under controlled speech events, stable paused/reduced-motion frames, and correct redraw after resizing to 390px and 320px. Six desktop/mobile axe scans returned no violations; there were no page errors or horizontal overflow. Evidence: `artifacts/verification/docker-interviewer-ui.log`, `docker-interviewer-ui.json` and associated Docker screenshots. These checks use controlled speech events rather than audible OS playback.
+
+## Earlier static portrait release and port 4431 — 2026-11-18
+
+That earlier release replaced the primitive 3D avatar with three locally bundled, fictional human portraits. The choice persists in the browser without changing the session or question. Hide/show, image failure and unavailable browser storage have regression coverage. Speech playback and microphone cancellation remain functional; Three.js and simulated mouth animation are removed.
 
 `make test` passes **135 Python tests, 45 frontend tests and eight browser journeys**, plus lint, type checks and production build. The ordinary suite skips one optional PostgreSQL case. The new browser journey confirms that a loaded portrait survives reload, the session/question/options remain unchanged, typed text survives appearance changes, and mobile accessibility checks pass. Log: `artifacts/verification/portraits-port4431-tests.log`.
 
@@ -60,4 +74,4 @@ The 1,500 curriculum examples are synthetic drafts: 900 English, 450 Cantonese a
 
 No adapter, training log, loss curve, base-versus-LoRA preference result or participant study has been invented. GPU scripts and evaluated metric implementations prepare that work; they do not substitute for it. Two team identities and the proposed responsibility table are present, with two placeholders and actual contribution evidence still required.
 
-The current portrait interface supersedes the original procedural avatar and planned VRM asset. Evaluation runs are stored as JSON artifacts rather than database entities. True upstream model-token streaming is pending. The presentation and source package disclose these implementation limits.
+The current portrait-textured 3D surface supersedes the original procedural avatar and planned VRM asset. Evaluation runs are stored as JSON artifacts rather than database entities. True upstream model-token streaming is pending. The presentation and source package disclose these implementation limits.

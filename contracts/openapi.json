@@ -987,6 +987,12 @@
           "provider": {
             "type": "string",
             "title": "Provider"
+          },
+          "interviewer": {
+            "type": "string",
+            "const": "jamie",
+            "title": "Interviewer",
+            "default": "jamie"
           }
         },
         "additionalProperties": false,
@@ -1042,6 +1048,12 @@
             ],
             "title": "Question Count",
             "default": 5
+          },
+          "interviewer": {
+            "type": "string",
+            "const": "jamie",
+            "title": "Interviewer",
+            "default": "jamie"
           },
           "store_transcript": {
             "type": "boolean",

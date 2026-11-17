@@ -9,7 +9,8 @@ The application uses locally authored demonstration material, fictional generate
 | Material | Origin and purpose | License / handling |
 | --- | --- | --- |
 | Fictional job and STAR rubric | `data/demo-job.txt`, `knowledge/` | Locally authored project material |
-| Interviewer portraits | `frontend/public/interviewers/` | Fictional adult depictions generated for this project with the built-in image tool; [final prompts and provenance](INTERVIEWER_PORTRAITS.md) |
+| Interviewer portrait | `frontend/public/interviewers/` | Fictional adult depictions generated for this project with the built-in image tool; [final prompts and provenance](INTERVIEWER_PORTRAITS.md) |
+| Face topology and landmark preprocessing | [Google MediaPipe](https://github.com/google-ai-edge/mediapipe/tree/master/mediapipe/modules/face_geometry/data) | Apache-2.0 notice bundled in `frontend/public/interviewers/MEDIAPIPE-LICENSE.txt`; pinned model/topology hashes in the generator and mesh provenance |
 | O*NET 31.0 subset | [O*NET database](https://www.onetcenter.org/database.html), exact source manifest in `knowledge/` | Preserve [O*NET attribution and CC BY 4.0 terms](https://www.onetcenter.org/license_db.html) |
 | Qwen3-4B-Instruct-2507 | [Qwen model](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507), [Unsloth GGUF conversion](https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF) | Apache-2.0; base model, no VoxPrep training implied |
 | Qwen3-Embedding-0.6B | [Official GGUF](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF) | Apache-2.0 |
@@ -20,7 +21,7 @@ The application uses locally authored demonstration material, fictional generate
 
 ## Software
 
-React, Vite, Tailwind CSS and FastAPI are third-party dependencies. Their installed package notices and lockfiles are the authoritative version-specific license records. PostgreSQL and pgvector are obtained from their official container/package sources. `requirements.lock` and frontend/e2e lockfiles retain application dependency versions; GPU training has a separate pinned environment.
+React, Three.js, Vite, Tailwind CSS and FastAPI are third-party dependencies. Their installed package notices and lockfiles are the authoritative version-specific license records. PostgreSQL and pgvector are obtained from their official container/package sources. `requirements.lock` and frontend/e2e lockfiles retain application dependency versions; GPU training has a separate pinned environment.
 
 ## Provenance rules
 

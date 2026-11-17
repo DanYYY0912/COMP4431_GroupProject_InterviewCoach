@@ -14,14 +14,14 @@ type CoachTurn = {interviewer_text: string; question_type: 'opening'|'behavioral
 type AnswerSubmission = {turn_id?: string|null; transcript: string; language: 'en-HK'|'zh-HK'; elapsed_seconds: number; corrected: boolean; speech_metrics?: null | {pause_count?: number; silence_seconds?: number}};
 type Turn = {id: string; question: CoachTurn; answer: AnswerSubmission|null; created_at: string};
 type Profile = {id: string; title: string; competencies: string[]; warnings: string[]; sources: Citation[]};
-type Session = {id: string; job_profile_id: string; role_title: string; language: 'en-HK'|'zh-HK'; difficulty: string; question_count: number; state: string; current_question: number; turns: Turn[]; created_at: string; provider: string};
+type Session = {id: string; job_profile_id: string; role_title: string; language: 'en-HK'|'zh-HK'; difficulty: string; question_count: number; interviewer: 'jamie'; state: string; current_question: number; turns: Turn[]; created_at: string; provider: string};
 type Report = {session_id: string; role_title: string; language: string; summary: string; star: {element: 'Situation'|'Task'|'Action'|'Result'; present: boolean; evidence: string; coaching: string}[]; competencies: {name: string; evidence: string; feedback: string; citations: Citation[]}[]; strengths: string[]; prioritized_improvement: string; retry_exercise: string; speech_metrics: {word_count: number; duration_seconds: number; words_per_minute: number|null; filler_count: number; pause_count: number|null; silence_seconds: number|null; answer_count: number}; citations: Citation[]; limitations: string[]};
 ```
 
 ## Routes
 
 - POST `/api/job-profiles` JSON `{text: string, title?: string}` or multipart `file` (TXT/PDF/DOCX <= 5 MB) returns Profile, 201.
-- POST `/api/sessions` JSON `{job_profile_id, language, difficulty, question_count: 3|5|8, store_transcript?: true}` returns Session, 201. The first question is already present. Sessions are stored by default; `store_transcript` may be omitted.
+- POST `/api/sessions` JSON `{job_profile_id, language, difficulty, question_count: 3|5|8, interviewer?: 'jamie', store_transcript?: true}` returns Session, 201. The first question is already present. The interviewer defaults to Jamie and persists with the session. Sessions are stored by default; `store_transcript` may be omitted.
 - GET `/api/sessions` returns Session[]. GET `/api/sessions/{id}` returns Session.
 - POST `/api/sessions/{id}/answer` AnswerSubmission returns Session (HTTP fallback).
 - POST `/api/sessions/{id}/control` `{action: 'pause'|'resume'|'skip'|'retry'|'end'|'cancel'}` returns Session.
