@@ -140,6 +140,28 @@ function boundaryOpenness(text: string, index: number): number {
   return word ? 0.65 : 0.1;
 }
 
+// Web Speech exposes names and locales, but no gender field. Keep Jamie on
+// identifiable male voices; never guess from list order or lower a female voice's pitch.
+function jamieVoice(voices: SpeechSynthesisVoice[], language: Language) {
+  const names =
+    language === 'en-HK'
+      ? /\b(daniel|alex|jamie|aaron|david|mark|george|james|oliver|thomas|guy|ryan)\b/i
+      : /\b(danny|wanlung(?:neural)?|yunsong(?:neural)?)\b/i;
+  const localVoices = voices.filter((voice) => {
+    const locale = voice.lang.replaceAll('_', '-').toLowerCase();
+    const languageMatches =
+      language === 'en-HK'
+        ? locale === 'en' || locale.startsWith('en-')
+        : locale === 'zh-hk' || locale === 'yue' || locale.startsWith('yue-');
+    return voice.localService && languageMatches && names.test(voice.name);
+  });
+  return (
+    localVoices.find(
+      (voice) => voice.lang.replaceAll('_', '-').toLowerCase() === language.toLowerCase(),
+    ) ?? localVoices[0]
+  );
+}
+
 export function playQuestion(
   text: string,
   language: Language,
@@ -176,19 +198,7 @@ export function playQuestion(
   const speech = synthesis;
   function requestPlayback(): boolean {
     if (stopped || requested) return true;
-    const localVoices = speech.getVoices().filter((candidate) => {
-      const locale = candidate.lang.replace('_', '-').toLowerCase();
-      return (
-        candidate.localService &&
-        (locale === language.toLowerCase() ||
-          (language === 'en-HK' && locale.startsWith('en')) ||
-          (language === 'zh-HK' && (locale === 'yue' || locale.startsWith('yue-'))))
-      );
-    });
-    const voice =
-      localVoices.find(
-        (candidate) => candidate.lang.replace('_', '-').toLowerCase() === language.toLowerCase(),
-      ) ?? localVoices[0];
+    const voice = jamieVoice(speech.getVoices(), language);
     if (!voice) return false;
     clearVoiceWait();
     requested = true;
@@ -241,7 +251,7 @@ export function playQuestion(
     voicesTimer = setTimeout(() => {
       if (requestPlayback()) return;
       callbacks.onNotice(
-        'No local voice is available for this language. Read the question on screen.',
+        `No local male voice is available for Jamie in ${language === 'zh-HK' ? 'Cantonese' : 'English'}. Enable a matching male voice in your system speech settings, then select Read question. The written question remains available.`,
       );
       finish();
     }, 1500);

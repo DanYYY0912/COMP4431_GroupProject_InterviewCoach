@@ -35,7 +35,7 @@ describe('local audio encoding', () => {
 });
 
 describe('local question playback', () => {
-  function setup(voices: { lang: string; localService: boolean }[]) {
+  function setup(voices: { name: string; lang: string; localService: boolean }[]) {
     const events = new EventTarget();
     const synthesis = {
       getVoices: vi.fn(() => voices),
@@ -61,18 +61,18 @@ describe('local question playback', () => {
   it('never selects a remote voice when no local language match exists', () => {
     vi.useFakeTimers();
     const { synthesis, callbacks } = setup([
-      { lang: 'zh-HK', localService: false },
-      { lang: 'en-US', localService: true },
+      { name: 'Microsoft Danny', lang: 'zh-HK', localService: false },
+      { name: 'Alex', lang: 'en-US', localService: true },
     ]);
     playQuestion('你好', 'zh-HK', callbacks);
     vi.advanceTimersByTime(1500);
     expect(synthesis.speak).not.toHaveBeenCalled();
-    expect(callbacks.onNotice).toHaveBeenCalledWith(expect.stringContaining('No local voice'));
+    expect(callbacks.onNotice).toHaveBeenCalledWith(expect.stringMatching(/local.*male.*voice/i));
     expect(callbacks.onEnd).toHaveBeenCalledOnce();
     expect(callbacks.onStart).not.toHaveBeenCalled();
   });
   it('uses a local voice and ignores old speech callbacks after stop', () => {
-    const voice = { lang: 'en-GB', localService: true };
+    const voice = { name: 'Daniel', lang: 'en-GB', localService: true };
     const { synthesis, callbacks } = setup([voice]);
     const stop = playQuestion('Hello', 'en-HK', callbacks);
     const utterance = synthesis.speak.mock.calls[0][0] as SpeechSynthesisUtterance;
@@ -94,7 +94,7 @@ describe('local question playback', () => {
     const { synthesis, callbacks, voicesChanged } = setup([]);
     playQuestion('Hello', 'en-HK', callbacks);
     expect(synthesis.speak).not.toHaveBeenCalled();
-    synthesis.getVoices.mockReturnValue([{ lang: 'en-GB', localService: true }]);
+    synthesis.getVoices.mockReturnValue([{ name: 'Daniel', lang: 'en-GB', localService: true }]);
     voicesChanged();
     voicesChanged();
     expect(synthesis.speak).toHaveBeenCalledOnce();
@@ -112,7 +112,7 @@ describe('local question playback', () => {
     const { synthesis, callbacks, voicesChanged } = setup([]);
     const stop = playQuestion('Hello', 'en-HK', callbacks);
     stop();
-    synthesis.getVoices.mockReturnValue([{ lang: 'en-GB', localService: true }]);
+    synthesis.getVoices.mockReturnValue([{ name: 'Daniel', lang: 'en-GB', localService: true }]);
     voicesChanged();
     vi.advanceTimersByTime(10000);
     expect(synthesis.speak).not.toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('local question playback', () => {
   });
 
   it('provides approximate boundary cues only during real speech and resets on completion', () => {
-    const { synthesis, callbacks } = setup([{ lang: 'en-GB', localService: true }]);
+    const { synthesis, callbacks } = setup([{ name: 'Daniel', lang: 'en-GB', localService: true }]);
     playQuestion('Map apple', 'en-HK', callbacks);
     const utterance = synthesis.speak.mock.calls[0][0] as SpeechSynthesisUtterance;
     utterance.onboundary?.({ charIndex: 4, name: 'word' } as SpeechSynthesisEvent);
@@ -141,7 +141,7 @@ describe('local question playback', () => {
 
   it('reports blocked or silent playback without pretending speech started', () => {
     vi.useFakeTimers();
-    const { synthesis, callbacks } = setup([{ lang: 'en-GB', localService: true }]);
+    const { synthesis, callbacks } = setup([{ name: 'Daniel', lang: 'en-GB', localService: true }]);
     playQuestion('Hello', 'en-HK', callbacks);
     vi.advanceTimersByTime(4000);
     expect(callbacks.onStart).not.toHaveBeenCalled();
@@ -153,7 +153,7 @@ describe('local question playback', () => {
 
   it('explains an autoplay rejection and ignores subsequent browser callbacks', () => {
     vi.useFakeTimers();
-    const { synthesis, callbacks } = setup([{ lang: 'en-GB', localService: true }]);
+    const { synthesis, callbacks } = setup([{ name: 'Daniel', lang: 'en-GB', localService: true }]);
     playQuestion('Hello', 'en-HK', callbacks);
     const utterance = synthesis.speak.mock.calls[0][0] as SpeechSynthesisUtterance;
     utterance.onerror?.({ error: 'not-allowed' } as SpeechSynthesisErrorEvent);
@@ -165,5 +165,68 @@ describe('local question playback', () => {
     );
     expect(callbacks.onEnd).toHaveBeenCalledOnce();
     expect(callbacks.onViseme).toHaveBeenLastCalledWith(0);
+  });
+
+  it('selects a known male English voice even when a female voice is listed first', () => {
+    const male = { name: 'Daniel', lang: 'en-GB', localService: true };
+    const { synthesis } = setup([{ name: 'Samantha', lang: 'en-HK', localService: true }, male]);
+    playQuestion('Tell me about your project.', 'en-HK', {
+      onStart: vi.fn(),
+      onEnd: vi.fn(),
+      onNotice: vi.fn(),
+    });
+    const utterance = synthesis.speak.mock.calls[0][0] as SpeechSynthesisUtterance;
+    expect(utterance.voice).toBe(male);
+    expect(utterance.lang).toBe('en-GB');
+  });
+
+  it.each(['Microsoft Danny', 'Microsoft WanLung'])(
+    'selects local male Cantonese voice %s over Sinji',
+    (name) => {
+      const male = { name, lang: 'zh-HK', localService: true };
+      const { synthesis, callbacks } = setup([
+        { name: 'Sinji', lang: 'zh-HK', localService: true },
+        male,
+      ]);
+      playQuestion('可唔可以講下你嘅專題？', 'zh-HK', callbacks);
+      const utterance = synthesis.speak.mock.calls[0][0] as SpeechSynthesisUtterance;
+      expect(utterance.voice).toBe(male);
+      expect(callbacks.onNotice).not.toHaveBeenCalled();
+    },
+  );
+
+  it('accepts a male Cantonese voice labelled with a yue locale', () => {
+    const male = { name: 'Microsoft Danny', lang: 'yue-HK', localService: true };
+    const { synthesis, callbacks } = setup([male]);
+    playQuestion('你好', 'zh-HK', callbacks);
+    expect((synthesis.speak.mock.calls[0][0] as SpeechSynthesisUtterance).voice).toBe(male);
+  });
+
+  it.each(['Samantha', 'Unidentified system voice', 'Female voice'])(
+    'does not silently use %s for Jamie when no known male voice exists',
+    (name) => {
+      vi.useFakeTimers();
+      const { synthesis, callbacks } = setup([{ name, lang: 'en-GB', localService: true }]);
+      playQuestion('Tell me about your project.', 'en-HK', callbacks);
+      vi.advanceTimersByTime(1500);
+      expect(synthesis.speak).not.toHaveBeenCalled();
+      expect(callbacks.onNotice).toHaveBeenCalledWith(expect.stringMatching(/local.*male.*voice/i));
+      expect(callbacks.onStart).not.toHaveBeenCalled();
+      expect(callbacks.onEnd).toHaveBeenCalledOnce();
+    },
+  );
+
+  it('never substitutes Mandarin or a remote Cantonese voice for a missing local male Cantonese voice', () => {
+    vi.useFakeTimers();
+    const { synthesis, callbacks } = setup([
+      { name: 'Microsoft Yunxi', lang: 'zh-CN', localService: true },
+      { name: 'Sinji', lang: 'zh-HK', localService: true },
+      { name: 'Microsoft Danny', lang: 'zh-HK', localService: false },
+    ]);
+    playQuestion('你好', 'zh-HK', callbacks);
+    vi.advanceTimersByTime(1500);
+    expect(synthesis.speak).not.toHaveBeenCalled();
+    expect(callbacks.onNotice).toHaveBeenCalledWith(expect.stringMatching(/local.*male.*voice/i));
+    expect(callbacks.onEnd).toHaveBeenCalledOnce();
   });
 });
