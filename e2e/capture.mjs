@@ -6,7 +6,7 @@ const context = await browser.newContext({viewport:{width:1440,height:1100},redu
 const page = await context.newPage();
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
-await page.goto('http://127.0.0.1:8000');
+await page.goto('http://127.0.0.1:4431');
 await page.getByRole('heading',{name:'Practice interview',exact:true}).waitFor();
 await expect(page.getByRole('button',{name:'Start my interview'})).toBeDisabled();
 await page.getByText('Checking services…').waitFor({state:'hidden'});
@@ -21,7 +21,7 @@ await page.screenshot({path:'../artifacts/verification/setup-mobile.png',fullPag
 const mobileAccessibility = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa']).analyze();
 const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
 await page.setViewportSize({width:1440,height:1100});
-await page.goto('http://127.0.0.1:8000/#/settings');
+await page.goto('http://127.0.0.1:4431/#/settings');
 await page.getByLabel('Agent base URL', {exact:true}).waitFor();
 await page.getByLabel('Reranker model', {exact:true}).waitFor();
 await page.screenshot({path:'../artifacts/verification/inference-settings.png',fullPage:true});

@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = os.environ.get("VOXPREP_URL", "http://127.0.0.1:8000")
+BASE = os.environ.get("VOXPREP_URL", "http://127.0.0.1:4431")
 if urlparse(BASE).hostname not in {"localhost", "127.0.0.1", "::1"}:
     raise SystemExit("Demo reset may only target localhost.")
 STATE = ROOT / "artifacts/demo-fixtures.json"

@@ -139,6 +139,8 @@ def test_upload_validation_and_untrusted_source_warning(client):
 
 
 def test_foreign_origins_cannot_mutate_or_read(client):
+    for origin in ("http://localhost:4431", "http://127.0.0.1:4431"):
+        assert client.get("/api/sessions", headers={"Origin": origin}).status_code == 200
     assert (
         client.get("/api/sessions", headers={"Origin": "https://evil.example"}).status_code == 403
     )

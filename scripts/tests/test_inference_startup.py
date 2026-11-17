@@ -65,3 +65,4 @@ def test_saved_external_settings_skip_native_models_even_when_weights_exist(
         dev.serve("demo")
     assert len(started) == 1
     assert started[0][1:3] == ["-m", "uvicorn"]
+    assert started[0][started[0].index("--port") + 1] == "4431"

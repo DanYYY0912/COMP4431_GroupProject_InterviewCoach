@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
-    proxy: { '/api': { target: 'http://127.0.0.1:8000', ws: true } },
+    proxy: { '/api': { target: 'http://127.0.0.1:4431', ws: true } },
   },
   test: { environment: 'jsdom', setupFiles: ['./src/test-setup.ts'], css: true },
   build: { chunkSizeWarningLimit: 1100 },

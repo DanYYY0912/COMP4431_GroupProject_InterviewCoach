@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     reranker_api_key: str = Field(default="", repr=False)
     inference_settings_path: Path = ROOT / "data" / "inference-settings.json"
     allowed_origins: str = (
-        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:8000,http://127.0.0.1:8000"
+        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4431,http://127.0.0.1:4431"
     )
     evaluation_path: Path = ROOT / "evaluation" / "results" / "latest.json"
     frontend_dist: Path = ROOT / "frontend" / "dist"

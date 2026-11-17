@@ -22,7 +22,7 @@ services:
     volumes:
       - app-data:/app/data
     ports:
-      - '127.0.0.1:8000:8000'
+      - '127.0.0.1:4431:8000'
     environment:
       DATABASE_URL: postgresql+psycopg://voxprep:local-development-only@db:5432/voxprep
       MODEL_PROVIDER: ${MODEL_PROVIDER:-demo}

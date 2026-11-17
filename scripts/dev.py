@@ -318,7 +318,7 @@ def serve(mode):
             "--host",
             "127.0.0.1",
             "--port",
-            "8000",
+            "4431",
         ]
         if mode == "dev":
             command += ["--reload", "--reload-dir", "backend"]
@@ -328,7 +328,7 @@ def serve(mode):
                 "frontend", [pnpm(), "--dir", "frontend", "dev", "--host", "127.0.0.1"]
             )
         print(
-            f"VoxPrep HK: http://localhost:{5173 if mode == 'dev' else 8000} (provider: {provider})",
+            f"VoxPrep HK: http://localhost:{5173 if mode == 'dev' else 4431} (provider: {provider})",
             flush=True,
         )
         while all(p.poll() is None for p in children):
