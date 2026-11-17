@@ -19,8 +19,6 @@ class Settings(BaseSettings):
     agent_api_key: str = Field(default="", repr=False)
     model_timeout_seconds: float = 45
     report_timeout_seconds: float = 110
-    azure_speech_key: str = ""
-    azure_speech_region: str = ""
     whisper_base_url: str = "http://127.0.0.1:8081"
     asr_base_url: str = ""
     asr_model: str = ""
@@ -49,13 +47,6 @@ class Settings(BaseSettings):
     @classmethod
     def valid_model_services(cls, value: str) -> str:
         return provider_url(value)
-
-    @field_validator("azure_speech_region")
-    @classmethod
-    def region_is_safe(cls, value: str) -> str:
-        if value and (not value.isalnum() or len(value) > 40):
-            raise ValueError("Invalid Azure region")
-        return value
 
     @property
     def origins(self) -> set[str]:

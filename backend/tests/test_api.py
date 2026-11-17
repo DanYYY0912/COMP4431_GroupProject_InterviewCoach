@@ -66,10 +66,13 @@ def test_full_interview_report_delete(client, language):
     assert client.get("/api/sessions").json() == []
 
 
-def test_consent_required_and_unknown_fields_rejected(client):
+def test_session_storage_defaults_on_and_unknown_fields_rejected(client):
     profile = client.post(
         "/api/job-profiles", json={"text": "Engineer role requiring Python and teamwork."}
     ).json()
+    result = client.post("/api/sessions", json={"job_profile_id": profile["id"]})
+    assert result.status_code == 201, result.text
+    assert client.get(f"/api/sessions/{result.json()['id']}").status_code == 200
     assert (
         client.post(
             "/api/sessions", json={"job_profile_id": profile["id"], "store_transcript": False}
@@ -141,18 +144,24 @@ def test_foreign_origins_cannot_mutate_or_read(client):
     )
     assert (
         client.post(
-            "/api/speech/token", json={"consent": True}, headers={"Origin": "https://evil.example"}
+            "/api/job-profiles",
+            json={"text": "Engineer role requiring Python and teamwork."},
+            headers={"Origin": "https://evil.example"},
         ).status_code
         == 403
     )
 
 
 def test_speech_is_honest_when_not_configured(client):
-    assert client.post("/api/speech/token", json={"consent": True}).status_code == 503
-    assert client.post("/api/speech/token", json={"consent": False}).status_code == 422
     health = client.get("/api/health").json()
     assert health["provider"] == "demo"
     assert health["llm"] == "demo (not a language model)"
+    assert health["speech"] == "local Whisper unavailable; typed input ready"
+
+
+def test_removed_speech_token_api_is_not_exposed(client):
+    assert "/api/speech/token" not in client.get("/openapi.json").json()["paths"]
+    assert client.post("/api/speech/token", json={}).status_code in {404, 405}
 
 
 def test_websocket_contract_and_error_recovery(client):

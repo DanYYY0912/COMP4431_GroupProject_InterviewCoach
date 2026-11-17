@@ -5,32 +5,6 @@ from .config import Settings
 from .providers import bearer_headers
 
 
-async def speech_token(settings: Settings) -> dict:
-    if not settings.azure_speech_key or not settings.azure_speech_region:
-        raise HTTPException(
-            503, "Azure Speech is not configured. Use local transcription or typed answers."
-        )
-    try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            response = await client.post(
-                f"https://{settings.azure_speech_region}.api.cognitive.microsoft.com/sts/v1.0/issueToken",
-                headers={
-                    "Ocp-Apim-Subscription-Key": settings.azure_speech_key,
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                content=b"",
-            )
-            response.raise_for_status()
-            token = response.text.strip()
-            if not token or len(token) > 16000:
-                raise ValueError("Invalid token response")
-        return {"token": token, "region": settings.azure_speech_region, "expires_in": 540}
-    except (httpx.HTTPError, ValueError) as exc:
-        raise HTTPException(
-            503, "Azure Speech is unavailable. Continue with local transcription or typed answers."
-        ) from exc
-
-
 async def transcribe(content: bytes, filename: str, language: str, settings: Settings) -> dict:
     if language not in {"en-HK", "zh-HK"}:
         raise HTTPException(422, "Choose en-HK or zh-HK.")

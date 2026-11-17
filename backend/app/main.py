@@ -42,10 +42,9 @@ from .schemas import (
     Session,
     SessionInput,
     SessionReport,
-    SpeechConsent,
 )
 from .service import InterviewService, profile_view, session_view
-from .speech import speech_token, transcribe
+from .speech import transcribe
 
 
 class LocalBoundary:
@@ -307,10 +306,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         await service.delete(session_id)
         return Response(status_code=204)
 
-    @app.post("/api/speech/token")
-    async def token(data: SpeechConsent):
-        return await speech_token(inference.current)
-
     @app.post("/api/speech/transcribe")
     async def speech_transcribe(request: Request):
         with inference.operation() as settings:
@@ -394,19 +389,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 if llm_ready
                 else "unavailable (deterministic fallback enabled)"
             )
-        speech_status = (
-            "Azure configured; availability checked on use; "
-            if settings.azure_speech_key and settings.azure_speech_region
-            else "Azure not configured; "
-        )
         if settings.asr_base_url:
-            speech_status += (
+            speech_status = (
                 "configured ASR model available; transcription checked on use"
                 if whisper_ready
                 else "configured ASR unavailable; typed input ready"
             )
         else:
-            speech_status += (
+            speech_status = (
                 "local Whisper ready"
                 if whisper_ready
                 else "local Whisper unavailable; typed input ready"

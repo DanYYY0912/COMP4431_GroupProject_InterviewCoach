@@ -80,7 +80,7 @@ class SessionInput(StrictModel):
     language: Language = "en-HK"
     difficulty: Literal["foundation", "standard", "stretch"] = "standard"
     question_count: Literal[3, 5, 8] = 5
-    store_transcript: Literal[True]
+    store_transcript: Literal[True] = True
 
 
 class Session(StrictModel):
@@ -153,7 +153,3 @@ class SessionReport(StrictModel):
     speech_metrics: SpeechMetrics
     citations: list[Citation]
     limitations: list[str]
-
-
-class SpeechConsent(StrictModel):
-    consent: Literal[True]

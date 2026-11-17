@@ -15,7 +15,7 @@ from app.db import ChunkRecord
 from app.ingestion import chunk_text, extract_file
 from app.retrieval import lexical_ranking, reciprocal_rank_fusion
 from app.schemas import AnswerSubmission, Citation, CoachTurn, Session, Turn
-from app.speech import speech_token, transcribe
+from app.speech import transcribe
 
 
 def test_scanned_pdf_has_clear_recovery():
@@ -59,8 +59,6 @@ def test_ranking_and_fusion_keep_supporting_passages():
 def test_public_model_endpoints_require_https_and_safe_urls():
     with pytest.raises(ValidationError):
         Settings(llama_base_url="http://provider.example/v1")
-    with pytest.raises(ValidationError):
-        Settings(azure_speech_region="eastus/../../evil")
 
 
 def test_blank_nonfinite_and_excessively_long_answers_rejected():
@@ -154,20 +152,6 @@ async def test_model_failures_are_visible_fallbacks(monkeypatch, failure):
         [Citation(chunk_id="valid", source="Job", text="Python")],
     )
     assert provider == "demo-fallback"
-
-
-@pytest.mark.asyncio
-async def test_speech_key_never_leaves_server_response(monkeypatch):
-    def handler(request):
-        assert request.headers["Ocp-Apim-Subscription-Key"] == "test-secret"
-        return httpx.Response(200, text="short-lived-token")
-
-    mock_http(monkeypatch, handler)
-    token = await speech_token(
-        Settings(azure_speech_key="test-secret", azure_speech_region="eastasia")
-    )
-    assert token == {"token": "short-lived-token", "region": "eastasia", "expires_in": 540}
-    assert "test-secret" not in json.dumps(token)
 
 
 @pytest.mark.asyncio

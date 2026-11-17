@@ -33,7 +33,6 @@ The built `frontend/dist` is served at the same endpoint if present at startup. 
 | `RERANKER_BASE_URL`, `RERANKER_MODEL`, `RERANKER_API_KEY` | Optional `/rerank` service, model and bearer credential |
 | `ASR_BASE_URL`, `ASR_MODEL`, `ASR_API_KEY` | Optional OpenAI-compatible `/audio/transcriptions` service |
 | `INFERENCE_SETTINGS_PATH` | `data/inference-settings.json`; saved overrides take precedence over environment defaults |
-| `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` | Optional server-held Speech credentials |
 | `WHISPER_BASE_URL` | `http://127.0.0.1:8081`; enable whisper-server `--convert` and FFmpeg for browser audio |
 | `ALLOWED_ORIGINS` | localhost/127.0.0.1 on ports 5173 and 8000 |
 
@@ -52,6 +51,8 @@ Run `.venv/bin/python -m app.index_knowledge` to explicitly embed all source chu
 
 HTTP answer submissions should include the optional current `turn_id` to reject stale/replayed answers. A simultaneous second submission receives 409. Pause/cancel/end interrupt pending generation without committing the draft. Retry reopens the last submitted answer and removes later turns. Skip advances without fabricating an answer. Deleting the last session for a job also deletes its private job text. History accepts bounded `limit` and `offset` query parameters.
 
+Session creation stores transcripts in local history by default. The optional `store_transcript` field accepts only `true`; a temporary session mode is not implemented.
+
 WebSocket text deltas are chunks of an already validated completed model response, not raw first-token streaming. Raw model JSON is never rendered. Model timeouts, invalid schemas, unsupported competency names and fabricated citation IDs trigger the visible `demo-fallback` provider. Model reports require exact transcript substrings and allowed source IDs, cache validated output, and invalidate the cache after edits. Their limitations explain model generation or heuristic fallback, context truncation and unavailable speech measurements. Excerpt identity checks cannot prove semantic entailment; assessors must review citation precision.
 
 For bounded context, generation uses relevant source excerpts while displayed citations preserve the entire original chunk. Reports analyze up to 160 word/CJK/punctuation units (at most 1,000 characters) per answer; truncation is disclosed. The report output budget is 1,400 tokens and a 110-second timeout. These are recovery bounds, not claims that latency targets have been met.
@@ -61,5 +62,4 @@ For bounded context, generation uses relevant source excerpts while displayed ci
 - [FastAPI WebSockets](https://fastapi.tiangolo.com/advanced/websockets/)
 - [llama.cpp server API and JSON schema output](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)
 - [pgvector Python and SQLAlchemy integration](https://github.com/pgvector/pgvector-python)
-- [Azure Speech token authentication](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/rest-text-to-speech)
 - [O*NET 31.0 license](https://www.onetcenter.org/license_db.html)
