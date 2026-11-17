@@ -85,7 +85,7 @@ def test_historical_metadata_database_keeps_sessions_when_upgrading(
     with sqlite3.connect(path) as db:
         assert db.execute(
             "SELECT role_title,report_data,interviewer FROM sessions WHERE id='session'"
-        ).fetchone() == ("Retain this role", None, "alex")
+        ).fetchone() == ("Retain this role", None, "jamie")
         assert (
             db.execute("SELECT version_num FROM alembic_version").fetchone()[0]
             == "0003"

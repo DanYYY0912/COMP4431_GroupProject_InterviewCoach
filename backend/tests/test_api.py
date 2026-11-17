@@ -72,7 +72,7 @@ def test_session_storage_defaults_on_and_unknown_fields_rejected(client):
     ).json()
     result = client.post("/api/sessions", json={"job_profile_id": profile["id"]})
     assert result.status_code == 201, result.text
-    assert result.json()["interviewer"] == "alex"
+    assert result.json()["interviewer"] == "jamie"
     assert client.get(f"/api/sessions/{result.json()['id']}").status_code == 200
     assert (
         client.post(
@@ -89,7 +89,7 @@ def test_session_storage_defaults_on_and_unknown_fields_rejected(client):
     )
 
 
-@pytest.mark.parametrize("interviewer", ["alex", "jamie", "sam"])
+@pytest.mark.parametrize("interviewer", ["jamie"])
 def test_interviewer_choice_persists_through_pause_resume_and_retry(client, interviewer):
     session = create_session(client, interviewer=interviewer)
     url = f"/api/sessions/{session['id']}"
@@ -117,7 +117,7 @@ def test_interviewer_choice_persists_through_pause_resume_and_retry(client, inte
         assert socket.receive_json()["payload"]["interviewer"] == interviewer
 
 
-@pytest.mark.parametrize("interviewer", ["unknown", "../sam", "Alex", None])
+@pytest.mark.parametrize("interviewer", ["alex", "sam", "unknown", "../jamie", "Jamie", None])
 def test_invalid_interviewer_is_rejected(client, interviewer):
     profile = client.post(
         "/api/job-profiles", json={"text": "Engineer role requiring Python and teamwork."}

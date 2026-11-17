@@ -48,7 +48,7 @@ class SessionRecord(Base):
     difficulty: Mapped[str] = mapped_column(String(20))
     question_count: Mapped[int] = mapped_column(Integer)
     interviewer: Mapped[str] = mapped_column(
-        String(16), default="alex", server_default="alex", nullable=False
+        String(16), default="jamie", server_default="jamie", nullable=False
     )
     state: Mapped[str] = mapped_column(String(24), default="listening")
     created_at: Mapped[str] = mapped_column(String(40), default=now, index=True)

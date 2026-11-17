@@ -53,7 +53,7 @@ HTTP answer submissions should include the optional current `turn_id` to reject 
 
 Session creation stores transcripts in local history by default. The optional `store_transcript` field accepts only `true`; a temporary session mode is not implemented.
 
-The optional `interviewer` field accepts `alex`, `jamie`, or `sam` and is saved with the session. It defaults to `alex`, including for existing sessions upgraded by migration `0003`. Pausing, resuming, and retrying preserve the selection.
+The optional `interviewer` field accepts `jamie` and is saved with the session. It defaults to `jamie`, including for existing sessions upgraded by migration `0003`. Pausing, resuming, and retrying preserve the selection.
 
 WebSocket text deltas are chunks of an already validated completed model response, not raw first-token streaming. Raw model JSON is never rendered. Model timeouts, invalid schemas, unsupported competency names and fabricated citation IDs trigger the visible `demo-fallback` provider. Model reports require exact transcript substrings and allowed source IDs, cache validated output, and invalidate the cache after edits. Their limitations explain model generation or heuristic fallback, context truncation and unavailable speech measurements. Excerpt identity checks cannot prove semantic entailment; assessors must review citation precision.
 

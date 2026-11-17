@@ -21,7 +21,7 @@ def test_programmatic_migration_uses_supplied_connection_not_environment(tmp_pat
     engine.dispose()
 
 
-def test_interviewer_migration_preserves_existing_sessions_and_defaults_to_alex(tmp_path):
+def test_interviewer_migration_preserves_existing_sessions_and_defaults_to_jamie(tmp_path):
     engine = create_engine(f"sqlite:///{tmp_path}/legacy.db")
     config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
     with engine.begin() as connection:
@@ -47,10 +47,10 @@ def test_interviewer_migration_preserves_existing_sessions_and_defaults_to_alex(
         original_turn = connection.execute(text("SELECT * FROM turns")).mappings().one()
         command.upgrade(config, "head")
         upgraded = dict(connection.execute(text("SELECT * FROM sessions")).mappings().one())
-        assert upgraded.pop("interviewer") == "alex"
+        assert upgraded.pop("interviewer") == "jamie"
         assert upgraded == original_session
         assert connection.execute(text("SELECT * FROM turns")).mappings().one() == original_turn
         columns = {column["name"]: column for column in inspect(connection).get_columns("sessions")}
         assert columns["interviewer"]["nullable"] is False
-        assert columns["interviewer"]["default"] == "'alex'"
+        assert columns["interviewer"]["default"] == "'jamie'"
     engine.dispose()

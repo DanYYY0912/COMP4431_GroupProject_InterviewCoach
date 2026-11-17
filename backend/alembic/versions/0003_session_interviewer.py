@@ -1,4 +1,4 @@
-"""Keep the selected interviewer with each session; existing sessions use Alex."""
+"""Keep the selected interviewer with each session; existing sessions use Jamie."""
 
 import sqlalchemy as sa
 
@@ -15,7 +15,7 @@ def upgrade():
     if "interviewer" not in columns:
         op.add_column(
             "sessions",
-            sa.Column("interviewer", sa.String(16), nullable=False, server_default="alex"),
+            sa.Column("interviewer", sa.String(16), nullable=False, server_default="jamie"),
         )
 
 
