@@ -1,0 +1,28 @@
+.interviewer-3d-frame {
+  position: relative;
+}
+.interviewer-3d-canvas {
+  position: absolute;
+  inset: 0;
+}
+.interviewer-3d-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.interviewer-loading {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.65rem;
+  text-align: center;
+  color: #183f38;
+  background: #fffffff0;
+  font-size: 0.8rem;
+}
+.interviewer-fallback-notice {
+  color: #52634b;
+  font-size: 0.78rem;
+  text-align: center;
+}
