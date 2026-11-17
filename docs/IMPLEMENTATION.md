@@ -22,6 +22,6 @@ Build the supplied VoxPrep HK plan from the two course PDFs in this folder. The 
 ## External release gates
 
 - 1,500 reviewed examples and required second reviews; genuine GPU QLoRA training and retained artifacts.
-- Azure Speech configuration and recordings from four speakers.
+- Selected ASR service validation and recordings from four speakers.
 - Blinded model ratings, five to eight usability participants and measured release thresholds.
 - Four team member names/IDs, live rehearsal and final backup recording.

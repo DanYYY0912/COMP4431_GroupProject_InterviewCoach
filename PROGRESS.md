@@ -2,27 +2,28 @@
 
 ## Executive summary
 
-The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The app runs at `http://localhost:8000` with native Qwen, Whisper, embedding and reranking services and PostgreSQL. This is a working development submission, not a completed assessed release: Azure and a training GPU are not set up, the 1,500 synthetic drafts are unreviewed, and no fine-tuned adapter or participant results exist. Inference providers can now be configured in Settings.
+The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The Docker app and PostgreSQL run at `http://localhost:8000`; all four saved inference connections are preserved in the Docker volume. Native model launchers remain available for development. This is a working development submission, not a completed assessed release: a training GPU is not set up, the 1,500 synthetic drafts are unreviewed, and no fine-tuned adapter or participant results exist. Inference providers can now be configured in Settings.
 
-Updated: **2026-11-18T00:28:34+08:00 (Asia/Hong_Kong)**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
+Updated: **2026-11-18T03:54:46+08:00 (Asia/Hong_Kong)**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
 
 ## Working state
 
+- Practice interview opens directly. The two input sections control start readiness; the right panel summarizes configuration and service status. History preserves session management. Overview, consent controls and decorative marketing copy have been removed.
 - The former Methodology tab is now **Settings**, with Agent, ASR, Embedding and Reranker connections. Each accepts a base URL, API key and model; discovery is optional and manual model IDs are supported.
 - Provider settings persist server-side with keys redacted from API responses. Saved settings apply to new requests and override environment defaults after restart. Public services require HTTPS; local/private network servers can use HTTP. External providers receive their task inputs.
-- ASR configuration takes precedence over Azure recognition. Leaving ASR empty retains native Whisper. Different embedding models/dimensions use isolated caches. Docker keeps settings in the `app-data` volume; Git and source archives exclude settings and temporary credential files.
+- Recorded answers use the selected ASR service. Leaving ASR empty retains native Whisper. Different embedding models/dimensions use isolated caches. Docker keeps settings in the `app-data` volume; Git and source archives exclude settings and temporary credential files.
 
 - `make demo` builds the frontend, migrates the database and starts the local production interface. `make dev` starts the development interface on port 5173.
-- Real local services use ports 8080–8083; Docker PostgreSQL uses loopback port 54329. Model weights are downloaded and checksum-verified on this Mac and excluded from source packaging.
+- Native model launchers use ports 8080–8083; Docker PostgreSQL uses loopback port 54329. Model weights are downloaded and checksum-verified on this Mac and excluded from source packaging.
 - English and Cantonese typed interviews, adaptive follow-ups, saved state, report, retry, full transcript export, session comparison and deletion have browser coverage. Microphone permission and stale-response races have regression tests.
-- Azure recognition, synthesis and viseme integration is implemented but real Azure calls remain unverified. Local Whisper was exercised with synthetic English and Cantonese speech.
+- Azure integration has been removed. Question playback uses local browser voices, while ASR uses the selected server or native Whisper. Local Whisper was exercised with synthetic English and Cantonese speech.
 - QLoRA scripts, a GPU notebook, review/split gates, export tooling and evaluation runners are present. They deliberately reject unreviewed or leaking training data.
 - The eight-slide [PowerPoint](presentation/VoxPrep-HK.pptx), speaker notes, [seven-minute script](presentation/DEMO_SCRIPT.md) and [80-second scripted backup](presentation/backup-demo.mp4) are prepared. The backup uses the deterministic demo provider and fictional answers.
 - `make package` writes `artifacts/VoxPrep-HK-source.zip` and its SHA-256. Archive integrity and every manifest entry have been verified. Its manifest states whether a verified trained adapter is present. No adapter currently exists.
 
 ## Immediate next targets
 
-1. Follow [external setup](docs/EXTERNAL_SETUP.md) to configure Azure and a Colab/Kaggle GPU. Keep credentials in the ignored local `.env` or notebook secret store.
+1. Follow [external setup](docs/EXTERNAL_SETUP.md) to validate the selected inference services and configure a Colab/Kaggle GPU. Keep credentials in the ignored local `.env` or notebook secret store.
 2. Rewrite and human-review the dataset, remove near duplicates, complete first reviews and the stratified second-review sample, then produce leakage-safe splits. The draft count is not a count of curated examples.
 3. Run genuine GPU training, retain the best adapter, loss curves, hashes and logs, export a merged GGUF and compare it with the retained base model.
 4. Address generation latency and execute the reviewed model/retrieval experiment, four-speaker speech study, avatar performance check and five-to-eight-person usability study. Record failures as well as successes.
@@ -30,12 +31,11 @@ Updated: **2026-11-18T00:28:34+08:00 (Asia/Hong_Kong)**. See [verification](docs
 
 ## Last verification
 
-The updated native app starts successfully, and a synthetic local Qwen question completed with real inference. A fresh Docker image build on November 18 failed because npm dependency downloads timed out in `pnpm install`; the application tests and local production build passed. `artifacts/verification/inference-docker-build.log` retains that failure. The previous Docker image therefore does not contain the new settings feature; use the running native app or rebuild the image once downloads succeed. A separate container smoke test mounted the updated backend/frontend into the existing runtime: settings survived restart, keys remained redacted, and the file stayed owner-only (`0600`) under the non-root user. This verifies persistence behavior, not a newly built image.
+On **2026-11-18**, `make test` passed **135 Python tests, 39 frontend tests and seven browser journeys**; the optional PostgreSQL test was skipped in this ordinary suite and passed separately during the earlier settings work. Lint, type checks and the production frontend build passed. The browser suite covers default Practice entry, valid-input gating, read-only configuration status, both languages, history, inference settings and accessibility. Log: `artifacts/verification/azure-removal-full-test.log`.
 
-On **2026-11-18**, `make test` passed **133 Python tests, 33 frontend tests and six browser journeys**; the optional PostgreSQL test was skipped in the ordinary suite and passed separately against an isolated PostgreSQL schema. Lint, type checks and the production frontend build passed. The new browser journey checks all four connections, authenticated model discovery, persistence after reload, redacted keys and desktop/mobile accessibility. Logs: `artifacts/verification/inference-full-test.log`. Provider behavior is covered by mocked protocol tests; no user-supplied external provider credentials were available for a live external-service run.
+The Docker dependency timeout is resolved. Both the fresh image build and a subsequent build from final source passed; the latter reused cached dependencies. The actual Compose `app` and `db` are healthy, and the updated UI is served on port 8000. The native supervisor was stopped to free the port. Existing sessions and all four saved inference connections survived the transition and an app restart. Settings retain owner-only permissions under UID 1000, and API responses redact keys. Current health reports the configured Agent, ASR model, hybrid retrieval and reranker available; this is connectivity evidence, not a model-quality result.
 
-
-On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five Playwright journeys**, plus lint, type checks, production and Docker builds. The earlier integrated `make test` passed before the final additions; affected suites were rerun after those additions. Both real Qwen language flows completed with source-ID validation and model-generated reports. Container startup and both-language smoke journeys passed. [Verification](docs/VERIFICATION.md) records scope and evidence. Counts describe controlled software checks; they do not establish model quality or human-study thresholds.
+An isolated container from the new image completed English/Cantonese typed interviews, reports, history, deletion and pause/resume across restart without binding host source. Actual Docker-served desktop/mobile screenshots passed accessibility checks with no page errors or horizontal overflow. Evidence is in `artifacts/verification/docker-azure-removal-*.log`, `docker-compose-updated-runtime.json`, `docker-updated-app-smoke.json`, `final-ui.json` and `setup*.png`. Historical November 2 evidence remains in [verification](docs/VERIFICATION.md).
 
 ## Durable decisions and limits
 
@@ -54,3 +54,5 @@ On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five
 - **2026-11-02:** User confirmed Azure and GPU are not configured; supplied two team identities and asked implementation to continue. External evidence gates remain explicit.
 
 - **2026-11-18:** Replaced Methodology with four inference settings sections, integrated authenticated provider calls and runtime persistence, tested dimension-safe retrieval, and updated launch, Docker and source-packaging behavior. Existing slides and backup recording retain their original November 2 presentation snapshot.
+
+- **2026-11-18:** Removed Azure SDK, token exchange, credentials and cloud-voice controls. Replaced setup consent/preflight with a read-only configuration summary and direct Practice interview entry. Repaired Docker dependency downloads, built the final image and launched app/database in Docker Desktop; preserved and restart-verified user settings and sessions.

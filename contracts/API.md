@@ -21,7 +21,7 @@ type Report = {session_id: string; role_title: string; language: string; summary
 ## Routes
 
 - POST `/api/job-profiles` JSON `{text: string, title?: string}` or multipart `file` (TXT/PDF/DOCX <= 5 MB) returns Profile, 201.
-- POST `/api/sessions` JSON `{job_profile_id, language, difficulty, question_count: 3|5|8, store_transcript: true}` returns Session, 201. The first question is already present.
+- POST `/api/sessions` JSON `{job_profile_id, language, difficulty, question_count: 3|5|8, store_transcript?: true}` returns Session, 201. The first question is already present. Sessions are stored by default; `store_transcript` may be omitted.
 - GET `/api/sessions` returns Session[]. GET `/api/sessions/{id}` returns Session.
 - POST `/api/sessions/{id}/answer` AnswerSubmission returns Session (HTTP fallback).
 - POST `/api/sessions/{id}/control` `{action: 'pause'|'resume'|'skip'|'retry'|'end'|'cancel'}` returns Session.
@@ -31,7 +31,6 @@ type Report = {session_id: string; role_title: string; language: string; summary
 - GET `/api/inference-settings` returns `{agent, asr, embedding, reranker}`, each `{base_url: string, model: string, api_key_set: boolean}`. Keys are never returned.
 - PUT `/api/inference-settings` takes all four sections, each `{base_url: string, model: string, api_key: string|null}`. `null` retains an existing key only for the same base URL; `""` removes it. URL and model must both be filled or both empty. Empty Agent selects demo, empty ASR uses native Whisper, and empty Embedding/Reranker disables that service. Returns the redacted GET shape. New requests use the saved configuration immediately.
 - POST `/api/inference-settings/{component}/models` takes `{base_url: string, api_key: string|null}` and returns `{models: string[]}` from the selected server's `/models`. It does not save settings. A saved key is used only for its original base URL.
-- POST `/api/speech/token` `{consent: true}` returns `{token, region, expires_in: 540}` or 503 if not configured.
 - POST `/api/speech/transcribe` multipart `file`, `language` returns `{text, provider}` or 503.
 
 ## WebSocket

@@ -74,7 +74,7 @@ def trained_run(root):
         struct.pack("<Q", len(header)) + header + b"\0" * 48
     )
     (adapter / "training_args.bin").write_bytes(b"not-safe-to-package")
-    (adapter / ".env").write_text("AZURE_SPEECH_KEY=private")
+    (adapter / ".env").write_text("AGENT_API_KEY=private")
     (run / "training_log.jsonl").write_text('{"step":1,"loss":1.5}\n')
     (run / "environment.txt").write_text(
         "private-package @ https://secret@example.invalid/repo"

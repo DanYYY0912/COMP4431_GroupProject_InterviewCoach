@@ -20,7 +20,7 @@ The application uses locally authored demonstration material, an original proced
 
 ## Software
 
-React, Vite, Tailwind CSS, Three.js, React Three Fiber, FastAPI and the Azure Speech JavaScript SDK are third-party dependencies. Their installed package notices and lockfiles are the authoritative version-specific license records. The project does not bundle proprietary Azure services or grant rights to their use. PostgreSQL and pgvector are obtained from their official container/package sources. `requirements.lock` and frontend/e2e lockfiles retain application dependency versions; GPU training has a separate pinned environment.
+React, Vite, Tailwind CSS, Three.js, React Three Fiber and FastAPI are third-party dependencies. Their installed package notices and lockfiles are the authoritative version-specific license records. PostgreSQL and pgvector are obtained from their official container/package sources. `requirements.lock` and frontend/e2e lockfiles retain application dependency versions; GPU training has a separate pinned environment.
 
 ## Provenance rules
 

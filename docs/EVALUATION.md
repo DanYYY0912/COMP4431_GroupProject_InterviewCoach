@@ -80,7 +80,7 @@ English uses corpus word error rate; Cantonese uses corpus character error rate.
 
 - Avatar ≥30 FPS on the presentation Mac; correct listening/thinking/speaking states.
 - TTS and visemes stop together on repeat, interruption, pause, navigation and cancellation.
-- Denied microphone, expired Azure token, network loss, WebGL failure and model restart recovery.
+- Denied microphone, invalid ASR credentials, network loss, WebGL failure and model restart recovery.
 - Incorrect language choice, noise, silence, long answers, corrupt/oversized/scanned files and prompt-injection attempts.
 - Keyboard-only journey, captions, reduced motion, AA contrast and an avatar-disabled journey.
 - Clean-machine rehearsal, a 60–90 second backup recording and final package inspection.

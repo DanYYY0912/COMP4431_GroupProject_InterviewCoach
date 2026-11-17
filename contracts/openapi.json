@@ -428,42 +428,6 @@
         }
       }
     },
-    "/api/speech/token": {
-      "post": {
-        "summary": "Token",
-        "operationId": "token_api_speech_token_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpeechConsent"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/speech/transcribe": {
       "post": {
         "summary": "Speech Transcribe",
@@ -1082,14 +1046,14 @@
           "store_transcript": {
             "type": "boolean",
             "const": true,
-            "title": "Store Transcript"
+            "title": "Store Transcript",
+            "default": true
           }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "job_profile_id",
-          "store_transcript"
+          "job_profile_id"
         ],
         "title": "SessionInput"
       },
@@ -1179,21 +1143,6 @@
           "limitations"
         ],
         "title": "SessionReport"
-      },
-      "SpeechConsent": {
-        "properties": {
-          "consent": {
-            "type": "boolean",
-            "const": true,
-            "title": "Consent"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "consent"
-        ],
-        "title": "SpeechConsent"
       },
       "SpeechMetrics": {
         "properties": {

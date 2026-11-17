@@ -5,12 +5,10 @@ const context = await browser.newContext({ viewport:{width:1440,height:1000},rec
 const page = await context.newPage(); const started = Date.now();
 const hold = ms => page.waitForTimeout(ms);
 await page.goto('http://127.0.0.1:8010');
-await page.getByRole('button',{name:'Start a practice interview'}).waitFor();
+await page.getByRole('heading',{name:'Practice interview',exact:true}).waitFor();
 await hold(5000);
-await page.getByRole('button',{name:'Start a practice interview'}).click();
 await page.getByRole('button',{name:'Try a sample role'}).click();
 await page.getByLabel('Number of questions').selectOption('3');
-await page.getByLabel('Save this session and transcript on this computer',{exact:false}).check();
 await hold(7000);
 await page.getByRole('button',{name:'Start my interview'}).click();
 await page.getByLabel('Your answer').waitFor();

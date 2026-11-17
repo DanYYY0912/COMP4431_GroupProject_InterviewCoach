@@ -8,6 +8,6 @@ export default defineConfig({
   webServer: {
     command: `"${root}/.venv/bin/python" -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8009`,
     cwd: root, url: 'http://127.0.0.1:8009/api/health', reuseExistingServer: !process.env.CI,
-    env: { MODEL_PROVIDER: 'demo', DATABASE_URL: 'sqlite:///./artifacts/e2e.db', INFERENCE_SETTINGS_PATH: path.join(root, `artifacts/e2e-inference-${process.pid}.json`), ALLOWED_ORIGINS: 'http://127.0.0.1:8009', AZURE_SPEECH_KEY: '', EMBEDDING_BASE_URL: '', RERANKER_BASE_URL: '' },
+    env: { MODEL_PROVIDER: 'demo', DATABASE_URL: 'sqlite:///./artifacts/e2e.db', INFERENCE_SETTINGS_PATH: path.join(root, `artifacts/e2e-inference-${process.pid}.json`), ALLOWED_ORIGINS: 'http://127.0.0.1:8009', EMBEDDING_BASE_URL: '', RERANKER_BASE_URL: '' },
   },
 });

@@ -22,4 +22,4 @@ models:
 demo-container:
 	docker compose up --build --wait
 stop-container:
-	docker compose down
+	docker compose stop

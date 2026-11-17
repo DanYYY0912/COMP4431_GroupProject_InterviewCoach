@@ -7,11 +7,9 @@ for (const language of ['English', '廣東話']) {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto('/');
-    await page.getByRole('button', { name: 'Start a practice interview' }).click();
     await page.getByRole('button', { name: 'Try a sample role' }).click();
     await page.getByRole('radio', { name: new RegExp('^' + language) }).check();
     await page.getByLabel('Number of questions').selectOption('3');
-    await page.getByLabel('Save this session and transcript on this computer', { exact: false }).check();
     await page.getByRole('button', { name: 'Start my interview' }).click();
     await expect(page).toHaveURL(/#\/interview\//);
     await expect(page.getByLabel('Your answer')).toBeVisible();
@@ -34,13 +32,38 @@ for (const language of ['English', '廣東話']) {
   });
 }
 
-test('dashboard and setup have no critical accessibility violations on mobile', async ({ page }) => {
+test('practice opens first with a read-only configuration summary and validates setup', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Practice interview', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Overview', exact: true })).toHaveCount(0);
+  const summary = page.getByRole('complementary', { name: 'Configuration status' });
+  const start = page.getByRole('button', { name: 'Start my interview' });
+  await expect(start).toBeDisabled();
+  await expect(summary.locator('input, select, textarea')).toHaveCount(0);
+  await expect(page.getByRole('checkbox')).toHaveCount(0);
+  await expect(page.getByText(/Your story stays yours|A space to grow|LOCAL-FIRST PRACTICE|Made for your next opportunity|Enable Azure/)).toHaveCount(0);
+  await page.getByLabel('Job description', { exact: true }).fill('Too short');
+  await expect(start).toBeDisabled();
+  await page.getByRole('button', { name: 'Try a sample role' }).click();
+  await page.getByRole('radio', { name: /^廣東話/ }).check();
+  await page.getByLabel('Difficulty', { exact: true }).selectOption('stretch');
+  await page.getByLabel('Number of questions').selectOption('8');
+  await expect(start).toBeEnabled();
+  await expect(summary).toContainText('廣東話');
+  await expect(summary).toContainText('Stretch');
+  await expect(summary).toContainText('8');
+  await page.getByLabel('Job description', { exact: true }).fill('');
+  await expect(start).toBeDisabled();
+});
+
+test('practice and history have no critical accessibility violations on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await expect(page.getByRole('button', { name: 'Start a practice interview' })).toBeVisible();
-  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations.map(v => ({id: v.id, nodes: v.nodes.map(n => ({target:n.target, failure:n.failureSummary}))}))).toEqual([]);
-  await page.getByRole('button', { name: 'Start a practice interview' }).click();
-  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations.map(v => ({id: v.id, nodes: v.nodes.map(n => ({target:n.target, failure:n.failureSummary}))}))).toEqual([]);
+  await expect(page.getByRole('heading', { name: 'Practice interview', exact: true })).toBeVisible();
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
+  await page.getByRole('link', { name: 'History', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'History', exact: true })).toBeVisible();
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
 });
 
 test('resume, pause, skip, retry and microphone denial preserve typed practice', async ({ page, request }) => {
@@ -96,7 +119,7 @@ test('compare completed evidence and export the full saved transcript', async ({
       } })).ok()).toBeTruthy();
       expect((await request.post(`/api/sessions/${session.id}/control`, { data: { action: 'end' } })).ok()).toBeTruthy();
     }
-    await page.goto('/');
+    await page.goto('/#/history');
     for (const session of sessions) {
       await page.getByRole('checkbox', { name: new RegExp(`^Compare ${session.role_title} from`) }).check();
     }

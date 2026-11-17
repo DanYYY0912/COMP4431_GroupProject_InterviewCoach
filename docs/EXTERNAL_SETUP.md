@@ -1,19 +1,16 @@
-# Azure Speech and GPU training setup
+# Inference services and GPU training setup
 
 ## Executive summary
 
-Azure Speech and a Colab/Kaggle GPU are not set up for this team as of 2 November 2026. The app works locally with Qwen, Whisper, system voice and typed input. The Azure integration and QLoRA workflow are implemented, but genuine service validation and training need accounts, consented recordings, reviewed data and available compute. No paid service or training job has been provisioned. Add the remaining two team identities in the README when available.
+Configure Agent, ASR, Embedding and Reranker in Settings using each service's base URL, API key and model. The app supports typed interviews, recorded answers and locally available browser speech. QLoRA training still needs reviewed data and a Colab/Kaggle GPU; no paid service or training job has been provisioned. Service checks and participant studies must use the final selected providers.
 
-## Azure Speech
+## Inference services
 
-1. Follow Microsoft's [Speech quickstart](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/get-started-text-to-speech) to create a Speech resource using your own Azure account. Select the intended free tier if offered in the resource creation flow, and check its displayed quota before enabling it.
-2. Retrieve the resource key and region from the Azure portal. Put them in the ignored local `.env` file as `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION`. Do not put them in the repository, presentation, chat, or training notebook.
-3. Restart `make demo`. Health should report Azure configured. Enable Azure voice in setup only after reading the audio/text disclosure.
-4. Test recognition and synthesis in both `en-HK` and `zh-HK`. Verify the selected voices against Microsoft's [language and voice support table](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=text-to-speech).
-5. Check microphone denial, token expiration, service interruption, edited transcripts and pause during playback. Confirm both sound and mouth movement stop.
-6. Collect the planned balanced 24 recordings from four consenting speakers. Preserve failures and correction counts for evaluation. Synthetic system speech smoke clips are not replacements for participant data.
-
-The backend exchanges the key for a temporary token. The browser never receives the subscription key. Missing credentials leave typed and local transcription available.
+1. Enter the service's API base URL, key if required, and model in its Settings section. Use **Load models** if discovery is supported; otherwise enter the model ID.
+2. Save the configuration. See the endpoint formats and credential handling in the [README](../README.md#configuration-and-real-services).
+3. From Docker, use `host.docker.internal` to reach inference servers on your Mac. `localhost` inside the application container refers to the container itself.
+4. Check English and Cantonese transcription, microphone denial, unavailable services, editable transcripts and playback interruption with your selected configuration. Browser speech requires a compatible local voice.
+5. Collect the balanced 24 recordings from four consenting speakers for evaluation. Preserve failures and correction counts; synthetic system speech clips are not participant evidence.
 
 ## Colab or Kaggle
 
@@ -27,4 +24,4 @@ The backend exchanges the key for a temporary token. The browser never receives 
 
 ## Team details
 
-The README records YUEN Yiu Yeung (23000594D) and SO Ngai Chun (26131699D). Two rows remain intentionally blank for the other members. Proposed subsystem assignments are not claims of actual student contribution; update the contribution log with completed work and review evidence.
+The README records the current team identities. Proposed subsystem assignments are not claims of actual student contribution; update the contribution log with completed work and review evidence.

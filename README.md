@@ -2,9 +2,23 @@
 
 ## Executive summary
 
-VoxPrep HK is a local interview practice application for Hong Kong technology graduates. Paste a job description, choose English or Cantonese, answer an adaptive interview, then review STAR evidence and source-linked coaching. A React interface and original 3D interviewer connect to a FastAPI backend. The application supports real local Qwen inference, Azure Speech with consent, local Whisper transcription, and a clearly labelled deterministic demonstration provider. This repository also contains QLoRA training and evaluation workflows. Training quality, human review, speech accuracy and usability must be established with actual runs and participants before the full implementation plan is complete. See [PROGRESS.md](PROGRESS.md) for verified results and remaining gates.
+VoxPrep HK is a local interview practice application for Hong Kong technology graduates. Paste a job description, choose English or Cantonese, answer an adaptive interview, then review STAR evidence and source-linked coaching. A React interface and original 3D interviewer connect to a FastAPI backend. The application supports OpenAI-compatible inference servers, local Qwen inference, local Whisper transcription, browser speech and a clearly labelled deterministic demonstration provider. Practice interview opens directly; completed setup fields enable the interview. This repository also contains QLoRA training and evaluation workflows. Training quality, human review, speech accuracy and usability must be established with actual runs and participants before the full implementation plan is complete. See [PROGRESS.md](PROGRESS.md) for verified results and remaining gates.
 
-## Quick start
+## Run from Docker Desktop
+
+Start Docker Desktop, then run this once from the project folder:
+
+```sh
+docker compose up --build --wait
+```
+
+Open [the application](http://localhost:8000). In Docker Desktop, expand **comp4431_groupproject_interviewcoach**: **app** serves the interface on **8000**, while **db** stores its data. After the initial build, use the project's Start/Stop controls in Docker Desktop. Both services have restart policies, and named volumes retain sessions and inference settings.
+
+The app opens **Practice interview**. Fill the job description and interview options on the left; the right panel summarizes them and enables **Start my interview** when they are valid. **History** retains resume, comparison, export and deletion. Configure your four inference providers in **Settings**.
+
+Stop a previously running `make demo` before starting Docker, since both use port 8000. After source changes, run the build command again to update the image. No local Python or Node installation is needed for the container build. Inference servers can run elsewhere; a new container starts in demo mode until configured.
+
+## Native development
 
 Requires Python 3.12+, Node 22+, pnpm 11.25+, and about 5 GB free space for inference models. Docker Desktop supplies PostgreSQL 17 and pgvector. On macOS, Homebrew supplies native llama.cpp, whisper.cpp, and FFmpeg. The app remains runnable in an explicitly labelled demo mode without cloud credentials or model weights.
 
@@ -32,7 +46,7 @@ For the production frontend through a single [localhost endpoint](http://localho
 make demo
 ```
 
-`make dev` and `make demo` start available local models and use PostgreSQL when Docker is running. They use SQLite when Docker is unavailable. `Ctrl+C` stops processes started by the command. PostgreSQL data persists in a Docker volume. `make stop-container` stops Compose services without deleting their volume.
+`make dev` and `make demo` start available local models and use PostgreSQL when Docker is running. They use SQLite when Docker is unavailable. `Ctrl+C` stops processes started by the command. PostgreSQL data persists in a Docker volume. `make stop-container` stops Compose services while retaining their containers in Docker Desktop and preserving their volumes.
 
 ## Configuration and real services
 
@@ -54,8 +68,7 @@ Configured external servers receive the inputs needed for their task: prompts an
 Copy `.env.example` to `.env` if custom configuration is required. This file is ignored by Git and excluded from the source archive. Environment variables take precedence over `.env`; saved inference settings take precedence over both for the four inference services.
 
 - Set `MODEL_PROVIDER=llama` to use the local Qwen base model or your genuinely trained model at `MODEL_PATH`. With no explicit provider, the supervisor selects llama when weights are present. The default backend provider is `demo` when run directly.
-- Set `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION` locally for Azure Speech. The browser receives only a short-lived authorization token after consent. Audio/text goes to Azure only for the selected cloud voice feature.
-- Configure `EMBEDDING_BASE_URL` and `RERANKER_BASE_URL` for model retrieval. Health and methodology identify lexical fallback and unavailable services.
+- Configure `EMBEDDING_BASE_URL` and `RERANKER_BASE_URL` for model retrieval. Health identifies lexical fallback and unavailable services.
 - Set `DATABASE_URL` to an explicit SQLAlchemy URL if required. The Compose PostgreSQL port is `127.0.0.1:54329`, isolated from common local databases.
 - Native inference services listen on loopback at ports 8080 (LLM), 8081 (Whisper), and 8082 (embeddings), and 8083 (reranking).
 
@@ -67,14 +80,15 @@ Copy `.env.example` to `.env` if custom configuration is required. This file is 
 | --- | --- |
 | `make bootstrap` | Install application dependencies, supported native tools and verified model files |
 | `make dev` | Start frontend, API, database and available native models |
-| `make demo` | Build frontend and serve the app through port 8000 |
+| `make demo` | Build frontend and serve the native app through port 8000 |
+| `make demo-container` | Build and start the Docker app and database on port 8000 |
 | `make test` | Lint, backend/tooling tests, frontend tests/build, browser journeys and axe checks |
 | `make eval` | Run explicitly labelled offline evaluation smoke checks |
 | `make demo-reset` | Replace only the seeded demonstration session through the local API |
 | `make package` | Create a source ZIP and checksum, excluding secrets, personal sessions and model weights |
 | `make models` | Download and checksum pinned inference models |
 
-For browser tests, install Chromium once with `pnpm --dir e2e exec playwright install chromium`. `make test` uses a separate SQLite database under `artifacts/`. It does not require Azure credentials or model weights. Full release evaluation is separate from deterministic checks; see [the evaluation guide](docs/EVALUATION.md).
+For browser tests, install Chromium once with `pnpm --dir e2e exec playwright install chromium`. `make test` uses a separate SQLite database under `artifacts/`. It does not require service credentials or model weights. Full release evaluation is separate from deterministic checks; see [the evaluation guide](docs/EVALUATION.md).
 
 ## Features and boundaries
 
@@ -95,7 +109,6 @@ See [architecture](docs/ARCHITECTURE.md), [API contract](contracts/API.md), [the
 ```mermaid
 flowchart LR
     UI[React interface and 3D interviewer] --> API[FastAPI orchestration]
-    UI -->|Consent and short token| Azure[Azure Speech]
     API --> DB[(PostgreSQL and pgvector)]
     API --> LLM[Native llama.cpp on Metal]
     API --> STT[Native whisper.cpp]
@@ -108,13 +121,13 @@ flowchart LR
 
 The supplied model is a public base model quantization. It is not a VoxPrep fine-tuned checkpoint. The draft data is synthetic and must pass human review before training. Follow [ml/](ml/) and [docs/DATASET.md](docs/DATASET.md) to review, split, train, preserve checkpoints, export, and measure base versus LoRA performance. Keep reviewed data, hashes, logs, loss curves, manifests and raw results with the final submission.
 
-No target percentage in the original plan is a measured result. Azure Speech and a training GPU are not yet set up; follow [the external setup guide](docs/EXTERNAL_SETUP.md) when ready. The methodology screen reads stored evaluation evidence and labels pending work. Participant speech recordings, blinded preference ratings, and usability studies cannot be replaced by generated test fixtures.
+No target percentage in the original plan is a measured result. A training GPU is not yet set up; follow [the external setup guide](docs/EXTERNAL_SETUP.md) when ready. The evaluation endpoint retains stored evidence and labels pending work. Participant speech recordings, blinded preference ratings, and usability studies cannot be replaced by generated test fixtures.
 
 ## Troubleshooting
 
 - **No model / timeout:** check `artifacts/run/llama.log`, run `make models`, or set `MODEL_PROVIDER=demo` for the deterministic rehearsal. No fallback is evidence of fine-tuning.
 - **Docker unavailable:** start Docker Desktop, or use `VOXPREP_SQLITE=1` for local development.
-- **Microphone unavailable:** keep typing, or enable microphone access for localhost. Cloud speech additionally requires explicit consent and configured credentials.
+- **Microphone unavailable:** keep typing, or enable microphone access for localhost. Recorded answers use the ASR service configured in Settings, or native Whisper when ASR is blank.
 - **Whisper cannot read browser audio:** ensure FFmpeg is installed; the native server uses `--convert`.
 - **Port in use:** stop the previous VoxPrep process rather than starting another on the same port.
 - **Scanned PDF:** paste the visible job description text. OCR is outside scope.
