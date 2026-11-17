@@ -44,10 +44,12 @@ def write_result(suite, data):
         json.dumps(data, indent=2, ensure_ascii=False)
     )
     evaluations = []
+    evidence_limits = []
     for path in sorted(RESULTS.glob("*.json")):
         if path.name == "latest.json":
             continue
         item = json.loads(path.read_text())
+        evidence_limits.extend(item.get("limitations", []))
         evaluations.append(
             {
                 "name": item.get("suite", path.stem),
@@ -57,6 +59,12 @@ def write_result(suite, data):
                 "details": str(path),
             }
         )
+    previous = RESULTS / "latest.json"
+    archived_training = (
+        json.loads(previous.read_text()).get("recorded_training")
+        if previous.is_file()
+        else None
+    )
     latest = {
         "status": "development_evidence_only",
         "provider": "configured_at_runtime",
@@ -64,8 +72,11 @@ def write_result(suite, data):
         "evaluations": evaluations,
         "limitations": LIMITATIONS,
     }
-    if latest["training"]["status"] == "training_completed":
+    if archived_training:
+        latest["recorded_training"] = archived_training
+    if archived_training or latest["training"]["status"] == "training_completed":
         latest["limitations"] = [s for s in LIMITATIONS if not s.startswith("No QLoRA")]
+    latest["limitations"] = list(dict.fromkeys(latest["limitations"] + evidence_limits))
     (RESULTS / "latest.json").write_text(
         json.dumps(latest, indent=2, ensure_ascii=False)
     )
@@ -171,13 +182,38 @@ def complete(base_url, model, messages, schema, timeout=90):
     return content, first, time.perf_counter() - start, finish_reason
 
 
+def _test_split_size() -> int | None:
+    """Row count of the reviewed test split, when the manifest is present."""
+    manifest = Path("ml/data/reviewed/split_manifest.json")
+    try:
+        return int(json.loads(manifest.read_text())["counts"]["test"])
+    except (OSError, KeyError, ValueError, TypeError):
+        return None
+
+
+def model_messages(row, include_sources=True):
+    messages = [dict(message) for message in row["messages"][:-1]]
+    if not include_sources:
+        request = json.loads(messages[-1]["content"])
+        for field in ("quoted_sources", "job_sources"):
+            if field in request:
+                request[field] = []
+        messages[-1]["content"] = json.dumps(request, ensure_ascii=False)
+    return messages
+
+
 def model_evaluation(args):
     rows = read_jsonl(args.input)
     config = json.loads(Path(args.config).read_text())
-    if len(rows) != 120 and not args.diagnostic:
-        raise ValueError(
-            "Assessed model evaluation requires exactly 120 held-out prompts"
-        )
+    if not args.diagnostic:
+        # The assessed run must use the whole reviewed test split; its size comes from the
+        # split manifest rather than a hard-coded 120, so the number reported is the real one.
+        expected = _test_split_size()
+        if expected is not None and len(rows) != expected:
+            raise ValueError(
+                f"Assessed model evaluation must use the whole test split: "
+                f"{expected} rows, got {len(rows)}"
+            )
     if not args.diagnostic:
         validation = validate_dataset(rows, require_review=True)
         if not validation["valid"]:
@@ -207,11 +243,7 @@ def model_evaluation(args):
     for variant in ("base_rag", "lora_only", "lora_rag"):
         endpoint = config[variant]
         for row in rows:
-            messages = [dict(m) for m in row["messages"][:-1]]
-            if variant == "lora_only":
-                request = json.loads(messages[-1]["content"])
-                request["job_sources"] = []
-                messages[-1]["content"] = json.dumps(request, ensure_ascii=False)
+            messages = model_messages(row, include_sources=variant != "lora_only")
             record = {
                 "id": row["id"],
                 "variant": variant,
@@ -285,21 +317,11 @@ def prepare(args):
     validation = validate_dataset(rows, require_review=not args.diagnostic)
     if not validation["valid"]:
         raise ValueError("Input examples failed validation")
-    # Round robin over language/task strata, then deterministic shuffle within groups.
-    groups = defaultdict(list)
-    for row in rows:
-        groups[(row["language"], row["task"])].append(row)
-    for group in groups.values():
-        random.Random(42).shuffle(group)
-    selected = []
-    while len(selected) < 120 and any(groups.values()):
-        for key in sorted(groups):
-            if groups[key] and len(selected) < 120:
-                selected.append(groups[key].pop())
-    if len(selected) != 120:
-        raise ValueError("Need at least 120 held-out records")
-    write_jsonl(args.output, selected)
-    print(f"Wrote {len(selected)} prompts to {args.output}")
+    # Keep the whole split: no subsampling to hit a target count, so the reported sample
+    # size is the real one (the reviewed test split is 119 rows, not a rounded 120).
+    random.Random(42).shuffle(rows)
+    write_jsonl(args.output, rows)
+    print(f"Wrote {len(rows)} prompts to {args.output} (whole input, no subsampling)")
 
 
 def retrieval(args):

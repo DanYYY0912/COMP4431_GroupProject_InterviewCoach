@@ -1,0 +1,324 @@
+{
+  "role_family": "web_developer",
+  "stories": [
+    {
+      "id": "wd-01",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "At my first internship, the enquiry form on a shop's campaign page broke on older Android phones and we only found out from a customer.",
+        "Task": "I was asked to fix that form and to check the whole page on the phones our clients actually use.",
+        "Action": "I rewrote the layout with a flexible grid, tested it on four borrowed handsets, and added a form test that submits an empty field.",
+        "Result": "The form worked on all four phones, and we published a device list so the next release was checked the same way.",
+        "vague": "The page had some display issues on phones for a while.",
+        "exaggerated": "I rebuilt the entire site by myself and it has been perfect since.",
+        "no_data": "The form worked after that and the customer stopped complaining."
+      },
+      "zh": {
+        "Situation": "第一份實習，一間小店宣傳頁嘅查詢表格喺舊 Android 機會爆版，我哋要靠客人通知才知道。",
+        "Task": "我要修好個表格，並用客戶真正會用嘅手機檢查成頁。",
+        "Action": "我用 flexible grid 重寫 layout，借四部手機逐部測，再加一個提交空欄位嘅 form test。",
+        "Result": "四部機都正常，我哋之後仲寫低 device list，下次發佈照同樣方法檢查。",
+        "vague": "個頁喺手機上有啲顯示問題，維持咗一段時間。",
+        "exaggerated": "成個網站係我自己重寫，之後一直完美。",
+        "no_data": "之後個表格正常，客人亦冇再投訴。"
+      }
+    },
+    {
+      "id": "wd-02",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "In my first full-time role we were building the same card layout three times because each page had its own copy of the CSS.",
+        "Task": "I took on a small component library, and I had to agree the interface with the designer before writing it.",
+        "Action": "I listed the five patterns we reused most, built them as one set of components, and demoed them in a short session with the designer.",
+        "Result": "New pages went from about three days to one, and a colour change became a single edit instead of eleven.",
+        "vague": "There was some duplication in the front-end and it slowed us down.",
+        "exaggerated": "I designed the company's entire design system alone in two days.",
+        "no_data": "After the change, building pages felt faster and changes were simpler."
+      },
+      "zh": {
+        "Situation": "第一份長工，我哋同一個 card layout 要做三次，因為每頁都有一份自己嘅 CSS。",
+        "Task": "我接手做一個細型 component library，但要先同設計師講好 interface 才落手。",
+        "Action": "我列出最常重用嘅五個 pattern，做成一組 component，再同設計師開個短 session 示範。",
+        "Result": "新頁由大約三日變一日，改一個顏色由改十一處變成改一處。",
+        "vague": "front-end 有啲重複代碼，拖慢咗我哋。",
+        "exaggerated": "公司成個 design system 係我兩日之內一個人做起的。",
+        "no_data": "改完之後開頁好似快咗，改動亦簡單咗。"
+      }
+    },
+    {
+      "id": "wd-03",
+      "seniority": "mid",
+      "competencies": [
+        "Software design",
+        "Communication",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "Three years in, an accessibility audit of our booking site found that keyboard users could not reach the date picker at all.",
+        "Task": "I owned the fix for that flow, and I had to explain to the product owner why it was a release blocker.",
+        "Action": "I rebuilt the picker with focus management, wrote a manual test script for keyboard only use, and walked the product owner through it.",
+        "Result": "The audit's blocking issues went from nine to one, and keyboard testing became part of our release checklist.",
+        "vague": "Accessibility was a topic and we had some findings from an audit.",
+        "exaggerated": "I made the whole product fully accessible by myself in one sprint.",
+        "no_data": "The picker became usable with a keyboard and the audit findings dropped."
+      },
+      "zh": {
+        "Situation": "做咗三年，我們個 booking 網站嘅 accessibility audit 發現，淨用鍵盤嘅用戶完全去唔到 date picker。",
+        "Task": "我負責修好嗰個 flow，亦要向 product owner 解釋點解呢個係 blocker。",
+        "Action": "我用 focus management 重寫 picker，寫一份只用鍵盤嘅手動測試腳本，再逐步示範俾 product owner 睇。",
+        "Result": "audit 嘅 blocking issue 由九個變一個，keyboard 測試亦加入咗發佈 checklist。",
+        "vague": "accessibility 係個題目，audit 都有啲發現。",
+        "exaggerated": "我一個 sprint 之內令成個產品完全無障礙。",
+        "no_data": "picker 之後用鍵盤都用得到，audit 嘅發現亦少咗。"
+      }
+    },
+    {
+      "id": "wd-04",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "When we connected our listing page to a new product API, the page showed a blank grid whenever the service was slow.",
+        "Task": "I was responsible for the page, and I needed it to behave sensibly when the API failed.",
+        "Action": "I added loading and error states, capped retries at two, and tested the page with the response delayed on purpose.",
+        "Result": "Support tickets about the empty grid stopped, and the API team got a clear error log from us when their service broke.",
+        "vague": "The page had some issues when the backend was slow.",
+        "exaggerated": "I fixed the API team's reliability problems from the front end.",
+        "no_data": "The page behaved better afterwards and the tickets stopped."
+      },
+      "zh": {
+        "Situation": "我哋把 listing 頁接去新 product API 之後，只要服務慢，個頁就變空白。",
+        "Task": "我負責嗰頁，要令 API 失敗時個頁都有合理反應。",
+        "Action": "我加 loading 同 error state，retry 最多兩次，再故意延遲 response 去測個頁。",
+        "Result": "關於空白 grid 嘅 ticket 停咗，API 服務出事時我哋亦交到清楚嘅 error log 俾佢哋。",
+        "vague": "backend 慢嘅時候個頁有啲問題。",
+        "exaggerated": "我喺 front end 修好咗 API 團隊嘅可靠性問題。",
+        "no_data": "之後個頁好好多，ticket 亦冇再開。"
+      }
+    },
+    {
+      "id": "wd-05",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "For a friend's tutoring business I built a one-page booking site, and the first version took nine seconds to load on mobile data.",
+        "Task": "I set myself the goal of a page that loaded under three seconds on a normal phone connection.",
+        "Action": "I compressed the images, removed two unused fonts, split the JavaScript, and measured each change with the browser network panel.",
+        "Result": "Load time dropped to under three seconds on the same phone, and the owner got her first two bookings through the page.",
+        "vague": "The site was slow at the beginning and I made it better.",
+        "exaggerated": "I built a professional booking platform that competes with the big apps.",
+        "no_data": "The page loads much faster now and the owner likes it."
+      },
+      "zh": {
+        "Situation": "我幫朋友嘅補習社做一頁式 booking 網站，第一版用手機數據要九秒才載入。",
+        "Task": "我定咗目標：普通手機連線下要三秒之內載入。",
+        "Action": "我壓縮圖片、刪咗兩個冇用嘅字體、拆分 JavaScript，每次改動都用 browser network panel 量度。",
+        "Result": "同一部機嘅載入時間跌到三秒以下，老闆娘仲經個頁接到頭兩單 booking。",
+        "vague": "個站一開始幾慢，我把佢改好啲。",
+        "exaggerated": "我做咗個可以同大 app 比嘅專業 booking 平台。",
+        "no_data": "個頁依家載入快好多，老闆娘都幾滿意。"
+      }
+    },
+    {
+      "id": "wd-06",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "About four years in, two client teams kept sending change requests after we had already frozen scope for the release.",
+        "Task": "I wanted fewer late changes, and I had to get agreement from people who did not report to me.",
+        "Action": "I arranged a fifteen-minute demo every Thursday, showed the current build, and logged each request with a decision and a date.",
+        "Result": "Late change requests fell by roughly half over two months, and the release date held for three sprints in a row.",
+        "vague": "There were quite a lot of change requests at that time.",
+        "exaggerated": "I single-handedly ended all scope creep in the department.",
+        "no_data": "The demos helped and we had fewer last-minute changes."
+      },
+      "zh": {
+        "Situation": "做咗大約四年，兩個 client team 喺我哋 freeze 咗範圍之後仍然不停送 change request。",
+        "Task": "我想減少臨尾改動，但要拿到唔向我匯報嘅同事同意。",
+        "Action": "我安排每個星期四十五分鐘 demo，展示當時嘅 build，每個 request 都記低決定同日期。",
+        "Result": "兩個月內臨尾改動大約減半，發佈日期連續三個 sprint 都守得住。",
+        "vague": "嗰時 change request 都幾多。",
+        "exaggerated": "我一個人令部門完全冇 scope creep。",
+        "no_data": "demo 有幫助，臨尾改動少咗。"
+      }
+    },
+    {
+      "id": "wd-07",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a digital agency, three clients shared one marketing template and each wanted a different header without paying for a custom build.",
+        "Task": "I had to make the template configurable, and explain to the account team what a configuration actually costs to maintain.",
+        "Action": "I added a small settings object with three variations, wrote a one-page guide, and showed the account team the build time for each option.",
+        "Result": "All three clients launched on the same template, and the next client needed no new code.",
+        "vague": "The template had to be changed for different clients and it was messy.",
+        "exaggerated": "I built a template system the agency now uses for every single client.",
+        "no_data": "After that the template worked for the clients and launches were easier."
+      },
+      "zh": {
+        "Situation": "喺一間數碼 agency，三個客戶共用一個宣傳 template，但每個都想改 header，又唔想另外付錢做 custom。",
+        "Task": "我要令個 template 可設定，並向 account team 解釋每種設定嘅維護成本。",
+        "Action": "我加咗一個細嘅 settings object，有三個變化，寫一頁指南，再向 account team 展示每個方案要幾多 build 時間。",
+        "Result": "三個客戶都用同一個 template 上線，下一個客戶完全冇加 code。",
+        "vague": "個 template 要為唔同客戶改，好亂。",
+        "exaggerated": "我做咗一套 template 系統，agency 之後每個客都用。",
+        "no_data": "之後個 template 用得成，上線都易咗。"
+      }
+    },
+    {
+      "id": "wd-08",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "In my first job, the checkout page broke every time we changed a currency label, because the total was rebuilt from a string.",
+        "Task": "I was asked to make the total reliable, and to leave a check that would fail if anyone repeated the mistake.",
+        "Action": "I kept the amount as a number until the last step, added a formatting function, and wrote tests with three currencies and one rounding case.",
+        "Result": "The rounding bug stopped appearing, and the label change no longer touched the calculation.",
+        "vague": "The checkout page had some bugs around the price display.",
+        "exaggerated": "I rewrote the checkout and made it completely bug-free.",
+        "no_data": "After the change the price display stopped going wrong."
+      },
+      "zh": {
+        "Situation": "第一份工，每次改貨幣標籤 checkout 頁就出事，因為總數係由字串重建出嚟。",
+        "Task": "我要令總數可靠，並留低一個檢查，將來有人重犯就會 fail。",
+        "Action": "我令金額到最後一步都保持數字，加一個 formatting function，再寫三個貨幣加一個四捨五入個案嘅測試。",
+        "Result": "四捨五入嘅 bug 冇再出現，改標籤亦唔會再影響計算。",
+        "vague": "checkout 頁喺價錢顯示方面有啲 bug。",
+        "exaggerated": "我重寫咗 checkout，令佢完全冇 bug。",
+        "no_data": "改完之後價錢冇再顯示錯。"
+      }
+    },
+    {
+      "id": "wd-09",
+      "seniority": "mid",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "Four years in at an in-house team, the marketing site and the product app had drifted into two different button styles and two font sizes.",
+        "Task": "I wanted one shared set of styles, and I needed the product team to give up their own copy without a fight.",
+        "Action": "I measured both pages, showed the difference side by side, and proposed adopting the product team's tokens as the base.",
+        "Result": "We shipped one token file in two sprints, and design review time dropped because there was less to argue about.",
+        "vague": "The two sites looked different and people kept mentioning it.",
+        "exaggerated": "I unified the whole company's design language on my own.",
+        "no_data": "After that the sites looked more consistent and reviews were quicker."
+      },
+      "zh": {
+        "Situation": "喺 in-house 團隊做咗四年，marketing 站同產品 app 已經變成兩套 button 同兩套字級。",
+        "Task": "我想有一套共用 style，但要產品團隊肯放低自己嗰份而唔係吵一場。",
+        "Action": "我量度兩邊頁面，並排展示差異，再提出以產品團隊嘅 token 做基礎。",
+        "Result": "兩個 sprint 出咗一個共用 token 檔，design review 因為少咗爭論而快咗。",
+        "vague": "兩個站睇落唔同，同事不停提。",
+        "exaggerated": "我一個人統一咗公司成個 design language。",
+        "no_data": "之後兩個站一致咗，review 都快咗。"
+      }
+    },
+    {
+      "id": "wd-10",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Communication",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "At a web agency, a client's booking form sent duplicate enquiries for about a month and the client blamed the design.",
+        "Task": "I had to find the real cause and explain it clearly enough that the client stopped blaming the build.",
+        "Action": "I reproduced it with a slow connection, found the submit button stayed active during the request, and disabled it with a visible state.",
+        "Result": "Duplicate enquiries stopped, and the client's own network was shown to be timing out separately.",
+        "vague": "There were duplicate enquiries and the client was unhappy.",
+        "exaggerated": "I proved the client was wrong and fixed everything myself.",
+        "no_data": "After the fix the duplicates stopped."
+      },
+      "zh": {
+        "Situation": "喺一間 web agency，客戶嘅 booking form 差唔多一個月都送重複查詢，客戶怪個設計。",
+        "Task": "我要找出真正原因，並解釋得清楚到客戶唔再怪個 build。",
+        "Action": "我用慢連線重現，發現 request 期間 submit 按鈕仍然可按，於是加咗可見狀態同停用。",
+        "Result": "重複查詢停止，同時證明客戶自己嘅網絡另外有 timeout。",
+        "vague": "有啲重複查詢，客戶唔滿意。",
+        "exaggerated": "我證明咗客戶錯，仲自己修好晒所有嘢。",
+        "no_data": "修好之後重複就冇再出現。"
+      }
+    },
+    {
+      "id": "wd-11",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "For a student society site, the events page loaded every poster image at full size on a phone.",
+        "Task": "I offered to fix the image loading, and I had to do it without breaking the layout the committee had approved.",
+        "Action": "I generated three sizes per poster, used a picture element, and checked the page on the committee's own phones before changing anything.",
+        "Result": "The events page used about a fifth of the data, and the committee approved the layout unchanged.",
+        "vague": "The page was heavy on mobile and slow to open.",
+        "exaggerated": "I made the site faster than any commercial event platform.",
+        "no_data": "The page was lighter afterwards and opened quicker."
+      },
+      "zh": {
+        "Situation": "學會網站嘅活動頁，喺手機上會載入全部海報原圖。",
+        "Task": "我提出修好圖片載入，但唔可以改壞委員會已批嘅排版。",
+        "Action": "我為每張海報出三個尺寸，用 picture element，改之前先喺委員自己嘅手機睇過。",
+        "Result": "活動頁用嘅數據大約減到五分之一，排版完全冇變，委員會照批。",
+        "vague": "個頁喺手機上好重，開得慢。",
+        "exaggerated": "我令個站快過任何商業活動平台。",
+        "no_data": "之後個頁輕咗，開得快咗。"
+      }
+    },
+    {
+      "id": "wd-12",
+      "seniority": "mid",
+      "competencies": [
+        "Software design",
+        "Communication",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "Five years in, a client asked us to add live chat to their site two weeks before a campaign, and the vendor script was 300 KB.",
+        "Task": "I had to say what was realistic, and still give them something that helped the campaign on time.",
+        "Action": "I measured the script cost on a mobile profile, proposed loading it only on the contact page, and wrote the loading test with the team.",
+        "Result": "The campaign launched on schedule, and the chat widget did not slow the pages people landed on.",
+        "vague": "The client wanted a new feature quickly and it was tight.",
+        "exaggerated": "I delivered a full chat platform two weeks early by myself.",
+        "no_data": "We launched on time and the pages stayed fast."
+      },
+      "zh": {
+        "Situation": "做咗五年，客戶要求喺 campaign 前兩星期加 live chat，而 vendor 個 script 有 300 KB。",
+        "Task": "我要講清楚咩做得到，同時要畀到一樣幫到 campaign 又準時嘅嘢。",
+        "Action": "我喺 mobile profile 量度 script 成本，提出只在聯絡頁載入，再同團隊一齊寫載入測試。",
+        "Result": "campaign 準時上線，chat widget 亦冇拖慢用戶落腳嘅頁面。",
+        "vague": "客戶想快啲加新功能，時間好緊。",
+        "exaggerated": "我一個人提早兩星期交咗成個 chat 平台。",
+        "no_data": "我哋準時上線，頁面速度都保持到。"
+      }
+    }
+  ]
+}

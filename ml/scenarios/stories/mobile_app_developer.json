@@ -1,0 +1,325 @@
+{
+  "role_family": "mobile_app_developer",
+  "stories": [
+    {
+      "id": "mb-01",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "For my final-year app, the list screen froze for about three seconds whenever the network was slow.",
+        "Task": "I wanted the screen to open immediately, and to keep the data honest about being old.",
+        "Action": "I cached the last response locally, showed it with a last-updated label, and added a test that opens the screen with no network.",
+        "Result": "The screen opened instantly, and the label stopped me from showing stale data as if it were fresh.",
+        "vague": "The app was slow sometimes on bad connections.",
+        "exaggerated": "I built an offline-first app that no student had managed before.",
+        "no_data": "After the change the screen opened without freezing."
+      },
+      "zh": {
+        "Situation": "畢業 project 個 app，網絡慢嘅時候列表畫面會凍結大約三秒。",
+        "Task": "我想畫面即刻開，同時要老實顯示資料係舊嘅。",
+        "Action": "我把上次 response cache 落本機，顯示時加 last updated 標籤，再寫一個冇網絡都開得到畫面嘅測試。",
+        "Result": "畫面即刻開，而個標籤令我唔會把舊資料當新。",
+        "vague": "連接差嘅時候個 app 有時好慢。",
+        "exaggerated": "我做咗一個學生從未做到嘅 offline-first app。",
+        "no_data": "改完之後畫面開得順。"
+      }
+    },
+    {
+      "id": "mb-02",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Communication",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "Before an iOS release, the TestFlight group found that the form rejected a phone number with a space in it.",
+        "Task": "I owned that form, and I had to fix it without breaking the numbers that already worked.",
+        "Action": "I normalised the input by stripping spaces, added tests for four Hong Kong number formats, and asked the testers to retry.",
+        "Result": "All four formats passed, and the release went out one day late instead of a week.",
+        "vague": "Testers found a problem with the phone number field.",
+        "exaggerated": "I fixed every input validation issue in the app.",
+        "no_data": "After the fix the form accepted the numbers."
+      },
+      "zh": {
+        "Situation": "iOS 發佈前，TestFlight 測試組發現表格會拒收有位空格嘅電話號碼。",
+        "Task": "我負責個表格，要修好但唔可以弄壞本來正常嘅號碼。",
+        "Action": "我先去除空格再驗證，加四個香港號碼格式嘅測試，再請測試同事重試。",
+        "Result": "四個格式全部通過，發佈遲一日而唔係遲一個星期。",
+        "vague": "測試同事發現電話欄位有問題。",
+        "exaggerated": "我修好咗 app 所有輸入驗證問題。",
+        "no_data": "修好之後表格接受得到啲號碼。"
+      }
+    },
+    {
+      "id": "mb-03",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Software design",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "The backend team renamed two fields in the visit API, and our app started showing blank addresses on three hundred devices.",
+        "Task": "I had to stop the bleeding quickly, and then agree with the backend team how the next change would be handled.",
+        "Action": "I released a client that accepts both field names, then asked for a version path so future changes could be made safely.",
+        "Result": "Blank addresses stopped within a day, and the next API change had a version path instead of a rename.",
+        "vague": "An API change broke part of the app.",
+        "exaggerated": "I forced the backend team to change their whole API policy.",
+        "no_data": "After the release the addresses showed again."
+      },
+      "zh": {
+        "Situation": "後端同事把到訪 API 兩個欄位改名，我哋 app 喺三百部機開始顯示空白地址。",
+        "Task": "我要快速止血，然後同後端團隊講好下次改動點處理。",
+        "Action": "我出一個同時接受兩個欄位名嘅版本，再要求加版本路徑令日後改動安全。",
+        "Result": "一日內空白地址停止，而下次 API 改動有版本路徑而唔係改名。",
+        "vague": "API 改動搞壞咗 app 一部分。",
+        "exaggerated": "我逼到後端團隊改晒佢哋成個 API policy。",
+        "no_data": "出新版本之後地址顯示返。"
+      }
+    },
+    {
+      "id": "mb-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Software design",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "Four years in, an ERP companion app had to be shipped to a client in six weeks and the client's IT team kept changing the login requirement.",
+        "Task": "I had to freeze one login design, and get the client's IT lead to confirm it in writing.",
+        "Action": "I wrote a one-page comparison of three login options with effort and risk, and ran a thirty-minute call with the client's lead.",
+        "Result": "The client chose single sign-on with a two-week buffer, and the app shipped without a login change afterwards.",
+        "vague": "The login requirement kept changing and it was difficult.",
+        "exaggerated": "I designed the client's entire identity platform.",
+        "no_data": "In the end we agreed one design and shipped."
+      },
+      "zh": {
+        "Situation": "做咗四年，一個 ERP 配套 app 要在六星期內交貨，而客戶 IT 不停改登入要求。",
+        "Task": "我要定住一個登入設計，並要客戶 IT 主管書面確認。",
+        "Action": "我寫一頁比較三個登入方案嘅工作量同風險，同客戶主管開三十分鐘會。",
+        "Result": "客戶揀 single sign-on 並留兩星期 buffer，app 之後冇再改登入。",
+        "vague": "登入要求不停改，好難做。",
+        "exaggerated": "我設計咗客戶成個身份驗證平台。",
+        "no_data": "最後議定一個設計並出貨。"
+      }
+    },
+    {
+      "id": "mb-05",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "In my internship, the visit log list scrolled badly on an older phone with four hundred records.",
+        "Task": "I was asked to look at it, and I had to confirm the cause before changing anything.",
+        "Action": "I profiled the screen, found every row rebuilt its own date formatter, and moved to one shared formatter with a recycling list.",
+        "Result": "Scroll time dropped from about two hundred milliseconds per frame to under twenty on the same phone.",
+        "vague": "The list was slow on older phones.",
+        "exaggerated": "I rewrote the app's whole architecture.",
+        "no_data": "After the change scrolling was smooth."
+      },
+      "zh": {
+        "Situation": "實習時，到訪紀錄列表喺舊電話有四百筆時捲動好卡。",
+        "Task": "有人叫我睇下，我要先確認原因才改任何嘢。",
+        "Action": "我 profile 個畫面，發現每行都自己建一個日期 formatter，於是改成共用一個 formatter 同回收式列表。",
+        "Result": "同一部機上每格捲動由大約二百毫秒跌到廿毫秒以下。",
+        "vague": "列表喺舊機好慢。",
+        "exaggerated": "我重寫咗 app 成個架構。",
+        "no_data": "改完之後捲動順好多。"
+      }
+    },
+    {
+      "id": "mb-06",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "A user with enlarged system font size reported that the check-in button was pushed off screen.",
+        "Task": "I owned the layout, and I had to fix it for large text without redesigning every screen.",
+        "Action": "I moved the button into a scrolling container, set a minimum touch height, and tested three font scales with screenshots.",
+        "Result": "The button was reachable at every scale, and two other screens got the same small fix.",
+        "vague": "The layout broke when the font size was bigger.",
+        "exaggerated": "I made the app fully accessible for every disability.",
+        "no_data": "After the change the button was reachable."
+      },
+      "zh": {
+        "Situation": "有同事把系統字體調大之後，簽到按鈕被推出畫面之外。",
+        "Task": "我負責個排版，要令大字體都用到，但唔想重做每個畫面。",
+        "Action": "我把按鈕放入可捲動容器，設最小點擊高度，再用截圖測三個字體比例。",
+        "Result": "每個比例都按得到，另外有兩個畫面亦做同樣細修。",
+        "vague": "字體一大個排版就壞。",
+        "exaggerated": "我令 app 對所有殘疾都完全無障礙。",
+        "no_data": "改完之後按鈕按得到。"
+      }
+    },
+    {
+      "id": "mb-07",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "Five years in, field staff kept entering visits offline and losing them when the phone restarted.",
+        "Task": "I had to make the queue survive a restart, and explain the limit honestly to the operations lead.",
+        "Action": "I moved the queue to local storage with a status per entry, then asked operations how many visits a staff member makes in a day.",
+        "Result": "No visits were lost in the next month, and we set a clear limit of two hundred queued entries.",
+        "vague": "Offline visits were sometimes lost.",
+        "exaggerated": "I built a fully offline ERP for the field team.",
+        "no_data": "After the change visits stopped being lost."
+      },
+      "zh": {
+        "Situation": "做咗五年，前線同事離線輸入到訪紀錄，電話重啟就唔見。",
+        "Task": "我要令個 queue 重啟都撐得住，並老實向營運主管講清楚上限。",
+        "Action": "我把 queue 移去本機儲存，每筆有狀態，再問營運同事一日做幾多單。",
+        "Result": "之後一個月冇再漏單，我哋亦定明兩百筆嘅上限。",
+        "vague": "離線紀錄有時會唔見。",
+        "exaggerated": "我為前線團隊做咗一個完整離線 ERP。",
+        "no_data": "改完之後冇再漏單。"
+      }
+    },
+    {
+      "id": "mb-08",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "In my first job, our app crashed on launch for about two per cent of users and the crash log only said null.",
+        "Task": "I was asked to find the pattern, and I had to stop guessing from my own phone.",
+        "Action": "I grouped crashes by device model and OS version, then reproduced it on the two models that matched.",
+        "Result": "It was one font call unsupported on an older Android version, and after a guard the crash rate went to zero.",
+        "vague": "Some users reported crashes.",
+        "exaggerated": "I found and fixed every crash in the app.",
+        "no_data": "After the fix the crashes stopped."
+      },
+      "zh": {
+        "Situation": "第一份工，我哋 app 大約百分之二用戶一開就 crash，而 crash log 只寫住 null。",
+        "Task": "我要找出模式，而唔可以再靠我自己部電話去估。",
+        "Action": "我按機型同 OS 版本分組 crash，再喺吻合嘅兩個型號上重現。",
+        "Result": "係一個舊 Android 唔支援嘅字體呼叫，加防護之後 crash 率變零。",
+        "vague": "有啲用戶報 crash。",
+        "exaggerated": "我搵出並修好晒 app 所有 crash。",
+        "no_data": "修好之後 crash 停咗。"
+      }
+    },
+    {
+      "id": "mb-09",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Communication",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "At an agency, two clients wanted the same booking screen with different payment flows, and we had one month.",
+        "Task": "I had to share the code without making a setting that nobody could reason about later.",
+        "Action": "I extracted the flow into two implementations of one interface, with a test per flow and a note on which client uses which.",
+        "Result": "Both clients launched on the same build, and a third client was added later with no change to the shared screen.",
+        "vague": "Two clients wanted slightly different versions of the same screen.",
+        "exaggerated": "I designed a framework the agency now sells as a product.",
+        "no_data": "In the end both clients launched from the same code."
+      },
+      "zh": {
+        "Situation": "喺 agency，兩個客戶想要同一個 booking 畫面但唔同付款流程，而我哋得一個月。",
+        "Task": "我要共用代碼，但唔想整出一個日後冇人講得明嘅設定。",
+        "Action": "我把流程抽成同一個 interface 嘅兩個實作，每個流程一個測試，再寫明邊個客用邊個。",
+        "Result": "兩個客用同一個 build 上線，第三個客後來加入都冇改共用畫面。",
+        "vague": "兩個客想要同一個畫面嘅少少唔同版本。",
+        "exaggerated": "我設計咗一個 agency 依家當產品賣嘅框架。",
+        "no_data": "最後兩個客都用同一套 code 上線。"
+      }
+    },
+    {
+      "id": "mb-10",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Software design",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "Six years in, the app's cold start took four seconds on mid-range phones and the growth team blamed it for drop-off.",
+        "Task": "I had to find where the time went before agreeing to any rewrite.",
+        "Action": "I measured the start-up phases, found two SDKs initialising on the main thread, and moved both behind first screen.",
+        "Result": "Cold start fell to 1.4 seconds, and the drop-off the growth team measured improved in the next release.",
+        "vague": "The app started slowly and growth was unhappy.",
+        "exaggerated": "I made our app the fastest in the category.",
+        "no_data": "After the change the app started faster."
+      },
+      "zh": {
+        "Situation": "做咗六年，app cold start 喺中階機要四秒，growth 團隊話係流失原因。",
+        "Task": "我要先找出時間花喺邊，然後才同意任何重寫。",
+        "Action": "我量度啟動各階段，發現兩個 SDK 喺 main thread 初始化，於是把兩者推到首屏之後。",
+        "Result": "cold start 跌到 1.4 秒，growth 量度嘅流失喺下個版本有改善。",
+        "vague": "app 啟動慢，growth 唔滿意。",
+        "exaggerated": "我令 app 成為同類最快。",
+        "no_data": "改完之後啟動快咗。"
+      }
+    },
+    {
+      "id": "mb-11",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, the QA person and I disagreed about whether a slow list was a defect or a device problem.",
+        "Task": "I wanted an answer we could both accept, not a vote.",
+        "Action": "I measured the same build on three devices, put the timings in the ticket, and asked her to add hers.",
+        "Result": "Two devices were fine and one was slow, so the ticket became a device-specific defect with evidence.",
+        "vague": "We disagreed about whether something was a bug.",
+        "exaggerated": "I proved the QA person had tested it wrongly.",
+        "no_data": "In the end we agreed it was a defect on one device."
+      },
+      "zh": {
+        "Situation": "做半年合約，QA 同事同我就「慢列表係 bug 定機問題」有分歧。",
+        "Task": "我想要一個雙方都接受嘅答案，而唔係投票。",
+        "Action": "我用同一個 build 喺三部機量度，把時間寫入 ticket，再請佢加上佢嘅數據。",
+        "Result": "兩部機正常、一部慢，於是 ticket 變成有證據嘅特定機型 defect。",
+        "vague": "我哋對一樣嘢係唔係 bug 有分歧。",
+        "exaggerated": "我證明咗 QA 同事測錯。",
+        "no_data": "最後大家都同意係某一部機嘅 defect。"
+      }
+    },
+    {
+      "id": "mb-12",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "At a retailer, the app sent a notification at nine in the evening because a time zone was hard-coded.",
+        "Task": "I owned notifications, and I had to fix the schedule and tell the affected customers honestly.",
+        "Action": "I moved to device-local scheduling, tested three time zones, and drafted the apology note with the marketing lead.",
+        "Result": "No further late-night notifications were sent, and the note went to the affected group the same day.",
+        "vague": "Notifications were sent at the wrong time.",
+        "exaggerated": "I rebuilt the entire notification service by myself.",
+        "no_data": "After the fix the notifications came at the right time."
+      },
+      "zh": {
+        "Situation": "喺一間零售商，app 因為時區寫死，喺晚上九點發通知。",
+        "Task": "我負責通知，要修好排程，並老實同受影響客戶講。",
+        "Action": "我改成按裝置本地時間排程，測三個時區，再同 marketing 主管一齊寫道歉訊息。",
+        "Result": "冇再喺深夜發通知，訊息亦當日發畀受影響群組。",
+        "vague": "通知喺錯嘅時間發。",
+        "exaggerated": "我一個人重建咗成個通知服務。",
+        "no_data": "修好之後通知時間正常。"
+      }
+    }
+  ]
+}

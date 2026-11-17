@@ -28,7 +28,7 @@ The runnable application and automated checks are development evidence. The comp
 ## Submission
 
 - [ ] Four names/IDs and actual contribution matrix completed.
-- [x] Slides state actual implemented features, limitations and measured results (`presentation/validation.json`; final classroom rehearsal remains below).
+- [x] Slides state actual implemented features, limitations and measured results (see [verification](VERIFICATION.md)). Final classroom rehearsal remains below.
 - [ ] Seven-minute live rehearsal and Q&A preparation completed.
 - [ ] 60–90 second backup recording from final configuration retained.
 - [x] Development source ZIP checksum and every manifest entry verified; credentials, session databases, private transcripts and base weights excluded. Rebuild after completing the remaining release gates.

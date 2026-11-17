@@ -168,6 +168,7 @@ def test_invalid_keys_are_rejected_without_input_echo(settings, key):
 
 def test_live_agent_asr_routes_and_authenticated_health(settings, monkeypatch):
     requests = []
+    question_attempts = []
 
     def handler(request):
         requests.append(request)
@@ -175,11 +176,16 @@ def test_live_agent_asr_routes_and_authenticated_health(settings, monkeypatch):
         if request.url.path.endswith("/models"):
             return httpx.Response(200, json={"data": [{"id": "test-model"}]})
         if request.url.path.endswith("/audio/transcriptions"):
-            return httpx.Response(200, json={"text": "A synthetic recorded answer."})
+            return httpx.Response(200, json={"text": "我负责开发软件。"})
         body = json.loads(request.content)
         context = json.loads(body["messages"][1]["content"])
+        question_attempts.append(body["messages"])
         result = {
-            "interviewer_text": "Tell me about your project.",
+            "interviewer_text": (
+                "你可唔可以講下個項目？"
+                if len(question_attempts) == 1
+                else "Tell me about your project."
+            ),
             "question_type": "opening",
             "targeted_competencies": context["allowed_competencies"][:1],
             "adaptive_follow_up_reason": None,
@@ -208,13 +214,19 @@ def test_live_agent_asr_routes_and_authenticated_health(settings, monkeypatch):
             "/api/sessions", json={"job_profile_id": profile["id"], "store_transcript": True}
         ).json()
         assert session["provider"] == "openai"
+        assert len(question_attempts) == 2
+        assert question_attempts[1][-1]["role"] == "user"
+        assert "English" in question_attempts[1][-1]["content"]
         assert client.get("/api/health").json()["llm"] == "ready (configured inference provider)"
         result = client.post(
             "/api/speech/transcribe",
             files={"file": ("speech.wav", b"RIFF" + b"x" * 20)},
             data={"language": "zh-HK"},
         )
-        assert result.json()["provider"] == "openai-compatible"
+        assert result.json() == {
+            "provider": "openai-compatible",
+            "text": "我負責開發軟件。",
+        }
         assert (
             client.put(
                 "/api/inference-settings",

@@ -99,9 +99,24 @@ def test_packages_verified_adapter_and_only_allowed_training_evidence(tmp_path):
     import zipfile
 
     trained_run(tmp_path)
+    for name in (
+        "reviewed_examples.jsonl",
+        "reviewed/test.jsonl",
+        "reviews/log.jsonl",
+        "edits/row.json",
+    ):
+        candidate = tmp_path / "ml/data" / name
+        candidate.parent.mkdir(parents=True, exist_ok=True)
+        candidate.write_text("private reviewer evidence")
+    for name in ("model_endpoints.local.json", "results/model_raw.jsonl"):
+        candidate = tmp_path / "evaluation" / name
+        candidate.parent.mkdir(parents=True, exist_ok=True)
+        candidate.write_text("local evaluation working data")
     archive = module.package(tmp_path)
     with zipfile.ZipFile(archive) as zipped:
         names = set(zipped.namelist())
+        assert not any(name.startswith("VoxPrep-HK/ml/data/") for name in names)
+        assert not any(name.startswith("VoxPrep-HK/evaluation/") for name in names)
         prefix = "VoxPrep-HK/ml/runs/voxprep-qlora/"
         assert prefix + "adapter/adapter_model.safetensors" in names
         assert prefix + "adapter/adapter_config.json" in names

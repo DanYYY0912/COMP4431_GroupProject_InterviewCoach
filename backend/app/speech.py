@@ -1,8 +1,16 @@
+from functools import lru_cache
+
 import httpx
 from fastapi import HTTPException
+from opencc import OpenCC
 
 from .config import Settings
 from .providers import bearer_headers
+
+
+@lru_cache(maxsize=1)
+def traditional_hk_converter() -> OpenCC:
+    return OpenCC("s2hk")
 
 
 async def transcribe(content: bytes, filename: str, language: str, settings: Settings) -> dict:
@@ -29,6 +37,8 @@ async def transcribe(content: bytes, filename: str, language: str, settings: Set
     }
     if compatible:
         data["model"] = settings.asr_model
+    elif language == "zh-HK":
+        data["prompt"] = "香港廣東話，繁體中文書寫。"
     try:
         async with httpx.AsyncClient(timeout=90, follow_redirects=False) as client:
             response = await client.post(
@@ -43,8 +53,11 @@ async def transcribe(content: bytes, filename: str, language: str, settings: Set
             text = response.json().get("text")
             if not isinstance(text, str) or len(text) > 12000:
                 raise ValueError("Invalid transcription response")
+            cleaned = text.strip()
+            if language == "zh-HK":
+                cleaned = traditional_hk_converter().convert(cleaned)
             return {
-                "text": text.strip(),
+                "text": cleaned,
                 "provider": "openai-compatible" if compatible else "whisper.cpp",
             }
     except (httpx.HTTPError, ValueError, TypeError, AttributeError) as exc:

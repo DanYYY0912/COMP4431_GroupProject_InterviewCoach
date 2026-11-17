@@ -176,7 +176,7 @@ export function playQuestion(
   const speech = synthesis;
   function requestPlayback(): boolean {
     if (stopped || requested) return true;
-    const voice = speech.getVoices().find((candidate) => {
+    const localVoices = speech.getVoices().filter((candidate) => {
       const locale = candidate.lang.replace('_', '-').toLowerCase();
       return (
         candidate.localService &&
@@ -185,6 +185,10 @@ export function playQuestion(
           (language === 'zh-HK' && (locale === 'yue' || locale.startsWith('yue-'))))
       );
     });
+    const voice =
+      localVoices.find(
+        (candidate) => candidate.lang.replace('_', '-').toLowerCase() === language.toLowerCase(),
+      ) ?? localVoices[0];
     if (!voice) return false;
     clearVoiceWait();
     requested = true;

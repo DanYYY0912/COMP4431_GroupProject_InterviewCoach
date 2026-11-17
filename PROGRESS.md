@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The Docker app and PostgreSQL run at `http://localhost:4431`; all four saved inference connections are preserved in the Docker volume. Native model launchers remain available for development. This is a working development submission, not a completed assessed release: a training GPU is not set up, the 1,500 synthetic drafts are unreviewed, and no fine-tuned adapter or participant results exist. Inference providers can now be configured in Settings.
+The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The Docker app and PostgreSQL run at `http://localhost:4431`; all four saved inference connections are preserved in the Docker volume. Native model launchers remain available for development. The integration branch carries Kelvin's Kaggle v5 training records and automated results. The adapter weights are distributed separately, and participant studies remain pending. Inference providers can now be configured in Settings.
 
 Updated: **2026-11-18T04:42:08+08:00**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
 
@@ -21,7 +21,7 @@ Updated: **2026-11-18T04:42:08+08:00**. See [verification](docs/VERIFICATION.md)
 - Azure integration has been removed. Question playback uses local browser voices, while ASR uses the selected server or native Whisper. Local Whisper was exercised with synthetic English and Cantonese speech.
 - QLoRA scripts, a GPU notebook, review/split gates, export tooling and evaluation runners are present. They deliberately reject unreviewed or leaking training data.
 - The eight-slide [PowerPoint](presentation/VoxPrep-HK.pptx), speaker notes, [seven-minute script](presentation/DEMO_SCRIPT.md) and [80-second scripted backup](presentation/backup-demo.mp4) are prepared. The backup uses the deterministic demo provider and fictional answers.
-- `make package` writes `artifacts/VoxPrep-HK-source.zip` and its SHA-256. Archive integrity and every manifest entry have been verified. Its manifest states whether a verified trained adapter is present. No adapter currently exists.
+- `make package` writes `artifacts/VoxPrep-HK-source.zip` and its SHA-256. Archive integrity and every manifest entry have been verified. Its manifest states whether a verified trained adapter is present. The source archive includes historical evidence and requires a separately verified local adapter to include weights.
 
 ## Immediate next targets
 

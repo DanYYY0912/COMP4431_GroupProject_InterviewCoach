@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
 import { exportJson, formatDuration } from '../lib/format';
 import { downloadSession } from '../lib/sessionExport';
+import { printSessionReport } from '../lib/reportPdf';
 import type { Report as ReportType } from '../lib/types';
 import { ErrorNotice, Loading, Sources } from '../components/Common';
 
@@ -44,10 +45,10 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
       setBusy(false);
     }
   }
-  async function exportSession() {
+  async function exportSession(format: 'json' | 'pdf') {
     setExporting(true);
     try {
-      await downloadSession(id);
+      await (format === 'pdf' ? printSessionReport(id) : downloadSession(id));
     } catch (e) {
       setError(errorMessage(e));
     } finally {
@@ -83,6 +84,13 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
         <div className="report-downloads">
           <button
             className="button secondary"
+            disabled={exporting || busy}
+            onClick={() => void exportSession('pdf')}
+          >
+            <Download size={17} /> Save report as PDF
+          </button>
+          <button
+            className="button secondary"
             onClick={() => exportJson(report, `voxprep-debrief-${id}.json`)}
           >
             <Download size={17} /> Export report
@@ -90,7 +98,7 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
           <button
             className="button secondary"
             disabled={exporting || busy}
-            onClick={() => void exportSession()}
+            onClick={() => void exportSession('json')}
           >
             <Download size={17} /> {exporting ? 'Preparing download…' : 'Export full session'}
           </button>

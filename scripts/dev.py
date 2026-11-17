@@ -92,6 +92,57 @@ def native_endpoint(url, port):
     }
 
 
+def llama_command(model_path):
+    command = [
+        "llama-server",
+        "-m",
+        model_path,
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8080",
+        "-c",
+        "8192",
+        "-ngl",
+        "99",
+        "--jinja",
+        "--parallel",
+        "1",
+    ]
+    if adapter := ENV.get("LORA_PATH", "").strip():
+        path = ROOT / adapter
+        if not path.is_file():
+            raise SystemExit(f"LORA_PATH does not exist: {path}")
+        command += ["--lora", path]
+    return command
+
+
+def check_running_adapter():
+    """Do not silently reuse a base-only service when an adapter was requested."""
+    if not (adapter := ENV.get("LORA_PATH", "").strip()):
+        return
+    import json
+
+    path = (ROOT / adapter).resolve()
+    if not path.is_file():
+        raise SystemExit(f"LORA_PATH does not exist: {path}")
+    try:
+        with urllib.request.urlopen(
+            "http://127.0.0.1:8080/lora-adapters", timeout=2
+        ) as response:
+            adapters = json.load(response)
+        if any(
+            (ROOT / item["path"]).resolve() == path and item["scale"] == 1
+            for item in adapters
+        ):
+            return
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    raise SystemExit(
+        "The running llama-server does not have the requested LORA_PATH active at scale 1. Restart that service explicitly; it was not stopped by this launcher."
+    )
+
+
 def serve(mode):
     load_env()
     if mode == "demo":
@@ -158,31 +209,15 @@ def serve(mode):
         )
         native_embedding = native_endpoint(effective.embedding_base_url, 8082)
         native_reranker = native_endpoint(effective.reranker_base_url, 8083)
-        if native_agent and not available("http://127.0.0.1:8080/health"):
+        llama_ready = native_agent and available("http://127.0.0.1:8080/health")
+        if llama_ready:
+            check_running_adapter()
+        if native_agent and not llama_ready:
             if not model_path.exists():
                 raise SystemExit(
                     "MODEL_PROVIDER=llama requires MODEL_PATH. Run make bootstrap or use MODEL_PROVIDER=demo."
                 )
-            start(
-                "llama",
-                [
-                    "llama-server",
-                    "-m",
-                    model_path,
-                    "--host",
-                    "127.0.0.1",
-                    "--port",
-                    "8080",
-                    "-c",
-                    "8192",
-                    "-ngl",
-                    "99",
-                    "--jinja",
-                    "--parallel",
-                    "1",
-                ],
-                log=True,
-            )
+            start("llama", llama_command(model_path), log=True)
         whisper_path = ROOT / ENV.get(
             "WHISPER_MODEL_PATH", "models/ggml-large-v3-turbo-q5_0.bin"
         )

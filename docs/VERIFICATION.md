@@ -4,6 +4,14 @@
 
 The application has passed controlled automated checks and real local-service smoke tests on this Mac. These checks establish runnable software and integration behavior. They do not establish the plan's fine-tuning, human-review, speech-quality, latency or usability thresholds. Current validation includes the November 18 Jamie-only 3D interviewer and staged startup progress, following the Azure removal and simplified setup. Logs under `artifacts/verification/` remain on the development Mac; distributable synthetic raw service evidence is retained under `evaluation/raw/`.
 
+## Kelvin integration — 2026-11-18
+
+The integration branch combines the Kaggle training workflow and evidence, Cantonese transcript conversion, language validation, PDF export and presentation updates with the Jamie version. The historical no-RAG result is marked for a rerun because its requests retained source passages. The recorded weights were unavailable for integration testing.
+
+Checks passed with the browser using isolated SQLite and demo inference. The final image also passed the English and Cantonese interview and export journeys, startup progress, and Jamie’s speaking animation on a separate PostgreSQL Compose stack. The branch Compose file maps port 4431. The validation stack used a separate loopback port and volumes.
+
+The 17-slide PowerPoint retains the working deck's title slide. Slides 8, 10 and 14 and their notes reflect the current interview, voice and evaluation behavior.
+
 ## Jamie 3D interviewer and startup progress — 2026-11-18
 
 The current UI uses only Jamie, previewed in setup and persisted per session. The photo textures a shallow 3D facial surface with a real mouth aperture, eyelid deformation and restrained head movement. Mouth motion starts only after local speech playback starts; pause, stop, navigation and microphone use cancel it. Automatic question reading can be disabled. This is approximate speaking animation from one portrait, not a complete head reconstruction or phoneme-perfect lip sync.

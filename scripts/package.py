@@ -254,6 +254,16 @@ def submission_files(root, include_training=True):
             part in EXCLUDE_DIRS or part.endswith(".egg-info") for part in rel.parts
         ):
             continue
+        if rel.is_relative_to("ml/data") and (
+            path.name == "reviewed_examples.jsonl"
+            or any(part in {"reviewed", "reviews", "edits"} for part in rel.parts[2:])
+        ):
+            continue
+        if rel in {
+            Path("evaluation/model_endpoints.local.json"),
+            Path("evaluation/results/model_raw.jsonl"),
+        }:
+            continue
         if path.name.startswith(".env") and path.name != ".env.example":
             continue
         if path.name.lstrip(".").startswith("inference-settings"):

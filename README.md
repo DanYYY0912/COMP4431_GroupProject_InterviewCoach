@@ -120,9 +120,13 @@ flowchart LR
 
 ## Training and evaluation
 
-The supplied model is a public base model quantization. It is not a VoxPrep fine-tuned checkpoint. The draft data is synthetic and must pass human review before training. Follow [ml/](ml/) and [docs/DATASET.md](docs/DATASET.md) to review, split, train, preserve checkpoints, export, and measure base versus LoRA performance. Keep reviewed data, hashes, logs, loss curves, manifests and raw results with the final submission.
+Kelvin's Kaggle run records one epoch of QLoRA on Qwen3-4B-Instruct-2507 with 971 reviewed examples, split into 790 training, 62 validation, and 119 test examples. Recorded validation loss went from 0.4264 at step 10 to 0.0561 at step 50. The run manifest, log and loss plot are in [training evidence](ml/training_evidence/voxprep-qlora-v5/). The adapter and merged weights are distributed separately.
 
-No target percentage in the original plan is a measured result. A training GPU is not yet set up; follow [the external setup guide](docs/EXTERNAL_SETUP.md) when ready. The evaluation endpoint retains stored evidence and labels pending work. Participant speech recordings, blinded preference ratings, and usability studies cannot be replaced by generated test fixtures.
+The recorded base and fine-tuned runs with source passages passed schema validation on all 119 prompts. The script-based language check rose from 92.4% to 100%. The sample contains 109 English reports and two Cantonese examples per task. The recorded no-RAG run retained source passages and needs a rerun. See [evaluation](docs/EVALUATION.md) for the protocol and remaining evidence.
+
+Use [Kaggle setup](docs/KAGGLE_RUN.md) for a new training run. For native inference, set `MODEL_PATH` to a verified merged GGUF, or set `LORA_PATH` alongside the matching base GGUF to load an adapter overlay. Docker uses the Agent configured in Settings. The application keeps the demo and base-model options available.
+
+A completed debrief can open a print layout through **Save report as PDF**. Use the browser's Save as PDF destination. **Export full session** still downloads the transcript and report as JSON.
 
 ## Troubleshooting
 
@@ -132,7 +136,7 @@ No target percentage in the original plan is a measured result. A training GPU i
 - **Whisper cannot read browser audio:** ensure FFmpeg is installed; the native server uses `--convert`.
 - **Port in use:** stop the previous VoxPrep process rather than starting another on the same port.
 - **Scanned PDF:** paste the visible job description text. OCR is outside scope.
-- **Portrait unavailable:** choose another face or hide the portrait. Interview controls and captions remain available.
+- **3D interviewer unavailable:** continue with Jamie’s portrait or hide the interviewer. Interview controls and captions remain available.
 - **Browser test version mismatch:** run the Playwright browser installation command above with the locked dependencies.
 
 ## Submission and team

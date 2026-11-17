@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The evaluation suite can check model JSON, retrieval recall, citation support labels, speech error rates, latency, blinded preferences and usability. Current evidence consists of local software checks and synthetic diagnostic fixtures; **none of the assessed model, speech, or usability release thresholds has been demonstrated**. Raw failures stay in the output, human ratings are never generated, and language-script heuristics are not reported as Cantonese fluency. The methodology endpoint reads `evaluation/results/latest.json`, which retains this distinction.
+The evaluation suite can check model JSON, retrieval recall, citation support labels, speech error rates, latency, blinded preferences and usability. Evidence includes local software checks, synthetic diagnostics, and recorded base-versus-adapter inference on 119 held-out prompts. Human speech, preference, and usability studies remain pending. Raw failures stay in the output, human ratings are never generated, and language-script heuristics are not reported as Cantonese fluency. The methodology endpoint reads `evaluation/results/latest.json`, which retains this distinction.
 
 ## Run local software checks
 
@@ -14,7 +14,9 @@ python -m evaluation.run smoke
 
 The smoke run validates twelve schema examples and five known metric calculations. It does not call a model, synthesize speech, or measure user satisfaction. `evaluation/results/smoke.json` records exactly what ran.
 
-## Model experiment: 120 held-out prompts
+## Model experiment
+
+Kelvin's recorded 119-row run contains 109 English reports, two English questions, two English safety cases, and two Cantonese cases in each of the three tasks. Both configurations with source passages recorded 100% schema validity. The script check rose from 110/119 to 119/119. The historical no-RAG run kept the passages because the evaluator cleared the wrong field. Keep the raw records and rerun that arm using the corrected evaluator before citing a no-RAG result.
 
 1. Complete real data review and QLoRA training. Use the final group-isolated test split, never the diagnostic prompt file bundled here.
 2. `python -m evaluation.run prepare --input ml/data/reviewed/test.jsonl --output evaluation/fixtures/model_prompts.jsonl`
@@ -22,7 +24,7 @@ The smoke run validates twelve schema examples and five known metric calculation
 4. `python -m evaluation.run model --input evaluation/fixtures/model_prompts.jsonl --training-data ml/data/reviewed/train.jsonl --config PATH_TO_ENDPOINT_CONFIG`
 5. Retain the configuration, artifact hashes, `model_raw.jsonl`, and `model.json`. All variants use temperature 0, seed 42 and 1,536 maximum generated tokens. Base+RAG and LoRA+RAG receive the identical prompt and source context; LoRA-only receives the same request with retrieved context removed.
 
-The runner records all 360 outcomes, including malformed output, truncation and timeouts. JSON validity is scored against a strict task schema. First-token latency is measured from request start to the first nonempty streamed content; failed requests are counted separately and cannot disappear from the denominator. The protocol uses preselected, fixed source contexts so the model comparison does not mix in changing retrieval quality. Benchmark retrieval independently.
+The runner records one outcome per prompt and configuration, including malformed output, truncation and timeouts. JSON validity is scored against a strict task schema. First-token latency is measured from request start to the first nonempty streamed content; failed requests are counted separately and cannot disappear from the denominator. The protocol uses preselected, fixed source contexts so the model comparison does not mix in changing retrieval quality. Benchmark retrieval independently.
 
 Target schema validity is 98%. The script-language proxy is diagnostic only. Reviewers must assess actual requested-language adherence, especially colloquial Traditional-Chinese Cantonese; target 95%. Add a `language_reviews` array to the human input with one final record per prompt: `example_id`, `reviewer_id`, and boolean `adheres`. The runner reports this actual human measure separately from its script proxy. The 120 provided diagnostic prompts come from synthetic drafts and require `--diagnostic`, which labels results accordingly.
 

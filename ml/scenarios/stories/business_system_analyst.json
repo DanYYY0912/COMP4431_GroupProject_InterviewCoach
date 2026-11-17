@@ -1,0 +1,326 @@
+{
+  "role_family": "business_system_analyst",
+  "stories": [
+    {
+      "id": "ba-01",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "In my first analyst job, the leave system had seven approvers because nobody had reviewed it since it was built.",
+        "Task": "I was asked to simplify the flow, and I had to interview the people who used it rather than guess from the diagram.",
+        "Action": "I ran five short interviews, drew the current flow, and showed where one approval waited four days for no decision.",
+        "Result": "The flow went to three approvers, and the average request time dropped from six days to two.",
+        "vague": "The leave process was complicated and slow.",
+        "exaggerated": "I redesigned the company's whole HR platform on my own.",
+        "no_data": "After the change, approval was faster."
+      },
+      "zh": {
+        "Situation": "第一份分析工作，請假系統有七個審批人，因為起好之後從來冇人檢視過。",
+        "Task": "我要簡化流程，但必須訪談真正用嘅人，而唔係睇圖去估。",
+        "Action": "我做咗五次短訪談，畫出現有流程，指出其中一個審批白等四日都冇決定。",
+        "Result": "流程減到三個審批人，平均申請時間由六日變兩日。",
+        "vague": "請假流程好複雜又慢。",
+        "exaggerated": "我一個人重新設計咗公司成個 HR 平台。",
+        "no_data": "改完之後批核快咗。"
+      }
+    },
+    {
+      "id": "ba-02",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Data analysis",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "At a bank, two departments asked for twelve new fields in a loan application form, and the developer had two weeks.",
+        "Task": "I had to cut the list to something buildable, with reasons each department could accept.",
+        "Action": "I checked which fields were actually used in the last three months of applications, and presented the usage counts to both teams.",
+        "Result": "Five fields had never been read, and we shipped seven with agreement in one meeting.",
+        "vague": "There were a lot of requests for new fields.",
+        "exaggerated": "I cancelled half the bank's requirements by myself.",
+        "no_data": "In the end we built a smaller set of fields and both sides agreed."
+      },
+      "zh": {
+        "Situation": "喺銀行，兩個部門要求貸款申請表加十二個欄位，而開發只有兩星期。",
+        "Task": "我要把清單收窄到做得到，並有兩個部門都接受嘅理由。",
+        "Action": "我查最近三個月申請實際用了哪些欄位，再把使用次數展示畀兩隊。",
+        "Result": "有五個欄位從來冇人睇，最後一個會議就議定做七個。",
+        "vague": "好多人要求加新欄位。",
+        "exaggerated": "我一個人取消咗銀行一半需求。",
+        "no_data": "最後做咗較少欄位，雙方都同意。"
+      }
+    },
+    {
+      "id": "ba-03",
+      "seniority": "early",
+      "competencies": [
+        "Data analysis",
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "A warehouse team complained that picking was slow, but nobody could say which step was the problem.",
+        "Task": "I was asked to measure the process, and I had to do it without adding work for the pickers.",
+        "Action": "I used the scanner timestamps already recorded, grouped each order by step, and found one scan step took a third of the time.",
+        "Result": "The step was moved off the picker's device, and picking time per order fell by about a fifth.",
+        "vague": "Picking was slow and people were guessing why.",
+        "exaggerated": "I automated the whole warehouse operation.",
+        "no_data": "After the change, picking was quicker."
+      },
+      "zh": {
+        "Situation": "倉務團隊投訴揀貨慢，但冇人講得出係邊一步出事。",
+        "Task": "我要量度流程，但唔可以為揀貨同事增加工作。",
+        "Action": "我用掃描器本身已記錄嘅時間戳，按步驟分組，發現有一個掃描步驟佔咗三分之一時間。",
+        "Result": "該步驟搬離揀貨裝置，每單揀貨時間減少大約五分一。",
+        "vague": "揀貨慢，大家都係估原因。",
+        "exaggerated": "我自動化咗成個倉庫運作。",
+        "no_data": "改完之後揀貨快咗。"
+      }
+    },
+    {
+      "id": "ba-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Teamwork",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, we had three vendor proposals for a new HR system and the steering group wanted a recommendation in a week.",
+        "Task": "I had to make the comparison fair, and say openly where the scoring was a judgement call.",
+        "Action": "I agreed six weighted criteria with the group first, scored each vendor against evidence from their proposal, and marked the two subjective scores.",
+        "Result": "The group chose the vendor that scored second on price, and the two subjective items were the ones they debated.",
+        "vague": "We had to pick between vendors and it was a long discussion.",
+        "exaggerated": "I chose the company's HR system single-handedly.",
+        "no_data": "In the end the group picked one and the process felt fair."
+      },
+      "zh": {
+        "Situation": "做咗四年，新 HR 系統有三間 vendor 提案，督導小組想一星期內有建議。",
+        "Task": "我要令比較公平，並公開講清楚邊啲評分係判斷。",
+        "Action": "我先同小組議定六個加權準則，再按提案證據逐間評分，並標明兩個主觀分。",
+        "Result": "小組揀咗價格排第二嘅 vendor，而爭論集中喺嗰兩個主觀項目。",
+        "vague": "要在幾間 vendor 之間揀，討論咗好久。",
+        "exaggerated": "我一個人決定咗公司嘅 HR 系統。",
+        "no_data": "最後小組揀咗一間，過程算公平。"
+      }
+    },
+    {
+      "id": "ba-05",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my internship, I was asked to document the as-is process for a customer complaint flow.",
+        "Task": "I had to write something a new joiner could follow, not a diagram only the author understands.",
+        "Action": "I followed three real complaints end to end, numbered each handover, and wrote what the customer is told at each step.",
+        "Result": "The document was used to train two new staff, and it showed one step where the customer waited with no update for five days.",
+        "vague": "I wrote some documentation about a process.",
+        "exaggerated": "I documented every process in the department.",
+        "no_data": "The document was handed over and people used it."
+      },
+      "zh": {
+        "Situation": "實習時有人叫我記錄客戶投訴流程嘅現況。",
+        "Task": "我要寫到新同事跟得到，而唔係只有作者睇得明嘅圖。",
+        "Action": "我跟咗三個真實投訴由頭到尾，為每次交接編號，並寫明每一步客戶會收到咩。",
+        "Result": "文件用嚟訓練兩位新同事，亦顯示有一步客戶等足五日都冇更新。",
+        "vague": "我寫咗一啲流程文件。",
+        "exaggerated": "我記錄咗部門所有流程。",
+        "no_data": "文件交咗出去，有人用。"
+      }
+    },
+    {
+      "id": "ba-06",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "At a government-adjacent contractor, business sign-off kept arriving on the last day of the UAT window.",
+        "Task": "I wanted the sign-off to arrive earlier, without pushing the users harder than they could take.",
+        "Action": "I split the sign-off into two checkpoints, gave each user a one-page test list, and booked their time a week ahead.",
+        "Result": "Sign-off arrived two days early in the next cycle, and the two checkpoints caught one blocking issue sooner.",
+        "vague": "Sign-off always came late and it caused pressure.",
+        "exaggerated": "I fixed the contractor's whole delivery governance.",
+        "no_data": "After the change sign-off came earlier."
+      },
+      "zh": {
+        "Situation": "喺政府相關承辦商，業務 sign-off 每次都喺 UAT 窗口最後一日才到。",
+        "Task": "我想 sign-off 早啲到，但又唔想逼用戶到佢哋受不了。",
+        "Action": "我把 sign-off 分兩個檢查點，每個用戶一頁測試清單，並提早一星期約好時間。",
+        "Result": "下個循環 sign-off 早兩日到，兩個檢查點亦更早發現一個阻塞問題。",
+        "vague": "sign-off 成日都遲，好有壓力。",
+        "exaggerated": "我修好咗承辦商成個交付管治。",
+        "no_data": "改完之後 sign-off 早咗。"
+      }
+    },
+    {
+      "id": "ba-07",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Data analysis",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "Five years in at an insurer, a claims project had three stakeholders who each believed they had approved a different scope.",
+        "Task": "I had to write one scope everyone would recognise, before the developer wrote more code against guesses.",
+        "Action": "I collected the three versions, marked each difference with the person and date it came from, and ran a single decision meeting.",
+        "Result": "Two differences were genuine and one was a misunderstanding, and the scope was signed the same week.",
+        "vague": "Several stakeholders had different views about the scope.",
+        "exaggerated": "I ended all scope conflicts in the project.",
+        "no_data": "After the meeting the scope was agreed."
+      },
+      "zh": {
+        "Situation": "喺保險公司做咗五年，一個理賠項目有三位 stakeholder，各自以為批咗唔同範圍。",
+        "Task": "我要寫出一份大家都認得嘅範圍，趁開發仲未按猜測寫更多 code。",
+        "Action": "我收集三個版本，逐項差異標明出自邊個人同日期，再開一次決定會議。",
+        "Result": "兩個差異係真，一個係誤會，範圍同一星期簽好。",
+        "vague": "幾位 stakeholder 對範圍有唔同睇法。",
+        "exaggerated": "我終結咗項目所有範圍衝突。",
+        "no_data": "開完會之後範圍議定咗。"
+      }
+    },
+    {
+      "id": "ba-08",
+      "seniority": "entry",
+      "competencies": [
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first role, a user asked for a new report and could not explain what decision it would support.",
+        "Task": "I needed to understand the decision before asking a developer for anything.",
+        "Action": "I asked what she would do differently if the number were high or low, and wrote the answer as a one-line purpose.",
+        "Result": "The request turned out to be a weekly check she could run herself, and no development was needed.",
+        "vague": "A user asked for a report and it was not clear why.",
+        "exaggerated": "I cancelled a project the company had planned for months.",
+        "no_data": "In the end she used something that already existed."
+      },
+      "zh": {
+        "Situation": "第一份工，有位用戶要求新報表，但講唔出支持咩決定。",
+        "Task": "我要先明白個決定，然後才向開發提任何要求。",
+        "Action": "我問佢數字高或低會令佢做咩唔同嘅事，再把答案寫成一行用途。",
+        "Result": "結果發現只係每週自查，佢自己跑得到，完全唔需要開發。",
+        "vague": "有用戶要報表，但唔清楚為咩。",
+        "exaggerated": "我取消咗公司計劃咗幾個月嘅項目。",
+        "no_data": "最後佢用咗現成嘅嘢。"
+      }
+    },
+    {
+      "id": "ba-09",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Communication",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "At a retail group, the operations team kept asking for a mobile app feature, and the app team kept saying it was out of scope.",
+        "Task": "I sat between them, and I needed a shared view of the cost before anyone decided.",
+        "Action": "I measured how often the task happened per store per week, then put that next to the build estimate in one table.",
+        "Result": "The number was smaller than both sides assumed, and they agreed to solve it with a process change instead.",
+        "vague": "Two teams disagreed about a feature.",
+        "exaggerated": "I prevented a major software project from being built.",
+        "no_data": "In the end both teams agreed on a simpler solution."
+      },
+      "zh": {
+        "Situation": "喺零售集團，營運團隊不停要求 app 加功能，app 團隊就一直話唔喺範圍內。",
+        "Task": "我夾喺中間，要喺有人決定之前畀大家一個共用嘅成本觀。",
+        "Action": "我量度每間店每星期做幾多次，再同開發估算放埋同一張表。",
+        "Result": "數字比雙方估計都細，最後同意用流程改動解決。",
+        "vague": "兩隊對一個功能有爭議。",
+        "exaggerated": "我阻止咗一個重大軟件項目上馬。",
+        "no_data": "最後兩隊同意用簡單方案。"
+      }
+    },
+    {
+      "id": "ba-10",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "Six years in, a failed go-live left the business side refusing to attend any more requirement workshops.",
+        "Task": "I had to rebuild enough trust for one more workshop, and I could not promise a perfect release.",
+        "Action": "I opened with what went wrong, listed the three changes we had made to the process, and asked them to pick the first area to review.",
+        "Result": "They attended, chose a narrow area, and that area went live without a defect in the first week.",
+        "vague": "The business side had lost confidence in the project.",
+        "exaggerated": "I restored the entire relationship with the business single-handedly.",
+        "no_data": "After the workshop, the business side came back to the table."
+      },
+      "zh": {
+        "Situation": "做咗六年，一次失敗上線之後，業務方拒絕再參加任何需求工作坊。",
+        "Task": "我要重建足夠信任搞多一次工作坊，而唔可以承諾完美上線。",
+        "Action": "我一開始就講清楚邊度出事，列出我哋改咗嘅三項流程，再請佢哋揀第一個要檢視嘅範圍。",
+        "Result": "佢哋出席，揀咗一個窄範圍，該範圍上線第一星期零 defect。",
+        "vague": "業務方對項目失去信心。",
+        "exaggerated": "我一個人修復咗同業務方成個關係。",
+        "no_data": "工作坊之後，業務方返返嚟傾。"
+      }
+    },
+    {
+      "id": "ba-11",
+      "seniority": "entry",
+      "competencies": [
+        "Data analysis",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I was asked to justify why a manual approval step should stay in a new system.",
+        "Task": "I had to answer with evidence rather than opinion, even though the step had a senior sponsor.",
+        "Action": "I pulled three months of approvals, counted how many were changed at that step, and wrote the count with two examples.",
+        "Result": "The step was kept because four per cent of cases really were corrected there, and the sponsor got a defensible reason.",
+        "vague": "There was a discussion about an approval step.",
+        "exaggerated": "I proved the senior sponsor was right about everything.",
+        "no_data": "In the end the step stayed in the new system."
+      },
+      "zh": {
+        "Situation": "做半年合約期間，有人叫我證明新系統為何要保留一個手動審批步驟。",
+        "Task": "我要用證據而唔係意見回答，即使該步驟有位高層支持。",
+        "Action": "我抽三個月審批紀錄，數出有幾多喺該步被改，再連兩個例子寫出嚟。",
+        "Result": "因為確實有 4% 個案喺該步被改正，步驟保留，而支持者有個站得住腳嘅理由。",
+        "vague": "有個關於審批步驟嘅討論。",
+        "exaggerated": "我證明咗高層所有講法都對。",
+        "no_data": "最後該步驟保留喺新系統。"
+      }
+    },
+    {
+      "id": "ba-12",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "At a logistics company, a new scanning process was rolled out to nine depots and three of them quietly went back to paper.",
+        "Task": "I was asked to find out why, and to report what I found without softening it.",
+        "Action": "I called the three supervisors, found the scan step added twelve seconds per parcel at their volume, and wrote the finding for the project board.",
+        "Result": "The board changed the step for high-volume depots, and the three depots adopted the system.",
+        "vague": "Some depots did not use the new process.",
+        "exaggerated": "I rolled out the process to every depot successfully.",
+        "no_data": "After the change the depots used the system."
+      },
+      "zh": {
+        "Situation": "喺物流公司，新掃描流程推去九個貨倉，其中三個靜靜雞用返紙。",
+        "Task": "我要查出原因，並如實報告而唔修飾。",
+        "Action": "我打電話問三位主管，發現以佢哋貨量，掃描步驟每件多十二秒，於是把發現寫畀項目委員會。",
+        "Result": "委員會為高貨量貨倉改咗個步驟，三個倉之後採用系統。",
+        "vague": "有啲貨倉冇用新流程。",
+        "exaggerated": "我成功推廣新流程去每個貨倉。",
+        "no_data": "改完之後啲倉都用咗。"
+      }
+    }
+  ]
+}

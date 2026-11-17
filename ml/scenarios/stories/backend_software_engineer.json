@@ -1,0 +1,326 @@
+{
+  "role_family": "backend_software_engineer",
+  "stories": [
+    {
+      "id": "bk-01",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Databases",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "During my internship at a small logistics firm, the internal booking API sometimes created two orders for the same delivery slot.",
+        "Task": "I was responsible for the booking endpoint, and my goal was to stop the duplicate orders before the peak week.",
+        "Action": "I added a unique key on slot and customer, wrapped the insert in one transaction, and wrote a test that fired two requests together.",
+        "Result": "Duplicate orders stopped completely, and the double-booking cases we followed up dropped from about six a week to none.",
+        "vague": "It was a busy internship and the booking system had some issues now and then.",
+        "exaggerated": "Honestly I rebuilt the whole booking system myself and it worked perfectly the first time.",
+        "no_data": "After that the duplicates stopped and the support colleagues seemed much happier with us."
+      },
+      "zh": {
+        "Situation": "實習嗰間物流公司，內部 booking API 有時會同一個時段開兩張單。",
+        "Task": "我負責 booking endpoint，目標係旺季之前唔再出現重複訂單。",
+        "Action": "我加咗 slot 同 customer 嘅 unique key，將 insert 包成一個 transaction，再寫個同時發兩個 request 嘅測試。",
+        "Result": "重複訂單完全停咗，每星期跟進嘅 double booking case 由大約六單變零。",
+        "vague": "實習嗰時都幾忙，個系統偶爾有啲問題。",
+        "exaggerated": "老實講成個 booking 系統幾乎係我自己一個人重寫，一次就完美。",
+        "no_data": "之後就冇再重複，support 同事都好似開心咗。"
+      }
+    },
+    {
+      "id": "bk-02",
+      "seniority": "early",
+      "competencies": [
+        "Databases",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my second year at a payments team, the nightly reconciliation job started missing the six o'clock deadline.",
+        "Task": "I owned that batch job, and I needed to bring the run back inside the window without changing the payout logic.",
+        "Action": "I read the query plan, added a composite index on merchant and settle date, and moved the status filter into the join.",
+        "Result": "The job finished in six minutes instead of forty, so the finance team got the file before their cut-off again.",
+        "vague": "The batch job was slow and everyone was chasing us about it.",
+        "exaggerated": "I single-handedly fixed the entire payments platform and nobody else touched it.",
+        "no_data": "The job became much faster after that and finance stopped chasing."
+      },
+      "zh": {
+        "Situation": "我做支付團隊第二年，每晚嘅對帳 job 開始趕唔到六點死線。",
+        "Task": "我負責嗰個 batch job，要喺唔改付款邏輯嘅前提下，令佢返到時間窗之內。",
+        "Action": "我睇 query plan，加咗 merchant 加 settle date 嘅 composite index，再將 status filter 推入 join。",
+        "Result": "個 job 由四十分鐘縮到六分鐘，財務組又可以喺 cut-off 前收到檔案。",
+        "vague": "個 batch job 好慢，個個都追住我哋要。",
+        "exaggerated": "成個支付平台係我一个人修好，其他人冇掂過。",
+        "no_data": "之後個 job 快咗好多，財務都冇再追。"
+      }
+    },
+    {
+      "id": "bk-03",
+      "seniority": "early",
+      "competencies": [
+        "Testing",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "While we were moving a legacy .NET service to a new host, small contract differences kept breaking the mobile client.",
+        "Task": "My task was to make the migration safe, and to keep the response shape identical for the client team.",
+        "Action": "I captured the real responses first, then wrote contract tests that compared field names and types before every deploy.",
+        "Result": "The deploy went out in one evening, and the client team reported no breakage in the following two weeks.",
+        "vague": "There was a migration project and some things broke along the way.",
+        "exaggerated": "I owned the whole migration and delivered it flawlessly without any help from the team.",
+        "no_data": "The migration went out and the client team did not complain afterwards."
+      },
+      "zh": {
+        "Situation": "我哋把一個舊 .NET 服務搬去新 host 嗰陣，介面上嘅細微差異不停整壞 mobile client。",
+        "Task": "我嘅任務係令搬遷安全，並確保回傳格式對 client team 完全一樣。",
+        "Action": "我先抄低真實 response，再寫 contract test，每次 deploy 前比對欄位名同 type。",
+        "Result": "個 deploy 一個晚上就出咗，之後兩個星期 client team 都冇報過壞。",
+        "vague": "有個搬遷專題，途中都壞咗啲嘢。",
+        "exaggerated": "成個搬遷係我自己做，完全冇要團隊幫手，亦冇出過錯。",
+        "no_data": "搬遷出咗之後，client team 都冇再出聲。"
+      }
+    },
+    {
+      "id": "bk-04",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Teamwork",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "During a release week two years in, a migration locked a production table and the checkout page returned errors for about twenty minutes.",
+        "Task": "As the on-call engineer, I had to decide whether to roll back or push forward, and then explain the choice to the team.",
+        "Action": "I stopped the migration, restored the previous index from the backup, and ran the change again in a smaller batch.",
+        "Result": "Checkout recovered inside the same hour, and the postmortem changed our rule so migrations run off-peak.",
+        "vague": "There was a production problem during a release and it was quite stressful.",
+        "exaggerated": "The platform would have been down for days if I had not personally saved it.",
+        "no_data": "Checkout came back and we wrote up what happened afterwards."
+      },
+      "zh": {
+        "Situation": "做咗兩年之後嘅一次發佈，一個 migration lock 住 production 表，checkout 頁大約二十分鐘出錯。",
+        "Task": "我係 on-call，要決定 rollback 定繼續推，然後向團隊解釋個決定。",
+        "Action": "我停咗個 migration，由 backup 還原舊 index，再用細啲嘅 batch 重跑一次。",
+        "Result": "checkout 同一小時內恢復，事後檢討亦改咗規則，migration 只喺非繁忙時間跑。",
+        "vague": "發佈期間有個 production 問題，都幾緊張。",
+        "exaggerated": "如果我唔係親自救返，個平台大概會死幾日。",
+        "no_data": "checkout 之後恢復返，我哋事後寫低咗發生咩事。"
+      }
+    },
+    {
+      "id": "bk-05",
+      "seniority": "early",
+      "competencies": [
+        "Teamwork",
+        "Testing",
+        "Software design"
+      ],
+      "en": {
+        "Situation": "In a team of five, code review had become a bottleneck because two senior developers reviewed everything alone.",
+        "Task": "I wanted reviews to move faster without lowering what we checked, and I needed the team to agree to it.",
+        "Action": "I proposed a review roster, added a short checklist to the pull request template, and paired with one teammate on the trickiest module.",
+        "Result": "Median review wait fell from two days to one, and the checklist caught two missing null checks in the first sprint.",
+        "vague": "Reviews were a bit slow in the team and people were not happy.",
+        "exaggerated": "I fixed the whole review culture of the company on my own.",
+        "no_data": "Reviews got faster after that and the team seemed fine with the new rule."
+      },
+      "zh": {
+        "Situation": "五人團隊裡面，code review 變咗瓶頸，因為兩個 senior 要自己睇晒所有 PR。",
+        "Task": "我想 review 快啲，但唔想降低檢查標準，亦要團隊同意先做得成。",
+        "Action": "我提出 review roster，在 PR template 加簡短 checklist，再同一位同事 pair 做最麻煩嘅 module。",
+        "Result": "等 review 嘅中位數由兩日變一日，checklist 第一個 sprint 就捉到兩個漏咗嘅 null check。",
+        "vague": "團隊 review 有啲慢，大家都有啲唔滿意。",
+        "exaggerated": "公司成個 review 文化係我自己一個人改好嘅。",
+        "no_data": "之後 review 快咗，團隊好似都接受新規則。"
+      }
+    },
+    {
+      "id": "bk-06",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Databases",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "For my final-year project I built the membership API for a student society, and we had no budget for a managed database.",
+        "Task": "I was responsible for the schema and the endpoints, and my goal was a system the next committee could still run.",
+        "Action": "I designed the tables with one owner per field, wrote migration scripts, and added seed data plus endpoint tests to the readme.",
+        "Result": "The handover ran without me in the room, and the committee shipped two small features in the next term.",
+        "vague": "It was a school project and the database part was mostly fine.",
+        "exaggerated": "I designed a production-grade system that no student had ever built before.",
+        "no_data": "The handover went well and the committee kept using it."
+      },
+      "zh": {
+        "Situation": "畢業專題我幫一個學會寫會員 API，但我哋冇錢買 managed database。",
+        "Task": "我負責 table 設計同 endpoint，目標係下一屆莊員都仍然跑得順。",
+        "Action": "我每個欄位只留一個 owner，寫 migration script，再加 seed data 同 endpoint test 落 readme。",
+        "Result": "交接嗰日我唔喺場都做得成，下一屆仲加咗兩個細功能。",
+        "vague": "係個學校專題，database 部分大概冇問題。",
+        "exaggerated": "我設計咗一個學生從來未做過嘅 production 級系統。",
+        "no_data": "交接順利，學會之後一直用住。"
+      }
+    },
+    {
+      "id": "bk-07",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "At a bank's IT department, a nightly settlement interface silently dropped entries whenever the counterparty file arrived a few minutes late.",
+        "Task": "I was the second engineer on that interface, and my job was to make a late file a visible event, not a silent loss.",
+        "Action": "I added a check on expected control totals, made the batch fail loudly with a one-line reason, and wrote the runbook for the operations desk.",
+        "Result": "Two late files were caught in the first month, and the operations team could re-run them without calling us.",
+        "vague": "The interface had problems sometimes and we had to look into it.",
+        "exaggerated": "I took over the whole settlement platform and rewrote it end to end.",
+        "no_data": "After the change the late files were noticed and handled properly."
+      },
+      "zh": {
+        "Situation": "喺銀行 IT 部門，每晚結算介面只要對方檔案遲幾分鐘到，就會靜靜漏數。",
+        "Task": "我係個介面嘅第二工程師，任務係令「檔案遲到」變成睇得見嘅事件，而唔係無聲漏失。",
+        "Action": "我加咗 control total 核對，令 batch 失敗時大聲報錯並附一行原因，再寫 operations 嘅 runbook。",
+        "Result": "第一個月就捉到兩次遲到檔案，營運同事可以自己重跑，唔需要打電話搵我哋。",
+        "vague": "個介面有啲時候會出問題，我哋要去查。",
+        "exaggerated": "我接手成個結算平台，由頭到尾重寫。",
+        "no_data": "改完之後，遲到嘅檔案都有人發現同處理。"
+      }
+    },
+    {
+      "id": "bk-08",
+      "seniority": "entry",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "At a small startup with four engineers, one customer's import job sent more requests than our API allowed and blocked everyone else.",
+        "Task": "I was given the rate limiting work in my third month, with no existing tests to lean on.",
+        "Action": "I added a per-tenant token bucket, returned a clear retry-after header, and wrote a test that hammers one tenant while another stays fast.",
+        "Result": "The noisy tenant stopped affecting others, and the customer kept their import without us banning them.",
+        "vague": "One customer was using too much and it caused issues for the rest.",
+        "exaggerated": "I designed the company's entire API gateway on my own.",
+        "no_data": "The other customers stopped being affected after that."
+      },
+      "zh": {
+        "Situation": "一間四個工程師嘅 startup，有個客戶嘅 import job 送 request 超過 API 上限，塞住其他所有人。",
+        "Task": "第三個月我接手做 rate limiting，而當時完全冇現成測試可以靠。",
+        "Action": "我加咗 per-tenant token bucket，回傳清楚嘅 retry-after header，再寫個測試：一邊狂打一個 tenant，另一邊要保持快。",
+        "Result": "嘈嘅 tenant 唔再影響其他人，客戶亦唔需要被封鎖就保住個 import。",
+        "vague": "有個客戶用太多，搞到其他人都有問題。",
+        "exaggerated": "公司成個 API gateway 係我一個人設計。",
+        "no_data": "之後其他客就冇再受影響。"
+      }
+    },
+    {
+      "id": "bk-09",
+      "seniority": "mid",
+      "competencies": [
+        "Software design",
+        "Testing",
+        "Databases",
+        "Teamwork"
+      ],
+      "en": {
+        "Situation": "On a six-month contract at a vendor, I inherited a reporting service with no tests, no owner, and a client who wanted three new fields by Friday.",
+        "Task": "I had to add the fields without breaking the client's nightly export, and I had to get the client to agree to a check first.",
+        "Action": "I froze the current output as a baseline file, added a comparison test to the build, and agreed one extra day with the client for that test.",
+        "Result": "The three fields shipped on the Monday, and the baseline test caught a column rename two releases later.",
+        "vague": "It was a contract role and the code had no tests when I joined.",
+        "exaggerated": "I saved the whole client relationship by myself in one week.",
+        "no_data": "The fields shipped and the export kept working."
+      },
+      "zh": {
+        "Situation": "喺 vendor 做一份半年合約，我接手一個冇測試、冇 owner 嘅報表服務，客戶想星期五前加三個欄位。",
+        "Task": "我要加欄位但唔可以搞壞客戶每晚嘅 export，而且要客戶先同意加個檢查。",
+        "Action": "我把現有輸出 freeze 成 baseline 檔，在 build 加比較測試，再同客戶講好要多一日做呢個測試。",
+        "Result": "三個欄位星期一準時出，而個 baseline 測試喺兩個版本之後捉到一個欄位改名。",
+        "vague": "係合約職位，我入去嗰時啲 code 冇測試。",
+        "exaggerated": "我一個星期救返成個客戶關係。",
+        "no_data": "欄位準時出咗，export 一直正常。"
+      }
+    },
+    {
+      "id": "bk-10",
+      "seniority": "early",
+      "competencies": [
+        "Databases",
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Working for a government-adjacent contractor, an audit asked us to prove who changed a price record and when.",
+        "Task": "My task was to answer that question for six months of history without pretending to know more than the logs held.",
+        "Action": "I added an append-only audit table with user and timestamp, backfilled what the old log files supported, and wrote a query the auditor could run.",
+        "Result": "The audit closed with two gaps documented instead of a finding, and every later change was traceable.",
+        "vague": "There was an audit and we needed to show some history.",
+        "exaggerated": "I made the whole system fully auditable in a week with no help.",
+        "no_data": "In the end the auditor accepted what we gave them."
+      },
+      "zh": {
+        "Situation": "喺一間政府相關嘅承辦商做，審計要求我哋證明邊個幾時改過價錢紀錄。",
+        "Task": "我要為六個月歷史回答呢條問題，同時唔可以假裝知道 log 冇記錄嘅事。",
+        "Action": "我加咗 append-only audit 表記錄用戶同時間，用舊 log 補回可支持嘅部分，再寫條審計員自己跑得到嘅 query。",
+        "Result": "審計最後只列出兩個已記錄嘅缺口，唔算 finding，之後每次改動都追得到。",
+        "vague": "有次審計，我哋要展示啲歷史紀錄。",
+        "exaggerated": "我一個星期冇人幫手就令成個系統完全可審計。",
+        "no_data": "最後審計員接受咗我哋交嘅嘢。"
+      }
+    },
+    {
+      "id": "bk-11",
+      "seniority": "entry",
+      "competencies": [
+        "Teamwork",
+        "Software design",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "In my internship team, two of us edited the same helper library and broke each other's work twice in one week.",
+        "Task": "I offered to set a simple rule for that library, and I needed my teammate to accept it rather than feel blamed.",
+        "Action": "I asked what annoyed him about the current flow, then proposed one branch per change plus a test run before pushing.",
+        "Result": "We stopped overwriting each other, and the library got its first three tests in the same week.",
+        "vague": "We had some clashes when editing the same files.",
+        "exaggerated": "I fixed the team's whole development process while I was an intern.",
+        "no_data": "After that we did not break each other's work any more."
+      },
+      "zh": {
+        "Situation": "實習團隊裡面，我同另一位同學改同一個 helper library，一個星期內互相破壞咗兩次。",
+        "Task": "我提出為個 library 定個簡單規矩，但要佢接受而唔係覺得被怪責。",
+        "Action": "我先問佢覺得現時流程邊度煩，再提出一個改動一個 branch，push 之前先跑測試。",
+        "Result": "之後我哋冇再互相覆蓋，個 library 同一星期有咗頭三個測試。",
+        "vague": "我哋改同一個檔嘅時候有啲碰撞。",
+        "exaggerated": "我實習期間就改好咗團隊成個開發流程。",
+        "no_data": "之後我哋冇再破壞對方嘅工作。"
+      }
+    },
+    {
+      "id": "bk-12",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "During an online sale at a retailer, checkout failed for about fifteen minutes because a promotion query scanned the whole orders table.",
+        "Task": "As the most senior engineer on shift, I had to restore checkout, then tell the business what had happened without hiding it.",
+        "Action": "I disabled the promotion rule, added an index on the campaign column, and joined the incident call to explain the timeline in plain terms.",
+        "Result": "Checkout was back in twelve minutes, and the coupon rule was re-enabled the next day with a load check in staging.",
+        "vague": "There was an outage during a sale and it was quite serious.",
+        "exaggerated": "I prevented a total platform failure single-handedly that night.",
+        "no_data": "Checkout came back and the promotion ran again later."
+      },
+      "zh": {
+        "Situation": "一間零售商網上大特賣，checkout 因為一個 promotion query 掃晒成張 orders 表，斷咗大約十五分鐘。",
+        "Task": "我係當更最資深嘅工程師，要恢復 checkout，然後如實向業務解釋發生咩事。",
+        "Action": "我先停咗個 promotion 規則，為 campaign 欄位加 index，再入 incident call 用簡單講法解釋時間線。",
+        "Result": "checkout 十二分鐘內回復，優惠規則第二日在 staging 做過壓力檢查才重新開啟。",
+        "vague": "特賣期間出咗次故障，都幾嚴重。",
+        "exaggerated": "嗰晚全靠我一個人阻止咗整個平台倒下。",
+        "no_data": "checkout 之後回復，優惠後來再開返。"
+      }
+    }
+  ]
+}

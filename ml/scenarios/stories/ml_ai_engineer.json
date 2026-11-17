@@ -1,0 +1,323 @@
+{
+  "role_family": "ml_ai_engineer",
+  "stories": [
+    {
+      "id": "ml-01",
+      "seniority": "entry",
+      "competencies": [
+        "Machine learning",
+        "Python",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "For my final-year project I classified student feedback comments into four themes with only 900 labelled rows.",
+        "Task": "My goal was an honest evaluation, not the highest score I could report.",
+        "Action": "I set a majority-class baseline, used five-fold cross validation, and wrote the confusion matrix per theme in the report.",
+        "Result": "My model beat the baseline on three themes and tied on one, and the report said so.",
+        "vague": "The project was about classifying comments and it went okay.",
+        "exaggerated": "I achieved near-perfect accuracy that no one had reached before.",
+        "no_data": "The model did better than the baseline and the report was accepted."
+      },
+      "zh": {
+        "Situation": "畢業專題我用 900 行標註數據，把學生評語分成四類。",
+        "Task": "我嘅目標係誠實評估，而唔係報告最好睇嘅分數。",
+        "Action": "我設 majority-class baseline，用五折交叉驗證，報告每個類別嘅 confusion matrix。",
+        "Result": "模型喺三類贏 baseline，一類打成平手，報告就係咁寫。",
+        "vague": "個專題係分類評語，做得還可以。",
+        "exaggerated": "我做到前所未有嘅接近完美準確率。",
+        "no_data": "模型好過 baseline，報告都收貨。"
+      }
+    },
+    {
+      "id": "ml-02",
+      "seniority": "early",
+      "competencies": [
+        "Machine learning",
+        "Python",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "At a subscription company, the churn model was retrained every quarter but nobody watched it between retrains.",
+        "Task": "I proposed a simple monitoring check, and I had to keep it small enough to run on our existing job.",
+        "Action": "I logged weekly score distribution and input null rates, set a threshold on the mean score shift, and wrote one page on what to do when it fires.",
+        "Result": "The check fired once in four months during a pricing change, and we retrained two weeks earlier than planned.",
+        "vague": "We had a churn model and it was checked occasionally.",
+        "exaggerated": "I built a full MLOps platform for the company by myself.",
+        "no_data": "The monitoring gave us an early warning once."
+      },
+      "zh": {
+        "Situation": "喺一間訂閱制公司，churn model 每季重訓，但兩次重訓之間冇人睇。",
+        "Task": "我提出一個簡單監控，但要好細，可以喺現有 job 上跑。",
+        "Action": "我每星期記錄分數分佈同輸入 null 比率，為平均分變動設門檻，再寫一頁講觸發時點做。",
+        "Result": "四個月內一次定價改動期間觸發咗，我哋提早兩星期重訓。",
+        "vague": "我哋有個 churn model，偶爾會睇下。",
+        "exaggerated": "我一個人為公司建立咗完整 MLOps 平台。",
+        "no_data": "監控有一次幫我哋提早發現問題。"
+      }
+    },
+    {
+      "id": "ml-03",
+      "seniority": "early",
+      "competencies": [
+        "Machine learning",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "At a support team, I was asked to auto-tag incoming tickets, but the existing labels had been applied by five people with no guide.",
+        "Task": "I had to fix the labels before modelling, and explain to the team why the first model looked weaker after that.",
+        "Action": "I sampled fifty tickets per label, wrote a one-page labelling guide with examples, and had two colleagues relabel a shared set.",
+        "Result": "Agreement between the two colleagues was 0.71 on the shared set, and the model trained on the cleaner labels was easier to explain.",
+        "vague": "The ticket labels were inconsistent and it made modelling hard.",
+        "exaggerated": "I solved the company's entire support automation problem.",
+        "no_data": "After relabelling, the model was more consistent."
+      },
+      "zh": {
+        "Situation": "喺 support 團隊，有人叫我自動為 ticket 加標籤，但現有標籤係五個人冇指南咁加上去。",
+        "Task": "我要先修好標籤才建模，並向團隊解釋點解第一個模型修完之後睇落更差。",
+        "Action": "我每個標籤抽五十張 ticket，寫一頁有例子嘅標註指南，再請兩位同事重標同一批。",
+        "Result": "兩位同事喺共用樣本上一致度係 0.71，用乾淨標籤訓練嘅模型亦容易解釋啲。",
+        "vague": "ticket 標籤唔一致，令建模好難。",
+        "exaggerated": "我解決咗公司成個客服自動化問題。",
+        "no_data": "重標之後模型一致啲。"
+      }
+    },
+    {
+      "id": "ml-04",
+      "seniority": "mid",
+      "competencies": [
+        "Machine learning",
+        "Software design",
+        "Python"
+      ],
+      "en": {
+        "Situation": "Four years in, our recommendation endpoint took 900 milliseconds at peak and the app hid the section on slow networks.",
+        "Task": "I had to cut the response time, and I wanted to change the serving path without retraining the model.",
+        "Action": "I precomputed neighbours nightly, cached the top fifty per user, and kept a live fallback for new users.",
+        "Result": "The p95 came down to 120 milliseconds, and the app stopped hiding the section.",
+        "vague": "The recommendation endpoint was slow at peak hours.",
+        "exaggerated": "I made the recommendation system the fastest in the market.",
+        "no_data": "Response time improved and the section stayed visible."
+      },
+      "zh": {
+        "Situation": "做咗四年，推薦 endpoint 高峯時要 900 毫秒，app 喺慢網絡會索性收起個區塊。",
+        "Task": "我要減低回應時間，並希望改 serving 路徑而唔重訓模型。",
+        "Action": "我每晚預算鄰居，為每個用戶 cache 頭五十個，並為新用戶保留即時計算 fallback。",
+        "Result": "p95 跌到 120 毫秒，app 唔再收起個區塊。",
+        "vague": "推薦 endpoint 高峯時好慢。",
+        "exaggerated": "我令推薦系統成為市場最快。",
+        "no_data": "回應時間改善，區塊保持顯示。"
+      }
+    },
+    {
+      "id": "ml-05",
+      "seniority": "entry",
+      "competencies": [
+        "Machine learning",
+        "Python",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my internship, I was asked to improve a course recommender and the team only measured click-through.",
+        "Task": "I needed a baseline first, and I had to be careful not to claim an improvement the data could not support.",
+        "Action": "I rebuilt the popularity baseline, added a simple content-based model, and compared both on a time-based holdout.",
+        "Result": "The content model was better on recall at ten but worse on coverage, and I reported both.",
+        "vague": "I worked on a recommender and tried a few models.",
+        "exaggerated": "My model doubled the engagement of the platform.",
+        "no_data": "The new model looked better on some measures and I reported that."
+      },
+      "zh": {
+        "Situation": "實習時有人叫我改善課程推薦，而團隊只量度點擊率。",
+        "Task": "我要先有 baseline，同時唔可以聲稱數據支持唔到嘅改善。",
+        "Action": "我重做 popularity baseline，加一個簡單 content-based 模型，再喺按時間切分嘅 holdout 上比較。",
+        "Result": "content 模型喺 recall@10 好啲但 coverage 差啲，我兩個都報。",
+        "vague": "我做推薦，試咗幾個模型。",
+        "exaggerated": "我個模型令平台互動翻倍。",
+        "no_data": "新模型喺部分指標好啲，我就照咁報。"
+      }
+    },
+    {
+      "id": "ml-06",
+      "seniority": "early",
+      "competencies": [
+        "Software design",
+        "Python",
+        "Machine learning"
+      ],
+      "en": {
+        "Situation": "At a startup, the model was correct in notebooks but the API returned wrong labels for about one request in a hundred.",
+        "Task": "I owned the serving API, and I had to find the difference between the notebook and production.",
+        "Action": "I logged the raw payload for every request, found the client sent numbers as strings, and added validation with a clear 422 response.",
+        "Result": "Wrong labels stopped, and the client fixed their serialisation after seeing our error message.",
+        "vague": "The API returned some wrong results and we investigated.",
+        "exaggerated": "I rewrote the whole inference service from scratch.",
+        "no_data": "After the change the wrong labels stopped."
+      },
+      "zh": {
+        "Situation": "喺 startup，模型喺 notebook 好準，但 API 每百個 request 有一個標籤錯。",
+        "Task": "我負責 serving API，要找出 notebook 同 production 嘅差異。",
+        "Action": "我記錄每個 request 嘅原始 payload，發現客戶把數字當字串送，於是加驗證並回傳清楚嘅 422。",
+        "Result": "錯標籤停止，客戶睇到我哋嘅錯誤訊息之後修正咗序列化。",
+        "vague": "API 有啲結果唔對，我哋去查。",
+        "exaggerated": "我由零重寫咗成個 inference service。",
+        "no_data": "改完之後錯標籤停咗。"
+      }
+    },
+    {
+      "id": "ml-07",
+      "seniority": "mid",
+      "competencies": [
+        "Machine learning",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "At a bank, the risk team would not approve a credit model they could not explain to a regulator.",
+        "Task": "I had to trade a little accuracy for explanation, and say clearly what we were giving up.",
+        "Action": "I compared a gradient boosting model with a simpler scoring model, then produced per-feature contributions for the top denials.",
+        "Result": "The simpler model lost two points of AUC but passed review, and the denial letters had a defensible reason each.",
+        "vague": "There was a model approval discussion with the risk team.",
+        "exaggerated": "I got a credit model approved by a regulator myself.",
+        "no_data": "The simpler model was approved and the letters were clearer."
+      },
+      "zh": {
+        "Situation": "喺銀行，風險團隊唔會批一個解釋唔到畀監管機構嘅信貸模型。",
+        "Task": "我要用少少準確度換解釋能力，並清楚講出我哋放棄咗咩。",
+        "Action": "我比較 gradient boosting 同簡單評分模型，再為主要拒絕個案計每個特徵嘅貢獻。",
+        "Result": "簡單模型 AUC 低兩點但過到審核，拒絕信每封都有站得住腳嘅理由。",
+        "vague": "同風險團隊有一次模型批核討論。",
+        "exaggerated": "我一個人令監管機構批咗個信貸模型。",
+        "no_data": "簡單模型獲批，拒絕信清楚咗。"
+      }
+    },
+    {
+      "id": "ml-08",
+      "seniority": "entry",
+      "competencies": [
+        "Data analysis",
+        "Machine learning"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I joined a labelling effort where four part-timers tagged 6,000 images with no shared examples.",
+        "Task": "I was asked to raise consistency, without becoming the person who relabelled everything alone.",
+        "Action": "I built a twenty-image reference sheet with edge cases, ran a short calibration round, and kept a shared log of disagreements.",
+        "Result": "Disagreement dropped from about one in four images to one in nine over three weeks.",
+        "vague": "The labelling work was inconsistent between people.",
+        "exaggerated": "I fixed the labelling quality of the whole project by myself.",
+        "no_data": "After the calibration, people labelled more consistently."
+      },
+      "zh": {
+        "Situation": "做半年合約，我加入一個標註項目，四個兼職同事標 6,000 張圖但冇共用例子。",
+        "Task": "我要提高一致性，但唔想變成自己一個人重標所有嘢。",
+        "Action": "我做咗一張廿張圖嘅參考表，包含邊界個案，做一次短校準，再開共用 log 記低分歧。",
+        "Result": "三星期內分歧由大約四張有一張，跌到九張有一張。",
+        "vague": "標註工作各人做法唔一致。",
+        "exaggerated": "我一個人修好咗整個項目嘅標註質量。",
+        "no_data": "校準之後大家標得一致啲。"
+      }
+    },
+    {
+      "id": "ml-09",
+      "seniority": "early",
+      "competencies": [
+        "Python",
+        "Machine learning",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "Two of us trained models in the same repo and our numbers never matched, even with the same data.",
+        "Task": "I took on the comparison problem, and I wanted runs I could defend to my teammate.",
+        "Action": "I fixed one split and seed, logged every hyperparameter, and wrote a small script that reruns both configs and prints a table.",
+        "Result": "One teammate's run had been leaking the target through an id column, and after the fix the gap was under one point.",
+        "vague": "Our experiment results did not match and it was confusing.",
+        "exaggerated": "I designed the team's whole experiment process.",
+        "no_data": "After fixing the setup, our results were close."
+      },
+      "zh": {
+        "Situation": "我同另一位同事喺同一個 repo 訓練模型，就算數據一樣，數字都對唔上。",
+        "Task": "我接手處理比較問題，想要啲可以向同事解釋嘅 run。",
+        "Action": "我固定同一個 split 同 seed，記錄每個 hyperparameter，寫個細 script 重跑兩套 config 並印表。",
+        "Result": "發現同事個 run 透過 id 欄位漏咗 target 資訊，修好之後差距少過一個百分點。",
+        "vague": "我哋實驗結果對唔上，好混亂。",
+        "exaggerated": "我設計咗團隊成個實驗流程。",
+        "no_data": "修好設定之後，結果接近咗。"
+      }
+    },
+    {
+      "id": "ml-10",
+      "seniority": "mid",
+      "competencies": [
+        "Machine learning",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "Five years in at a retailer, the demand model degraded after a promotion calendar changed, and the planners lost confidence in it.",
+        "Task": "I had to decide whether to retrain, reframe, or switch the planners back to their old sheet.",
+        "Action": "I compared error by week, found the promotion features were flat during the new calendar, and added a promotion-type feature with two weeks of backtesting.",
+        "Result": "Weekly error came back inside the old range, and the planners used the forecast again from the next cycle.",
+        "vague": "The forecast became less accurate after some changes.",
+        "exaggerated": "I saved the entire forecasting function of the business.",
+        "no_data": "After the retrain the forecast error was acceptable again."
+      },
+      "zh": {
+        "Situation": "喺零售做咗五年，推廣日曆一改，需求模型就變差，規劃同事開始唔信佢。",
+        "Task": "我要決定係重訓、改框架，定係叫同事用返舊 spreadsheet。",
+        "Action": "我按星期比較誤差，發現推廣特徵喺新日曆下變成常數，於是加 promotion type 特徵並做兩星期回測。",
+        "Result": "每週誤差返到舊範圍，規劃同事下個循環再用返個 forecast。",
+        "vague": "改咗啲嘢之後 forecast 冇咁準。",
+        "exaggerated": "我救返成間公司嘅預測部門。",
+        "no_data": "重訓之後誤差返到可接受水平。"
+      }
+    },
+    {
+      "id": "ml-11",
+      "seniority": "entry",
+      "competencies": [
+        "Machine learning",
+        "Data analysis"
+      ],
+      "en": {
+        "Situation": "In my first job, a fraud model scored 0.99 in offline evaluation and much lower in the pilot.",
+        "Task": "I was asked to explain the gap before we spent more weeks on tuning.",
+        "Action": "I checked the feature list, found a settlement flag that is written after a case is confirmed, and removed it from the training set.",
+        "Result": "Offline AUC fell to a realistic 0.78, and the pilot numbers then matched the offline ones.",
+        "vague": "The model did not perform as expected in the pilot.",
+        "exaggerated": "I discovered a fraud ring through my analysis.",
+        "no_data": "After removing the feature, offline and pilot results were similar."
+      },
+      "zh": {
+        "Situation": "第一份工，個 fraud 模型離線評估 0.99，落到 pilot 就低好多。",
+        "Task": "我要喺再花幾個星期調參之前，解釋呢個差距。",
+        "Action": "我逐個特徵檢查，發現有個 settlement flag 係案件確認後才寫入，於是喺訓練集剔除。",
+        "Result": "離線 AUC 跌到現實嘅 0.78，pilot 數字同離線之後就對得上。",
+        "vague": "模型喺 pilot 表現唔如預期。",
+        "exaggerated": "我透過分析發現咗一個詐騙集團。",
+        "no_data": "剔除特徵之後，離線同 pilot 結果接近。"
+      }
+    },
+    {
+      "id": "ml-12",
+      "seniority": "early",
+      "competencies": [
+        "Machine learning",
+        "Python"
+      ],
+      "en": {
+        "Situation": "Working for a government-adjacent body, I built a text classifier to triage public enquiries and was asked to write its limitations.",
+        "Task": "I had to describe honestly what the model could not do, in language a non-technical reader could act on.",
+        "Action": "I tested it on enquiries from the previous year, recorded the error rate per topic, and wrote a limitations section naming two topics we excluded.",
+        "Result": "The report listed two topics as out of scope, and the team routed those to staff instead of the model.",
+        "vague": "I wrote a section about limitations at the end of the report.",
+        "exaggerated": "I built an AI system that replaces human triage.",
+        "no_data": "The limitations section was accepted and two topics were excluded."
+      },
+      "zh": {
+        "Situation": "喺政府相關機構，我做文字分類器分流公眾查詢，並要寫清楚佢嘅限制。",
+        "Task": "我要用非技術讀者可以行動嘅講法，老實描述模型做唔到咩。",
+        "Action": "我用上一年查詢測試，記錄每個題目嘅錯誤率，並在限制章節列明兩個剔除題目。",
+        "Result": "報告把兩個題目列為範圍外，團隊改為交人手處理。",
+        "vague": "我喺報告最後寫咗一節講限制。",
+        "exaggerated": "我做咗個取代人手分流嘅 AI 系統。",
+        "no_data": "限制章節收貨，兩個題目被剔除。"
+      }
+    }
+  ]
+}

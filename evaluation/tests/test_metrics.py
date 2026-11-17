@@ -1,5 +1,7 @@
+import json
 import unittest
 
+from evaluation import run
 from evaluation.metrics import (
     citation_precision,
     cohens_kappa,
@@ -9,6 +11,41 @@ from evaluation.metrics import (
     sus_score,
     validate_output,
 )
+
+
+def test_no_rag_removes_current_and_legacy_source_fields():
+    passages = [{"text": "Fixture passage"}]
+    payload = {"quoted_sources": passages, "job_sources": passages, "language": "en-HK"}
+    row = {
+        "messages": [
+            {"role": "system", "content": "Fixture"},
+            {"role": "user", "content": json.dumps(payload)},
+            {"role": "assistant", "content": "Fixture target"},
+        ]
+    }
+    assert json.loads(run.model_messages(row)[-1]["content"]) == payload
+    no_rag = json.loads(run.model_messages(row, include_sources=False)[-1]["content"])
+    assert no_rag == {"quoted_sources": [], "job_sources": [], "language": "en-HK"}
+    assert json.loads(row["messages"][1]["content"]) == payload
+
+
+def test_evaluation_refresh_keeps_archived_training_and_benchmark_limits(
+    tmp_path, monkeypatch
+):
+    training = {"status": "training_completed", "reviewed_examples": 971}
+    limit = "Historical no-RAG run needs a rerun."
+    latest = tmp_path / "latest.json"
+    latest.write_text(json.dumps({"recorded_training": training}))
+    (tmp_path / "model.json").write_text(json.dumps({"limitations": [limit]}))
+    monkeypatch.setattr(run, "RESULTS", tmp_path)
+    monkeypatch.setattr(run, "training_metadata", lambda: {"status": "not_trained"})
+
+    run.write_result("smoke", {"status": "software_check"})
+
+    refreshed = json.loads(latest.read_text())
+    assert refreshed["recorded_training"] == training
+    assert refreshed["training"]["status"] == "not_trained"
+    assert limit in refreshed["limitations"]
 
 
 class MetricTests(unittest.TestCase):

@@ -1,0 +1,325 @@
+{
+  "role_family": "security_analyst_soc",
+  "stories": [
+    {
+      "id": "se-01",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Testing",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "In my first SOC role I took the overnight shift, and one alert type fired about eighty times a night for the same service account.",
+        "Task": "My task was to triage fast enough to catch a real incident, without dismissing the noisy alert as harmless.",
+        "Action": "I grouped the alerts by account and source address, found the pattern came from a backup script, and wrote a tuning request with the evidence.",
+        "Result": "The tuning cut the queue by about seventy per cent, and the next real alert was picked up inside four minutes.",
+        "vague": "The alerts were noisy on the night shift and it was tiring.",
+        "exaggerated": "I redesigned the whole monitoring platform on my own.",
+        "no_data": "After the tuning the queue was much smaller."
+      },
+      "zh": {
+        "Situation": "第一份 SOC 工作我上通宵更，同一類 alert 每晚為同一個 service account 響大約八十次。",
+        "Task": "我要 triage 快到捉到真 incident，同時唔可以當個嘈 alert 冇事。",
+        "Action": "我按 account 同來源位址分組，發現係 backup script 引起，再連證據寫 tuning request。",
+        "Result": "tuning 令 queue 減大約七成，下一個真 alert 四分鐘內有人接手。",
+        "vague": "通宵更啲 alert 好嘈，都幾累。",
+        "exaggerated": "我一個人重新設計咗成個監控平台。",
+        "no_data": "tuning 之後 queue 細咗好多。"
+      }
+    },
+    {
+      "id": "se-02",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "At a bank, a manager forwarded a phishing email that asked staff to confirm their password on a page that looked like ours.",
+        "Task": "I was on the mailbox team, and I had to find out who had already clicked before anyone replied to the email.",
+        "Action": "I checked the mail gateway log for the link, listed the six recipients who clicked, and had their sessions reset within the hour.",
+        "Result": "Two accounts had already been tried, both were blocked at login, and the timeline went into the incident report.",
+        "vague": "There was a phishing email and we looked into it.",
+        "exaggerated": "I stopped a full bank breach by myself that morning.",
+        "no_data": "In the end the accounts were reset and nothing was lost."
+      },
+      "zh": {
+        "Situation": "喺銀行，有位主管轉發一封釣魚電郵，叫同事喺同我們相似嘅頁面確認密碼。",
+        "Task": "我喺 mail gateway 組，要喺有人回覆之前查出邊個已經點過。",
+        "Action": "我喺 gateway log 查條連結，列出六位點過嘅收件人，一小時內重置佢哋 session。",
+        "Result": "兩個帳戶曾被人試登入，兩次都喺登入被擋，時間線亦寫入 incident report。",
+        "vague": "有封釣魚電郵，我哋去查。",
+        "exaggerated": "我嗰朝一個人阻止咗全銀行外洩。",
+        "no_data": "最後帳戶重置，冇損失。"
+      }
+    },
+    {
+      "id": "se-03",
+      "seniority": "early",
+      "competencies": [
+        "Problem solving",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "A vulnerability scan reported forty critical findings on one subnet, and the system owner refused to look at them.",
+        "Task": "I had to separate the real risk from the noise before escalating, or the escalation would be ignored.",
+        "Action": "I checked ten findings by hand, found eight were scanner assumptions about an unused service, and re-scanned with credentials.",
+        "Result": "The list came down to six real findings, and the owner fixed four in the same week.",
+        "vague": "The scan produced a lot of findings and nobody acted on them.",
+        "exaggerated": "I closed every vulnerability in that subnet.",
+        "no_data": "After checking, the list was shorter and some were fixed."
+      },
+      "zh": {
+        "Situation": "一次漏洞掃描喺一個 subnet 報咗四十個 critical，而系統 owner 拒絕睇。",
+        "Task": "我要喺升級之前分開真風險同噪音，否則升級都會被無視。",
+        "Action": "我逐個手查十個發現，其中八個係 scanner 對一個未用服務嘅假設，再改用有憑證嘅方式重掃。",
+        "Result": "清單收窄到六個真發現，owner 同一星期修好四個。",
+        "vague": "掃描出咗好多發現，但冇人跟。",
+        "exaggerated": "我關閉咗該 subnet 所有漏洞。",
+        "no_data": "查完之後清單短咗，有啲亦修好。"
+      }
+    },
+    {
+      "id": "se-04",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Four years in, I had to tell a department head that his team's shared account was the cause of an incident, without turning it into a blame session.",
+        "Task": "I needed one behaviour change from his team, agreed the same day.",
+        "Action": "I described what the shared account made impossible to prove, offered a named-account alternative, and let him choose the rollout week.",
+        "Result": "The shared account was retired in three weeks, and he asked for the same review in another team.",
+        "vague": "There was an incident and a shared account was involved.",
+        "exaggerated": "I forced a whole department to change their working practice.",
+        "no_data": "In the end the shared account was removed."
+      },
+      "zh": {
+        "Situation": "做咗四年，我要同一位部門主管講，佢團隊嘅共用帳戶係一次 incident 嘅原因，但唔可以變成追究大會。",
+        "Task": "我要佢團隊改一個做法，而且當日就議定。",
+        "Action": "我講清楚共用帳戶令邊啲事證明唔到，提供有名字帳戶嘅替代方案，再讓佢揀推行那一星期。",
+        "Result": "共用帳戶三星期內退役，佢仲叫另一個團隊做同樣檢視。",
+        "vague": "有次 incident 牽涉一個共用帳戶。",
+        "exaggerated": "我逼到整個部門改變工作方式。",
+        "no_data": "最後共用帳戶被移除。"
+      }
+    },
+    {
+      "id": "se-05",
+      "seniority": "entry",
+      "competencies": [
+        "Testing",
+        "Communication",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my internship, a developer asked me to test a firewall change directly on production because the lab copy was slow.",
+        "Task": "I had to help without approving something I had no authority or evidence for.",
+        "Action": "I asked for the change to go through the normal request, tested it on the lab copy, and sent him the result the same afternoon.",
+        "Result": "The lab test found one rule that blocked our own monitoring, and production went ahead the next day with the fix.",
+        "vague": "There was a request to test something on production.",
+        "exaggerated": "I stopped the company from making a serious mistake.",
+        "no_data": "In the end the change went through the proper path."
+      },
+      "zh": {
+        "Situation": "實習時有位開發同事叫我直接喺 production 測一個 firewall 改動，因為 lab 副本慢。",
+        "Task": "我要幫手，但唔可以批一啲我無權、亦冇證據支持嘅事。",
+        "Action": "我請佢行正常申請流程，我先喺 lab 副本測，當日下午交結果畀佢。",
+        "Result": "lab 測試發現有一條規則會擋住自家監控，第二日 production 帶住修正推行。",
+        "vague": "有人要求喺 production 測嘢。",
+        "exaggerated": "我阻止咗公司犯一個嚴重錯誤。",
+        "no_data": "最後改動行走正常流程。"
+      }
+    },
+    {
+      "id": "se-06",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Databases",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Before an ISO 27001 audit, we had evidence for eight of eleven controls and two weeks to close the gap.",
+        "Task": "I was asked to gather what existed, and to say plainly which controls we could not evidence.",
+        "Action": "I built one folder per control, wrote a one-line status for each, and put the three weak ones at the top of the weekly note.",
+        "Result": "The auditor accepted eight controls outright and raised two minor findings, which was fewer than we expected.",
+        "vague": "The audit needed evidence and some of it was missing.",
+        "exaggerated": "I made the company fully ISO 27001 compliant.",
+        "no_data": "In the end the audit closed with fewer findings than expected."
+      },
+      "zh": {
+        "Situation": "ISO 27001 審計前，十一個控制項我哋只有八個有證據，而只剩兩星期。",
+        "Task": "有人叫我收集現有嘅，並老實講邊幾個控制項冇證據。",
+        "Action": "我為每個控制項開一個 folder，每個寫一行狀態，再把三個弱項放喺每週備註最前面。",
+        "Result": "審計員直接接受八個，另外只提兩個 minor finding，比我哋預期少。",
+        "vague": "審計要證據，而有啲唔見咗。",
+        "exaggerated": "我令公司完全符合 ISO 27001。",
+        "no_data": "最後審計 finding 比預期少。"
+      }
+    },
+    {
+      "id": "se-07",
+      "seniority": "mid",
+      "competencies": [
+        "Problem solving",
+        "Communication",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "Five years in, a login anomaly alert fired for a service account at three in the morning and the on-call engineer escalated straight to me.",
+        "Task": "I had to decide within the hour whether this was an intrusion or a scheduled job.",
+        "Action": "I pulled the process list at that timestamp, matched it to a change ticket raised the previous day, and confirmed it with the owning team.",
+        "Result": "It was a scheduled migration, and the alert was tuned with the ticket id as a reference.",
+        "vague": "An alert fired at night and I had to check it.",
+        "exaggerated": "I prevented a serious intrusion at three in the morning.",
+        "no_data": "In the end it was not an intrusion."
+      },
+      "zh": {
+        "Situation": "做咗五年，凌晨三點一個 service account 觸發登入異常 alert，on-call 直接升級畀我。",
+        "Task": "我要喺一小時內判斷係入侵定排程工作。",
+        "Action": "我抽該時間點嘅 process list，對上前一日開嘅 change ticket，再同負責團隊確認。",
+        "Result": "係排程遷移，alert 之後以 ticket id 作參考做 tuning。",
+        "vague": "夜晚有個 alert，我要查。",
+        "exaggerated": "我凌晨三點阻止咗一次嚴重入侵。",
+        "no_data": "最後證實唔係入侵。"
+      }
+    },
+    {
+      "id": "se-08",
+      "seniority": "entry",
+      "competencies": [
+        "Databases",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "In my first job, an access review asked us to list every account with database write permission.",
+        "Task": "I had to produce the list from the systems rather than from memory.",
+        "Action": "I wrote a query per system, joined the results into one table with owner and last login, and marked the four accounts with no owner.",
+        "Result": "Two of the four belonged to leavers and were disabled that week, and the review became a quarterly script.",
+        "vague": "We needed a list of accounts for a review.",
+        "exaggerated": "I removed all excessive permissions in the company.",
+        "no_data": "After the review, a few accounts were disabled."
+      },
+      "zh": {
+        "Situation": "第一份工，一次權限檢視要我哋列出所有有資料庫寫入權限嘅帳戶。",
+        "Task": "我要由系統產生清單，而唔係憑記憶。",
+        "Action": "我為每個系統寫 query，把結果 join 成一張表連 owner 同最後登入，再標出四個冇 owner 嘅帳戶。",
+        "Result": "其中兩個屬於已離職同事，同一星期已停用，而檢視變成一季一次嘅 script。",
+        "vague": "檢視要一份帳戶清單。",
+        "exaggerated": "我清除咗公司所有過大權限。",
+        "no_data": "檢視之後有幾個帳戶被停用。"
+      }
+    },
+    {
+      "id": "se-09",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Testing"
+      ],
+      "en": {
+        "Situation": "At a bank, three teams wanted to skip the change approval for a firewall rule because the release was that evening.",
+        "Task": "I was the reviewer, and I had to refuse without being the person who blocked the release for no reason.",
+        "Action": "I offered to review within thirty minutes if they sent the rule and the rollback plan, and I reviewed two of the three that way.",
+        "Result": "Two rules went out that evening after review, and the third was wrong in a way the review caught.",
+        "vague": "People wanted to skip approval for a change.",
+        "exaggerated": "I enforced every rule in the change process single-handedly.",
+        "no_data": "In the end two changes went out after review."
+      },
+      "zh": {
+        "Situation": "喺銀行，三個團隊因為當晚發佈，想跳過 firewall 改動嘅審批。",
+        "Task": "我係審批人，要拒絕，但唔想成為無理阻住發佈嘅人。",
+        "Action": "我提出如果佢哋交規則同 rollback 計劃，我三十分鐘內審，結果用呢個方式審咗三個之中兩個。",
+        "Result": "兩個規則當晚審完出街，第三個被審出嚟係錯嘅。",
+        "vague": "有人想跳過改動審批。",
+        "exaggerated": "我一個人執行晒改動流程每條規則。",
+        "no_data": "最後兩個改動審完出咗。"
+      }
+    },
+    {
+      "id": "se-10",
+      "seniority": "mid",
+      "competencies": [
+        "Communication",
+        "Testing",
+        "Problem solving"
+      ],
+      "en": {
+        "Situation": "Six years in, our team ran a tabletop exercise for a ransomware scenario and the first answer from operations was to switch everything off.",
+        "Task": "I had to turn that into a plan with steps, owners and a decision point, in two hours.",
+        "Action": "I drew the timeline on a whiteboard, marked where the decision was missing, and wrote the four steps the team could actually do.",
+        "Result": "The second exercise ran in half the time, and the operations lead brought the plan to the next management meeting.",
+        "vague": "We did an exercise about a ransomware scenario.",
+        "exaggerated": "I wrote the company's complete incident response plan.",
+        "no_data": "The second exercise went better."
+      },
+      "zh": {
+        "Situation": "做咗六年，團隊做勒索軟件情境演練，營運第一位答「全部關掉」。",
+        "Task": "我要喺兩小時內把它變成有步驟、負責人同決策點嘅計劃。",
+        "Action": "我在白板畫時間線，標出邊度缺決策，再寫出團隊實際做得到嘅四步。",
+        "Result": "第二次演練用一半時間完成，營運主管仲把計劃帶去管理層會議。",
+        "vague": "我哋做咗個勒索軟件演練。",
+        "exaggerated": "我寫咗公司完整嘅事故應變計劃。",
+        "no_data": "第二次演練做得好啲。"
+      }
+    },
+    {
+      "id": "se-11",
+      "seniority": "entry",
+      "competencies": [
+        "Problem solving",
+        "Communication"
+      ],
+      "en": {
+        "Situation": "On a six-month contract, I was asked to check whether a contractor really needed admin rights on a file server.",
+        "Task": "I had to answer with evidence and not with a policy quote.",
+        "Action": "I looked at the access log for four weeks, found the account used two folders and never changed permissions, and wrote that up.",
+        "Result": "The contractor kept access to those two folders and lost admin rights, and the work did not stop.",
+        "vague": "Someone asked whether a contractor needed admin rights.",
+        "exaggerated": "I removed all unnecessary admin rights in the company.",
+        "no_data": "In the end the access was reduced and the work continued."
+      },
+      "zh": {
+        "Situation": "做半年合約，有人叫我查一位承辦商同事是否真需要檔案伺服器 admin 權限。",
+        "Task": "我要用證據回答，而唔係引用政策。",
+        "Action": "我睇四星期 access log，發現個帳戶只用兩個 folder、從來冇改權限，於是寫成報告。",
+        "Result": "承辦商保留該兩個 folder 嘅權限但失去 admin，工作冇停過。",
+        "vague": "有人問承辦商要唔要 admin 權限。",
+        "exaggerated": "我清除咗公司所有不必要 admin 權限。",
+        "no_data": "最後權限縮減，工作繼續。"
+      }
+    },
+    {
+      "id": "se-12",
+      "seniority": "early",
+      "competencies": [
+        "Communication",
+        "Problem solving",
+        "Databases"
+      ],
+      "en": {
+        "Situation": "A colleague pasted a customer list into a shared chat to speed up an investigation, and the file stayed there for a week.",
+        "Task": "I had to raise it without making him a cautionary tale in front of the team.",
+        "Action": "I spoke to him first, showed the retention rule, and suggested the ticket attachment we already had.",
+        "Result": "He deleted the file and posted the rule himself in the team channel the next day.",
+        "vague": "A file was shared in a chat channel.",
+        "exaggerated": "I prevented a serious data protection breach.",
+        "no_data": "In the end the file was removed and the rule was shared."
+      },
+      "zh": {
+        "Situation": "有位同事為加快調查，把客戶名單貼入共用 chat，個檔案留咗一個星期。",
+        "Task": "我要提出問題，但唔想令佢喺團隊面前變成反面教材。",
+        "Action": "我先私下同佢講，展示保留規則，再建議用我哋本來已有嘅 ticket 附件。",
+        "Result": "佢刪咗個檔案，第二日仲自己喺團隊頻道貼出規則。",
+        "vague": "有個檔案喺 chat 分享咗。",
+        "exaggerated": "我阻止咗一次嚴重資料保護外洩。",
+        "no_data": "最後檔案移除，規則亦有分享。"
+      }
+    }
+  ]
+}

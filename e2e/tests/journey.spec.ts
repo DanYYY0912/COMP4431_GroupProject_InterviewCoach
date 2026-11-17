@@ -36,6 +36,18 @@ for (const language of ['English', '廣東話']) {
     expect((await downloadPromise).suggestedFilename()).toMatch(
       /^voxprep-debrief-.*\.json$/,
     );
+    const opened = page.waitForEvent('popup');
+    await page.getByRole('button', { name: 'Save report as PDF' }).click();
+    const preview = await opened;
+    await expect(preview.locator('html')).toHaveAttribute(
+      'lang',
+      language === 'English' ? 'en-HK' : 'zh-HK',
+    );
+    await expect(preview.locator('#appendix-a')).toContainText(
+      language === 'English' ? 'latency fell by 30 percent' : '回應時間減少咗三成',
+    );
+    await expect(preview.locator('.cta')).toHaveAttribute('href', page.url());
+    await preview.close();
     expect(
       accessibility.violations.map((v) => ({
         id: v.id,
