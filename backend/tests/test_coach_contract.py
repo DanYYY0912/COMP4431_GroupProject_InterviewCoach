@@ -182,3 +182,35 @@ def test_report_validation_rejects_invalid_evidence_and_language(report, sources
             ["我寫咗 Python 測試。"],
             sources,
         )
+
+
+def test_english_sessions_reject_chinese_drift(question, sources):
+    """A 4B model asked for en-HK still slips into Chinese when the JD or labels are Chinese."""
+    english = {**question, "interviewer_text": "Tell me about a time you used Python."}
+    assert check_question_output(
+        ModelCoachTurn.model_validate(english), ["Python"], "en-HK", sources
+    ).interviewer_text.startswith("Tell me")
+
+    with pytest.raises(ValueError):
+        check_question_output(
+            ModelCoachTurn.model_validate(question), ["Python"], "en-HK", sources
+        )
+
+
+def test_english_report_rejects_chinese_coaching(report, sources):
+    excerpts = [item["evidence"] for item in report["star"] if item["evidence"]]
+    english = {
+        **report,
+        "star": [{**item, "coaching": "Say what you did."} for item in report["star"]],
+        "competencies": [{**item, "feedback": "Add the result."} for item in report["competencies"]],
+        "strengths": [{**item, "text": "You named the action."} for item in report["strengths"]],
+        "prioritized_improvement": "Add one sentence on the result.",
+        "retry_exercise": "Answer the same question in one minute.",
+    }
+    assert check_report_output(
+        ModelReport.model_validate(english), ["Python"], "en-HK", excerpts, sources
+    )
+    with pytest.raises(ValueError):
+        check_report_output(
+            ModelReport.model_validate(report), ["Python"], "en-HK", excerpts, sources
+        )

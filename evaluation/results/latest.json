@@ -5,12 +5,12 @@
     "status": "not_trained",
     "base_model": "Qwen/Qwen3-4B-Instruct-2507",
     "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
-    "draft_examples": 1000,
-    "reviewed_examples": 0,
+    "draft_examples": 971,
+    "reviewed_examples": 971,
     "adapter_available": false,
     "manifest_path": "ml/runs/voxprep-qlora/model_manifest.json",
     "manifest_available": false,
-    "expected_examples": 1000,
+    "expected_examples": 971,
     "configuration": {
       "base_model": "Qwen/Qwen3-4B-Instruct-2507",
       "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
@@ -20,7 +20,7 @@
       "per_device_batch_size": 1,
       "gradient_accumulation_steps": 16,
       "learning_rate": 0.0002,
-      "num_train_epochs": 3,
+      "num_train_epochs": 1,
       "warmup_ratio": 0.05,
       "lr_scheduler_type": "cosine",
       "seed": 42,
@@ -30,8 +30,8 @@
       "target_modules": "all-linear",
       "eval_steps": 10,
       "logging_steps": 2,
-      "expected_examples": 1000,
-      "notes": "WS2 generated runtime-aligned corpus: 1000 examples (450 question, 350 report, 200 safety; 600 en-HK, 400 zh-HK) across 15 Hong Kong role families. Corpus size raised from the plan's 480 at the project owner's request so the adapter sees roughly 800 training rows instead of 384; at effective batch 16 that is about 50 optimizer steps/epoch, so eval/save every 10 and log every 2 keep the loss curve readable. The generated drafts are unreviewed by construction; the review count, hash, deduplication and split gates remain mandatory and no training run has been executed.",
+      "expected_examples": 971,
+      "notes": "Reviewed corpus after human review: 971 rows survive (29 AI-flagged rows were rejected by the reviewer and dropped by `ml.review merge --drop-rejected`). Original WS2 generation produced 1000 drafts (450 question, 350 report, 200 safety; 600 en-HK, 400 zh-HK) across 15 Hong Kong role families; 15% of rows carry a second independent review (148 rows). At effective batch 16 the 790 training rows give about 49 optimizer steps/epoch, so eval/save every 10 and log every 2 keep the loss curve readable. Review, hash, deduplication and split gates remain mandatory. num_train_epochs is 1, not 3: the first Kaggle run measured 310 s per optimizer step on a T4 (rows average about 1,800 tokens, so 16 accumulated micro-batches per step), which puts three epochs at roughly 13 hours against a 12-hour session cap. One epoch is 50 steps, about 4.5 hours, and still gives the format, language and citation contract the adapter is for.",
       "implementation_settings": {
         "quantization": "4-bit NF4 with double quantization",
         "assistant_only_loss": true,
@@ -45,8 +45,8 @@
       }
     },
     "dataset_provenance": {
-      "path": "ml/data/runtime_drafts.jsonl",
-      "sha256": "456c61769aa282d9b263042dcb5a392ee008cef58bee9168bcd5efac9640840f",
+      "path": "ml/data/reviewed_examples.jsonl",
+      "sha256": "4f03768f80d22999bc2cdef1a0860ee222e6f7051c9293b187703a048a519502",
       "status": "Synthetic curriculum drafts; human review and deduplication required",
       "source_kinds": [
         "synthetic_runtime_aligned_draft"
@@ -55,16 +55,16 @@
         "CC0-1.0"
       ],
       "language_counts": {
-        "en-HK": 600,
-        "zh-HK": 400
+        "en-HK": 579,
+        "zh-HK": 392
       },
       "task_counts": {
-        "question": 450,
-        "report": 350,
+        "question": 448,
+        "report": 323,
         "safety": 200
       },
-      "independent_second_review_assignments": 151,
-      "reviewed_examples": 0,
+      "independent_second_review_assignments": 148,
+      "reviewed_examples": 971,
       "split_policy": "80/10/10; connected role, source and template groups stay together",
       "review_policy": "First human approval for every example; independent second review for at least 15% per full-corpus language/task stratum",
       "guide": "docs/DATASET.md"
@@ -103,6 +103,38 @@
       },
       "sample_size": 2,
       "details": "evaluation/results/local_services.json"
+    },
+    {
+      "name": "model",
+      "status": "measured_pending_human_review",
+      "value": {
+        "base_rag": {
+          "sample_size": 119,
+          "schema_validity": 1.0,
+          "language_script_proxy": 0.9243697478991597,
+          "failures": 0,
+          "first_token_p95_seconds": 1.7636983208591117,
+          "language_adherence_human": "pending"
+        },
+        "lora_only": {
+          "sample_size": 119,
+          "schema_validity": 1.0,
+          "language_script_proxy": 1.0,
+          "failures": 0,
+          "first_token_p95_seconds": 2.2689615583512928,
+          "language_adherence_human": "pending"
+        },
+        "lora_rag": {
+          "sample_size": 119,
+          "schema_validity": 1.0,
+          "language_script_proxy": 1.0,
+          "failures": 0,
+          "first_token_p95_seconds": 2.030874733638484,
+          "language_adherence_human": "pending"
+        }
+      },
+      "sample_size": 119,
+      "details": "evaluation/results/model.json"
     },
     {
       "name": "retrieval",

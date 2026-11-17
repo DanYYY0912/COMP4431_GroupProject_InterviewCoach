@@ -3,7 +3,6 @@ import {
   ArrowUpRight,
   AudioLines,
   BriefcaseBusiness,
-  Clock3,
   Download,
   FileText,
   Languages,
@@ -14,7 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import { api, errorMessage } from '../lib/api';
 import { formatDate } from '../lib/format';
-import { downloadSession } from '../lib/sessionExport';
+import { printSessionReport } from '../lib/reportPdf';
 import type { Session } from '../lib/types';
 import { ErrorNotice, Loading } from '../components/Common';
 import { SessionComparison } from '../components/SessionComparison';
@@ -63,7 +62,7 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
   async function exportSession(id: string) {
     setExporting(id);
     try {
-      await downloadSession(id);
+      await printSessionReport(id);
     } catch (e) {
       setError(errorMessage(e));
     } finally {
@@ -79,7 +78,6 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
             A little practice.
             <br />A lot more <em>confidence.</em>
           </h1>
-          <p className="lead">Find your voice for your next opportunity.</p>
         </div>
         <span className="language-stamp">
           <Languages size={20} /> English & 廣東話
@@ -103,9 +101,6 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
           <button className="button lime" onClick={() => navigate('/setup')}>
             Start a practice interview <ArrowUpRight size={19} />
           </button>
-          <span className="hero-note">
-            <Clock3 size={14} /> Your pace, your language. Start with 3 questions.
-          </span>
         </div>
         <div className="hero-art" aria-hidden="true">
           <div className="orbital orbit-one" />
@@ -115,7 +110,6 @@ export function Dashboard({ navigate }: { navigate: (path: string) => void }) {
           </div>
           <span className="floating-note english">“Tell me about a time…”</span>
           <span className="floating-note cantonese">「分享一次你解決問題嘅經驗。」</span>
-          <span className="art-label">A SPACE TO FIND YOUR VOICE</span>
         </div>
       </section>
       <section className="stats-row" aria-label="Practice overview">

@@ -277,11 +277,6 @@ export function Interview({
         <div>
           <p className="eyebrow">YOUR PRACTICE, IN PROGRESS</p>
           <h1 className="interview-title">{session.role_title}</h1>
-          <p className="lead">
-            {session.language === 'zh-HK'
-              ? '慢慢嚟。呢度係俾你練習嘅空間。'
-              : 'Take your time. This is a space to practise.'}
-          </p>
         </div>
         <span className="step-marker">
           02 <span>/ 03</span>
@@ -338,7 +333,6 @@ export function Interview({
               </button>
             )}
           </div>
-          <p className="avatar-note">Original 3D interviewer · captions always available</p>
         </section>
         <div className="answer-column">
           <div className="question-progress">
@@ -426,7 +420,7 @@ export function Interview({
               aria-describedby="answer-hint"
             />
             <div className="answer-hint" id="answer-hint">
-              <span>Editable captions. Only the answer you send is saved.</span>
+              <span />
               <span>{transcript.length.toLocaleString()}/12,000</span>
             </div>
             {notice && (

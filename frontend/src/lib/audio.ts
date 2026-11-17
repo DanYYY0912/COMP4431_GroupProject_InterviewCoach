@@ -218,6 +218,73 @@ type PlaybackCallbacks = {
   onEnd: () => void;
   onNotice: (text: string) => void;
 };
+/** Ranked names that actually sound good on macOS/Chrome. */
+const VOICE_PREFERENCE: Record<string, string[]> = {
+  // The network voice is markedly more natural than the compact on-device one, so it goes first;
+  // 善怡 (yue-HK) is the fallback when offline.
+  'zh-HK': [
+    'Google 粤語（香港）',
+    'Google 粵語（香港）',
+    'Google Cantonese',
+    '善怡',
+    'Sin-ji',
+    'Sinji',
+  ],
+  'en-HK': [
+    'Google US English',
+    'Google UK English Female',
+    'Samantha',
+    'Ava',
+    'Karen',
+    'Daniel',
+    'Moira',
+  ],
+};
+
+/** Novelty voices (Bells, Zarvox, Bad News…) must never be picked for an interview. */
+const NOVELTY = /bad news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox|bahh|albert|fred|junior|ralph|good news/i;
+
+/**
+ * Pick the best available voice for the session language.
+ *
+ * Chrome on macOS reports Cantonese as `yue-HK` (善怡 / Sin-ji) and also offers a network voice
+ * labelled `zh-HK` (Google 粤語（香港）). Matching `lang === 'zh-HK'` therefore found *no* local
+ * voice, and falling back to any `zh-*` voice spoke Mandarin over Cantonese text - the exact
+ * "Chinese is pronounced wrong" symptom. Ranking by family and allowing network voices fixes it.
+ */
+export function pickVoice(language: string): SpeechSynthesisVoice | null {
+  if (!('speechSynthesis' in window)) return null;
+  const voices = speechSynthesis.getVoices().filter((voice) => !NOVELTY.test(voice.name));
+  if (!voices.length) return null;
+  const families =
+    language === 'zh-HK'
+      ? ['yue-hk', 'zh-hk', 'yue', 'zh-tw', 'zh-cn']
+      : ['en-hk', 'en-us', 'en-gb', 'en'];
+  const rank = (voice: SpeechSynthesisVoice) => {
+    const lang = voice.lang.toLowerCase();
+    const index = families.findIndex((family) => lang.startsWith(family));
+    return index === -1 ? 99 : index;
+  };
+  const inFamily = voices.filter((voice) => rank(voice) < 99);
+  if (!inFamily.length) return null;
+  // Chrome joins the brand with a non-breaking space ("Google\u00a0粤語（香港）"), so compare
+  // names with nbsp and ordinary whitespace collapsed.
+  const key = (value: string) => value.replace(/\u00a0/g, ' ').toLowerCase().replace(/\s+/g, '');
+  // A Google network voice is a neural voice and sounds far less mechanical than the compact
+  // on-device one, so it wins whenever it exists for this language family.
+  const google = inFamily.filter((voice) => /google/i.test(key(voice.name)));
+  if (google.length) return google.sort((a, b) => rank(a) - rank(b))[0];
+  for (const name of VOICE_PREFERENCE[language] ?? []) {
+    const wanted = key(name);
+    const match = inFamily.find((voice) => key(voice.name).includes(wanted));
+    if (match) return match;
+  }
+  const ordered = [...inFamily].sort(
+    (a, b) => rank(a) - rank(b) || Number(b.localService) - Number(a.localService),
+  );
+  return ordered[0] ?? null;
+}
+
 export function playQuestion(
   text: string,
   language: Language,
@@ -245,24 +312,17 @@ export function playQuestion(
       return;
     }
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = language;
-    utterance.rate = 0.93;
-    const localVoices = speechSynthesis
-      .getVoices()
-      .filter(
-        (voice) =>
-          voice.localService &&
-          (voice.lang.toLowerCase() === language.toLowerCase() ||
-            (language === 'en-HK' && voice.lang.startsWith('en'))),
-      );
-    if (!localVoices.length) {
-      callbacks.onNotice(
-        'No local voice is available for this language. Captions remain available.',
-      );
+    const voice = pickVoice(language);
+    if (!voice) {
+      callbacks.onNotice('No system voice is available. Captions remain available.');
       callbacks.onEnd();
       return;
     }
-    utterance.voice = localVoices[0];
+    utterance.voice = voice;
+    // Speak with the voice's own language tag: a yue-HK voice given lang="zh-HK" can still be
+    // routed to a Mandarin engine.
+    utterance.lang = voice.lang;
+    utterance.rate = 1;
     utterance.onstart = () => {
       if (stopped) return;
       callbacks.onStart();

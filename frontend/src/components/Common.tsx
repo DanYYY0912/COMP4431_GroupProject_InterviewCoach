@@ -55,6 +55,22 @@ export function ProviderBadge({ provider }: { provider?: string }) {
     </span>
   );
 }
+// Health strings carry operator detail ("ready (local model; …)"); show only the status.
+function shortStatus(status: string | undefined) {
+  return status ? status.replace(/\s*\(.*\)\s*$/, '') : 'Checking…';
+}
+
+// "Azure not configured; local Whisper ready" -> "Local Whisper ready".
+function readyPart(status: string | undefined) {
+  if (!status) return 'Optional';
+  const ready = status
+    .split(';')
+    .map((part) => part.trim())
+    .find((part) => /ready/i.test(part));
+  const label = ready ?? status;
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
 export function Preflight({ health }: { health: Health | null }) {
   return (
     <div className="preflight">
@@ -64,17 +80,14 @@ export function Preflight({ health }: { health: Health | null }) {
       </div>
       <ul>
         <li>
-          <Check size={16} /> Text & captions <span>Always available</span>
-        </li>
-        <li>
           <Check size={16} /> Local storage <span>{health?.database || 'Checking…'}</span>
         </li>
         <li>
           <Check size={16} /> Interview coach{' '}
-          <span>{health?.provider === 'demo' ? 'Scripted demo' : health?.llm || 'Checking…'}</span>
+          <span>{health?.provider === 'demo' ? 'Scripted demo' : shortStatus(health?.llm)}</span>
         </li>
         <li>
-          <ArrowUpRight size={16} /> Voice services <span>{health?.speech || 'Optional'}</span>
+          <ArrowUpRight size={16} /> Voice services <span>{readyPart(health?.speech)}</span>
         </li>
       </ul>
     </div>

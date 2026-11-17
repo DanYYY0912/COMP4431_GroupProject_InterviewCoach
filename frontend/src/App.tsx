@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  ArrowUpRight,
-  AudioLines,
-  FlaskConical,
-  LayoutDashboard,
-  Plus,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowUpRight, AudioLines, FlaskConical, LayoutDashboard, Plus } from 'lucide-react';
 import { Dashboard } from './pages/Dashboard';
 import { Setup } from './pages/Setup';
 import { Interview } from './pages/Interview';
@@ -14,7 +7,9 @@ import { Report } from './pages/Report';
 import { Methodology } from './pages/Methodology';
 
 function routePath() {
-  return window.location.hash.replace(/^#/, '') || '/';
+  // Deep links carry a query (e.g. #/setup?retry=1&from=<session>): route on the path only.
+  const raw = window.location.hash.replace(/^#/, '') || '/';
+  return raw.split('?')[0] || '/';
 }
 export default function App() {
   const [path, setPath] = useState(routePath);
@@ -89,11 +84,6 @@ export default function App() {
           </a>
         </nav>
         <div className="sidebar-bottom">
-          <div className="privacy-note">
-            <ShieldCheck size={20} />
-            <strong>A space to grow.</strong>
-            <p>Your practice stays on this computer. Your next step is yours.</p>
-          </div>
           <div className="sidebar-footer">
             <span className="status-dot" /> LOCAL-FIRST PRACTICE
             <span className="version">v0.1</span>
@@ -131,7 +121,6 @@ export default function App() {
           )}
         </main>
         <footer className="page-footer">
-          <span>Made for your next opportunity.</span>
           <span>
             VoxPrep HK <span>·</span> COMP4431
           </span>
