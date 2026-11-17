@@ -53,6 +53,8 @@ HTTP answer submissions should include the optional current `turn_id` to reject 
 
 Session creation stores transcripts in local history by default. The optional `store_transcript` field accepts only `true`; a temporary session mode is not implemented.
 
+The optional `interviewer` field accepts `alex`, `jamie`, or `sam` and is saved with the session. It defaults to `alex`, including for existing sessions upgraded by migration `0003`. Pausing, resuming, and retrying preserve the selection.
+
 WebSocket text deltas are chunks of an already validated completed model response, not raw first-token streaming. Raw model JSON is never rendered. Model timeouts, invalid schemas, unsupported competency names and fabricated citation IDs trigger the visible `demo-fallback` provider. Model reports require exact transcript substrings and allowed source IDs, cache validated output, and invalidate the cache after edits. Their limitations explain model generation or heuristic fallback, context truncation and unavailable speech measurements. Excerpt identity checks cannot prove semantic entailment; assessors must review citation precision.
 
 For bounded context, generation uses relevant source excerpts while displayed citations preserve the entire original chunk. Reports analyze up to 160 word/CJK/punctuation units (at most 1,000 characters) per answer; truncation is disclosed. The report output budget is 1,400 tokens and a 110-second timeout. These are recovery bounds, not claims that latency targets have been met.

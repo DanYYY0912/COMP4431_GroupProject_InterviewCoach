@@ -33,6 +33,7 @@ def session_view(record: SessionRecord) -> Session:
         current_question=len(record.turns),
         created_at=record.created_at,
         provider=record.provider,
+        interviewer=record.interviewer,
         turns=[
             Turn(id=t.id, question=t.question, answer=t.answer, created_at=t.created_at)
             for t in record.turns
@@ -92,6 +93,7 @@ class InterviewService:
                 language=data.language,
                 difficulty=data.difficulty,
                 question_count=data.question_count,
+                interviewer=data.interviewer,
                 provider=self.settings.model_provider,
                 state="listening",
             )

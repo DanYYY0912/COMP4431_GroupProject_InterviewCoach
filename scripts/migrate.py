@@ -38,7 +38,11 @@ def migrate(url):
                 )
                 expected = set(table.columns.keys())
                 if name == "sessions":
-                    known = known and actual in (expected, expected - {"report_data"})
+                    known = known and actual in (
+                        expected,
+                        expected - {"interviewer"},
+                        expected - {"report_data", "interviewer"},
+                    )
                 else:
                     known = known and actual == expected
             if not known:
@@ -46,7 +50,14 @@ def migrate(url):
                     "Unknown SQLite schema. Back up the database and request a migration review; no data was changed."
                 )
             current = {c["name"] for c in inspector.get_columns("sessions")}
-            command.stamp(config, "0002" if "report_data" in current else "0001")
+            revision = (
+                "0003"
+                if "interviewer" in current
+                else "0002"
+                if "report_data" in current
+                else "0001"
+            )
+            command.stamp(config, revision)
         command.upgrade(config, "head")
     engine.dispose()
 

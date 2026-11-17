@@ -72,6 +72,7 @@ def test_session_storage_defaults_on_and_unknown_fields_rejected(client):
     ).json()
     result = client.post("/api/sessions", json={"job_profile_id": profile["id"]})
     assert result.status_code == 201, result.text
+    assert result.json()["interviewer"] == "alex"
     assert client.get(f"/api/sessions/{result.json()['id']}").status_code == 200
     assert (
         client.post(
@@ -86,6 +87,46 @@ def test_session_storage_defaults_on_and_unknown_fields_rejected(client):
         ).status_code
         == 422
     )
+
+
+@pytest.mark.parametrize("interviewer", ["alex", "jamie", "sam"])
+def test_interviewer_choice_persists_through_pause_resume_and_retry(client, interviewer):
+    session = create_session(client, interviewer=interviewer)
+    url = f"/api/sessions/{session['id']}"
+    assert session["interviewer"] == interviewer
+    assert client.get(url).json()["interviewer"] == interviewer
+    for action in ("pause", "resume"):
+        response = client.post(url + "/control", json={"action": action})
+        assert response.status_code == 200
+        assert response.json()["interviewer"] == interviewer
+    response = client.post(
+        url + "/answer",
+        json={
+            "transcript": "I implemented Python tests.",
+            "language": "en-HK",
+            "elapsed_seconds": 15,
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["interviewer"] == interviewer
+    response = client.post(url + "/control", json={"action": "retry"})
+    assert response.status_code == 200
+    assert response.json()["interviewer"] == interviewer
+    assert client.get("/api/sessions").json()[0]["interviewer"] == interviewer
+    with client.websocket_connect(url + "/live") as socket:
+        assert socket.receive_json()["payload"]["interviewer"] == interviewer
+
+
+@pytest.mark.parametrize("interviewer", ["unknown", "../sam", "Alex", None])
+def test_invalid_interviewer_is_rejected(client, interviewer):
+    profile = client.post(
+        "/api/job-profiles", json={"text": "Engineer role requiring Python and teamwork."}
+    ).json()
+    response = client.post(
+        "/api/sessions", json={"job_profile_id": profile["id"], "interviewer": interviewer}
+    )
+    assert response.status_code == 422
+    assert client.get("/api/sessions").json() == []
 
 
 def test_pause_resume_skip_retry_state_machine(client):

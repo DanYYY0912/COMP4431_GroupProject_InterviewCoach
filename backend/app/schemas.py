@@ -3,6 +3,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 Language = Literal["en-HK", "zh-HK"]
+Interviewer = Literal["alex", "jamie", "sam"]
 State = Literal[
     "setup",
     "ready",
@@ -80,6 +81,7 @@ class SessionInput(StrictModel):
     language: Language = "en-HK"
     difficulty: Literal["foundation", "standard", "stretch"] = "standard"
     question_count: Literal[3, 5, 8] = 5
+    interviewer: Interviewer = "alex"
     store_transcript: Literal[True] = True
 
 
@@ -95,6 +97,7 @@ class Session(StrictModel):
     turns: list[Turn]
     created_at: str
     provider: str
+    interviewer: Interviewer = "alex"
 
 
 class Control(StrictModel):
