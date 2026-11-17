@@ -5,6 +5,7 @@ import { SessionComparison } from './SessionComparison';
 import type { Report, Session } from '../lib/types';
 
 const base = {
+  interviewer: 'jamie',
   job_profile_id: 'job',
   difficulty: 'standard',
   question_count: 3,
