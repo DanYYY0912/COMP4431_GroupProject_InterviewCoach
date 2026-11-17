@@ -4,11 +4,11 @@
 
 The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The Docker app and PostgreSQL run at `http://localhost:4431`; all four saved inference connections are preserved in the Docker volume. Native model launchers remain available for development. The integration branch carries Kelvin's Kaggle v5 training records and automated results. The adapter weights are distributed separately, and participant studies remain pending. Inference providers can now be configured in Settings.
 
-Updated: **2026-11-18T05:20:49+08:00** (Asia/Hong_Kong). See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
+Updated: **2026-11-18T05:25:35+08:00** (Asia/Hong_Kong). See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
 
 ## Working state
 
-- **Jamie realism follow-up (2026-11-18):** The user rejected a procedural head as too crude. That experiment was discarded and was never deployed. A realistic 3D Jamie remains unfinished: fal is connected, but its account has no credits, so even the portrait upload is blocked and no candidate mesh has been generated. The original `jamie.png` and a Rodin v2.5 candidate plan are retained. Facial rigging remains unverified: the checked fal schemas offer body rigs or custom bones, not confirmed speech blendshapes. Verify that dependency before recommending a credit purchase; inspect any candidate likeness before downstream generation or integration. The independent male-voice fix is saved in `1c7687e` and passed 17 audio tests. Playback uses identifiable local male voices; this Mac currently exposes Sinji only for Cantonese through its native voice inventory.
+- **Jamie appearance decision (2026-11-18):** The user chose the previous animated Jamie portrait and explicitly retained its animation. Keep the portrait rendering, blinking, head/mouth animation, pause/reduced-motion behavior and hide control. The rejected procedural head was discarded and never deployed. Stop the realistic-model/fal workflow unless the user requests it again; no paid generation was submitted. The male-voice fix in `1c7687e` remains live and passed 17 audio tests. Playback selects identifiable local male voices; when a matching voice is absent, the written question stays available.
 - The app uses port **4431** for Docker and native API serving. Jamie is the only included face. Setup previews the appearance before starting, then saves it with the session. A portrait-textured 3D facial surface blinks, moves subtly and animates the mouth during local question playback.
 - Starting immediately shows an indeterminate loading bar, actual preparation stages and elapsed time. Duplicate starts are blocked, errors preserve inputs, and late completion cannot redirect another page.
 - Practice interview opens directly. The two input sections control start readiness; the right panel summarizes configuration and service status. History preserves session management. Overview, consent controls and decorative marketing copy have been removed.
@@ -33,6 +33,8 @@ Updated: **2026-11-18T05:20:49+08:00** (Asia/Hong_Kong). See [verification](docs
 5. Rehearse the final seven-minute presentation on the classroom Mac and replace the backup with a recording of the final assessed configuration.
 
 ## Last verification
+
+The **2026-11-18 animated-portrait restoration check** passed the controlled browser speech/pause/hide journey, including Daniel selection over Samantha. The running Docker app matches the restored frontend bundle and original Jamie PNG/mesh; both containers are healthy. The replacement modeled head is absent. The broader verification below predates this focused check.
 
 On **2026-11-18**, the latest checks passed **156 Python tests, 70 frontend tests and nine browser journeys**, with one optional PostgreSQL test skipped in the ordinary Python suite. Lint, type checks and the production build passed. Browser coverage includes Jamie-only preselection, saved appearance after reload, delayed startup progress, duplicate-submit prevention, real WebGL canvas loading, controlled speech-start/pause/stop behavior, both interview languages, History and accessibility. Headless speech uses controlled browser events; this is not an audible speech-quality benchmark.
 
