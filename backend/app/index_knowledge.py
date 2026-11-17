@@ -6,13 +6,14 @@ from sqlalchemy import select
 
 from .config import Settings
 from .db import ChunkRecord, make_database
+from .inference_settings import load_saved_inference
 from .retrieval import index_chunks
 
 
 async def main():
-    settings = Settings()
+    settings = load_saved_inference(Settings())
     if not settings.embedding_base_url:
-        raise SystemExit("Set EMBEDDING_BASE_URL to a local embedding service first.")
+        raise SystemExit("Configure an embedding service in Settings or EMBEDDING_BASE_URL first.")
     engine, sessions = make_database(settings.database_url)
     with sessions() as db:
         chunks = list(db.scalars(select(ChunkRecord)))

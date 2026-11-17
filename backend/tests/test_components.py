@@ -56,9 +56,9 @@ def test_ranking_and_fusion_keep_supporting_passages():
     assert reciprocal_rank_fusion([["a", "b"], ["b", "c"]])[0] == "b"
 
 
-def test_model_endpoints_cannot_send_transcripts_to_remote_hosts():
+def test_public_model_endpoints_require_https_and_safe_urls():
     with pytest.raises(ValidationError):
-        Settings(llama_base_url="https://attacker.example/v1")
+        Settings(llama_base_url="http://provider.example/v1")
     with pytest.raises(ValidationError):
         Settings(azure_speech_region="eastus/../../evil")
 
@@ -267,5 +267,5 @@ async def test_model_reports_reject_fabricated_evidence(monkeypatch, fabricated)
     if fabricated:
         assert "heuristic fallback" in report.limitations[0]
     else:
-        assert "configured local language model" in report.limitations[0]
+        assert "configured language model" in report.limitations[0]
         assert report.competencies[0].citations == [source]

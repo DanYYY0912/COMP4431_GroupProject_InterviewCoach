@@ -5,6 +5,7 @@ from pathlib import Path
 
 import httpx
 from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -15,8 +16,23 @@ from starlette.datastructures import UploadFile
 
 from .config import Settings
 from .db import Base, ChunkRecord, JobRecord, SessionRecord, make_database, new_id
+from .inference_settings import (
+    ComponentName,
+    DiscoveryInput,
+    InferenceInput,
+    InferenceSettings,
+    InferenceView,
+    ModelsView,
+)
 from .ingestion import MAX_FILE_BYTES, chunk_text, extract_file, profile_metadata, validate_text
-from .retrieval import index_chunks, seed_knowledge
+from .providers import bearer_headers
+from .retrieval import (
+    embedding_provider,
+    index_chunks,
+    invalidate_embeddings,
+    seed_knowledge,
+    validated_vector,
+)
 from .schemas import (
     AnswerSubmission,
     ClientEvent,
@@ -88,13 +104,14 @@ class LocalBoundary:
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
-    settings = settings or Settings()
+    inference = InferenceSettings(settings or Settings())
+    settings = inference.current
     if settings.database_url.startswith("sqlite:///"):
         Path(settings.database_url.removeprefix("sqlite:///")).parent.mkdir(
             parents=True, exist_ok=True
         )
     engine, sessions = make_database(settings.database_url)
-    service = InterviewService(sessions, settings)
+    service = InterviewService(sessions, settings, inference)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -103,9 +120,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         with sessions() as db:
             seed_knowledge(db)
             missing = [
-                chunk for chunk in db.scalars(select(ChunkRecord)) if chunk.embedding is None
+                chunk
+                for chunk in db.scalars(
+                    select(ChunkRecord).where(ChunkRecord.job_profile_id.is_(None))
+                )
+                if chunk.embedding is None
             ]
-            # Bound cold-start embedding work; rerun `python -m app.index_knowledge` for all sources.
+            # Only bundled public knowledge is sent at startup. Private jobs are indexed on use.
             if settings.embedding_base_url and missing:
                 await index_chunks(db, missing[:64], settings)
                 db.commit()
@@ -116,10 +137,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app = FastAPI(title="VoxPrep HK", version="0.1.0", lifespan=lifespan)
     app.state.settings, app.state.sessions, app.state.service = settings, sessions, service
+    app.state.inference = inference
     app.add_middleware(
         CORSMiddleware,
         allow_origins=list(settings.origins),
-        allow_methods=["GET", "POST", "DELETE"],
+        allow_methods=["GET", "POST", "PUT", "DELETE"],
         allow_headers=["Content-Type"],
     )
     app.add_middleware(LocalBoundary, origins=settings.origins)
@@ -144,47 +166,89 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             status_code=503,
         )
 
+    @app.exception_handler(RequestValidationError)
+    async def input_error(request, exc):
+        # Validation errors must not echo request values, including submitted provider keys.
+        return JSONResponse(
+            {
+                "detail": [
+                    {"loc": item["loc"], "msg": item["msg"], "type": item["type"]}
+                    for item in exc.errors()
+                ]
+            },
+            422,
+        )
+
+    @app.get("/api/inference-settings", response_model=InferenceView)
+    async def get_inference_settings():
+        return inference.public()
+
+    @app.put("/api/inference-settings", response_model=InferenceView)
+    async def put_inference_settings(data: InferenceInput):
+        nonlocal settings
+        records = inference.prepare(data)
+        if records["embedding"] != inference.records["embedding"]:
+            # Clear old vectors before publication. If saving fails, lexical retrieval is safe.
+            with sessions() as db:
+                invalidate_embeddings(db)
+                db.commit()
+        inference.save(records)
+        settings = inference.current
+        app.state.settings = service.settings = settings
+        return inference.public()
+
+    @app.post("/api/inference-settings/{component}/models", response_model=ModelsView)
+    async def list_models(component: ComponentName, data: DiscoveryInput):
+        return await inference.models(component, data)
+
     @app.post("/api/job-profiles", response_model=Profile, status_code=201)
     async def create_profile(request: Request):
-        if request.headers.get("content-type", "").startswith("multipart/form-data"):
-            async with request.form(
-                max_files=1, max_fields=1, max_part_size=MAX_FILE_BYTES + 1
-            ) as form:
-                file = form.get("file")
-                if not isinstance(file, UploadFile):
-                    raise HTTPException(422, "Provide one job-description file.")
-                content = await file.read(MAX_FILE_BYTES + 1)
-                body = await asyncio.to_thread(extract_file, file.filename or "", content)
-                filename = Path(file.filename or "upload").name
-                title = None
-        else:
-            try:
-                data = ProfileInput.model_validate(await request.json())
-            except (ValidationError, json.JSONDecodeError) as exc:
-                detail = (
-                    exc.errors(include_input=False, include_url=False)
-                    if isinstance(exc, ValidationError)
-                    else "Invalid JSON."
+        with inference.operation() as settings:
+            if request.headers.get("content-type", "").startswith("multipart/form-data"):
+                async with request.form(
+                    max_files=1, max_fields=1, max_part_size=MAX_FILE_BYTES + 1
+                ) as form:
+                    file = form.get("file")
+                    if not isinstance(file, UploadFile):
+                        raise HTTPException(422, "Provide one job-description file.")
+                    content = await file.read(MAX_FILE_BYTES + 1)
+                    body = await asyncio.to_thread(extract_file, file.filename or "", content)
+                    filename = Path(file.filename or "upload").name
+                    title = None
+            else:
+                try:
+                    data = ProfileInput.model_validate(await request.json())
+                except (ValidationError, json.JSONDecodeError) as exc:
+                    detail = (
+                        exc.errors(include_input=False, include_url=False)
+                        if isinstance(exc, ValidationError)
+                        else "Invalid JSON."
+                    )
+                    raise HTTPException(422, detail) from exc
+                body, title, filename = (
+                    validate_text(data.text),
+                    data.title,
+                    "Pasted job description",
                 )
-                raise HTTPException(422, detail) from exc
-            body, title, filename = validate_text(data.text), data.title, "Pasted job description"
-        title, competencies, warnings = profile_metadata(body, title)
-        with sessions() as db:
-            profile = JobRecord(
-                id=new_id(), title=title, competencies=competencies, warnings=warnings
-            )
-            profile.chunks = [
-                ChunkRecord(**chunk, embedding=None)
-                for chunk in chunk_text(body, profile.id, filename)
-            ]
-            db.add(profile)
-            db.flush()
-            if settings.embedding_base_url and not await index_chunks(db, profile.chunks, settings):
-                profile.warnings = warnings + [
-                    "Embedding service unavailable; this job uses lexical retrieval until reindexed."
+            title, competencies, warnings = profile_metadata(body, title)
+            with sessions() as db:
+                profile = JobRecord(
+                    id=new_id(), title=title, competencies=competencies, warnings=warnings
+                )
+                profile.chunks = [
+                    ChunkRecord(**chunk, embedding=None)
+                    for chunk in chunk_text(body, profile.id, filename)
                 ]
-            db.commit()
-            return profile_view(profile)
+                db.add(profile)
+                db.flush()
+                if settings.embedding_base_url and not await index_chunks(
+                    db, profile.chunks, settings
+                ):
+                    profile.warnings = warnings + [
+                        "Embedding service unavailable; this job uses lexical retrieval until reindexed."
+                    ]
+                db.commit()
+                return profile_view(profile)
 
     @app.post("/api/sessions", response_model=Session, status_code=201)
     async def create_session(data: SessionInput):
@@ -245,62 +309,88 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.post("/api/speech/token")
     async def token(data: SpeechConsent):
-        return await speech_token(settings)
+        return await speech_token(inference.current)
 
     @app.post("/api/speech/transcribe")
     async def speech_transcribe(request: Request):
-        async with request.form(max_files=1, max_fields=1, max_part_size=10 * 1024 * 1024) as form:
-            file = form.get("file")
-            if not isinstance(file, UploadFile):
-                raise HTTPException(422, "Provide one recorded audio file.")
-            content = await file.read(10 * 1024 * 1024 + 1)
-            return await transcribe(
-                content,
-                file.filename or "recording.wav",
-                str(form.get("language", "en-HK")),
-                settings,
-            )
+        with inference.operation() as settings:
+            async with request.form(
+                max_files=1, max_fields=1, max_part_size=10 * 1024 * 1024
+            ) as form:
+                file = form.get("file")
+                if not isinstance(file, UploadFile):
+                    raise HTTPException(422, "Provide one recorded audio file.")
+                content = await file.read(10 * 1024 * 1024 + 1)
+                return await transcribe(
+                    content,
+                    file.filename or "recording.wav",
+                    str(form.get("language", "en-HK")),
+                    settings,
+                )
 
     @app.get("/api/health")
     async def health():
+        settings = inference.current
         database = "ready"
         indexed = total = 0
         try:
             with sessions() as db:
                 db.execute(select(SessionRecord).limit(1)).first()
                 total = db.scalar(text("SELECT count(*) FROM source_chunks"))
-                column = "embedding_vector" if engine.dialect.name == "postgresql" else "embedding"
-                indexed = db.scalar(
-                    text(f"SELECT count(*) FROM source_chunks WHERE {column} IS NOT NULL")
-                )
+                provider = embedding_provider(settings)
+                for metadata in db.scalars(select(ChunkRecord.embedding)):
+                    if (
+                        settings.embedding_base_url
+                        and isinstance(metadata, dict)
+                        and metadata.get("provider") == provider
+                        and type(metadata.get("dimensions")) is int
+                    ):
+                        try:
+                            validated_vector(metadata.get("vector"), metadata["dimensions"])
+                            indexed += 1
+                        except ValueError:
+                            pass
         except SQLAlchemyError:
             database = "unavailable"
 
-        async def reachable(url):
+        async def reachable(url, api_key="", model=""):
             if not url:
                 return False
             try:
-                async with httpx.AsyncClient(timeout=2) as client:
-                    response = await client.get(url)
+                async with httpx.AsyncClient(timeout=2, follow_redirects=False) as client:
+                    response = await client.get(url, headers=bearer_headers(api_key))
                     response.raise_for_status()
+                    if model:
+                        data = response.json().get("data")
+                        return isinstance(data, list) and any(
+                            isinstance(item, dict) and item.get("id") == model for item in data
+                        )
                 return True
-            except httpx.HTTPError:
+            except (httpx.HTTPError, ValueError, TypeError, AttributeError):
                 return False
 
         llm_ready, embedding_ready, reranker_ready, whisper_ready = await asyncio.gather(
             reachable(
-                f"{settings.llama_base_url}/models" if settings.model_provider == "llama" else ""
+                f"{settings.llama_base_url}/models" if settings.model_provider != "demo" else "",
+                settings.agent_api_key,
+                settings.model_name if settings.model_provider == "openai" else "",
             ),
             reachable(
-                f"{settings.embedding_base_url}/models" if settings.embedding_base_url else ""
+                f"{settings.embedding_base_url}/models" if settings.embedding_base_url else "",
+                settings.embedding_api_key,
             ),
-            reachable(f"{settings.reranker_base_url}/models" if settings.reranker_base_url else ""),
-            reachable(f"{settings.whisper_base_url}/"),
+            reachable(
+                f"{settings.reranker_base_url}/models" if settings.reranker_base_url else "",
+                settings.reranker_api_key,
+            ),
+            reachable(f"{settings.asr_base_url}/models", settings.asr_api_key, settings.asr_model)
+            if settings.asr_base_url
+            else reachable(f"{settings.whisper_base_url}/"),
         )
         llm = "demo (not a language model)"
-        if settings.model_provider == "llama":
+        if settings.model_provider != "demo":
             llm = (
-                "ready (local model; training provenance in model manifest)"
+                "ready (configured inference provider)"
                 if llm_ready
                 else "unavailable (deterministic fallback enabled)"
             )
@@ -309,11 +399,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if settings.azure_speech_key and settings.azure_speech_region
             else "Azure not configured; "
         )
-        speech_status += (
-            "local Whisper ready"
-            if whisper_ready
-            else "local Whisper unavailable; typed input ready"
-        )
+        if settings.asr_base_url:
+            speech_status += (
+                "configured ASR model available; transcription checked on use"
+                if whisper_ready
+                else "configured ASR unavailable; typed input ready"
+            )
+        else:
+            speech_status += (
+                "local Whisper ready"
+                if whisper_ready
+                else "local Whisper unavailable; typed input ready"
+            )
         retrieval_status = (
             f"hybrid ready ({indexed}/{total} chunks indexed)"
             if embedding_ready and indexed
@@ -335,6 +432,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/api/methodology/metrics")
     async def metrics():
+        settings = inference.current
         if settings.evaluation_path.exists():
             try:
                 data = json.loads(settings.evaluation_path.read_text())

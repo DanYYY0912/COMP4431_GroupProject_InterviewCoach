@@ -1,5 +1,6 @@
 import asyncio
 from collections import defaultdict
+from contextlib import nullcontext
 
 from fastapi import HTTPException
 from sqlalchemy import select
@@ -40,9 +41,10 @@ def session_view(record: SessionRecord) -> Session:
 
 
 class InterviewService:
-    def __init__(self, sessions, settings):
+    def __init__(self, sessions, settings, inference=None):
         self.sessions = sessions
         self.settings = settings
+        self.inference = inference
         self.locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
         self.active: dict[str, asyncio.Task] = {}
 
@@ -53,28 +55,31 @@ class InterviewService:
         return record
 
     async def question(self, db, record, index, previous=None):
-        profile = db.get(JobRecord, record.job_profile_id)
-        query = (
-            profile.title
-            + " "
-            + " ".join(profile.competencies)
-            + (" " + previous.transcript if previous else "")
-        )
-        sources = await retrieve(db, profile.id, query, self.settings)
-        question, provider = await generate_question(
-            self.settings,
-            profile.competencies,
-            record.language,
-            record.difficulty,
-            index,
-            previous,
-            sources,
-        )
-        # Keep evidence of any fallback visible for the lifetime of the session.
-        record.provider = (
-            "demo-fallback" if "demo-fallback" in {record.provider, provider} else provider
-        )
-        return TurnRecord(position=index, question=question.model_dump(), answer=None)
+        with (
+            self.inference.operation() if self.inference else nullcontext(self.settings) as settings
+        ):
+            profile = db.get(JobRecord, record.job_profile_id)
+            query = (
+                profile.title
+                + " "
+                + " ".join(profile.competencies)
+                + (" " + previous.transcript if previous else "")
+            )
+            sources = await retrieve(db, profile.id, query, settings)
+            question, provider = await generate_question(
+                settings,
+                profile.competencies,
+                record.language,
+                record.difficulty,
+                index,
+                previous,
+                sources,
+            )
+            # Keep evidence of any fallback visible for the lifetime of the session.
+            record.provider = (
+                "demo-fallback" if "demo-fallback" in {record.provider, provider} else provider
+            )
+            return TurnRecord(position=index, question=question.model_dump(), answer=None)
 
     async def create(self, data: SessionInput) -> Session:
         with self.sessions() as db:
@@ -222,9 +227,14 @@ class InterviewService:
                 sources_by_id.update({chunk.id: citation(chunk) for chunk in profile.chunks})
                 self.active[session_id] = asyncio.current_task()
                 try:
-                    result = await generate_report(
-                        self.settings, session, list(sources_by_id.values())
-                    )
+                    with (
+                        self.inference.operation()
+                        if self.inference
+                        else nullcontext(self.settings) as settings
+                    ):
+                        result = await generate_report(
+                            settings, session, list(sources_by_id.values())
+                        )
                 finally:
                     self.active.pop(session_id, None)
                 record.report_data = result.model_dump()
