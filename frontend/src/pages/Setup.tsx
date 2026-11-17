@@ -255,6 +255,14 @@ export function Setup({
             <div className="consent-section">
               <ShieldCheck size={23} />
               <h3>Your story stays yours.</h3>
+              <p className="field-help">
+                Selected inference servers may receive prompts, audio and source passages. Review
+                your services in{' '}
+                <a className="inline-link" href="#/settings">
+                  Settings
+                </a>
+                .
+              </p>
               <label className="check-label">
                 <input
                   type="checkbox"
@@ -274,13 +282,13 @@ export function Setup({
                   onChange={(e) => setSpeech(e.target.checked)}
                 />
                 <span>
-                  Enable Azure voice. Audio and interviewer text may be sent to Microsoft Speech.
-                  This is optional.
+                  Enable Azure voice. Interviewer text and, when no ASR server is selected, audio
+                  may be sent to Microsoft Speech. This is optional.
                 </span>
               </label>
               <p className="field-help">
-                With voice off, you can type every answer. The coach never rates your appearance,
-                accent, or employability.
+                You can type every answer. Recordings use your selected ASR service or the local
+                fallback. The coach never rates your appearance, accent, or employability.
               </p>
             </div>
             <button

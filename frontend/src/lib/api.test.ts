@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
-import { request } from './api';
+import { api, request } from './api';
 import { answerSchema, sessionSchema } from './types';
 
 afterEach(() => vi.unstubAllGlobals());
@@ -40,5 +40,38 @@ describe('API boundary', () => {
         speech_metrics: null,
       }).speech_metrics,
     ).toBeNull();
+  });
+  it('accepts only redacted inference fields and sends model discovery through the app server', async () => {
+    const service = {
+      base_url: 'http://localhost:8001/v1',
+      model: 'coach',
+      api_key_set: true,
+      api_key: 'must-not-reach-form',
+    };
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ agent: service, asr: service, embedding: service, reranker: service }),
+        ),
+      )
+      .mockResolvedValueOnce(new Response(JSON.stringify({ models: ['coach'] })));
+    vi.stubGlobal('fetch', fetch);
+    expect((await api.inferenceSettings()).agent).toEqual({
+      base_url: service.base_url,
+      model: 'coach',
+      api_key_set: true,
+    });
+    await expect(
+      api.inferenceModels('agent', { base_url: service.base_url, api_key: null }),
+    ).resolves.toEqual({ models: ['coach'] });
+    expect(fetch.mock.calls[1]).toEqual([
+      '/api/inference-settings/agent/models',
+      {
+        method: 'POST',
+        body: JSON.stringify({ base_url: service.base_url, api_key: null }),
+        headers: { 'Content-Type': 'application/json' },
+      },
+    ]);
   });
 });

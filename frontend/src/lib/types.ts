@@ -107,3 +107,21 @@ export type Methodology = {
   evaluations: Record<string, unknown>[];
   limitations: string[];
 };
+
+const inferenceServiceSchema = z.object({
+  base_url: z.string(),
+  model: z.string(),
+  api_key_set: z.boolean(),
+});
+export const inferenceSettingsSchema = z.object({
+  agent: inferenceServiceSchema,
+  asr: inferenceServiceSchema,
+  embedding: inferenceServiceSchema,
+  reranker: inferenceServiceSchema,
+});
+export type InferenceSettings = z.infer<typeof inferenceSettingsSchema>;
+export type InferenceComponent = keyof InferenceSettings;
+export type InferenceSettingsUpdate = Record<
+  InferenceComponent,
+  { base_url: string; model: string; api_key: string | null }
+>;

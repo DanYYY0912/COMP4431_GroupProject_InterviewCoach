@@ -1,6 +1,14 @@
 import { z } from 'zod';
-import { profileSchema, reportSchema, sessionSchema } from './types';
-import type { Answer, ControlAction, Health, Language, Methodology } from './types';
+import { inferenceSettingsSchema, profileSchema, reportSchema, sessionSchema } from './types';
+import type {
+  Answer,
+  ControlAction,
+  Health,
+  InferenceComponent,
+  InferenceSettingsUpdate,
+  Language,
+  Methodology,
+} from './types';
 
 export async function request<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(path, {
@@ -30,6 +38,19 @@ const post = (body: unknown): RequestInit => ({ method: 'POST', body: JSON.strin
 export const api = {
   health: () => request<Health>('/api/health'),
   methodology: () => request<Methodology>('/api/methodology/metrics'),
+  inferenceSettings: async () =>
+    inferenceSettingsSchema.parse(await request('/api/inference-settings')),
+  saveInferenceSettings: async (settings: InferenceSettingsUpdate) =>
+    inferenceSettingsSchema.parse(
+      await request('/api/inference-settings', { method: 'PUT', body: JSON.stringify(settings) }),
+    ),
+  inferenceModels: async (
+    component: InferenceComponent,
+    connection: { base_url: string; api_key: string | null },
+  ) =>
+    z
+      .object({ models: z.array(z.string()) })
+      .parse(await request(`/api/inference-settings/${component}/models`, post(connection))),
   sessions: async () => z.array(sessionSchema).parse(await request('/api/sessions')),
   session: async (id: string) =>
     sessionSchema.parse(await request(`/api/sessions/${encodeURIComponent(id)}`)),

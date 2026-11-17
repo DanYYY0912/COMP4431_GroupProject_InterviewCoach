@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   ArrowUpRight,
   AudioLines,
-  FlaskConical,
+  SlidersHorizontal,
   LayoutDashboard,
   Plus,
   ShieldCheck,
@@ -11,7 +11,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Setup } from './pages/Setup';
 import { Interview } from './pages/Interview';
 import { Report } from './pages/Report';
-import { Methodology } from './pages/Methodology';
+import { InferenceSettings } from './pages/InferenceSettings';
 
 function routePath() {
   return window.location.hash.replace(/^#/, '') || '/';
@@ -43,8 +43,8 @@ export default function App() {
         ? 'Practice interview'
         : page === 'report'
           ? 'Session debrief'
-          : page === 'methodology'
-            ? 'Methodology'
+          : page === 'settings' || page === 'methodology'
+            ? 'Settings'
             : 'Overview';
   return (
     <div className="app-shell">
@@ -81,18 +81,18 @@ export default function App() {
             <AudioLines size={19} /> Practice interview
           </a>
           <a
-            className={page === 'methodology' ? 'active' : ''}
-            href="#/methodology"
-            aria-current={page === 'methodology' ? 'page' : undefined}
+            className={['settings', 'methodology'].includes(page) ? 'active' : ''}
+            href="#/settings"
+            aria-current={['settings', 'methodology'].includes(page) ? 'page' : undefined}
           >
-            <FlaskConical size={19} /> Methodology
+            <SlidersHorizontal size={19} /> Settings
           </a>
         </nav>
         <div className="sidebar-bottom">
           <div className="privacy-note">
             <ShieldCheck size={20} />
             <strong>A space to grow.</strong>
-            <p>Your practice stays on this computer. Your next step is yours.</p>
+            <p>Sessions are saved locally. Your selected services process your practice.</p>
           </div>
           <div className="sidebar-footer">
             <span className="status-dot" /> LOCAL-FIRST PRACTICE
@@ -124,8 +124,8 @@ export default function App() {
             />
           ) : page === 'report' && id ? (
             <Report key={id} id={decodeURIComponent(id)} navigate={navigate} />
-          ) : page === 'methodology' ? (
-            <Methodology />
+          ) : page === 'settings' || page === 'methodology' ? (
+            <InferenceSettings />
           ) : (
             <Dashboard navigate={navigate} />
           )}

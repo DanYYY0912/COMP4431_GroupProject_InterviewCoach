@@ -51,7 +51,9 @@ export function ProviderBadge({ provider }: { provider?: string }) {
         ? 'Fallback coach · scripted'
         : provider === 'demo' || !provider
           ? 'Demo coach · scripted'
-          : 'Local AI coach'}
+          : provider === 'openai' || provider === 'openai-compatible'
+            ? 'Configured AI coach'
+            : 'Local AI coach'}
     </span>
   );
 }

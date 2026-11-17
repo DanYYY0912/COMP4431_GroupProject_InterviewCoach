@@ -138,6 +138,11 @@ export function Interview({
     setNotice('');
     setSpeechState('initializing');
     try {
+      // Check the current saved route on every recording: settings apply without a reload.
+      // If this check fails, let the server choose ASR rather than assuming Azure consent.
+      const settings = await api.inferenceSettings().catch(() => null);
+      if (run !== generation.current) return;
+      const configuredAsr = !!settings?.asr.base_url;
       const capture = await recordMicrophone(setLevel);
       if (run !== generation.current) {
         await capture.stop();
@@ -155,7 +160,7 @@ export function Interview({
       setSpeechState('listening');
       const abort = new AbortController();
       recordingAbort.current = abort;
-      if (speechConsent) {
+      if (speechConsent && settings && !configuredAsr) {
         try {
           const azure = await azureRecognizer(
             capture.stream,
@@ -185,10 +190,15 @@ export function Interview({
           if (run !== generation.current) return;
           recognitionFailed.current = true;
           setNotice(
-            'Azure recognition is unavailable. Your recording will be transcribed locally when you stop.',
+            'Azure recognition is unavailable. Your recording will use the saved transcription settings when you stop.',
           );
         }
-      } else setNotice('Recording on this computer. Local transcription runs when you stop.');
+      } else
+        setNotice(
+          configuredAsr
+            ? 'Recording on this computer. Your selected ASR server will receive the audio when you finish recording.'
+            : 'Recording on this computer. The saved transcription settings apply when you finish recording.',
+        );
     } catch {
       if (run !== generation.current) return;
       setSpeechState('');
@@ -218,7 +228,7 @@ export function Interview({
       } else if (session) {
         const transcription = await api.transcribe(result.blob, answerLanguage);
         setTranscript(transcription.text);
-        setNotice('Local transcription is ready. Please check the wording before sending.');
+        setNotice('Your transcript is ready. Please check the wording before sending.');
       }
     } catch (e) {
       setNotice(`${errorMessage(e)} You can type your answer below.`);
@@ -466,10 +476,18 @@ export function Interview({
                   onChange={(e) => onSpeechConsent(e.target.checked)}
                 />
                 <span>
-                  Use Azure voice. Send audio and interviewer text to Microsoft Speech. With this
-                  off, voice uses local services only.
+                  Use Azure voice for interviewer speech, and for recognition when no ASR server is
+                  selected. This sends text or audio to Microsoft Speech.
                 </span>
               </label>
+              <p className="field-help">
+                Recordings use the ASR service in{' '}
+                <a className="inline-link" href="#/settings">
+                  Settings
+                </a>
+                , or its local fallback. Selected external servers receive the audio for
+                transcription.
+              </p>
             </details>
           </section>
           <div className="session-controls">

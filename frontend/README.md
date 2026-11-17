@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-This React interface supports job-description setup, English and Cantonese interviews, editable transcripts, source-linked debriefs, retry, export, history and deletion. It calls the local FastAPI service and validates session, profile and report responses before display. Speech and the original 3D interviewer are optional; the same workflow works with typed answers. Azure speech requires explicit consent and a short-lived server-issued token. The default demo provider is labelled as scripted, and the methodology page displays recorded evidence without inventing training or evaluation results.
+This React interface supports job-description setup, English and Cantonese interviews, editable transcripts, source-linked debriefs, retry, export, history and deletion. It calls the local FastAPI service and validates session, profile and report responses before display. Speech and the original 3D interviewer are optional; the same workflow works with typed answers. Azure speech requires explicit consent and a short-lived server-issued token. The default demo provider is labelled as scripted. Inference settings connect the agent, ASR, embedding and reranker to selected OpenAI-compatible servers; saved changes apply to new requests without a restart.
 
 ## Development
 
@@ -12,15 +12,16 @@ Checks: `pnpm test`, `pnpm lint`, and `pnpm build`. The root `e2e/` suite exerci
 
 History can compare two completed sessions side by side. Each column retains its role, language, observable answer data, STAR evidence, competency feedback and limitations; no aggregate quality score is generated. Full-session downloads are available in history and debrief and contain saved questions, transcripts, citations, session metadata and the completed report. Incomplete sessions export with `report: null`. Downloads are generated in the browser without contacting an external service.
 
-The methodology page reads runtime readiness from `/api/health` and displays the saved training configuration, dataset provenance and model card from the methodology record. These records remain separate from measured evaluation results.
+The Settings page at `/#/settings` (also available through the previous `/#/methodology` route) reads redacted connection details from `/api/inference-settings`. Model discovery uses the unsaved URL and key through the app server; manual model entry remains available when a server does not list models. Saving updates all four services together. A blank key retains a saved key only while the URL is unchanged; **Clear key** explicitly removes it. Changing the URL never silently reuses the old key. Keys are held only in form memory until saving, stored locally by the app server, and never written to browser storage or returned by the settings API.
 
 ## Speech and privacy
 
 - Azure recognition and synthesis use the official browser Speech SDK. The subscription key never enters the frontend. SDK telemetry is disabled for recognition.
-- The microphone is acquired only after a user action. A five-minute cap bounds recordings, and audio stays in memory. If Azure fails, the complete recording is encoded as mono 16 kHz PCM WAV and offered to the local Whisper endpoint.
-- An Azure recognition error triggers whole-recording local transcription even if Azure already returned a partial answer. The recording stream and Azure stream have separate track lifetimes.
+- Sessions are stored locally, but selected external inference servers receive prompts, audio or source passages needed for their task. The settings and setup screens disclose this boundary. Local servers may omit an API key. Public services require HTTPS; local and private network servers may use HTTP. Clearing the URL and model selects the scripted demo coach for Agent, native Whisper for ASR, lexical search for Embedding, or no reranking for Reranker.
+- The microphone is acquired only after a user action. A five-minute cap bounds recordings, and audio stays in memory until transcription. Each recording checks the saved ASR configuration. A configured ASR server takes precedence over Azure recognition, even when legacy Azure voice consent is enabled. The complete recording is encoded as mono 16 kHz PCM WAV and sent through the app server when recording finishes.
+- Without an ASR override, Azure recognition remains opt-in; otherwise the server uses its native Whisper fallback. An Azure recognition error triggers whole-recording server transcription even if Azure already returned a partial answer. The recording stream and Azure stream have separate track lifetimes.
 - Synthesis collects Azure viseme timestamps, then schedules mouth changes against actual playback time. If no visemes arrive, an audio analyser drives mouth opening. Without Azure consent, only a browser voice marked `localService` is used; if none exists, captions remain available. Browser speech uses approximate mouth motion.
-- Pause, cancellation, leaving the page and finishing stop playback. The microphone stream is released after recording or teardown. Drafts are not sent until the user selects **Send answer**.
+- Pause, cancellation, leaving the page and finishing stop playback. The microphone stream is released after recording or teardown. Typed drafts are not sent until the user selects **Send answer**. Recorded audio is sent for transcription when recording finishes, or streamed during recording if Azure recognition is enabled.
 - Pause counts and silence duration use a simple amplitude threshold; they are descriptive estimates, not judgments of speaking ability. Real multi-speaker speech benchmarks and hardware frame-rate measurements are still required.
 
 ## Avatar and assets

@@ -172,7 +172,7 @@ export async function azureRecognizer(
   };
   recognizer.canceled = (_, event) => {
     if (event.reason === sdk.CancellationReason.Error)
-      onError('Azure speech stopped. Finish recording to try the local transcription fallback.');
+      onError('Azure speech stopped. Finish recording to use the saved transcription settings.');
   };
   try {
     await new Promise<void>((resolve, reject) => {
