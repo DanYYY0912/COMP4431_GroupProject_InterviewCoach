@@ -5,6 +5,7 @@ import { api } from './api';
 import type { Session } from './types';
 
 const session: Session = {
+  interviewer: 'jamie',
   id: 's1',
   job_profile_id: 'j1',
   role_title: 'Engineer',

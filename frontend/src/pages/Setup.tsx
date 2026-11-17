@@ -1,9 +1,18 @@
 import { ArrowRight, ArrowUpRight, Check, FileUp, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { api, errorMessage } from '../lib/api';
 import type { Health, Language } from '../lib/types';
 import { ErrorNotice } from '../components/Common';
+import { AppearanceSelector } from '../components/AppearanceSelector';
+import { StartupProgress } from '../components/StartupProgress';
+import type { StartupStage } from '../components/StartupProgress';
+import {
+  getInterviewer,
+  readInterviewerPreference,
+  saveInterviewerPreference,
+} from '../lib/interviewers';
+import type { InterviewerId } from '../lib/interviewers';
 
 const sample = `Graduate Software Engineer — Hong Kong\nJoin a product team building reliable web applications for local businesses.\nResponsibilities: build Python REST APIs and React interfaces; design SQL database queries; write automated tests; debug production issues with the team; communicate trade-offs clearly in English and Cantonese.\nRequirements: a degree in computer science or a related subject, practical knowledge of Python or JavaScript, Git and data structures, teamwork, curiosity, and evidence of a project where you solved a technical problem.\nWe value thoughtful problem solving, clear communication, and measurable improvements to software quality.`;
 
@@ -13,7 +22,13 @@ export function Setup({ navigate }: { navigate: (path: string) => void }) {
   const [language, setLanguage] = useState<Language>('en-HK');
   const [difficulty, setDifficulty] = useState('standard');
   const [questions, setQuestions] = useState(5);
-  const [busy, setBusy] = useState(false);
+  const [interviewer, setInterviewer] = useState<InterviewerId>(readInterviewerPreference);
+  const [preparation, setPreparation] = useState<{ stage: StartupStage; startedAt: number } | null>(
+    null,
+  );
+  const busy = preparation !== null;
+  const submitting = useRef(false);
+  const mounted = useRef(true);
   const [error, setError] = useState('');
   const [health, setHealth] = useState<Health | null>(null);
   const [healthUnavailable, setHealthUnavailable] = useState(false);
@@ -24,6 +39,7 @@ export function Setup({ navigate }: { navigate: (path: string) => void }) {
     ['foundation', 'standard', 'stretch'].includes(difficulty) &&
     [3, 5, 8].includes(questions);
   useEffect(() => {
+    mounted.current = true;
     let active = true;
     void api
       .health()
@@ -35,21 +51,30 @@ export function Setup({ navigate }: { navigate: (path: string) => void }) {
       });
     return () => {
       active = false;
+      mounted.current = false;
     };
   }, []);
   async function start(event: FormEvent) {
     event.preventDefault();
-    if (!valid || busy) return;
-    setBusy(true);
+    if (!valid || submitting.current) return;
+    submitting.current = true;
+    saveInterviewerPreference(interviewer);
+    setPreparation({ stage: 'profile', startedAt: Date.now() });
     setError('');
     try {
       const profile = await api.profile(text, file);
-      const session = await api.create(profile.id, language, difficulty, questions);
+      // Finish the requested session even after leaving, so the saved job has a History entry.
+      if (mounted.current)
+        setPreparation((current) => current && { ...current, stage: 'question' });
+      const session = await api.create(profile.id, language, difficulty, questions, interviewer);
+      if (!mounted.current) return;
+      setPreparation((current) => current && { ...current, stage: 'opening' });
       navigate(`/interview/${session.id}`);
     } catch (e) {
+      if (!mounted.current) return;
       setError(errorMessage(e));
-    } finally {
-      setBusy(false);
+      setPreparation(null);
+      submitting.current = false;
     }
   }
   function chooseFile(selected: File | null) {
@@ -187,7 +212,22 @@ export function Setup({ navigate }: { navigate: (path: string) => void }) {
                 </select>
               </div>
             </div>
+            <AppearanceSelector
+              value={interviewer}
+              disabled={busy}
+              onChange={(id) => {
+                setInterviewer(id);
+                saveInterviewerPreference(id);
+              }}
+            />
           </section>
+          {preparation && (
+            <StartupProgress
+              stage={preparation.stage}
+              startedAt={preparation.startedAt}
+              uploaded={!!file}
+            />
+          )}
           {error && <ErrorNotice message={error} onDismiss={() => setError('')} />}
           <div className="setup-start">
             <button className="button primary" type="submit" disabled={!valid || busy}>
@@ -218,9 +258,17 @@ export function Setup({ navigate }: { navigate: (path: string) => void }) {
                 <dt>Questions</dt>
                 <dd>{questions}</dd>
               </div>
+              <div>
+                <dt>Interviewer</dt>
+                <dd>{getInterviewer(interviewer).name}</dd>
+              </div>
             </dl>
             <p className={`configuration-prompt ${jobReady ? 'ready' : ''}`} role="status">
-              {jobReady ? 'Ready to start.' : 'Add a job description to start your interview.'}
+              {busy
+                ? 'Preparing your interview…'
+                : jobReady
+                  ? 'Ready to start.'
+                  : 'Add a job description to start your interview.'}
             </p>
             <div className="configuration-services">
               <h3>Server readiness</h3>

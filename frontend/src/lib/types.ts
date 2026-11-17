@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { interviewerIds } from './interviewers';
 
 export type Language = 'en-HK' | 'zh-HK';
 export const citationSchema = z.object({
@@ -31,6 +32,7 @@ export const profileSchema = z.object({
   sources: z.array(citationSchema),
 });
 export const sessionSchema = z.object({
+  interviewer: z.enum(interviewerIds).default('jamie'),
   id: z.string(),
   job_profile_id: z.string(),
   role_title: z.string(),

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { InterviewerId } from './interviewers';
 import { inferenceSettingsSchema, profileSchema, reportSchema, sessionSchema } from './types';
 import type {
   Answer,
@@ -66,11 +67,19 @@ export const api = {
     language: Language,
     difficulty: string,
     question_count: number,
+    interviewer: InterviewerId = 'jamie',
   ) =>
     sessionSchema.parse(
       await request(
         '/api/sessions',
-        post({ job_profile_id, language, difficulty, question_count, store_transcript: true }),
+        post({
+          job_profile_id,
+          language,
+          difficulty,
+          question_count,
+          interviewer,
+          store_transcript: true,
+        }),
       ),
     ),
   answer: async (id: string, answer: Answer) =>

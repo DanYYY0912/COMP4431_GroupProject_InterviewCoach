@@ -74,4 +74,34 @@ describe('API boundary', () => {
       },
     ]);
   });
+  it('sends the selected interviewer and defaults older session responses to Jamie', async () => {
+    const legacy = {
+      id: 's1',
+      job_profile_id: 'j1',
+      role_title: 'Developer',
+      language: 'en-HK',
+      difficulty: 'standard',
+      question_count: 3,
+      state: 'ready',
+      current_question: 1,
+      turns: [],
+      created_at: '2026-11-18T00:00:00Z',
+      provider: 'demo',
+    };
+    const fetch = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ ...legacy, interviewer: 'jamie' })));
+    vi.stubGlobal('fetch', fetch);
+    expect((await api.create('j1', 'en-HK', 'standard', 3, 'jamie')).interviewer).toBe('jamie');
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+      job_profile_id: 'j1',
+      language: 'en-HK',
+      difficulty: 'standard',
+      question_count: 3,
+      interviewer: 'jamie',
+      store_transcript: true,
+    });
+    expect(sessionSchema.parse(legacy).interviewer).toBe('jamie');
+    expect(() => sessionSchema.parse({ ...legacy, interviewer: 'unknown' })).toThrow();
+  });
 });

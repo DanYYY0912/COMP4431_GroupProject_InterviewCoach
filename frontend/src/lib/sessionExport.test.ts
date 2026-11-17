@@ -4,6 +4,7 @@ import { loadSessionExport } from './sessionExport';
 import type { Report, Session } from './types';
 
 const session: Session = {
+  interviewer: 'jamie',
   id: 'session-1',
   job_profile_id: 'job-1',
   role_title: 'Developer',
