@@ -6,6 +6,8 @@ The application has passed controlled automated checks and real local-service sm
 
 ## Inference settings update — 2026-11-18
 
+The updated native app starts successfully, and a synthetic local Qwen question completed with real inference. A fresh Docker image build on November 18 failed because npm dependency downloads timed out in `pnpm install`; the application tests and local production build passed. `artifacts/verification/inference-docker-build.log` retains that failure. The previous Docker image therefore does not contain the new settings feature; use the running native app or rebuild the image once downloads succeed.
+
 The former Methodology tab now configures Agent, ASR, Embedding and Reranker providers. The combined suite passes **133 Python tests, 33 frontend tests and six Playwright journeys**. One optional PostgreSQL case is skipped in the normal suite; a separate run passed against an isolated real PostgreSQL schema, including 1,024-dimensional vector queries, other dimensions, stale-cache rejection and transaction recovery.
 
 New checks cover server-side key persistence/redaction, credential destination changes, authenticated discovery and provider calls, ASR multipart parameters, unchanged settings after failed writes, saving during active inference, runtime routing after saving, and startup with saved external providers. The browser checks all four forms, reloading, desktop/mobile accessibility and zero page errors. External provider protocol tests use synthetic credentials and local/mock servers. Real user-selected external services still need their own URLs, credentials and models.

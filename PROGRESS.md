@@ -30,6 +30,8 @@ Updated: **2026-11-18T00:28:34+08:00 (Asia/Hong_Kong)**. See [verification](docs
 
 ## Last verification
 
+The updated native app starts successfully, and a synthetic local Qwen question completed with real inference. A fresh Docker image build on November 18 failed because npm dependency downloads timed out in `pnpm install`; the application tests and local production build passed. `artifacts/verification/inference-docker-build.log` retains that failure. The previous Docker image therefore does not contain the new settings feature; use the running native app or rebuild the image once downloads succeed.
+
 On **2026-11-18**, `make test` passed **133 Python tests, 33 frontend tests and six browser journeys**; the optional PostgreSQL test was skipped in the ordinary suite and passed separately against an isolated PostgreSQL schema. Lint, type checks and the production frontend build passed. The new browser journey checks all four connections, authenticated model discovery, persistence after reload, redacted keys and desktop/mobile accessibility. Logs: `artifacts/verification/inference-full-test.log`. Provider behavior is covered by mocked protocol tests; no user-supplied external provider credentials were available for a live external-service run.
 
 
