@@ -6,7 +6,7 @@ Jamie is the only included appearance, as requested by the user. Setup previews 
 
 ## Runtime behavior
 
-The frontend lazily loads Three.js, `jamie.png` and `jamie.mesh.json`. No webcam, runtime face detection or external image service is used. Local browser speech reads each new question once by default, with an opt-out checkbox and manual replay. Actual speech start/end and boundary events drive mouth motion. Boundaries are browser-dependent, so mouth movement is an approximate speaking animation, not phoneme-accurate lip sync. Missing or blocked local voices leave the written question available and do not pretend speech is playing.
+The frontend lazily loads Three.js, `jamie.png` and `jamie.mesh.json`. No webcam, runtime face detection or external image service is used. Local browser speech reads each new question once by default, with an opt-out checkbox and manual replay. Actual speech start/end and boundary events drive mouth motion. Boundaries are browser-dependent, so mouth movement is an approximate speaking animation, not phoneme-accurate lip sync. Jamie uses a recognized local male voice for the interview language. If that voice is missing or playback is blocked, the written question stays visible.
 
 Pause and reduced-motion preferences stop animation. Hide releases the renderer; showing it creates a new scene. Mesh/image failure and context loss fall back to the image. Sessions created before this feature default to Jamie through migration `0003`.
 

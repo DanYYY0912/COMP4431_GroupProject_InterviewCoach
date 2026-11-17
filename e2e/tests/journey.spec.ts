@@ -438,6 +438,7 @@ test('3D speaking state follows local playback and stops on pause', async ({
     const controls = {
       spoken: 0,
       canceled: 0,
+      voiceName: '',
       start() {
         if (active)
           active.onstart?.call(
@@ -473,17 +474,25 @@ test('3D speaking state follows local playback and stops on pause', async ({
       value: {
         getVoices: () => [
           {
-            name: 'Test local voice',
+            name: 'Samantha',
             lang: 'en-HK',
             localService: true,
             default: true,
-            voiceURI: 'test-local',
+            voiceURI: 'test-samantha',
+          },
+          {
+            name: 'Daniel',
+            lang: 'en-GB',
+            localService: true,
+            default: false,
+            voiceURI: 'test-daniel',
           },
         ],
         addEventListener() {},
         removeEventListener() {},
         speak(utterance: SpeechSynthesisUtterance) {
           active = utterance;
+          controls.voiceName = utterance.voice?.name ?? '';
           controls.spoken++;
         },
         cancel() {
@@ -526,6 +535,13 @@ test('3D speaking state follows local playback and stops on pause', async ({
         ),
       )
       .toBe(1);
+    expect(
+      await page.evaluate(
+        () =>
+          (window as unknown as { __speechTest: { voiceName: string } })
+            .__speechTest.voiceName,
+      ),
+    ).toBe('Daniel');
     await expect(
       page.getByText('Your interviewer is speaking', { exact: true }),
     ).toHaveCount(0);
