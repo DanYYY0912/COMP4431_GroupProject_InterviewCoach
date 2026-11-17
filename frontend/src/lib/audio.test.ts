@@ -41,12 +41,7 @@ describe('local question playback', () => {
         constructor(public text: string) {}
       },
     );
-    vi.stubGlobal(
-      'requestAnimationFrame',
-      vi.fn(() => 1),
-    );
-    vi.stubGlobal('cancelAnimationFrame', vi.fn());
-    const callbacks = { onStart: vi.fn(), onEnd: vi.fn(), onMouth: vi.fn(), onNotice: vi.fn() };
+    const callbacks = { onStart: vi.fn(), onEnd: vi.fn(), onNotice: vi.fn() };
     return { synthesis, callbacks };
   }
   it('never selects a remote voice when no local language match exists', () => {
@@ -59,7 +54,7 @@ describe('local question playback', () => {
     expect(callbacks.onNotice).toHaveBeenCalledWith(expect.stringContaining('No local voice'));
     expect(callbacks.onEnd).toHaveBeenCalledOnce();
   });
-  it('uses a local voice and prevents old speech events restarting mouth movement after stop', () => {
+  it('uses a local voice and ignores old speech callbacks after stop', () => {
     const voice = { lang: 'en-GB', localService: true };
     const { synthesis, callbacks } = setup([voice]);
     const stop = playQuestion('Hello', 'en-HK', callbacks);
@@ -74,6 +69,5 @@ describe('local question playback', () => {
     expect(synthesis.cancel).toHaveBeenCalledOnce();
     expect(callbacks.onStart).toHaveBeenCalledOnce();
     expect(callbacks.onEnd).toHaveBeenCalledOnce();
-    expect(callbacks.onMouth).toHaveBeenLastCalledWith(0);
   });
 });

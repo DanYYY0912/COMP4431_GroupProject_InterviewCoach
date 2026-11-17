@@ -1,12 +1,9 @@
-import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
-  AudioLines,
   ChevronRight,
   Clock3,
-  Eye,
-  EyeOff,
   Keyboard,
   Mic,
   Pause,
@@ -25,7 +22,7 @@ import { formatDuration } from '../lib/format';
 import { useLiveSession } from '../lib/useLiveSession';
 import { ErrorNotice, Loading, ProviderBadge, Sources } from '../components/Common';
 
-const Avatar = lazy(() => import('../components/Avatar'));
+import { InterviewerPortrait } from '../components/InterviewerPortrait';
 const statusLabels: Record<string, string> = {
   ready: 'Ready when you are',
   listening: 'Listening to your story',
@@ -47,10 +44,8 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
   const [elapsed, setElapsed] = useState(0);
   const [started, setStarted] = useState(false);
   const [speechState, setSpeechState] = useState('');
-  const [mouth, setMouth] = useState(0);
   const [level, setLevel] = useState(0);
   const [notice, setNotice] = useState('');
-  const [avatarOff, setAvatarOff] = useState(false);
   const [metrics, setMetrics] = useState<RecordedAnswer | null>(null);
   const recorder = useRef<Awaited<ReturnType<typeof recordMicrophone>> | null>(null);
   const playback = useRef<(() => void) | null>(null);
@@ -90,7 +85,6 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
   function stopSpeaking() {
     playback.current?.();
     playback.current = null;
-    setMouth(0);
     if (speechState === 'speaking') setSpeechState('');
   }
   function speak() {
@@ -99,7 +93,6 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
     setNotice('');
     playback.current = playQuestion(turn.question.interviewer_text, session.language, {
       onStart: () => setSpeechState('speaking'),
-      onMouth: setMouth,
       onEnd: () => setSpeechState(''),
       onNotice: setNotice,
     });
@@ -221,31 +214,7 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
       {live.error && <ErrorNotice message={live.error} onDismiss={() => live.setError('')} />}
       <div className="interview-grid">
         <section className="interviewer-panel" aria-label="Interviewer">
-          <div className="interviewer-heading">
-            <span className="pill neutral">
-              <span className="status-dot" /> VOX · YOUR PRACTICE COACH
-            </span>
-            <button
-              className="icon-button"
-              aria-label={avatarOff ? 'Enable animated avatar' : 'Disable animated avatar'}
-              aria-pressed={avatarOff}
-              onClick={() => setAvatarOff((value) => !value)}
-            >
-              {avatarOff ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-          <div className="avatar-stage">
-            <span className="avatar-ring" />
-            <Suspense
-              fallback={
-                <div className="portrait-placeholder">
-                  <AudioLines size={58} />
-                </div>
-              }
-            >
-              <Avatar mouth={mouth} state={displayState} disabled={avatarOff} />
-            </Suspense>
-          </div>
+          <InterviewerPortrait />
           <div className="coach-state" role="status">
             <span className={`status-dot ${displayState === 'listening' ? 'pulse' : ''}`} />
             {statusLabels[displayState] || 'Ready when you are'}
@@ -269,7 +238,6 @@ export function Interview({ id, navigate }: { id: string; navigate: (path: strin
               </button>
             )}
           </div>
-          <p className="avatar-note">Original 3D interviewer · captions always available</p>
         </section>
         <div className="answer-column">
           <div className="question-progress">

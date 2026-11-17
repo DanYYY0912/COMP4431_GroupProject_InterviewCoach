@@ -72,7 +72,7 @@ test('resume, pause, skip, retry and microphone denial preserve typed practice',
   const sessionResponse = await request.post('/api/sessions', { data: { job_profile_id: profile.id, language: 'en-HK', difficulty: 'standard', question_count: 3, store_transcript: true } });
   const session = await sessionResponse.json();
   await page.goto(`/#/interview/${session.id}`);
-  await page.getByRole('button', { name: 'Disable animated avatar' }).click();
+  await page.getByRole('button', { name: 'Hide interviewer portrait' }).click();
   await page.getByRole('button', { name: 'Record answer', exact: true }).click();
   await expect(page.getByText('Microphone access is unavailable.', { exact: false })).toBeVisible();
   await page.getByLabel('Your answer').fill('I built a Python API during a university project and wrote tests.');
@@ -140,5 +140,49 @@ test('compare completed evidence and export the full saved transcript', async ({
     await expect(page.getByRole('heading', { name: 'Compare your practice' })).toHaveCount(0);
   } finally {
     for (const session of sessions) await request.delete(`/api/sessions/${session.id}`);
+  }
+});
+
+
+test('interviewer appearance persists after reload without changing the interview', async ({ page, request }) => {
+  const profile = await (await request.post('/api/job-profiles', { data: {
+    title: 'Portrait selection case',
+    text: 'Graduate developer. Build Python APIs, write automated tests, use SQL databases, and communicate technical tradeoffs with teammates.',
+  } })).json();
+  const session = await (await request.post('/api/sessions', { data: {
+    job_profile_id: profile.id, language: 'en-HK', difficulty: 'standard', question_count: 3,
+  } })).json();
+  try {
+    await page.goto(`/#/interview/${session.id}`);
+    await expect(page.getByRole('radio', { name: 'Alex', exact: true })).toBeChecked();
+    const question = await page.locator('.question-card h2').innerText();
+    await page.getByLabel('Your answer', { exact: true }).fill('My draft stays while I choose an interviewer.');
+    await page.getByRole('radio', { name: 'Jamie', exact: true }).check();
+    await expect(page.getByRole('img', { name: 'Jamie, interviewer portrait' })).toBeVisible();
+    await expect(page.getByLabel('Your answer', { exact: true })).toHaveValue('My draft stays while I choose an interviewer.');
+    await expect(page.locator('.question-card h2')).toHaveText(question);
+    await expect(page).toHaveURL(new RegExp(`#/interview/${session.id}$`));
+    expect(await page.evaluate(() => localStorage.getItem('voxprep.interviewer'))).toBe('jamie');
+    await page.reload();
+    await expect(page.getByRole('radio', { name: 'Jamie', exact: true })).toBeChecked();
+    const portrait = page.getByRole('img', { name: 'Jamie, interviewer portrait' });
+    await expect(portrait).toBeVisible();
+    await expect.poll(() => portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+    await expect(page.locator('.question-card h2')).toHaveText(question);
+    await expect(page).toHaveURL(new RegExp(`#/interview/${session.id}$`));
+    const unchanged = await (await request.get(`/api/sessions/${session.id}`)).json();
+    expect(unchanged.turns).toEqual(session.turns);
+    expect(unchanged.current_question).toBe(session.current_question);
+    expect([unchanged.language, unchanged.difficulty, unchanged.question_count]).toEqual(['en-HK', 'standard', 3]);
+    await page.getByRole('button', { name: 'Hide interviewer portrait' }).click();
+    await expect(portrait).toHaveCount(0);
+    await expect(page.getByText('Portrait hidden', { exact: true })).toBeVisible();
+    await expect(page.getByLabel('Your answer', { exact: true })).toBeEnabled();
+    await page.getByRole('button', { name: 'Show interviewer portrait' }).click();
+    await expect(portrait).toBeVisible();
+    await page.setViewportSize({ width: 390, height: 844 });
+    expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
+  } finally {
+    await request.delete(`/api/sessions/${session.id}`);
   }
 });

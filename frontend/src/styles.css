@@ -774,49 +774,6 @@ main {
   justify-content: space-between;
   gap: 0.25rem;
 }
-.interviewer-heading .pill {
-  font-size: 0.7rem;
-  padding: 0.3rem 0.5rem;
-  background: #f4f6eb;
-}
-.avatar-stage {
-  height: 320px;
-  position: relative;
-  margin-top: 0.2rem;
-}
-.avatar-ring {
-  position: absolute;
-  left: 50%;
-  top: 45%;
-  width: 240px;
-  height: 240px;
-  transform: translate(-50%, -50%);
-  border: 1px solid #d0dac0;
-  border-radius: 100%;
-}
-.avatar-ring:after {
-  content: '';
-  position: absolute;
-  inset: 14px;
-  border: 1px solid #d6dfc8;
-  border-radius: 100%;
-}
-.avatar-canvas {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.avatar-portrait {
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-.portrait-placeholder {
-  height: 100%;
-  display: grid;
-  place-items: center;
-  color: #536746;
-}
 .coach-state {
   font-size: 0.78rem;
   display: flex;
@@ -858,12 +815,6 @@ main {
 .interviewer-actions .button {
   font-size: 0.7rem;
   background: #f9fbf0;
-}
-.avatar-note {
-  text-align: center;
-  font-size: 0.7rem;
-  color: #4f673f;
-  margin-top: 1rem;
 }
 .question-progress {
   display: flex;
@@ -1526,16 +1477,6 @@ main {
     gap: 1rem;
     grid-template-columns: minmax(200px, 0.8fr) minmax(0, 1.2fr);
   }
-  .avatar-stage {
-    height: 270px;
-  }
-  .avatar-ring {
-    width: 210px;
-    height: 210px;
-  }
-  .interviewer-heading .pill {
-    font-size: 0.7rem;
-  }
   .question-card {
     padding: 1.1rem;
   }
@@ -1697,37 +1638,13 @@ main {
     position: static;
     padding: 0.8rem;
   }
-  .avatar-stage {
-    height: 220px;
-  }
-  .avatar-ring {
-    height: 180px;
-    width: 180px;
-  }
-  .interviewer-heading .pill {
-    font-size: 0.7rem;
-  }
-  .interviewer-actions {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    max-width: 150px;
-    flex-direction: column;
-  }
   .interviewer-actions .button {
     font-size: 0.7rem;
   }
-  .avatar-note {
-    display: none;
-  }
   .coach-state {
-    justify-content: flex-start;
     font-size: 0.7rem;
   }
   .waveform {
-    justify-content: flex-start;
-    width: 130px;
-    margin: 0.5rem 0 0;
     height: 28px;
     gap: 2px;
   }
@@ -2547,5 +2464,123 @@ main {
 @media (max-width: 600px) {
   .setup-start > button {
     width: 100%;
+  }
+}
+
+/* Still, locally bundled interviewer portraits. */
+.portrait-name {
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+.portrait-name small {
+  color: #52634b;
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+.portrait-frame {
+  width: min(100%, 300px);
+  aspect-ratio: 3 / 4;
+  margin: 0.8rem auto 1.15rem;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #f4f4ec;
+  border: 1px solid #cad4c0;
+}
+.portrait-frame > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+.portrait-fallback {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #53634d;
+  font-size: 0.88rem;
+}
+.portrait-choices {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1.15rem;
+}
+.portrait-choices legend {
+  font-size: 0.81rem;
+  margin-bottom: 0.65rem;
+}
+.portrait-choice-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.portrait-choice {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.35rem;
+  border: 1px solid #bdcbb0;
+  background: #f7f8f0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.portrait-choice.selected {
+  border-color: #345f43;
+  background: #edf3e4;
+  box-shadow: 0 0 0 1px #345f43;
+}
+.portrait-choice input {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+.portrait-choice:focus-within {
+  outline: 3px solid #497d33;
+  outline-offset: 3px;
+}
+.portrait-thumbnail {
+  width: 44px;
+  height: 52px;
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e4eadb;
+}
+.portrait-thumbnail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.portrait-thumbnail-fallback {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  font-size: 1.1rem;
+  color: #53634d;
+}
+.portrait-choices > p {
+  margin-top: 0.65rem;
+  color: #52634b;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .portrait-frame {
+    max-width: 225px;
   }
 }

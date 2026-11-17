@@ -2,11 +2,11 @@
 
 ## Executive summary
 
-This React interface supports job-description setup, English and Cantonese interviews, editable transcripts, source-linked debriefs, retry, export, history and deletion. It calls the local FastAPI service and validates session, profile and report responses before display. Speech and the original 3D interviewer are optional; the same workflow works with typed answers. The default demo provider is labelled as scripted. Inference settings connect the agent, ASR, embedding and reranker to selected OpenAI-compatible servers; saved changes apply to new requests without a restart.
+This React interface supports job-description setup, English and Cantonese interviews, editable transcripts, source-linked debriefs, retry, export, history and deletion. It calls the local FastAPI service and validates session, profile and report responses before display. Speech and the interviewer portrait are optional; the same workflow works with typed answers. The default demo provider is labelled as scripted. Inference settings connect the agent, ASR, embedding and reranker to selected OpenAI-compatible servers; saved changes apply to new requests without a restart.
 
 ## Development
 
-Run `pnpm install --frozen-lockfile`, then `pnpm dev` with the API on `127.0.0.1:8000`. The development server proxies `/api` and its WebSocket connection. `pnpm build` runs TypeScript and writes `dist/`; the API can serve that directory for the single-origin demonstration.
+Run `pnpm install --frozen-lockfile`, then `pnpm dev` with the API on `127.0.0.1:4431`. The development server proxies `/api` and its WebSocket connection. `pnpm build` runs TypeScript and writes `dist/`; the API can serve that directory for the single-origin demonstration.
 
 The root route opens the practice setup. Only the job description and interview options are editable there; the right column summarizes configuration and service readiness. A valid pasted or uploaded job description enables starting without a separate consent or provider-configuration gate. Saved sessions remain available through the plain History page at `/#/history`.
 
@@ -20,15 +20,15 @@ The Settings page at `/#/settings` (also available through the previous `/#/meth
 
 - Sessions are stored locally, but selected external inference servers receive prompts, audio or source passages needed for their task. The Settings page discloses this boundary. Local servers may omit an API key. Public services require HTTPS; local and private network servers may use HTTP. Clearing the URL and model selects the scripted demo coach for Agent, native Whisper for ASR, lexical search for Embedding, or no reranking for Reranker.
 - The microphone is acquired only after a user action. A five-minute cap bounds recordings, and audio stays in memory until transcription. The complete recording is encoded as mono 16 kHz PCM WAV and sent through `/api/speech/transcribe` when recording finishes. The app server routes it to the configured ASR service or native Whisper.
-- **Read question** uses only a browser voice marked `localService`. No automatic playback runs. If a compatible local voice is unavailable, the written question remains available. Browser speech drives approximate mouth motion.
+- **Read question** uses only a browser voice marked `localService`. No automatic playback runs. If a compatible local voice is unavailable, the written question remains available. The portrait stays still during speech.
 - Pause, cancellation, leaving the page and finishing stop playback. The microphone stream is released after recording or teardown. Pending transcription is aborted and late results cannot replace a newer draft. Typed drafts are sent when the user selects **Send answer**; recorded audio is sent for transcription when recording finishes.
 - Pause counts and silence duration use a simple amplitude threshold; they are descriptive estimates, not judgments of speaking ability. Real multi-speaker speech benchmarks and hardware frame-rate measurements are still required.
 
-## Avatar and assets
+## Interviewer portraits and assets
 
-The interviewer is an original procedural Three.js model authored for this project. It consists of primitive meshes with independent mouth, head and eye motion. The fallback portrait and favicon are original SVGs. No third-party character, stock image, or externally hosted font is included. Reduced-motion preference or the avatar toggle selects the static portrait. A WebGL error boundary preserves the text workflow.
+Three fictional, photorealistic interviewer portraits—Alex, Jamie and Sam—are bundled in `public/interviewers/` and served by the app. The **Interviewer appearance** radio choices change only the portrait; they never change the session, questions or interview settings. The known face ID is saved under `voxprep.interviewer` in browser local storage. Invalid stored values fall back to Alex, and unavailable browser storage still permits selection for the current page.
 
-The initial 3D mesh is deliberately simple and does not require a VRM asset. React Three Fiber 9 is paired with React 19 as required by its [compatibility guide](https://r3f.docs.pmnd.rs/getting-started/installation).
+**Hide interviewer portrait** replaces the large photograph with a quiet placeholder. If an image fails to load, text identifies the interviewer and the interview controls remain usable. There is no 3D canvas, simulated mouth movement, animated photograph or external image request.
 
 ## Resilience
 

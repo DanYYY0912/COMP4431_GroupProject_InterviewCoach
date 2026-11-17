@@ -12,7 +12,9 @@ vi.mock('../lib/audio', () => ({
   recordMicrophone: vi.fn(),
   playQuestion: vi.fn(() => vi.fn()),
 }));
-vi.mock('../components/Avatar', () => ({ default: () => <div>Coach portrait</div> }));
+vi.mock('../components/InterviewerPortrait', () => ({
+  InterviewerPortrait: () => <div>Coach portrait</div>,
+}));
 
 const session: Session = {
   id: 's1',

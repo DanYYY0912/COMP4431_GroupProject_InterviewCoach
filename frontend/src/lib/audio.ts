@@ -119,7 +119,6 @@ export async function recordMicrophone(
 
 type PlaybackCallbacks = {
   onStart: () => void;
-  onMouth: (value: number) => void;
   onEnd: () => void;
   onNotice: (text: string) => void;
 };
@@ -129,13 +128,10 @@ export function playQuestion(
   callbacks: PlaybackCallbacks,
 ): () => void {
   let stopped = false;
-  let frame = 0;
   const synthesis = 'speechSynthesis' in window ? window.speechSynthesis : null;
   const finish = () => {
     if (stopped) return;
     stopped = true;
-    cancelAnimationFrame(frame);
-    callbacks.onMouth(0);
     callbacks.onEnd();
   };
   const stop = () => {
@@ -170,12 +166,6 @@ export function playQuestion(
   utterance.onstart = () => {
     if (stopped) return;
     callbacks.onStart();
-    const animate = () => {
-      if (stopped) return;
-      callbacks.onMouth(0.25 + Math.abs(Math.sin(performance.now() / 100)) * 0.55);
-      frame = requestAnimationFrame(animate);
-    };
-    animate();
   };
   utterance.onend = finish;
   utterance.onerror = () => {
