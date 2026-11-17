@@ -36,7 +36,7 @@ class ChunkRecord(Base):
     )
     source: Mapped[str] = mapped_column(String(300))
     text: Mapped[str] = mapped_column(Text)
-    embedding: Mapped[list | None] = mapped_column(JSON(none_as_null=True), nullable=True)
+    embedding: Mapped[dict | list | None] = mapped_column(JSON(none_as_null=True), nullable=True)
 
 
 class SessionRecord(Base):
