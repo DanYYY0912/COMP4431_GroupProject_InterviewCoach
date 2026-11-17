@@ -33,14 +33,14 @@ not browser dependencies.
 from __future__ import annotations
 
 import argparse
-from collections import Counter, defaultdict
 import hashlib
-from importlib.metadata import version
 import json
 import math
-from pathlib import Path
 import sys
 import urllib.request
+from collections import Counter, defaultdict
+from importlib.metadata import version
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_URL = (
@@ -48,15 +48,37 @@ MODEL_URL = (
     "face_landmarker/float16/1/face_landmarker.task"
 )
 MODEL_SHA256 = "64184e229b263107bc2b804c6625db1341ff2bb731874b0bcc2fe6544e0bc9ff"
-MOUTH_LOOP = [78, 191, 80, 81, 82, 13, 312, 311, 310, 415,
-              308, 324, 318, 402, 317, 14, 87, 178, 88, 95]
+MOUTH_LOOP = [
+    78,
+    191,
+    80,
+    81,
+    82,
+    13,
+    312,
+    311,
+    310,
+    415,
+    308,
+    324,
+    318,
+    402,
+    317,
+    14,
+    87,
+    178,
+    88,
+    95,
+]
 LANDMARK_COUNT = 468
 FRAME_EDGE_STEPS = 16
 TOPOLOGY_PATH = ROOT / "scripts/avatar/canonical_face_model.obj"
 TOPOLOGY_SHA256 = "8bac80443397e113f41a8b565ea72c59390bc031d9defab289dba7bc0c54e618"
-TOPOLOGY_URL = ("https://raw.githubusercontent.com/google-ai-edge/mediapipe/"
-                "a908d668c730da128dfa8d9f6bd25d519d006692/"
-                "mediapipe/modules/face_geometry/data/canonical_face_model.obj")
+TOPOLOGY_URL = (
+    "https://raw.githubusercontent.com/google-ai-edge/mediapipe/"
+    "a908d668c730da128dfa8d9f6bd25d519d006692/"
+    "mediapipe/modules/face_geometry/data/canonical_face_model.obj"
+)
 
 
 def sha256(path: Path) -> str:
@@ -72,7 +94,9 @@ def ensure_model(path: Path, allow_download: bool) -> None:
         with urllib.request.urlopen(MODEL_URL, timeout=90) as response:
             data = response.read(8_000_001)
         if len(data) > 8_000_000 or hashlib.sha256(data).hexdigest() != MODEL_SHA256:
-            raise ValueError("Downloaded Face Landmarker model failed SHA-256 verification")
+            raise ValueError(
+                "Downloaded Face Landmarker model failed SHA-256 verification"
+            )
         temporary = path.with_suffix(".download")
         temporary.write_bytes(data)
         temporary.replace(path)
@@ -81,30 +105,47 @@ def ensure_model(path: Path, allow_download: bool) -> None:
 
 
 def polygon_area(points: list[list[float]]) -> float:
-    return abs(sum(a[0] * b[1] - b[0] * a[1]
-                   for a, b in zip(points, points[1:] + points[:1]))) / 2
+    return (
+        abs(
+            sum(
+                a[0] * b[1] - b[0] * a[1]
+                for a, b in zip(points, points[1:] + points[:1])
+            )
+        )
+        / 2
+    )
 
 
 def loop_edges(indices: list[int]) -> set[tuple[int, int]]:
     return {tuple(sorted((a, b))) for a, b in zip(indices, indices[1:] + indices[:1])}
 
 
-def validate_geometry(positions: list[list[float]], triangles: list[int],
-                      mouth_loop: list[int], border_start: int,
-                      *, allow_projected_folds: bool = False) -> dict:
+def validate_geometry(
+    positions: list[list[float]],
+    triangles: list[int],
+    mouth_loop: list[int],
+    border_start: int,
+    *,
+    allow_projected_folds: bool = False,
+) -> dict:
     """Reject cracks, a filled mouth, dropped vertices and bad numbers.
 
     Canonical facial topology may fold in XY projection; allow that explicitly
     for measured 3D faces, while still checking signed coverage and all edges.
     """
     for point in positions:
-        if len(point) != 3 or not all(isinstance(v, (int, float)) and math.isfinite(v) for v in point):
+        if len(point) != 3 or not all(
+            isinstance(v, (int, float)) and math.isfinite(v) for v in point
+        ):
             raise ValueError("Each position must contain three finite numbers")
         if not (0 <= point[0] <= 1 and 0 <= point[1] <= 1 and abs(point[2]) <= 1):
             raise ValueError("Position outside normalized portrait coordinate bounds")
     if len(triangles) % 3 or not triangles:
         raise ValueError("Triangle indices must be a nonempty multiple of three")
-    if any(type(i) is not int or not 0 <= i < len(positions) for i in triangles + mouth_loop):
+    if any(
+        type(i) is not int or not 0 <= i < len(positions)
+        for i in triangles + mouth_loop
+    ):
         raise ValueError("Triangle/mouth index outside vertex range")
     if len(set(mouth_loop)) != len(mouth_loop) or len(mouth_loop) < 3:
         raise ValueError("Mouth loop must contain distinct indices")
@@ -114,44 +155,62 @@ def validate_geometry(positions: list[list[float]], triangles: list[int],
     total_area = 0.0
     folded = 0
     for start in range(0, len(triangles), 3):
-        a, b, c = triangles[start:start + 3]
+        a, b, c = triangles[start : start + 3]
         pa, pb, pc = positions[a], positions[b], positions[c]
-        area = ((pb[0] - pa[0]) * (pc[1] - pa[1]) -
-                (pb[1] - pa[1]) * (pc[0] - pa[0])) / 2
+        area = (
+            (pb[0] - pa[0]) * (pc[1] - pa[1]) - (pb[1] - pa[1]) * (pc[0] - pa[0])
+        ) / 2
         if abs(area) <= 1e-12 or (area < 0 and not allow_projected_folds):
             raise ValueError("Triangle winding must be positive with nonzero area")
         folded += area < 0
         total_area += area
-        edges.update((tuple(sorted(pair)) for pair in ((a, b), (b, c), (c, a))))
+        edges.update(tuple(sorted(pair)) for pair in ((a, b), (b, c), (c, a)))
     actual_boundary = {edge for edge, count in edges.items() if count == 1}
-    expected_boundary = loop_edges(mouth_loop) | loop_edges(list(range(border_start, len(positions))))
-    if actual_boundary != expected_boundary or any(count > 2 for count in edges.values()):
-        raise ValueError("Mesh boundaries must be exactly the portrait frame and mouth aperture; "
-                         f"missing={sorted(expected_boundary - actual_boundary)}, "
-                         f"extra={sorted(actual_boundary - expected_boundary)}")
+    expected_boundary = loop_edges(mouth_loop) | loop_edges(
+        list(range(border_start, len(positions)))
+    )
+    if actual_boundary != expected_boundary or any(
+        count > 2 for count in edges.values()
+    ):
+        raise ValueError(
+            "Mesh boundaries must be exactly the portrait frame and mouth aperture; "
+            f"missing={sorted(expected_boundary - actual_boundary)}, "
+            f"extra={sorted(actual_boundary - expected_boundary)}"
+        )
     if set(triangles) != set(range(len(positions))):
         raise ValueError("Mesh dropped one or more landmarks/frame vertices")
     expected_area = 1 - polygon_area([positions[i] for i in mouth_loop])
     if not math.isclose(total_area, expected_area, rel_tol=0, abs_tol=1e-8):
         raise ValueError("Mesh area does not cover exactly the portrait minus mouth")
-    return {"vertexCount": len(positions), "triangleCount": len(triangles) // 3,
-            "boundaryEdges": len(actual_boundary), "coveredArea": round(total_area, 10),
-            "mouthArea": round(1 - expected_area, 10), "projectedFoldTriangles": folded}
+    return {
+        "vertexCount": len(positions),
+        "triangleCount": len(triangles) // 3,
+        "boundaryEdges": len(actual_boundary),
+        "coveredArea": round(total_area, 10),
+        "mouthArea": round(1 - expected_area, 10),
+        "projectedFoldTriangles": folded,
+    }
 
 
 def canonical_faces() -> tuple[list[list[int]], list[int]]:
     if sha256(TOPOLOGY_PATH) != TOPOLOGY_SHA256:
         raise ValueError("Vendored canonical topology failed SHA-256 verification")
-    faces = [[int(token.split("/")[0]) - 1 for token in line.split()[1:]]
-             for line in TOPOLOGY_PATH.read_text().splitlines() if line.startswith("f ")]
-    edges = Counter(tuple(sorted(edge)) for a, b, c in faces
-                    for edge in ((a, b), (b, c), (c, a)))
+    faces = [
+        [int(token.split("/")[0]) - 1 for token in line.split()[1:]]
+        for line in TOPOLOGY_PATH.read_text().splitlines()
+        if line.startswith("f ")
+    ]
+    edges = Counter(
+        tuple(sorted(edge)) for a, b, c in faces for edge in ((a, b), (b, c), (c, a))
+    )
     boundary: dict[int, list[int]] = defaultdict(list)
     for (a, b), count in edges.items():
         if count == 1:
             boundary[a].append(b)
             boundary[b].append(a)
-    if len(boundary) != 36 or any(len(neighbors) != 2 for neighbors in boundary.values()):
+    if len(boundary) != 36 or any(
+        len(neighbors) != 2 for neighbors in boundary.values()
+    ):
         raise ValueError("Canonical topology has unexpected outer boundary")
     oval = [min(boundary)]
     while True:
@@ -163,8 +222,9 @@ def canonical_faces() -> tuple[list[list[int]], list[int]]:
     return [[a, c, b] for a, b, c in faces], oval
 
 
-def restore_boundary_vertices(faces: list[list[int]], positions: list[list[float]],
-                              required: list[int]) -> None:
+def restore_boundary_vertices(
+    faces: list[list[int]], positions: list[list[float]], required: list[int]
+) -> None:
     """Earcut may omit collinear frame points; split their boundary edges exactly."""
     used = {i for face in faces for i in face}
     for index in required:
@@ -191,9 +251,11 @@ def restore_boundary_vertices(faces: list[list[int]], positions: list[list[float
             raise ValueError(f"Cannot restore omitted contour vertex {index}")
 
 
-def make_geometry(landmarks: list[list[float]]) -> tuple[list[list[float]], list[int], dict]:
-    import numpy as np
+def make_geometry(
+    landmarks: list[list[float]],
+) -> tuple[list[list[float]], list[int], dict]:
     import mapbox_earcut as earcut
+    import numpy as np
 
     if len(landmarks) != LANDMARK_COUNT:
         raise ValueError(f"Expected {LANDMARK_COUNT} face landmarks")
@@ -209,11 +271,15 @@ def make_geometry(landmarks: list[list[float]]) -> tuple[list[list[float]], list
     facial = [face for face in canonical if not set(face).issubset(mouth_set)]
     removed = len(canonical) - len(facial)
     mapping = list(range(LANDMARK_COUNT, len(positions))) + oval
-    xy = np.asarray([[positions[i][0], positions[i][1]] for i in mapping], dtype=np.float64)
+    xy = np.asarray(
+        [[positions[i][0], positions[i][1]] for i in mapping], dtype=np.float64
+    )
     rings = np.asarray([FRAME_EDGE_STEPS * 4, len(mapping)], dtype=np.uint32)
     result = earcut.triangulate_float64(xy, rings)
-    outside = [[mapping[int(i)] for i in result[start:start + 3]]
-               for start in range(0, len(result), 3)]
+    outside = [
+        [mapping[int(i)] for i in result[start : start + 3]]
+        for start in range(0, len(result), 3)
+    ]
     restore_boundary_vertices(outside, positions, mapping)
     faces = []
     for face in facial + outside:
@@ -224,8 +290,9 @@ def make_geometry(landmarks: list[list[float]]) -> tuple[list[list[float]], list
     triangles = [i for face in sorted(faces) for i in face]
     # The measured face has a few XY folds (cheeks/lip edges). These are legitimate
     # 3D surface folds, not missing triangles; preserve them and report their count.
-    diagnostics = validate_geometry(positions, triangles, MOUTH_LOOP, LANDMARK_COUNT,
-                                    allow_projected_folds=True)
+    diagnostics = validate_geometry(
+        positions, triangles, MOUTH_LOOP, LANDMARK_COUNT, allow_projected_folds=True
+    )
     diagnostics["removedMouthTriangles"] = removed
     return positions, triangles, diagnostics
 
@@ -239,8 +306,10 @@ def build_portrait(image_path: Path, model_path: Path) -> dict:
     options = mp.tasks.vision.FaceLandmarkerOptions(
         base_options=mp.tasks.BaseOptions(model_asset_path=str(model_path)),
         running_mode=mp.tasks.vision.RunningMode.IMAGE,
-        num_faces=2, min_face_detection_confidence=0.5,
-        output_face_blendshapes=False, output_facial_transformation_matrixes=False,
+        num_faces=2,
+        min_face_detection_confidence=0.5,
+        output_face_blendshapes=False,
+        output_facial_transformation_matrixes=False,
     )
     with mp.tasks.vision.FaceLandmarker.create_from_options(options) as landmarker:
         result = landmarker.detect(mp.Image.create_from_file(str(image_path)))
@@ -249,26 +318,40 @@ def build_portrait(image_path: Path, model_path: Path) -> dict:
     landmarks = [[p.x, p.y, p.z] for p in result.face_landmarks[0][:LANDMARK_COUNT]]
     positions, triangles, diagnostics = make_geometry(landmarks)
     return {
-        "schemaVersion": 1, "id": image_path.stem,
+        "schemaVersion": 1,
+        "id": image_path.stem,
         "dimensions": {"width": width, "height": height},
-        "landmarkCount": LANDMARK_COUNT, "frameVertexCount": FRAME_EDGE_STEPS * 4,
-        "positions": positions, "triangles": triangles, "mouthLoop": MOUTH_LOOP,
-        "coordinates": {"x": "image-right / image-width", "y": "image-down / image-height",
-                        "z": "relative depth / image-width; negative towards camera; frame=0",
-                        "uv": "[x, 1-y]", "winding": "topologically positive in image XY; measured face can fold in projection"},
+        "landmarkCount": LANDMARK_COUNT,
+        "frameVertexCount": FRAME_EDGE_STEPS * 4,
+        "positions": positions,
+        "triangles": triangles,
+        "mouthLoop": MOUTH_LOOP,
+        "coordinates": {
+            "x": "image-right / image-width",
+            "y": "image-down / image-height",
+            "z": "relative depth / image-width; negative towards camera; frame=0",
+            "uv": "[x, 1-y]",
+            "winding": "topologically positive in image XY; measured face can fold in projection",
+        },
         "provenance": {
-            "sourceImage": image_path.name, "sourceSha256": sha256(image_path),
-            "modelUrl": MODEL_URL, "modelSha256": MODEL_SHA256,
+            "sourceImage": image_path.name,
+            "sourceSha256": sha256(image_path),
+            "modelUrl": MODEL_URL,
+            "modelSha256": MODEL_SHA256,
             "generator": "scripts/build_interviewer_faces.py",
             "generatorSha256": sha256(Path(__file__)),
-            "packages": {name: version(name) for name in ("mediapipe", "numpy", "Pillow", "mapbox-earcut")},
-            "topologyUrl": TOPOLOGY_URL, "topologySha256": TOPOLOGY_SHA256,
+            "packages": {
+                name: version(name)
+                for name in ("mediapipe", "numpy", "Pillow", "mapbox-earcut")
+            },
+            "topologyUrl": TOPOLOGY_URL,
+            "topologySha256": TOPOLOGY_SHA256,
             "topologyLicense": "Apache-2.0; see MEDIAPIPE-LICENSE.txt",
             "method": "MediaPipe IMAGE landmarks; first 468; canonical facial triangles with "
-                      "inner-mouth cap removed; Earcut portrait frame with 36-vertex face-oval hole; "
-                      "restore all 64 frame vertices by collinear edge subdivision",
+            "inner-mouth cap removed; Earcut portrait frame with 36-vertex face-oval hole; "
+            "restore all 64 frame vertices by collinear edge subdivision",
             "limitations": "Single-view textured relief, not a full head scan or a trained facial rig. "
-                           "Depth is estimated; unseen surfaces, teeth and mouth interior are not reconstructed.",
+            "Depth is estimated; unseen surfaces, teeth and mouth interior are not reconstructed.",
             "runtimeInference": False,
         },
         "validation": diagnostics,
@@ -276,13 +359,31 @@ def build_portrait(image_path: Path, model_path: Path) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--portraits", nargs="+", default=["jamie"],
-                        help="Jamie is the included portrait; additional allowlisted PNGs may be supplied explicitly")
-    parser.add_argument("--input-dir", type=Path, default=ROOT / "frontend/public/interviewers")
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "frontend/public/interviewers")
-    parser.add_argument("--model", type=Path, default=ROOT / "artifacts/avatar-tools/face_landmarker.task")
-    parser.add_argument("--download-model", action="store_true", help="Fetch the pinned verified official model if absent")
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--portraits",
+        nargs="+",
+        default=["jamie"],
+        help="Jamie is the included portrait; additional allowlisted PNGs may be supplied explicitly",
+    )
+    parser.add_argument(
+        "--input-dir", type=Path, default=ROOT / "frontend/public/interviewers"
+    )
+    parser.add_argument(
+        "--output-dir", type=Path, default=ROOT / "frontend/public/interviewers"
+    )
+    parser.add_argument(
+        "--model",
+        type=Path,
+        default=ROOT / "artifacts/avatar-tools/face_landmarker.task",
+    )
+    parser.add_argument(
+        "--download-model",
+        action="store_true",
+        help="Fetch the pinned verified official model if absent",
+    )
     args = parser.parse_args()
     ensure_model(args.model, args.download_model)
     sources = []
@@ -297,8 +398,18 @@ def main() -> None:
     for source in sources:
         payload = build_portrait(source, args.model)
         destination = args.output_dir / f"{source.stem}.mesh.json"
-        destination.write_text(json.dumps(payload, separators=(",", ":"), allow_nan=False) + "\n")
-        print(json.dumps({"portrait": source.stem, "output": str(destination), **payload["validation"]}))
+        destination.write_text(
+            json.dumps(payload, separators=(",", ":"), allow_nan=False) + "\n"
+        )
+        print(
+            json.dumps(
+                {
+                    "portrait": source.stem,
+                    "output": str(destination),
+                    **payload["validation"],
+                }
+            )
+        )
 
 
 if __name__ == "__main__":
