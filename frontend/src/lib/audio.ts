@@ -1,4 +1,3 @@
-import { api } from './api';
 import type { Language } from './types';
 
 export function encodeWav(chunks: Float32Array[], sampleRate: number): ArrayBuffer {
@@ -38,13 +37,6 @@ export function encodeWav(chunks: Float32Array[], sampleRate: number): ArrayBuff
     view.setInt16(44 + i * 2, sample < 0 ? sample * 32768 : sample * 32767, true);
   }
   return buffer;
-}
-
-export function visemeOpenness(id: number) {
-  if (id === 0) return 0;
-  if ([18, 19, 20, 21].includes(id)) return 0.08;
-  if ([1, 2, 3, 4, 5, 6].includes(id)) return 0.8;
-  return 0.35;
 }
 
 export type RecordedAnswer = {
@@ -125,93 +117,6 @@ export async function recordMicrophone(
   }
 }
 
-export async function azureRecognizer(
-  stream: MediaStream,
-  language: Language,
-  onText: (text: string, final: boolean) => void,
-  onError: (message: string) => void,
-  signal?: AbortSignal,
-) {
-  const token = await api.token();
-  const sdk = await import('microsoft-cognitiveservices-speech-sdk');
-  if (signal?.aborted) throw new DOMException('Recording canceled', 'AbortError');
-  sdk.Recognizer.enableTelemetry(false);
-  const config = sdk.SpeechConfig.fromAuthorizationToken(token.token, token.region);
-  config.speechRecognitionLanguage = language;
-  const azureStream = stream.clone();
-  let recognizer: InstanceType<typeof sdk.SpeechRecognizer>;
-  try {
-    recognizer = new sdk.SpeechRecognizer(config, sdk.AudioConfig.fromStreamInput(azureStream));
-  } catch (error) {
-    azureStream.getTracks().forEach((track) => track.stop());
-    throw error;
-  }
-  let closed = false;
-  let rejectStart: ((reason: Error) => void) | null = null;
-  let startupTimer: ReturnType<typeof setTimeout> | null = null;
-  const close = () => {
-    if (closed) return;
-    closed = true;
-    if (startupTimer) clearTimeout(startupTimer);
-    signal?.removeEventListener('abort', abort);
-    try {
-      recognizer.close();
-    } catch {
-      /* The microphone must still be released. */
-    }
-    azureStream.getTracks().forEach((track) => track.stop());
-  };
-  const abort = () => {
-    close();
-    rejectStart?.(new DOMException('Recording canceled', 'AbortError'));
-  };
-  signal?.addEventListener('abort', abort, { once: true });
-  recognizer.recognizing = (_, event) => onText(event.result.text, false);
-  recognizer.recognized = (_, event) => {
-    if (event.result.reason === sdk.ResultReason.RecognizedSpeech) onText(event.result.text, true);
-  };
-  recognizer.canceled = (_, event) => {
-    if (event.reason === sdk.CancellationReason.Error)
-      onError('Azure speech stopped. Finish recording to use the saved transcription settings.');
-  };
-  try {
-    await new Promise<void>((resolve, reject) => {
-      rejectStart = reject;
-      startupTimer = setTimeout(
-        () => reject(new Error('Azure recognition startup timed out')),
-        15000,
-      );
-      recognizer.startContinuousRecognitionAsync(() => {
-        if (startupTimer) clearTimeout(startupTimer);
-        rejectStart = null;
-        resolve();
-      }, reject);
-    });
-  } catch (error) {
-    close();
-    throw error;
-  }
-  return {
-    stop: () =>
-      new Promise<void>((resolve) => {
-        if (closed) {
-          resolve();
-          return;
-        }
-        const timeout = setTimeout(() => {
-          close();
-          resolve();
-        }, 5000);
-        const complete = () => {
-          clearTimeout(timeout);
-          close();
-          resolve();
-        };
-        recognizer.stopContinuousRecognitionAsync(complete, complete);
-      }),
-  };
-}
-
 type PlaybackCallbacks = {
   onStart: () => void;
   onMouth: (value: number) => void;
@@ -221,170 +126,68 @@ type PlaybackCallbacks = {
 export function playQuestion(
   text: string,
   language: Language,
-  cloudConsent: boolean,
   callbacks: PlaybackCallbacks,
 ): () => void {
   let stopped = false;
-  let stopAudio: (() => void) | null = null;
   let frame = 0;
-  let closeSynth: (() => void) | null = null;
-  const stop = () => {
+  const synthesis = 'speechSynthesis' in window ? window.speechSynthesis : null;
+  const finish = () => {
     if (stopped) return;
     stopped = true;
     cancelAnimationFrame(frame);
-    stopAudio?.();
-    closeSynth?.();
     callbacks.onMouth(0);
     callbacks.onEnd();
   };
-  const browser = () => {
+  const stop = () => {
     if (stopped) return;
-    if (!('speechSynthesis' in window)) {
-      callbacks.onNotice('Speech playback is unavailable. Read the question in the captions.');
-      callbacks.onEnd();
-      return;
-    }
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = language;
-    utterance.rate = 0.93;
-    const localVoices = speechSynthesis
-      .getVoices()
-      .filter(
-        (voice) =>
-          voice.localService &&
-          (voice.lang.toLowerCase() === language.toLowerCase() ||
-            (language === 'en-HK' && voice.lang.startsWith('en'))),
-      );
-    if (!localVoices.length) {
-      callbacks.onNotice(
-        'No local voice is available for this language. Captions remain available.',
-      );
-      callbacks.onEnd();
-      return;
-    }
-    utterance.voice = localVoices[0];
-    utterance.onstart = () => {
-      if (stopped) return;
-      callbacks.onStart();
-      callbacks.onNotice('Playing the local system voice. Mouth motion is approximate.');
-      const animate = () => {
-        if (stopped) return;
-        callbacks.onMouth(0.25 + Math.abs(Math.sin(performance.now() / 100)) * 0.55);
-        frame = requestAnimationFrame(animate);
-      };
-      animate();
-    };
-    utterance.onend = () => {
-      if (stopped) return;
-      cancelAnimationFrame(frame);
-      callbacks.onMouth(0);
-      callbacks.onEnd();
-    };
-    utterance.onerror = () => {
-      if (stopped) return;
-      cancelAnimationFrame(frame);
-      callbacks.onMouth(0);
-      callbacks.onEnd();
-      callbacks.onNotice('Speaker playback failed. You can continue with captions.');
-    };
-    stopAudio = () => speechSynthesis.cancel();
-    speechSynthesis.speak(utterance);
+    finish();
+    synthesis?.cancel();
   };
-  if (!cloudConsent) {
-    browser();
+  if (!synthesis) {
+    callbacks.onNotice('Speech playback is unavailable. Read the question on screen.');
+    finish();
     return stop;
   }
-  void (async () => {
-    try {
-      const token = await api.token();
+  const voices = synthesis
+    .getVoices()
+    .filter(
+      (voice) =>
+        voice.localService &&
+        (voice.lang.toLowerCase() === language.toLowerCase() ||
+          (language === 'en-HK' && voice.lang.toLowerCase().startsWith('en'))),
+    );
+  if (!voices.length) {
+    callbacks.onNotice(
+      'No local voice is available for this language. Read the question on screen.',
+    );
+    finish();
+    return stop;
+  }
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = language;
+  utterance.rate = 0.93;
+  utterance.voice = voices[0];
+  utterance.onstart = () => {
+    if (stopped) return;
+    callbacks.onStart();
+    const animate = () => {
       if (stopped) return;
-      const sdk = await import('microsoft-cognitiveservices-speech-sdk');
-      if (stopped) return;
-      const config = sdk.SpeechConfig.fromAuthorizationToken(token.token, token.region);
-      config.speechSynthesisVoiceName =
-        language === 'zh-HK' ? 'zh-HK-HiuMaanNeural' : 'en-HK-YanNeural';
-      config.speechSynthesisOutputFormat = sdk.SpeechSynthesisOutputFormat.Riff24Khz16BitMonoPcm;
-      const synthesizer = new sdk.SpeechSynthesizer(config, null);
-      closeSynth = () => synthesizer.close();
-      const visemes: { time: number; id: number }[] = [];
-      synthesizer.visemeReceived = (_, event) =>
-        visemes.push({ time: event.audioOffset / 10000000, id: event.visemeId });
-      const audio = await new Promise<ArrayBuffer>((resolve, reject) =>
-        synthesizer.speakTextAsync(
-          text,
-          (result) => {
-            if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted)
-              resolve(result.audioData);
-            else reject(new Error('Speech synthesis unavailable'));
-          },
-          reject,
-        ),
-      );
-      synthesizer.close();
-      closeSynth = null;
-      if (stopped) return;
-      const context = new AudioContext();
-      stopAudio = () => {
-        void context.close();
-      };
-      const buffer = await context.decodeAudioData(audio);
-      if (stopped) {
-        await context.close();
-        return;
-      }
-      await context.resume();
-      if (stopped) return;
-      const source = context.createBufferSource();
-      const analyser = context.createAnalyser();
-      analyser.fftSize = 256;
-      source.buffer = buffer;
-      source.connect(analyser);
-      analyser.connect(context.destination);
-      const amplitude = new Uint8Array(analyser.fftSize);
-      const started = context.currentTime;
-      let index = -1;
-      source.onended = () => {
-        cancelAnimationFrame(frame);
-        callbacks.onMouth(0);
-        callbacks.onEnd();
-        void context.close();
-      };
-      source.start();
-      callbacks.onStart();
-      const animate = () => {
-        if (stopped) return;
-        const elapsed = context.currentTime - started;
-        while (index + 1 < visemes.length && visemes[index + 1].time <= elapsed) index++;
-        if (index >= 0) callbacks.onMouth(visemeOpenness(visemes[index].id));
-        else {
-          analyser.getByteTimeDomainData(amplitude);
-          const level = Math.sqrt(
-            amplitude.reduce((sum, n) => sum + ((n - 128) / 128) ** 2, 0) / amplitude.length,
-          );
-          callbacks.onMouth(Math.min(1, level * 7));
-        }
-        frame = requestAnimationFrame(animate);
-      };
-      stopAudio = () => {
-        source.onended = null;
-        try {
-          source.stop();
-        } catch {
-          /* already ended */
-        }
-        void context.close();
-      };
-      animate();
-      if (!visemes.length)
-        callbacks.onNotice(
-          'Voice is playing with audio-driven mouth motion. This voice did not supply viseme timing.',
-        );
-    } catch {
-      if (!stopped) {
-        callbacks.onNotice('Azure voice is unavailable. Trying a local system voice.');
-        browser();
-      }
-    }
-  })();
+      callbacks.onMouth(0.25 + Math.abs(Math.sin(performance.now() / 100)) * 0.55);
+      frame = requestAnimationFrame(animate);
+    };
+    animate();
+  };
+  utterance.onend = finish;
+  utterance.onerror = () => {
+    if (stopped) return;
+    callbacks.onNotice('Speaker playback failed. You can read the question on screen.');
+    finish();
+  };
+  try {
+    synthesis.speak(utterance);
+  } catch {
+    callbacks.onNotice('Speaker playback failed. You can read the question on screen.');
+    finish();
+  }
   return stop;
 }

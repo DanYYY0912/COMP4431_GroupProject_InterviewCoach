@@ -64,8 +64,8 @@ export function Report({ id, navigate }: { id: string; navigate: (path: string) 
   const elements = report.star.filter((s) => s.present).length;
   return (
     <>
-      <button className="back-link" onClick={() => navigate('/')}>
-        <ArrowLeft size={16} /> Back to your practice space
+      <button className="back-link" onClick={() => navigate('/history')}>
+        <ArrowLeft size={16} /> Back to history
       </button>
       <div className="page-heading compact">
         <div>

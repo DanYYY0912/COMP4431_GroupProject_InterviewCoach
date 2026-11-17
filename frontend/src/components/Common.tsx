@@ -1,5 +1,5 @@
-import { AlertCircle, ArrowUpRight, BookOpen, Check, LoaderCircle } from 'lucide-react';
-import type { Citation, Health } from '../lib/types';
+import { AlertCircle, BookOpen, LoaderCircle } from 'lucide-react';
+import type { Citation } from '../lib/types';
 
 export function Loading({ label = 'Getting your practice ready…' }: { label?: string }) {
   return (
@@ -55,30 +55,5 @@ export function ProviderBadge({ provider }: { provider?: string }) {
             ? 'Configured AI coach'
             : 'Local AI coach'}
     </span>
-  );
-}
-export function Preflight({ health }: { health: Health | null }) {
-  return (
-    <div className="preflight">
-      <div>
-        <span className="status-dot" />
-        <strong>Practice readiness</strong>
-      </div>
-      <ul>
-        <li>
-          <Check size={16} /> Text & captions <span>Always available</span>
-        </li>
-        <li>
-          <Check size={16} /> Local storage <span>{health?.database || 'Checking…'}</span>
-        </li>
-        <li>
-          <Check size={16} /> Interview coach{' '}
-          <span>{health?.provider === 'demo' ? 'Scripted demo' : health?.llm || 'Checking…'}</span>
-        </li>
-        <li>
-          <ArrowUpRight size={16} /> Voice services <span>{health?.speech || 'Optional'}</span>
-        </li>
-      </ul>
-    </div>
   );
 }

@@ -3,14 +3,13 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Interview } from './Interview';
 import { useLiveSession } from '../lib/useLiveSession';
-import { azureRecognizer, recordMicrophone } from '../lib/audio';
+import { recordMicrophone, playQuestion } from '../lib/audio';
 import type { Session } from '../lib/types';
 import { api } from '../lib/api';
 
 vi.mock('../lib/useLiveSession', () => ({ useLiveSession: vi.fn() }));
 vi.mock('../lib/audio', () => ({
   recordMicrophone: vi.fn(),
-  azureRecognizer: vi.fn(),
   playQuestion: vi.fn(() => vi.fn()),
 }));
 vi.mock('../components/Avatar', () => ({ default: () => <div>Coach portrait</div> }));
@@ -42,15 +41,9 @@ const session: Session = {
   provider: 'demo',
 };
 const control = vi.fn().mockResolvedValue(undefined);
-const inferenceSettings = {
-  agent: { base_url: '', model: '', api_key_set: false },
-  asr: { base_url: '', model: '', api_key_set: false },
-  embedding: { base_url: '', model: '', api_key_set: false },
-  reranker: { base_url: '', model: '', api_key_set: false },
-};
 afterEach(() => vi.restoreAllMocks());
 beforeEach(() => {
-  vi.spyOn(api, 'inferenceSettings').mockResolvedValue(inferenceSettings);
+  vi.clearAllMocks();
   vi.mocked(useLiveSession).mockReturnValue({
     session,
     busy: false,
@@ -66,9 +59,7 @@ beforeEach(() => {
 describe('microphone permission recovery', () => {
   it('preserves a typed draft when microphone permission is denied', async () => {
     vi.mocked(recordMicrophone).mockRejectedValue(new Error('Permission denied'));
-    render(
-      <Interview id="s1" navigate={vi.fn()} speechConsent={false} onSpeechConsent={vi.fn()} />,
-    );
+    render(<Interview id="s1" navigate={vi.fn()} />);
     const user = userEvent.setup();
     await user.type(screen.getByLabelText('Your answer'), 'My existing project story');
     await user.click(screen.getByRole('button', { name: 'Re-record answer' }));
@@ -88,7 +79,7 @@ describe('microphone permission recovery', () => {
     const stop = vi
       .fn()
       .mockResolvedValue({ blob: new Blob(), duration: 0, pauseCount: 0, silenceSeconds: 0 });
-    render(<Interview id="s1" navigate={vi.fn()} speechConsent={true} onSpeechConsent={vi.fn()} />);
+    render(<Interview id="s1" navigate={vi.fn()} />);
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'Record answer' }));
     await user.click(screen.getByRole('button', { name: /^Pause$/ }));
@@ -96,17 +87,12 @@ describe('microphone permission recovery', () => {
       resolveCapture({ stream: { active: true } as MediaStream, stop });
     });
     await waitFor(() => expect(stop).toHaveBeenCalledOnce());
-    expect(azureRecognizer).not.toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: 'Finish recording' })).not.toBeInTheDocument();
   });
 });
 
 describe('configured transcription', () => {
-  it('uses the saved ASR route instead of Azure even when Azure voice consent is enabled', async () => {
-    vi.mocked(api.inferenceSettings).mockResolvedValue({
-      ...inferenceSettings,
-      asr: { base_url: 'http://localhost:9000/v1', model: 'whisper-large', api_key_set: false },
-    });
+  it('sends the complete recording to the server transcription route', async () => {
     const blob = new Blob(['recording']);
     vi.mocked(recordMicrophone).mockResolvedValue({
       stream: { active: true } as MediaStream,
@@ -116,29 +102,55 @@ describe('configured transcription', () => {
       text: 'Transcribed by selected ASR',
       provider: 'openai-compatible',
     });
-    render(<Interview id="s1" navigate={vi.fn()} speechConsent={true} onSpeechConsent={vi.fn()} />);
+    render(<Interview id="s1" navigate={vi.fn()} />);
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'Record answer' }));
     await user.click(await screen.findByRole('button', { name: 'Finish recording' }));
     await waitFor(() =>
       expect(screen.getByLabelText('Your answer')).toHaveValue('Transcribed by selected ASR'),
     );
-    expect(azureRecognizer).not.toHaveBeenCalled();
-    expect(api.transcribe).toHaveBeenCalledWith(blob, 'en-HK');
+    expect(api.transcribe).toHaveBeenCalledWith(blob, 'en-HK', expect.any(AbortSignal));
   });
 
-  it('lets the server route transcription if the current settings cannot be read', async () => {
-    vi.mocked(api.inferenceSettings).mockRejectedValue(new Error('temporarily unavailable'));
+  it('aborts transcription on pause and ignores its late result', async () => {
     vi.mocked(recordMicrophone).mockResolvedValue({
       stream: { active: true } as MediaStream,
       stop: vi
         .fn()
         .mockResolvedValue({ blob: new Blob(), duration: 1, pauseCount: 0, silenceSeconds: 0 }),
     });
-    render(<Interview id="s1" navigate={vi.fn()} speechConsent={true} onSpeechConsent={vi.fn()} />);
-    await userEvent.click(screen.getByRole('button', { name: 'Record answer' }));
-    await screen.findByRole('button', { name: 'Finish recording' });
-    expect(azureRecognizer).not.toHaveBeenCalled();
-    expect(screen.getByText(/saved transcription settings apply/)).toBeInTheDocument();
+    let resolve!: (value: { text: string; provider: string }) => void;
+    const transcribe = vi.spyOn(api, 'transcribe').mockImplementation(
+      () =>
+        new Promise((done) => {
+          resolve = done;
+        }),
+    );
+    render(<Interview id="s1" navigate={vi.fn()} />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'Record answer' }));
+    await user.click(await screen.findByRole('button', { name: 'Finish recording' }));
+    await waitFor(() => expect(transcribe).toHaveBeenCalledOnce());
+    await user.click(screen.getByRole('button', { name: /^Pause$/ }));
+    expect(transcribe.mock.calls[0][2]?.aborted).toBe(true);
+    await user.type(screen.getByLabelText('Your answer'), 'My new typed draft');
+    await act(async () => {
+      resolve({ text: 'Stale recognition', provider: 'openai-compatible' });
+    });
+    expect(screen.getByLabelText('Your answer')).toHaveValue('My new typed draft');
+  });
+  it('reads a question only after the manual action and stops it on pause', async () => {
+    const stop = vi.fn();
+    vi.mocked(playQuestion).mockReturnValue(stop);
+    render(<Interview id="s1" navigate={vi.fn()} />);
+    expect(playQuestion).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole('button', { name: 'Read question' }));
+    expect(playQuestion).toHaveBeenCalledWith(
+      'Tell me about a project.',
+      'en-HK',
+      expect.objectContaining({ onEnd: expect.any(Function) }),
+    );
+    await userEvent.click(screen.getByRole('button', { name: /^Pause$/ }));
+    expect(stop).toHaveBeenCalled();
   });
 });

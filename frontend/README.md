@@ -2,11 +2,13 @@
 
 ## Executive summary
 
-This React interface supports job-description setup, English and Cantonese interviews, editable transcripts, source-linked debriefs, retry, export, history and deletion. It calls the local FastAPI service and validates session, profile and report responses before display. Speech and the original 3D interviewer are optional; the same workflow works with typed answers. Azure speech requires explicit consent and a short-lived server-issued token. The default demo provider is labelled as scripted. Inference settings connect the agent, ASR, embedding and reranker to selected OpenAI-compatible servers; saved changes apply to new requests without a restart.
+This React interface supports job-description setup, English and Cantonese interviews, editable transcripts, source-linked debriefs, retry, export, history and deletion. It calls the local FastAPI service and validates session, profile and report responses before display. Speech and the original 3D interviewer are optional; the same workflow works with typed answers. The default demo provider is labelled as scripted. Inference settings connect the agent, ASR, embedding and reranker to selected OpenAI-compatible servers; saved changes apply to new requests without a restart.
 
 ## Development
 
 Run `pnpm install --frozen-lockfile`, then `pnpm dev` with the API on `127.0.0.1:8000`. The development server proxies `/api` and its WebSocket connection. `pnpm build` runs TypeScript and writes `dist/`; the API can serve that directory for the single-origin demonstration.
+
+The root route opens the practice setup. Only the job description and interview options are editable there; the right column summarizes configuration and service readiness. A valid pasted or uploaded job description enables starting without a separate consent or provider-configuration gate. Saved sessions remain available through the plain History page at `/#/history`.
 
 Checks: `pnpm test`, `pnpm lint`, and `pnpm build`. The root `e2e/` suite exercises the integrated browser journey and accessibility checks. Routes use URL hashes so a static server can resume `/interview/:id` and `/report/:id` without special routing.
 
@@ -16,19 +18,17 @@ The Settings page at `/#/settings` (also available through the previous `/#/meth
 
 ## Speech and privacy
 
-- Azure recognition and synthesis use the official browser Speech SDK. The subscription key never enters the frontend. SDK telemetry is disabled for recognition.
-- Sessions are stored locally, but selected external inference servers receive prompts, audio or source passages needed for their task. The settings and setup screens disclose this boundary. Local servers may omit an API key. Public services require HTTPS; local and private network servers may use HTTP. Clearing the URL and model selects the scripted demo coach for Agent, native Whisper for ASR, lexical search for Embedding, or no reranking for Reranker.
-- The microphone is acquired only after a user action. A five-minute cap bounds recordings, and audio stays in memory until transcription. Each recording checks the saved ASR configuration. A configured ASR server takes precedence over Azure recognition, even when legacy Azure voice consent is enabled. The complete recording is encoded as mono 16 kHz PCM WAV and sent through the app server when recording finishes.
-- Without an ASR override, Azure recognition remains opt-in; otherwise the server uses its native Whisper fallback. An Azure recognition error triggers whole-recording server transcription even if Azure already returned a partial answer. The recording stream and Azure stream have separate track lifetimes.
-- Synthesis collects Azure viseme timestamps, then schedules mouth changes against actual playback time. If no visemes arrive, an audio analyser drives mouth opening. Without Azure consent, only a browser voice marked `localService` is used; if none exists, captions remain available. Browser speech uses approximate mouth motion.
-- Pause, cancellation, leaving the page and finishing stop playback. The microphone stream is released after recording or teardown. Typed drafts are not sent until the user selects **Send answer**. Recorded audio is sent for transcription when recording finishes, or streamed during recording if Azure recognition is enabled.
+- Sessions are stored locally, but selected external inference servers receive prompts, audio or source passages needed for their task. The Settings page discloses this boundary. Local servers may omit an API key. Public services require HTTPS; local and private network servers may use HTTP. Clearing the URL and model selects the scripted demo coach for Agent, native Whisper for ASR, lexical search for Embedding, or no reranking for Reranker.
+- The microphone is acquired only after a user action. A five-minute cap bounds recordings, and audio stays in memory until transcription. The complete recording is encoded as mono 16 kHz PCM WAV and sent through `/api/speech/transcribe` when recording finishes. The app server routes it to the configured ASR service or native Whisper.
+- **Read question** uses only a browser voice marked `localService`. No automatic playback runs. If a compatible local voice is unavailable, the written question remains available. Browser speech drives approximate mouth motion.
+- Pause, cancellation, leaving the page and finishing stop playback. The microphone stream is released after recording or teardown. Pending transcription is aborted and late results cannot replace a newer draft. Typed drafts are sent when the user selects **Send answer**; recorded audio is sent for transcription when recording finishes.
 - Pause counts and silence duration use a simple amplitude threshold; they are descriptive estimates, not judgments of speaking ability. Real multi-speaker speech benchmarks and hardware frame-rate measurements are still required.
 
 ## Avatar and assets
 
 The interviewer is an original procedural Three.js model authored for this project. It consists of primitive meshes with independent mouth, head and eye motion. The fallback portrait and favicon are original SVGs. No third-party character, stock image, or externally hosted font is included. Reduced-motion preference or the avatar toggle selects the static portrait. A WebGL error boundary preserves the text workflow.
 
-The initial 3D mesh is deliberately simple and does not require a VRM asset. React Three Fiber 9 is paired with React 19 as required by its [compatibility guide](https://r3f.docs.pmnd.rs/getting-started/installation). Azure integration follows the [SpeechRecognizer](https://learn.microsoft.com/en-us/javascript/api/microsoft-cognitiveservices-speech-sdk/speechrecognizer) and [SpeechSynthesizer](https://learn.microsoft.com/en-us/javascript/api/microsoft-cognitiveservices-speech-sdk/speechsynthesizer) APIs.
+The initial 3D mesh is deliberately simple and does not require a VRM asset. React Three Fiber 9 is paired with React 19 as required by its [compatibility guide](https://r3f.docs.pmnd.rs/getting-started/installation).
 
 ## Resilience
 

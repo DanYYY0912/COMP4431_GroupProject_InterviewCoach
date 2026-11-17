@@ -1,13 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  ArrowUpRight,
-  AudioLines,
-  SlidersHorizontal,
-  LayoutDashboard,
-  Plus,
-  ShieldCheck,
-} from 'lucide-react';
-import { Dashboard } from './pages/Dashboard';
+import { AudioLines, History as HistoryIcon, SlidersHorizontal } from 'lucide-react';
+import { History } from './pages/History';
 import { Setup } from './pages/Setup';
 import { Interview } from './pages/Interview';
 import { Report } from './pages/Report';
@@ -18,7 +11,6 @@ function routePath() {
 }
 export default function App() {
   const [path, setPath] = useState(routePath);
-  const [speechConsent, setSpeechConsent] = useState(false);
   const navigate = useCallback((next: string) => {
     window.location.hash = next;
   }, []);
@@ -36,16 +28,15 @@ export default function App() {
     title?.focus({ preventScroll: true });
   }, [path]);
   const [page, id] = path.slice(1).split('/');
-  const section =
-    page === 'setup'
-      ? 'New practice'
-      : page === 'interview'
-        ? 'Practice interview'
-        : page === 'report'
-          ? 'Session debrief'
-          : page === 'settings' || page === 'methodology'
-            ? 'Settings'
-            : 'Overview';
+  const isSettings = ['settings', 'methodology'].includes(page);
+  const isPractice = !['history', 'report', 'settings', 'methodology'].includes(page);
+  const section = isSettings
+    ? 'Settings'
+    : page === 'history'
+      ? 'History'
+      : page === 'report'
+        ? 'Session debrief'
+        : 'Practice interview';
   return (
     <div className="app-shell">
       <a
@@ -65,77 +56,49 @@ export default function App() {
           </span>
           <span>
             VoxPrep<span className="brand-hk">HK</span>
-            <small>FIND YOUR VOICE.</small>
           </span>
         </a>
-        <div className="nav-label">YOUR WORKSPACE</div>
         <nav aria-label="Main navigation">
-          <a className={!page ? 'active' : ''} href="#/" aria-current={!page ? 'page' : undefined}>
-            <LayoutDashboard size={19} /> Overview
-          </a>
           <a
-            className={['setup', 'interview'].includes(page) ? 'active' : ''}
+            className={isPractice ? 'active' : ''}
             href="#/setup"
-            aria-current={['setup', 'interview'].includes(page) ? 'page' : undefined}
+            aria-current={isPractice ? 'page' : undefined}
           >
             <AudioLines size={19} /> Practice interview
           </a>
           <a
-            className={['settings', 'methodology'].includes(page) ? 'active' : ''}
+            className={page === 'history' ? 'active' : ''}
+            href="#/history"
+            aria-current={page === 'history' ? 'page' : undefined}
+          >
+            <HistoryIcon size={19} /> History
+          </a>
+          <a
+            className={isSettings ? 'active' : ''}
             href="#/settings"
-            aria-current={['settings', 'methodology'].includes(page) ? 'page' : undefined}
+            aria-current={isSettings ? 'page' : undefined}
           >
             <SlidersHorizontal size={19} /> Settings
           </a>
         </nav>
-        <div className="sidebar-bottom">
-          <div className="privacy-note">
-            <ShieldCheck size={20} />
-            <strong>A space to grow.</strong>
-            <p>Sessions are saved locally. Your selected services process your practice.</p>
-          </div>
-          <div className="sidebar-footer">
-            <span className="status-dot" /> LOCAL-FIRST PRACTICE
-            <span className="version">v0.1</span>
-          </div>
-        </div>
       </aside>
       <div className="main-shell">
         <header className="topbar">
-          <div>
-            <span>My workspace</span>
-            <span className="breadcrumb-divider">/</span>
-            <strong>{section}</strong>
-          </div>
-          <a className="topbar-action" href="#/setup">
-            <Plus size={16} /> New practice <ArrowUpRight size={15} />
-          </a>
+          <strong>{section}</strong>
         </header>
         <main id="main-content" tabIndex={-1}>
-          {page === 'setup' ? (
-            <Setup navigate={navigate} onSpeechConsent={setSpeechConsent} />
-          ) : page === 'interview' && id ? (
-            <Interview
-              key={id}
-              id={decodeURIComponent(id)}
-              navigate={navigate}
-              speechConsent={speechConsent}
-              onSpeechConsent={setSpeechConsent}
-            />
+          {page === 'interview' && id ? (
+            <Interview key={id} id={decodeURIComponent(id)} navigate={navigate} />
           ) : page === 'report' && id ? (
             <Report key={id} id={decodeURIComponent(id)} navigate={navigate} />
-          ) : page === 'settings' || page === 'methodology' ? (
+          ) : isSettings ? (
             <InferenceSettings />
+          ) : page === 'history' ? (
+            <History navigate={navigate} />
           ) : (
-            <Dashboard navigate={navigate} />
+            <Setup navigate={navigate} />
           )}
         </main>
-        <footer className="page-footer">
-          <span>Made for your next opportunity.</span>
-          <span>
-            VoxPrep HK <span>·</span> COMP4431
-          </span>
-        </footer>
       </div>
     </div>
   );

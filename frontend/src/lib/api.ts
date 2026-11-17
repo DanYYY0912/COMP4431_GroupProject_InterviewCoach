@@ -84,18 +84,14 @@ export const api = {
   report: async (id: string) =>
     reportSchema.parse(await request(`/api/sessions/${encodeURIComponent(id)}/report`)),
   delete: (id: string) => request(`/api/sessions/${encodeURIComponent(id)}`, { method: 'DELETE' }),
-  token: () =>
-    request<{ token: string; region: string; expires_in: number }>(
-      '/api/speech/token',
-      post({ consent: true }),
-    ),
-  transcribe: (file: Blob, language: Language) => {
+  transcribe: (file: Blob, language: Language, signal?: AbortSignal) => {
     const form = new FormData();
     form.append('file', file, 'answer.wav');
     form.append('language', language);
     return request<{ text: string; provider: string }>('/api/speech/transcribe', {
       method: 'POST',
       body: form,
+      signal,
     });
   },
 };

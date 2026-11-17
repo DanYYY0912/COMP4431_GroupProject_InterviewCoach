@@ -18,7 +18,7 @@ import {
   Volume2,
 } from 'lucide-react';
 import { api, errorMessage } from '../lib/api';
-import { azureRecognizer, playQuestion, recordMicrophone } from '../lib/audio';
+import { playQuestion, recordMicrophone } from '../lib/audio';
 import type { RecordedAnswer } from '../lib/audio';
 import type { Language } from '../lib/types';
 import { formatDuration } from '../lib/format';
@@ -37,17 +37,7 @@ const statusLabels: Record<string, string> = {
   completed: 'Practice complete',
 };
 
-export function Interview({
-  id,
-  navigate,
-  speechConsent,
-  onSpeechConsent,
-}: {
-  id: string;
-  navigate: (path: string) => void;
-  speechConsent: boolean;
-  onSpeechConsent: (value: boolean) => void;
-}) {
+export function Interview({ id, navigate }: { id: string; navigate: (path: string) => void }) {
   const live = useLiveSession(id);
   const { session, busy } = live;
   const [chosenLanguage, setChosenLanguage] = useState<Language | null>(null);
@@ -63,13 +53,9 @@ export function Interview({
   const [avatarOff, setAvatarOff] = useState(false);
   const [metrics, setMetrics] = useState<RecordedAnswer | null>(null);
   const recorder = useRef<Awaited<ReturnType<typeof recordMicrophone>> | null>(null);
-  const recognizer = useRef<Awaited<ReturnType<typeof azureRecognizer>> | null>(null);
   const playback = useRef<(() => void) | null>(null);
-  const recognized = useRef('');
-  const recognitionFailed = useRef(false);
-  const recordingAbort = useRef<AbortController | null>(null);
+  const transcriptionAbort = useRef<AbortController | null>(null);
   const generation = useRef(0);
-  const [captions, setCaptions] = useState('');
   const turn = session?.turns[session.turns.length - 1];
   const paused = session?.state === 'paused';
   const displayState = paused ? 'paused' : speechState || (busy ? 'thinking' : live.state);
@@ -84,7 +70,6 @@ export function Interview({
     setMetrics(null);
     setElapsed(0);
     setStarted(false);
-    setCaptions('');
     playback.current?.();
   }, [turn?.id]);
   useEffect(() => {
@@ -96,9 +81,8 @@ export function Interview({
   useEffect(
     () => () => {
       generation.current++;
-      recordingAbort.current?.abort();
+      transcriptionAbort.current?.abort();
       playback.current?.();
-      void recognizer.current?.stop();
       void recorder.current?.stop();
     },
     [],
@@ -113,24 +97,13 @@ export function Interview({
     if (!turn || !session) return;
     stopSpeaking();
     setNotice('');
-    playback.current = playQuestion(
-      turn.question.interviewer_text,
-      session.language,
-      speechConsent,
-      {
-        onStart: () => setSpeechState('speaking'),
-        onMouth: setMouth,
-        onEnd: () => setSpeechState(''),
-        onNotice: setNotice,
-      },
-    );
+    playback.current = playQuestion(turn.question.interviewer_text, session.language, {
+      onStart: () => setSpeechState('speaking'),
+      onMouth: setMouth,
+      onEnd: () => setSpeechState(''),
+      onNotice: setNotice,
+    });
   }
-  const readNewQuestion = useEffectEvent(() => {
-    if (speechConsent && !paused) speak();
-  });
-  useEffect(() => {
-    if (turn?.id) readNewQuestion();
-  }, [turn?.id]);
   async function beginRecording() {
     if (!session || paused || busy || audioBusy) return;
     stopSpeaking();
@@ -138,11 +111,6 @@ export function Interview({
     setNotice('');
     setSpeechState('initializing');
     try {
-      // Check the current saved route on every recording: settings apply without a reload.
-      // If this check fails, let the server choose ASR rather than assuming Azure consent.
-      const settings = await api.inferenceSettings().catch(() => null);
-      if (run !== generation.current) return;
-      const configuredAsr = !!settings?.asr.base_url;
       const capture = await recordMicrophone(setLevel);
       if (run !== generation.current) {
         await capture.stop();
@@ -150,55 +118,12 @@ export function Interview({
       }
       recorder.current = capture;
       setTranscript('');
-      setCaptions('');
       setCorrected(false);
       setMetrics(null);
-      recognized.current = '';
-      recognitionFailed.current = false;
       setStarted(true);
       setElapsed(0);
       setSpeechState('listening');
-      const abort = new AbortController();
-      recordingAbort.current = abort;
-      if (speechConsent && settings && !configuredAsr) {
-        try {
-          const azure = await azureRecognizer(
-            capture.stream,
-            answerLanguage,
-            (text, final) => {
-              if (run !== generation.current) return;
-              if (final) {
-                recognized.current = `${recognized.current} ${text}`.trim();
-                setTranscript(recognized.current);
-                setCaptions('');
-              } else setCaptions(text);
-            },
-            (message) => {
-              if (run === generation.current) {
-                recognitionFailed.current = true;
-                setNotice(message);
-              }
-            },
-            abort.signal,
-          );
-          if (run !== generation.current || !capture.stream.active) {
-            await azure.stop();
-            return;
-          }
-          recognizer.current = azure;
-        } catch {
-          if (run !== generation.current) return;
-          recognitionFailed.current = true;
-          setNotice(
-            'Azure recognition is unavailable. Your recording will use the saved transcription settings when you stop.',
-          );
-        }
-      } else
-        setNotice(
-          configuredAsr
-            ? 'Recording on this computer. Your selected ASR server will receive the audio when you finish recording.'
-            : 'Recording on this computer. The saved transcription settings apply when you finish recording.',
-        );
+      setNotice('Recording. Finish recording to transcribe your answer.');
     } catch {
       if (run !== generation.current) return;
       setSpeechState('');
@@ -208,32 +133,28 @@ export function Interview({
   async function finishRecording(discard = false) {
     const capture = recorder.current;
     if (!capture) return;
-    setSpeechState(discard ? '' : 'transcribing');
-    if (!recognizer.current) recordingAbort.current?.abort();
-    await recognizer.current?.stop();
-    recordingAbort.current?.abort();
-    recordingAbort.current = null;
-    recognizer.current = null;
     recorder.current = null;
-    const result = await capture.stop();
-    generation.current++;
-    setCaptions('');
-    if (discard) return;
-    setMetrics(result);
-    setElapsed(Math.round(result.duration));
+    const run = ++generation.current;
+    setSpeechState(discard ? '' : 'transcribing');
     try {
-      if (recognized.current.trim() && !recognitionFailed.current) {
-        setTranscript(recognized.current);
-        setNotice('Read your transcript and make any corrections before sending.');
-      } else if (session) {
-        const transcription = await api.transcribe(result.blob, answerLanguage);
-        setTranscript(transcription.text);
-        setNotice('Your transcript is ready. Please check the wording before sending.');
-      }
+      const result = await capture.stop();
+      if (run !== generation.current || discard) return;
+      setMetrics(result);
+      setElapsed(Math.round(result.duration));
+      const abort = new AbortController();
+      transcriptionAbort.current = abort;
+      const transcription = await api.transcribe(result.blob, answerLanguage, abort.signal);
+      if (run !== generation.current) return;
+      setTranscript(transcription.text);
+      setNotice('Your transcript is ready. Please check the wording before sending.');
     } catch (e) {
-      setNotice(`${errorMessage(e)} You can type your answer below.`);
+      if (run === generation.current)
+        setNotice(`${errorMessage(e)} You can type your answer below.`);
     } finally {
-      setSpeechState('');
+      if (run === generation.current) {
+        transcriptionAbort.current = null;
+        setSpeechState('');
+      }
     }
   }
   const stopAtLimit = useEffectEvent(() => {
@@ -246,8 +167,8 @@ export function Interview({
   }, [recording]);
   async function control(action: 'pause' | 'resume' | 'skip' | 'retry' | 'end' | 'cancel') {
     generation.current++;
-    recordingAbort.current?.abort();
-    recordingAbort.current = null;
+    transcriptionAbort.current?.abort();
+    transcriptionAbort.current = null;
     setSpeechState('');
     stopSpeaking();
     if (recorder.current) await finishRecording(true);
@@ -278,7 +199,7 @@ export function Interview({
   return (
     <>
       <div className="interview-top">
-        <button className="back-link" onClick={() => navigate('/')}>
+        <button className="back-link" onClick={() => navigate('/history')}>
           <ArrowLeft size={16} /> {transcript.trim() ? 'Leave & discard draft' : 'Leave practice'}
         </button>
         <ProviderBadge provider={session.provider} />
@@ -340,7 +261,7 @@ export function Interview({
               disabled={busy || audioBusy || paused}
               onClick={speak}
             >
-              <Volume2 size={16} /> Repeat question
+              <Volume2 size={16} /> Read question
             </button>
             {speechState === 'speaking' && (
               <button className="button small secondary" onClick={stopSpeaking}>
@@ -423,7 +344,7 @@ export function Interview({
                   ? '例如：喺大學小組專題入面，我負責…'
                   : 'Think of a specific experience. What happened, what did you do, and what changed?'
               }
-              value={transcript + (captions ? ` ${captions}` : '')}
+              value={transcript}
               onFocus={() => setStarted(true)}
               onChange={(e) => {
                 setTranscript(e.target.value);
@@ -466,29 +387,6 @@ export function Interview({
                 {busy ? 'Thinking…' : 'Send answer'} <Send size={17} />
               </button>
             </div>
-            <details className="voice-settings">
-              <summary>Voice & privacy settings</summary>
-              <label className="check-label">
-                <input
-                  type="checkbox"
-                  checked={speechConsent}
-                  disabled={audioBusy || speechState === 'speaking'}
-                  onChange={(e) => onSpeechConsent(e.target.checked)}
-                />
-                <span>
-                  Use Azure voice for interviewer speech, and for recognition when no ASR server is
-                  selected. This sends text or audio to Microsoft Speech.
-                </span>
-              </label>
-              <p className="field-help">
-                Recordings use the ASR service in{' '}
-                <a className="inline-link" href="#/settings">
-                  Settings
-                </a>
-                , or its local fallback. Selected external servers receive the audio for
-                transcription.
-              </p>
-            </details>
           </section>
           <div className="session-controls">
             {busy && (
@@ -498,7 +396,6 @@ export function Interview({
             )}
             <button
               className="text-button"
-              disabled={speechState === 'transcribing'}
               onClick={() => void control(paused ? 'resume' : 'pause')}
             >
               {paused ? <Play size={15} /> : <Pause size={15} />}
@@ -525,7 +422,7 @@ export function Interview({
             </button>
             <button
               className="text-button finish"
-              disabled={recording || speechState === 'transcribing'}
+              disabled={recording}
               onClick={() => void control('end')}
             >
               Finish & review <ArrowRight size={16} />

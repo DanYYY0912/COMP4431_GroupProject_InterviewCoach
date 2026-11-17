@@ -14,9 +14,6 @@ importers:
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@19.3.1)
-      microsoft-cognitiveservices-speech-sdk:
-        specifier: ^1.47.0
-        version: 1.53.0(supports-color@7.2.0)
       react:
         specifier: ^19.2.0
         version: 19.3.1
@@ -110,18 +107,6 @@ packages:
 
   '@asamuzakjp/nwsapi@2.3.9':
     resolution: {integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==}
-
-  '@azure/abort-controller@2.2.0':
-    resolution: {integrity: sha512-fNAjWnA/nZ2jz31kxR/AqRaUT8ewHBw/WuBIosK0moMy1C9e5ValbDfFdIxJzVOOYaYkV/b2F1S4H/aHiqfVQg==}
-    engines: {node: '>=22.0.0'}
-
-  '@azure/core-auth@1.11.0':
-    resolution: {integrity: sha512-IUZydyTUkDnYdstOW9pFOOUQlBjAepK5teihDE3x6yxsPJs/hsAaaYpeGxdxrgtOiJbBKSjKW7MDk7AEhb4LRg==}
-    engines: {node: '>=22.0.0'}
-
-  '@azure/core-util@1.14.0':
-    resolution: {integrity: sha512-9n2pWK61veAuN0V20t9lOuoV4CFMdyAZ1ygZzvBGk/pBBJRib/PjL9PLXa/aI2CcPpyHfqVsxxqLCYl6uZlfDw==}
-    engines: {node: '>=22.0.0'}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -841,9 +826,6 @@ packages:
   '@types/three@0.180.0':
     resolution: {integrity: sha512-ykFtgCqNnY0IPvDro7h+9ZeLY+qjgUWv+qEvUt84grhenO60Hqd4hScHE7VTB9nOQ/3QM8lkbNE+4vKjEpUxKg==}
 
-  '@types/webrtc@0.0.37':
-    resolution: {integrity: sha512-JGAJC/ZZDhcrrmepU4sPLQLIOIAgs5oIK+Ieq90K8fdaNMhfdfqmYatJdgif1NDQtvrSlTOGJDUYHIDunuufOg==}
-
   '@types/webxr@0.5.24':
     resolution: {integrity: sha512-h8fgEd/DpoS9CBrjEQXR+dIDraopAEfu4wYVNY2tEPwk60stPWhvZMf4Foo5FakuQ7HFZoa8WceaWFervK2Ovg==}
 
@@ -905,10 +887,6 @@ packages:
   '@typescript-eslint/visitor-keys@8.72.1':
     resolution: {integrity: sha512-SB8xqipSzZHUePCCLNeYxqnxq83X61/qzNhjQGbTfjxGZIeOEP7tBgWYX05Tcd6CgE02WdTJnh5b8kMZJ/+bnQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typespec/ts-http-runtime@0.3.9':
-    resolution: {integrity: sha512-edSdeAqkdxBVzA1yL1LrLCml1YjyCVvPMtMqJpbF+6K609tHe8V6sQUzFQSGcYNhcuhOceZtjvN32+mpIth30A==}
-    engines: {node: '>=22.0.0'}
 
   '@vitejs/plugin-react@5.2.0':
     resolution: {integrity: sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw==}
@@ -991,9 +969,6 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  bent@7.3.12:
-    resolution: {integrity: sha512-T3yrKnVGB63zRuoco/7Ybl7BwwGZR0lceoVG5XmQyMIH9s19SV5m+a8qam4if0zQuAmOQTyPTPmsQBdAorGK3w==}
-
   bidi-js@1.1.0:
     resolution: {integrity: sha512-fX1Onk0tdVPC7obPWB5EbJ1z7NVhLq4m2xZLq2YXBkxzMXIGRpNMU88n0EPgWseKl12J7zXs7qrDxPK4sRs2fg==}
 
@@ -1012,18 +987,12 @@ packages:
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
-  bytesish@0.4.4:
-    resolution: {integrity: sha512-i4uu6M4zuMUiyfZN4RU2+i9+peJh//pXhd9x1oSe1LBkZ3LEbCoygu8W0bXTukU1Jme2txKuotpCZRaC3FLxcQ==}
-
   callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
   caniuse-lite@1.0.30001820:
     resolution: {integrity: sha512-gfWD6MxqVCqAOwmODfZf7DchWvlrA+SRdNX7ceLfg3xRqe5ssjjpF7EgslC/0tiLiNTajdaNN/q8c/5u/7Gz8w==}
-
-  caseless@0.12.0:
-    resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}
 
   chai@6.3.0:
     resolution: {integrity: sha512-XWAtwJ6OHO+tj0EKCs0Y2UamnyOxseZWltU4x2U2wh8g4AigdjwvtUjvLP2tqkA/avxHEtzxNaqGq/YGNwckKg==}
@@ -1305,10 +1274,6 @@ packages:
   is-potential-custom-element-name@1.0.1:
     resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
 
-  is-stream@2.0.1:
-    resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
-    engines: {node: '>=8'}
-
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
@@ -1471,9 +1436,6 @@ packages:
 
   meshoptimizer@0.22.0:
     resolution: {integrity: sha512-IebiK79sqIy+E4EgOr+CAw+Ke8hAspXKzBd0JdgEmPHiAwmvEj2S4h1rfvo+o/BnfEYd/jAOg5IeeIjzlzSnDg==}
-
-  microsoft-cognitiveservices-speech-sdk@1.53.0:
-    resolution: {integrity: sha512-laJQ8Pb9i69U7JrRYjt6cdr8jYgfAR6sHgfdQvaBPBnxx8gnFMnLf1Jd7/VKj/wZfsFiVnu0ctYOMY/JMG7dEg==}
 
   min-indent@1.0.1:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
@@ -1696,9 +1658,6 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  tslib@2.9.1:
-    resolution: {integrity: sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==}
-
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -1731,10 +1690,6 @@ packages:
     resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  uuid@11.1.1:
-    resolution: {integrity: sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==}
-    hasBin: true
 
   vite@7.3.7:
     resolution: {integrity: sha512-AHEzTORMbi7/7aXp7w7KZ5+DCUdSeLsJz0grY8xHpc9DHdYb0vQu6DqJfm2tOw3gDExNgPgnJTXxM6syYFHaCA==}
@@ -1927,26 +1882,6 @@ snapshots:
       lru-cache: 11.5.3
 
   '@asamuzakjp/nwsapi@2.3.9': {}
-
-  '@azure/abort-controller@2.2.0':
-    dependencies:
-      tslib: 2.9.1
-
-  '@azure/core-auth@1.11.0(supports-color@7.2.0)':
-    dependencies:
-      '@azure/abort-controller': 2.2.0
-      '@azure/core-util': 1.14.0(supports-color@7.2.0)
-      tslib: 2.9.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@azure/core-util@1.14.0(supports-color@7.2.0)':
-    dependencies:
-      '@azure/abort-controller': 2.2.0
-      '@typespec/ts-http-runtime': 0.3.9(supports-color@7.2.0)
-      tslib: 2.9.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -2518,8 +2453,6 @@ snapshots:
       fflate: 0.8.3
       meshoptimizer: 0.22.0
 
-  '@types/webrtc@0.0.37': {}
-
   '@types/webxr@0.5.24': {}
 
   '@typescript-eslint/eslint-plugin@8.72.1(@typescript-eslint/parser@8.72.1(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)':
@@ -2613,14 +2546,6 @@ snapshots:
       '@typescript-eslint/types': 8.72.1
       eslint-visitor-keys: 5.0.1
 
-  '@typespec/ts-http-runtime@0.3.9(supports-color@7.2.0)':
-    dependencies:
-      http-proxy-agent: 7.0.2(supports-color@7.2.0)
-      https-proxy-agent: 7.0.6(supports-color@7.2.0)
-      tslib: 2.9.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@vitejs/plugin-react@5.2.0(supports-color@7.2.0)(vite@7.3.7(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.32.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
@@ -2687,12 +2612,6 @@ snapshots:
 
   baseline-browser-mapping@2.11.34: {}
 
-  bent@7.3.12:
-    dependencies:
-      bytesish: 0.4.4
-      caseless: 0.12.0
-      is-stream: 2.0.1
-
   bidi-js@1.1.0:
     dependencies:
       require-from-string: 2.0.2
@@ -2719,13 +2638,9 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bytesish@0.4.4: {}
-
   callsites@3.1.0: {}
 
   caniuse-lite@1.0.30001820: {}
-
-  caseless@0.12.0: {}
 
   chai@6.3.0: {}
 
@@ -3018,8 +2933,6 @@ snapshots:
 
   is-potential-custom-element-name@1.0.1: {}
 
-  is-stream@2.0.1: {}
-
   isexe@2.0.0: {}
 
   its-fine@2.1.1(@types/react@19.3.0)(react@19.3.1):
@@ -3162,19 +3075,6 @@ snapshots:
   mdn-data@2.27.1: {}
 
   meshoptimizer@0.22.0: {}
-
-  microsoft-cognitiveservices-speech-sdk@1.53.0(supports-color@7.2.0):
-    dependencies:
-      '@azure/core-auth': 1.11.0(supports-color@7.2.0)
-      '@types/webrtc': 0.0.37
-      bent: 7.3.12
-      https-proxy-agent: 7.0.6(supports-color@7.2.0)
-      uuid: 11.1.1
-      ws: 8.22.1
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
 
   min-indent@1.0.1: {}
 
@@ -3375,8 +3275,6 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  tslib@2.9.1: {}
-
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -3409,8 +3307,6 @@ snapshots:
   use-sync-external-store@1.7.0(react@19.3.1):
     dependencies:
       react: 19.3.1
-
-  uuid@11.1.1: {}
 
   vite@7.3.7(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.32.0):
     dependencies:
