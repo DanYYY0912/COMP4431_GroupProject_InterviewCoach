@@ -8,7 +8,7 @@ The runnable application and automated checks are development evidence. The comp
 
 - [x] English and Cantonese setup, interview, report, retry, resume, report export and deletion pass in isolated browser contexts (development configuration; see `VERIFICATION.md`).
 - [ ] Selected ASR, editable captions, local speech playback and interruption verified on the presentation Mac.
-- [ ] Local Whisper, typed input, WebGL fallback, model timeout and DB restart verified.
+- [ ] Local Whisper, typed input, portrait loading fallback, model timeout and DB restart verified.
 - [ ] Real hybrid retrieval and reranking measured with the intended models.
 - [ ] No unsupported competency claims or injected document instructions accepted in evaluation cases.
 
@@ -22,7 +22,7 @@ The runnable application and automated checks are development evidence. The comp
 - [ ] Schema validity >=98%, language adherence >=95%, blinded preference >=65% on 30 pairs with two reviewers.
 - [ ] 40 retrieval cases, recall@5 >=85%, citation precision >=90%.
 - [ ] 24 clean/noisy speech recordings across four speakers, WER/CER and correction rate reported.
-- [ ] p95 first-token <=4s, speech-end-to-first-audio <=8s, avatar >=30 FPS.
+- [ ] p95 first-token <=4s, speech-end-to-first-audio <=8s.
 - [ ] Five to eight usability participants, >=90% flow completion, SUS >=80.
 
 ## Submission

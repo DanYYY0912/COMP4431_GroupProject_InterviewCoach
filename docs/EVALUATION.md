@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The evaluation suite can check model JSON, retrieval recall, citation support labels, speech error rates, latency, blinded preferences and usability. Current evidence consists of local software checks and synthetic diagnostic fixtures; **none of the assessed model, speech, avatar, or usability release thresholds has been demonstrated**. Raw failures stay in the output, human ratings are never generated, and language-script heuristics are not reported as Cantonese fluency. The methodology endpoint reads `evaluation/results/latest.json`, which retains this distinction.
+The evaluation suite can check model JSON, retrieval recall, citation support labels, speech error rates, latency, blinded preferences and usability. Current evidence consists of local software checks and synthetic diagnostic fixtures; **none of the assessed model, speech, or usability release thresholds has been demonstrated**. Raw failures stay in the output, human ratings are never generated, and language-script heuristics are not reported as Cantonese fluency. The methodology endpoint reads `evaluation/results/latest.json`, which retains this distinction.
 
 ## Run local software checks
 
@@ -78,11 +78,11 @@ English uses corpus word error rate; Cantonese uses corpus character error rate.
 
 ## Manual release evidence still required
 
-- Avatar ≥30 FPS on the presentation Mac; correct listening/thinking/speaking states.
+- Portrait loading, face selection and correct listening/thinking/speaking status on the presentation Mac. The static-portrait interface supersedes the original 3D-avatar FPS target.
 - TTS and visemes stop together on repeat, interruption, pause, navigation and cancellation.
-- Denied microphone, invalid ASR credentials, network loss, WebGL failure and model restart recovery.
+- Denied microphone, invalid ASR credentials, network loss, portrait loading failure and model restart recovery.
 - Incorrect language choice, noise, silence, long answers, corrupt/oversized/scanned files and prompt-injection attempts.
-- Keyboard-only journey, captions, reduced motion, AA contrast and an avatar-disabled journey.
+- Keyboard-only journey, captions, reduced motion, AA contrast and a portrait-hidden journey.
 - Clean-machine rehearsal, a 60–90 second backup recording and final package inspection.
 
 Use actual recordings, browser traces and reviewer notes as evidence. The existence of a test script or a passing synthetic diagnostic is not a substitute for these observations.

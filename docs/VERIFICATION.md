@@ -4,6 +4,16 @@
 
 The application has passed controlled automated checks and real local-service smoke tests on this Mac. These checks establish runnable software and integration behavior. They do not establish the plan's fine-tuning, human-review, speech-quality, latency or usability thresholds. Current validation covers the November 18 Azure removal, simplified setup and rebuilt Docker application. Logs under `artifacts/verification/` remain on the development Mac; distributable synthetic raw service evidence is retained under `evaluation/raw/`.
 
+## Portraits and port 4431 — 2026-11-18
+
+The current app replaces the primitive 3D avatar with three locally bundled, fictional human portraits. The choice persists in the browser without changing the session or question. Hide/show, image failure and unavailable browser storage have regression coverage. Speech playback and microphone cancellation remain functional; Three.js and simulated mouth animation are removed.
+
+`make test` passes **135 Python tests, 45 frontend tests and eight browser journeys**, plus lint, type checks and production build. The ordinary suite skips one optional PostgreSQL case. The new browser journey confirms that a loaded portrait survives reload, the session/question/options remain unchanged, typed text survives appearance changes, and mobile accessibility checks pass. Log: `artifacts/verification/portraits-port4431-tests.log`.
+
+The rebuilt Docker image serves the app on **http://localhost:4431**; the previous host port 8000 is closed. The container retains internal port 8000. Native API serving, Vite's proxy, default allowed origins and helper scripts now use public port 4431. Both Compose services are healthy. Existing session counts and the private settings-file integrity matched before/after container recreation, keys remain redacted, and all three served PNGs match the selected final assets. Logs: `portraits-port4431-docker-build.log`, `portraits-port4431-docker-start.log` and `portraits-port4431-runtime.json` under `artifacts/verification/`.
+
+An isolated container from the final portrait image was visually inspected with Alex and Sam at 1440px, and Sam at 390px and 320px. All three portrait PNGs loaded, choice persisted after reload, hide/show worked, and a typed answer advanced the interview without a canvas. All four layouts had zero axe violations and no horizontal overflow; browser page/console errors and failed requests were absent. The headless speech check observed the explicit local-voice-unavailable fallback, not audible speech. The temporary container was removed. Evidence: `artifacts/verification/portrait-container/results.json` and its four screenshots.
+
 ## Docker and setup update — 2026-11-18
 
 The latest combined suite passes **135 Python tests, 39 frontend tests and seven Playwright journeys**, with lint, type checking and production build. One optional PostgreSQL case is skipped in the ordinary suite; it passed separately during the inference-settings work. The browser checks direct Practice entry, missing/valid setup, read-only status, absence of the removed controls/copy, both languages, recovery, history/export/comparison, all four inference forms and accessibility. Log: `artifacts/verification/azure-removal-full-test.log`.
@@ -50,4 +60,4 @@ The 1,500 curriculum examples are synthetic drafts: 900 English, 450 Cantonese a
 
 No adapter, training log, loss curve, base-versus-LoRA preference result or participant study has been invented. GPU scripts and evaluated metric implementations prepare that work; they do not substitute for it. Two team identities and the proposed responsibility table are present, with two placeholders and actual contribution evidence still required.
 
-The original procedural avatar substitutes for the planned VRM asset. Evaluation runs are stored as JSON artifacts rather than database entities. True upstream model-token streaming is pending. The presentation and source package disclose these implementation limits.
+The current portrait interface supersedes the original procedural avatar and planned VRM asset. Evaluation runs are stored as JSON artifacts rather than database entities. True upstream model-token streaming is pending. The presentation and source package disclose these implementation limits.

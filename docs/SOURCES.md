@@ -2,14 +2,14 @@
 
 ## Executive summary
 
-The application uses locally authored demonstration material, an original procedural avatar, attributed O*NET knowledge and public model artifacts. Model downloads are pinned to revisions and verified by SHA-256. Source packaging excludes base weights, secrets and session databases. Preserve each dependency's license and the O*NET attribution when redistributing. The course PDFs are supplied reference documents, not project-authored content, and are not included in the generated source archive.
+The application uses locally authored demonstration material, fictional generated interviewer portraits, attributed O*NET knowledge and public model artifacts. Model downloads are pinned to revisions and verified by SHA-256. Source packaging excludes base weights, secrets and session databases. Preserve each dependency's license and the O*NET attribution when redistributing. The course PDFs are supplied reference documents, not project-authored content, and are not included in the generated source archive.
 
 ## Content and models
 
 | Material | Origin and purpose | License / handling |
 | --- | --- | --- |
 | Fictional job and STAR rubric | `data/demo-job.txt`, `knowledge/` | Locally authored project material |
-| Original 3D interviewer | `frontend/src/components/Avatar.tsx` | Procedurally constructed geometry, no external avatar asset |
+| Interviewer portraits | `frontend/public/interviewers/` | Fictional adult depictions generated for this project with the built-in image tool; [final prompts and provenance](INTERVIEWER_PORTRAITS.md) |
 | O*NET 31.0 subset | [O*NET database](https://www.onetcenter.org/database.html), exact source manifest in `knowledge/` | Preserve [O*NET attribution and CC BY 4.0 terms](https://www.onetcenter.org/license_db.html) |
 | Qwen3-4B-Instruct-2507 | [Qwen model](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507), [Unsloth GGUF conversion](https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF) | Apache-2.0; base model, no VoxPrep training implied |
 | Qwen3-Embedding-0.6B | [Official GGUF](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF) | Apache-2.0 |
@@ -20,7 +20,7 @@ The application uses locally authored demonstration material, an original proced
 
 ## Software
 
-React, Vite, Tailwind CSS, Three.js, React Three Fiber and FastAPI are third-party dependencies. Their installed package notices and lockfiles are the authoritative version-specific license records. PostgreSQL and pgvector are obtained from their official container/package sources. `requirements.lock` and frontend/e2e lockfiles retain application dependency versions; GPU training has a separate pinned environment.
+React, Vite, Tailwind CSS and FastAPI are third-party dependencies. Their installed package notices and lockfiles are the authoritative version-specific license records. PostgreSQL and pgvector are obtained from their official container/package sources. `requirements.lock` and frontend/e2e lockfiles retain application dependency versions; GPU training has a separate pinned environment.
 
 ## Provenance rules
 

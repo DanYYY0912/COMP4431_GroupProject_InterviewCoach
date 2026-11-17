@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-VoxPrep HK is a local interview practice application for Hong Kong technology graduates. Paste a job description, choose English or Cantonese, answer an adaptive interview, then review STAR evidence and source-linked coaching. A React interface and original 3D interviewer connect to a FastAPI backend. The application supports OpenAI-compatible inference servers, local Qwen inference, local Whisper transcription, browser speech and a clearly labelled deterministic demonstration provider. Practice interview opens directly; completed setup fields enable the interview. This repository also contains QLoRA training and evaluation workflows. Training quality, human review, speech accuracy and usability must be established with actual runs and participants before the full implementation plan is complete. See [PROGRESS.md](PROGRESS.md) for verified results and remaining gates.
+VoxPrep HK is a local interview practice application for Hong Kong technology graduates. Paste a job description, choose English or Cantonese, answer an adaptive interview, then review STAR evidence and source-linked coaching. A React interface with selectable human portraits connects to a FastAPI backend. The application supports OpenAI-compatible inference servers, local Qwen inference, local Whisper transcription, browser speech and a clearly labelled deterministic demonstration provider. Practice interview opens directly; completed setup fields enable the interview. This repository also contains QLoRA training and evaluation workflows. Training quality, human review, speech accuracy and usability must be established with actual runs and participants before the full implementation plan is complete. See [PROGRESS.md](PROGRESS.md) for verified results and remaining gates.
 
 ## Run from Docker Desktop
 
@@ -12,11 +12,11 @@ Start Docker Desktop, then run this once from the project folder:
 docker compose up --build --wait
 ```
 
-Open [the application](http://localhost:8000). In Docker Desktop, expand **comp4431_groupproject_interviewcoach**: **app** serves the interface on **8000**, while **db** stores its data. After the initial build, use the project's Start/Stop controls in Docker Desktop. Both services have restart policies, and named volumes retain sessions and inference settings.
+Open [the application](http://localhost:4431). In Docker Desktop, expand **comp4431_groupproject_interviewcoach**: **app** serves the interface on **4431**, while **db** stores its data. After the initial build, use the project's Start/Stop controls in Docker Desktop. Both services have restart policies, and named volumes retain sessions and inference settings.
 
-The app opens **Practice interview**. Fill the job description and interview options on the left; the right panel summarizes them and enables **Start my interview** when they are valid. **History** retains resume, comparison, export and deletion. Configure your four inference providers in **Settings**.
+The app opens **Practice interview**. Fill the job description and interview options on the left; the right panel summarizes them and enables **Start my interview** when they are valid. **History** retains resume, comparison, export and deletion. Configure your four inference providers in **Settings**. During an interview, choose Alex, Jamie or Sam under **Interviewer appearance**; the browser remembers your choice. The portraits are fictional generated images, bundled with the app.
 
-Stop a previously running `make demo` before starting Docker, since both use port 8000. After source changes, run the build command again to update the image. No local Python or Node installation is needed for the container build. Inference servers can run elsewhere; a new container starts in demo mode until configured.
+Stop a previously running `make demo` before starting Docker, since both use port 4431. After source changes, run the build command again to update the image. No local Python or Node installation is needed for the container build. Inference servers can run elsewhere; a new container starts in demo mode until configured.
 
 ## Native development
 
@@ -40,7 +40,7 @@ pnpm --dir e2e install --frozen-lockfile
 MODEL_PROVIDER=demo VOXPREP_SQLITE=1 make dev
 ```
 
-For the production frontend through a single [localhost endpoint](http://localhost:8000):
+For the production frontend through a single [localhost endpoint](http://localhost:4431):
 
 ```sh
 make demo
@@ -80,8 +80,8 @@ Copy `.env.example` to `.env` if custom configuration is required. This file is 
 | --- | --- |
 | `make bootstrap` | Install application dependencies, supported native tools and verified model files |
 | `make dev` | Start frontend, API, database and available native models |
-| `make demo` | Build frontend and serve the native app through port 8000 |
-| `make demo-container` | Build and start the Docker app and database on port 8000 |
+| `make demo` | Build frontend and serve the native app through port 4431 |
+| `make demo-container` | Build and start the Docker app and database on port 4431 |
 | `make test` | Lint, backend/tooling tests, frontend tests/build, browser journeys and axe checks |
 | `make eval` | Run explicitly labelled offline evaluation smoke checks |
 | `make demo-reset` | Replace only the seeded demonstration session through the local API |
@@ -95,7 +95,7 @@ For browser tests, install Chromium once with `pnpm --dir e2e exec playwright in
 - TXT, text PDF and DOCX job descriptions with size/type validation and scanned-document rejection.
 - English and Traditional Chinese Cantonese interview turns with selectable difficulty and 3, 5 or 8 questions.
 - Adaptive follow-ups, editable transcripts, pause/resume, skip/retry and typed fallback.
-- Original procedural 3D interviewer, speech animation, reduced-motion and static fallback.
+- Three realistic, fictional interviewer portraits with a remembered face choice and hide control. Local question playback remains available.
 - STAR evidence, competency citations, speech summaries, practice history, two-session comparison, full transcript/report export and deletion.
 - Structured model output validation, local retrieval and explicitly reported fallback behavior.
 - Dataset provenance and review gates, a QLoRA notebook and scripts, and evaluation pipelines.
@@ -108,7 +108,7 @@ See [architecture](docs/ARCHITECTURE.md), [API contract](contracts/API.md), [the
 
 ```mermaid
 flowchart LR
-    UI[React interface and 3D interviewer] --> API[FastAPI orchestration]
+    UI[React interface and interviewer portrait] --> API[FastAPI orchestration]
     API --> DB[(PostgreSQL and pgvector)]
     API --> LLM[Native llama.cpp on Metal]
     API --> STT[Native whisper.cpp]
@@ -131,7 +131,7 @@ No target percentage in the original plan is a measured result. A training GPU i
 - **Whisper cannot read browser audio:** ensure FFmpeg is installed; the native server uses `--convert`.
 - **Port in use:** stop the previous VoxPrep process rather than starting another on the same port.
 - **Scanned PDF:** paste the visible job description text. OCR is outside scope.
-- **WebGL unavailable:** use the static interviewer or disable the avatar. Interview controls and captions remain available.
+- **Portrait unavailable:** choose another face or hide the portrait. Interview controls and captions remain available.
 - **Browser test version mismatch:** run the Playwright browser installation command above with the locked dependencies.
 
 ## Submission and team

@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The browser sends interview and job-description requests to one local API. The API stores source chunks and session state, retrieves supporting material, validates model JSON and returns cited interview turns. Qwen and Whisper run natively so Apple Metal remains available. PostgreSQL is the normal database, with a labelled SQLite development fallback. The original procedural avatar has no external model-asset dependency. Inference can use the four servers selected in Settings; choosing external servers sends the corresponding task inputs to them. This application targets a single local user and must not be exposed publicly without a separate security design.
+The browser sends interview and job-description requests to one local API. The API stores source chunks and session state, retrieves supporting material, validates model JSON and returns cited interview turns. Qwen and Whisper run natively so Apple Metal remains available. PostgreSQL is the normal database, with a labelled SQLite development fallback. Three fictional human portraits are bundled as local image assets. Appearance selection is stored in the browser and never changes session settings or sends an API request. Inference can use the four servers selected in Settings; choosing external servers sends the corresponding task inputs to them. This application targets a single local user and must not be exposed publicly without a separate security design.
 
 ## Decisions
 
@@ -10,7 +10,7 @@ The browser sends interview and job-description requests to one local API. The A
 2. **Explicit providers.** `demo` is deterministic practice scaffolding. `llama` calls a local server; `openai` calls the Agent selected in Settings. A public base checkpoint is not a trained VoxPrep adapter.
 3. **Local inference.** Native llama.cpp and whisper.cpp keep Metal acceleration outside Docker. The frontend and API can be containerized separately from inference.
 4. **Source isolation.** Uploaded content is bounded and quoted as data. It must not replace system instructions. Reports retain chunk identifiers and the text visible to the user.
-5. **Degraded operation.** A missing microphone, speech service, model or WebGL context must surface an understandable fallback. Health and reports identify active providers and fallbacks.
+5. **Degraded operation.** A missing microphone, speech service, model or portrait asset must surface an understandable fallback. Health and reports identify active providers and fallbacks.
 6. **No candidate ranking.** Coaching concerns evidence and answer structure, with no personality, accent-quality or protected-trait scoring.
 
 ## Data lifecycle
