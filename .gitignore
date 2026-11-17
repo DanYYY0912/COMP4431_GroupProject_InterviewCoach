@@ -12,6 +12,8 @@ __pycache__/
 .DS_Store
 data/*.db*
 data/uploads/
+data/inference-settings*
+data/.inference-settings*
 models/
 artifacts/*
 !artifacts/.gitkeep

@@ -256,6 +256,8 @@ def submission_files(root, include_training=True):
             continue
         if path.name.startswith(".env") and path.name != ".env.example":
             continue
+        if path.name.lstrip(".").startswith("inference-settings"):
+            continue
         if path.suffix in EXCLUDE_SUFFIXES or path.stat().st_size > 25_000_000:
             continue
         yield rel

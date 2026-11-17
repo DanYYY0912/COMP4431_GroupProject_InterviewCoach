@@ -2,11 +2,15 @@
 
 ## Executive summary
 
-The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The app runs at `http://localhost:8000` with native Qwen, Whisper, embedding and reranking services and PostgreSQL. This is a working development submission, not a completed assessed release: Azure and a training GPU are not set up, the 1,500 synthetic drafts are unreviewed, and no fine-tuned adapter or participant results exist. Two team identities are filled in; two remain for the team to add.
+The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The app runs at `http://localhost:8000` with native Qwen, Whisper, embedding and reranking services and PostgreSQL. This is a working development submission, not a completed assessed release: Azure and a training GPU are not set up, the 1,500 synthetic drafts are unreviewed, and no fine-tuned adapter or participant results exist. Inference providers can now be configured in Settings.
 
-Updated: **2026-11-02T14:43:03+08:00 (Asia/Hong_Kong)**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
+Updated: **2026-11-18T00:28:34+08:00 (Asia/Hong_Kong)**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
 
 ## Working state
+
+- The former Methodology tab is now **Settings**, with Agent, ASR, Embedding and Reranker connections. Each accepts a base URL, API key and model; discovery is optional and manual model IDs are supported.
+- Provider settings persist server-side with keys redacted from API responses. Saved settings apply to new requests and override environment defaults after restart. Public services require HTTPS; local/private network servers can use HTTP. External providers receive their task inputs.
+- ASR configuration takes precedence over Azure recognition. Leaving ASR empty retains native Whisper. Different embedding models/dimensions use isolated caches. Docker keeps settings in the `app-data` volume; Git and source archives exclude settings and temporary credential files.
 
 - `make demo` builds the frontend, migrates the database and starts the local production interface. `make dev` starts the development interface on port 5173.
 - Real local services use ports 8080–8083; Docker PostgreSQL uses loopback port 54329. Model weights are downloaded and checksum-verified on this Mac and excluded from source packaging.
@@ -26,6 +30,9 @@ Updated: **2026-11-02T14:43:03+08:00 (Asia/Hong_Kong)**. See [verification](docs
 
 ## Last verification
 
+On **2026-11-18**, `make test` passed **133 Python tests, 33 frontend tests and six browser journeys**; the optional PostgreSQL test was skipped in the ordinary suite and passed separately against an isolated PostgreSQL schema. Lint, type checks and the production frontend build passed. The new browser journey checks all four connections, authenticated model discovery, persistence after reload, redacted keys and desktop/mobile accessibility. Logs: `artifacts/verification/inference-full-test.log`. Provider behavior is covered by mocked protocol tests; no user-supplied external provider credentials were available for a live external-service run.
+
+
 On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five Playwright journeys**, plus lint, type checks, production and Docker builds. The earlier integrated `make test` passed before the final additions; affected suites were rerun after those additions. Both real Qwen language flows completed with source-ID validation and model-generated reports. Container startup and both-language smoke journeys passed. [Verification](docs/VERIFICATION.md) records scope and evidence. Counts describe controlled software checks; they do not establish model quality or human-study thresholds.
 
 ## Durable decisions and limits
@@ -43,3 +50,5 @@ On 2026-11-02, final checks passed **61 Python tests, 23 frontend tests and five
 - **2026-11-02:** Read the supplied plan and both course PDFs; initialized source control and contracts. Built API, interface, local services, original avatar, data-review/training tooling and evaluation runners.
 - **2026-11-02:** Fixed migration adoption, nullable answer contracts, accessibility contrast/labels, Cantonese citation generation, microphone cancellation and stale session responses. Prepared validated slides, scripted backup and source packaging.
 - **2026-11-02:** User confirmed Azure and GPU are not configured; supplied two team identities and asked implementation to continue. External evidence gates remain explicit.
+
+- **2026-11-18:** Replaced Methodology with four inference settings sections, integrated authenticated provider calls and runtime persistence, tested dimension-safe retrieval, and updated launch, Docker and source-packaging behavior. Existing slides and backup recording retain their original November 2 presentation snapshot.

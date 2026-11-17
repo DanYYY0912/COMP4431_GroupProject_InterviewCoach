@@ -85,6 +85,13 @@ def available(url):
         return False
 
 
+def native_endpoint(url, port):
+    return url.rstrip("/") in {
+        f"http://127.0.0.1:{port}/v1",
+        f"http://localhost:{port}/v1",
+    }
+
+
 def serve(mode):
     load_env()
     if mode == "demo":
@@ -126,10 +133,32 @@ def serve(mode):
         model_path = ROOT / ENV.get(
             "MODEL_PATH", "models/Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
         )
-        provider = ENV.setdefault(
-            "MODEL_PROVIDER", "llama" if model_path.exists() else "demo"
+        ENV.setdefault("MODEL_PROVIDER", "llama" if model_path.exists() else "demo")
+        embedding_path = ROOT / "models/Qwen3-Embedding-0.6B-Q8_0.gguf"
+        reranker_path = ROOT / "models/Qwen3-Reranker-0.6B-Q8_0.gguf"
+        if embedding_path.exists():
+            ENV.setdefault("EMBEDDING_BASE_URL", "http://127.0.0.1:8082/v1")
+        if reranker_path.exists():
+            ENV.setdefault("RERANKER_BASE_URL", "http://127.0.0.1:8083/v1")
+        from app.config import Settings
+        from app.inference_settings import load_saved_inference
+
+        effective = load_saved_inference(
+            Settings(
+                **{
+                    name: ENV[name.upper()]
+                    for name in Settings.model_fields
+                    if name.upper() in ENV
+                }
+            )
         )
-        if provider == "llama" and not available("http://127.0.0.1:8080/health"):
+        provider = effective.model_provider
+        native_agent = provider != "demo" and native_endpoint(
+            effective.llama_base_url, 8080
+        )
+        native_embedding = native_endpoint(effective.embedding_base_url, 8082)
+        native_reranker = native_endpoint(effective.reranker_base_url, 8083)
+        if native_agent and not available("http://127.0.0.1:8080/health"):
             if not model_path.exists():
                 raise SystemExit(
                     "MODEL_PROVIDER=llama requires MODEL_PATH. Run make bootstrap or use MODEL_PROVIDER=demo."
@@ -157,7 +186,13 @@ def serve(mode):
         whisper_path = ROOT / ENV.get(
             "WHISPER_MODEL_PATH", "models/ggml-large-v3-turbo-q5_0.bin"
         )
-        if whisper_path.exists() and not available("http://127.0.0.1:8081/"):
+        if (
+            not effective.asr_base_url
+            and effective.whisper_base_url
+            in {"http://127.0.0.1:8081", "http://localhost:8081"}
+            and whisper_path.exists()
+            and not available("http://127.0.0.1:8081/")
+        ):
             start(
                 "whisper",
                 [
@@ -172,55 +207,57 @@ def serve(mode):
                 ],
                 log=True,
             )
-        embedding_path = ROOT / "models/Qwen3-Embedding-0.6B-Q8_0.gguf"
-        if embedding_path.exists():
-            ENV.setdefault("EMBEDDING_BASE_URL", "http://127.0.0.1:8082/v1")
-            if not available("http://127.0.0.1:8082/health"):
-                start(
-                    "embedding",
-                    [
-                        "llama-server",
-                        "-m",
-                        embedding_path,
-                        "--host",
-                        "127.0.0.1",
-                        "--port",
-                        "8082",
-                        "--embedding",
-                        "--pooling",
-                        "last",
-                        "-c",
-                        "4096",
-                        "-ngl",
-                        "99",
-                    ],
-                    log=True,
-                )
-        reranker_path = ROOT / "models/Qwen3-Reranker-0.6B-Q8_0.gguf"
-        if reranker_path.exists():
-            ENV.setdefault("RERANKER_BASE_URL", "http://127.0.0.1:8083/v1")
-            if not available("http://127.0.0.1:8083/health"):
-                start(
-                    "reranker",
-                    [
-                        "llama-server",
-                        "-m",
-                        reranker_path,
-                        "--host",
-                        "127.0.0.1",
-                        "--port",
-                        "8083",
-                        "--embedding",
-                        "--reranking",
-                        "--pooling",
-                        "rank",
-                        "-c",
-                        "4096",
-                        "-ngl",
-                        "99",
-                    ],
-                    log=True,
-                )
+        if (
+            embedding_path.exists()
+            and native_embedding
+            and not available("http://127.0.0.1:8082/health")
+        ):
+            start(
+                "embedding",
+                [
+                    "llama-server",
+                    "-m",
+                    embedding_path,
+                    "--host",
+                    "127.0.0.1",
+                    "--port",
+                    "8082",
+                    "--embedding",
+                    "--pooling",
+                    "last",
+                    "-c",
+                    "4096",
+                    "-ngl",
+                    "99",
+                ],
+                log=True,
+            )
+        if (
+            reranker_path.exists()
+            and native_reranker
+            and not available("http://127.0.0.1:8083/health")
+        ):
+            start(
+                "reranker",
+                [
+                    "llama-server",
+                    "-m",
+                    reranker_path,
+                    "--host",
+                    "127.0.0.1",
+                    "--port",
+                    "8083",
+                    "--embedding",
+                    "--reranking",
+                    "--pooling",
+                    "rank",
+                    "-c",
+                    "4096",
+                    "-ngl",
+                    "99",
+                ],
+                log=True,
+            )
         if "DATABASE_URL" not in ENV and ENV.get("VOXPREP_SQLITE") != "1":
             docker = shutil.which("docker")
             if (
@@ -244,19 +281,13 @@ def serve(mode):
                 )
         run([python(), "-m", "scripts.migrate"])
         ready_urls = {}
-        if provider == "llama":
-            ready_urls["llama"] = (
-                ENV.get("LLAMA_BASE_URL", "http://127.0.0.1:8080/v1").removesuffix(
-                    "/v1"
-                )
-                + "/health"
-            )
-        for name, key in [
-            ("embedding", "EMBEDDING_BASE_URL"),
-            ("reranker", "RERANKER_BASE_URL"),
+        for name, managed, port in [
+            ("llama", native_agent, 8080),
+            ("embedding", native_embedding, 8082),
+            ("reranker", native_reranker, 8083),
         ]:
-            if ENV.get(key):
-                ready_urls[name] = ENV[key].removesuffix("/v1") + "/health"
+            if managed:
+                ready_urls[name] = f"http://127.0.0.1:{port}/health"
         if ready_urls:
             print(
                 "Waiting for configured native services. Logs: artifacts/run/",

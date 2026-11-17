@@ -24,6 +24,6 @@ await page.getByLabel('Your answer').fill('I documented the test results and ask
 await hold(5000);await page.getByRole('button',{name:'Send answer',exact:true}).click();
 await page.getByRole('heading',{name:'Make your next answer stronger.'}).waitFor();await hold(6000);
 await page.getByRole('heading',{name:'Your competency evidence'}).scrollIntoViewIfNeeded();await hold(5000);
-await page.getByRole('link',{name:'Methodology',exact:true}).click();await hold(5000);
+await page.getByRole('link',{name:'Settings',exact:true}).click();await hold(5000);
 const remaining = 76000-(Date.now()-started);if(remaining>0) await hold(remaining);
 const video=page.video();await context.close();await video.saveAs('../artifacts/recording/backup-demo.webm');await browser.close();console.log('Saved scripted software-flow recording.');

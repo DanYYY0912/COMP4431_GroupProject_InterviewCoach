@@ -5,6 +5,115 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/api/inference-settings": {
+      "get": {
+        "summary": "Get Inference Settings",
+        "operationId": "get_inference_settings_api_inference_settings_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Put Inference Settings",
+        "operationId": "put_inference_settings_api_inference_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InferenceInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/inference-settings/{component}/models": {
+      "post": {
+        "summary": "List Models",
+        "operationId": "list_models_api_inference_settings__component__models_post",
+        "parameters": [
+          {
+            "name": "component",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "agent",
+                "asr",
+                "embedding",
+                "reranker"
+              ],
+              "type": "string",
+              "title": "Component"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscoveryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelsView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/job-profiles": {
       "post": {
         "summary": "Create Profile",
@@ -612,6 +721,65 @@
         ],
         "title": "CompetencyFeedback"
       },
+      "ComponentInput": {
+        "properties": {
+          "base_url": {
+            "type": "string",
+            "maxLength": 2048,
+            "title": "Base Url"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Model"
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "password",
+                "writeOnly": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Api Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "base_url",
+          "model",
+          "api_key"
+        ],
+        "title": "ComponentInput"
+      },
+      "ComponentView": {
+        "properties": {
+          "base_url": {
+            "type": "string",
+            "title": "Base Url"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "api_key_set": {
+            "type": "boolean",
+            "title": "Api Key Set"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "base_url",
+          "model",
+          "api_key_set"
+        ],
+        "title": "ComponentView"
+      },
       "Control": {
         "properties": {
           "action": {
@@ -634,6 +802,41 @@
         ],
         "title": "Control"
       },
+      "DiscoveryInput": {
+        "properties": {
+          "base_url": {
+            "type": "string",
+            "maxLength": 2048,
+            "title": "Base Url"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Model",
+            "default": ""
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "password",
+                "writeOnly": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Api Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "base_url",
+          "api_key"
+        ],
+        "title": "DiscoveryInput"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -646,6 +849,73 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "InferenceInput": {
+        "properties": {
+          "agent": {
+            "$ref": "#/components/schemas/ComponentInput"
+          },
+          "asr": {
+            "$ref": "#/components/schemas/ComponentInput"
+          },
+          "embedding": {
+            "$ref": "#/components/schemas/ComponentInput"
+          },
+          "reranker": {
+            "$ref": "#/components/schemas/ComponentInput"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "agent",
+          "asr",
+          "embedding",
+          "reranker"
+        ],
+        "title": "InferenceInput"
+      },
+      "InferenceView": {
+        "properties": {
+          "agent": {
+            "$ref": "#/components/schemas/ComponentView"
+          },
+          "asr": {
+            "$ref": "#/components/schemas/ComponentView"
+          },
+          "embedding": {
+            "$ref": "#/components/schemas/ComponentView"
+          },
+          "reranker": {
+            "$ref": "#/components/schemas/ComponentView"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "agent",
+          "asr",
+          "embedding",
+          "reranker"
+        ],
+        "title": "InferenceView"
+      },
+      "ModelsView": {
+        "properties": {
+          "models": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Models"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "models"
+        ],
+        "title": "ModelsView"
       },
       "Profile": {
         "properties": {

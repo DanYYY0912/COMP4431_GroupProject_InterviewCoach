@@ -4,6 +4,14 @@
 
 The application has passed controlled automated checks and real local-service smoke tests on this Mac. These checks establish runnable software and integration behavior. They do not establish the plan's fine-tuning, human-review, speech-quality, latency or usability thresholds. Final source validation includes code through `0100c70` plus the comparison browser test. Logs under `artifacts/verification/` remain on the development Mac; distributable synthetic raw service evidence is retained under `evaluation/raw/`.
 
+## Inference settings update — 2026-11-18
+
+The former Methodology tab now configures Agent, ASR, Embedding and Reranker providers. The combined suite passes **133 Python tests, 33 frontend tests and six Playwright journeys**. One optional PostgreSQL case is skipped in the normal suite; a separate run passed against an isolated real PostgreSQL schema, including 1,024-dimensional vector queries, other dimensions, stale-cache rejection and transaction recovery.
+
+New checks cover server-side key persistence/redaction, credential destination changes, authenticated discovery and provider calls, ASR multipart parameters, unchanged settings after failed writes, saving during active inference, runtime routing after saving, and startup with saved external providers. The browser checks all four forms, reloading, desktop/mobile accessibility and zero page errors. External provider protocol tests use synthetic credentials and local/mock servers. Real user-selected external services still need their own URLs, credentials and models.
+
+The native app was restarted with the new settings API and production UI. Full logs and screenshots are under `artifacts/verification/inference-*` and `settings-*.png`. Historical evidence below remains dated November 2.
+
 ## Controlled checks
 
 | Check | Observed result on 2026-11-02 | Scope / evidence |

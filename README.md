@@ -36,7 +36,22 @@ make demo
 
 ## Configuration and real services
 
-Copy `.env.example` to `.env` if custom configuration is required. This file is ignored by Git and excluded from the source archive. Environment variables take precedence.
+Open **Settings** in the sidebar to configure **Agent**, **ASR**, **Embedding** and **Reranker**. Each section has a base URL, API key and model. Use **Load models** when the server supports model discovery, or enter its model ID directly. Include the API prefix in the base URL, such as `http://localhost:8080/v1`, then save. New requests use the saved values immediately.
+
+| Section | Endpoint appended to base URL | Purpose |
+| --- | --- | --- |
+| Agent | `/chat/completions` | Interview questions and structured feedback |
+| ASR | `/audio/transcriptions` | Transcribe recorded answers |
+| Embedding | `/embeddings` | Index and retrieve supporting passages |
+| Reranker | `/rerank` | Reorder retrieved passages using relevance scores |
+
+Agent, ASR and Embedding follow the corresponding OpenAI-compatible API formats. Reranker requires the Cohere/Jina-style reranking format supported by servers such as vLLM; a chat-only server cannot rerank. Model discovery uses `/models` and is optional. Local servers may leave the API key blank. Public services require HTTPS; localhost and private network servers can use HTTP.
+
+Saved API keys stay on the backend in the private local `data/inference-settings.json` file (owner-only permissions). They are excluded from Git and source archives, and are not returned to the browser. A blank existing key field retains its saved value; **Clear key** removes it. Changing a URL requires a new key or an explicitly empty key so credentials are not forwarded to another server. Docker retains the file in the `app-data` volume. Saved settings override environment defaults after restart.
+
+Configured external servers receive the inputs needed for their task: prompts and answers for Agent, recordings for ASR, and source passages/queries for Embedding and Reranker. Session storage remains in your local database. Changing the embedding URL or model invalidates old vectors so different embedding spaces are not mixed. Clearing both URL and model selects demo for Agent, native Whisper for ASR, or disables Embedding/Reranker.
+
+Copy `.env.example` to `.env` if custom configuration is required. This file is ignored by Git and excluded from the source archive. Environment variables take precedence over `.env`; saved inference settings take precedence over both for the four inference services.
 
 - Set `MODEL_PROVIDER=llama` to use the local Qwen base model or your genuinely trained model at `MODEL_PATH`. With no explicit provider, the supervisor selects llama when weights are present. The default backend provider is `demo` when run directly.
 - Set `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION` locally for Azure Speech. The browser receives only a short-lived authorization token after consent. Audio/text goes to Azure only for the selected cloud voice feature.

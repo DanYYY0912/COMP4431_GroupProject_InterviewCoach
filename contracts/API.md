@@ -28,6 +28,9 @@ type Report = {session_id: string; role_title: string; language: string; summary
 - GET `/api/sessions/{id}/report` returns Report. DELETE `/api/sessions/{id}` returns 204.
 - GET `/api/health` returns `{status, database, llm, speech, retrieval, provider}`. Components are status strings.
 - GET `/api/methodology/metrics` returns `{status: string, provider: string, training: object, evaluations: object[], limitations: string[]}`.
+- GET `/api/inference-settings` returns `{agent, asr, embedding, reranker}`, each `{base_url: string, model: string, api_key_set: boolean}`. Keys are never returned.
+- PUT `/api/inference-settings` takes all four sections, each `{base_url: string, model: string, api_key: string|null}`. `null` retains an existing key only for the same base URL; `""` removes it. URL and model must both be filled or both empty. Empty Agent selects demo, empty ASR uses native Whisper, and empty Embedding/Reranker disables that service. Returns the redacted GET shape. New requests use the saved configuration immediately.
+- POST `/api/inference-settings/{component}/models` takes `{base_url: string, api_key: string|null}` and returns `{models: string[]}` from the selected server's `/models`. It does not save settings. A saved key is used only for its original base URL.
 - POST `/api/speech/token` `{consent: true}` returns `{token, region, expires_in: 540}` or 503 if not configured.
 - POST `/api/speech/transcribe` multipart `file`, `language` returns `{text, provider}` or 503.
 
