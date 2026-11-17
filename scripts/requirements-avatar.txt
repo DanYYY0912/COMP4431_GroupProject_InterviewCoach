@@ -1,0 +1,14 @@
+# Optional, isolated preprocessing only; never install in the app image/venv.
+# Tested on Python 3.12, macOS arm64. No runtime MediaPipe dependency.
+mediapipe==0.10.21
+numpy==1.26.4
+scipy==1.14.1
+Pillow==11.1.0
+mapbox-earcut==2.1.0
+# Pin compatible MediaPipe transitive numerical dependencies (NumPy 1.x).
+opencv-contrib-python==4.11.0.86
+jax==0.4.38
+jaxlib==0.4.38
+# The 0.10.21 universal2 wheel's internal WHEEL tag incorrectly says x86_64;
+# pip check reports that packaging mismatch on arm64. Its actual native library
+# contains arm64 and was exercised successfully on Apple M4. No metadata patch.

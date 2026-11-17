@@ -1,0 +1,17 @@
+MediaPipe facial topology attribution
+
+The facial triangle connectivity in jamie.mesh.json is derived from the
+MediaPipe canonical_face_model.obj published by Google AI Edge under the
+Apache License, Version 2.0. See the accompanying MEDIAPIPE-LICENSE.txt.
+
+Original source at a pinned revision:
+https://github.com/google-ai-edge/mediapipe/blob/a908d668c730da128dfa8d9f6bd25d519d006692/mediapipe/modules/face_geometry/data/canonical_face_model.obj
+Original file SHA-256:
+8bac80443397e113f41a8b565ea72c59390bc031d9defab289dba7bc0c54e618
+
+Modifications: facial vertex positions and UVs use the project portrait and
+locally inferred landmarks, not the canonical face's coordinates. Triangle
+winding is reversed for image coordinates; 18 inner-mouth cap triangles are
+removed; a portrait-frame mesh is joined at the 36 face-oval vertices.
+The original model and SDK are preprocessing tools and are not distributed
+as runtime inference dependencies. The portrait is a fictional generated face.
