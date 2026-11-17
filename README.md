@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-VoxPrep HK is a local interview practice application for Hong Kong technology graduates. Paste a job description, choose English or Cantonese, answer an adaptive interview, then review STAR evidence and source-linked coaching. A React interface and original 3D interviewer connect to a FastAPI backend. The application supports real local Qwen inference, Azure Speech with consent, local Whisper transcription, and a clearly labelled deterministic demonstration provider. This repository also contains QLoRA training and evaluation workflows. Training quality and speech accuracy are measured here with scripted runs; participant studies are out of scope for this submission. See [PROGRESS.md](PROGRESS.md) for verified results and remaining gates.
+VoxPrep HK is a local interview practice application for Hong Kong technology graduates. Paste a job description, choose English or Cantonese, answer an adaptive interview, then review STAR evidence and source-linked coaching. A React interface and original 3D interviewer connect to a FastAPI backend. The application supports real local Qwen inference, Azure Speech with consent, local Whisper transcription, and a clearly labelled deterministic demonstration provider. This repository also contains QLoRA training and evaluation workflows. Training quality and speech accuracy are measured here with scripted runs; participant studies are out of scope for this submission. See [evaluation](docs/EVALUATION.md) for measured results.
 
 ## Quick start
 
@@ -75,7 +75,7 @@ The coach does not score emotion, appearance, accent quality, personality, prote
 
 ## Architecture and contracts
 
-See [architecture](docs/ARCHITECTURE.md), [API contract](contracts/API.md), [the supplied implementation plan](docs/ORIGINAL_PLAN.md), [model card](docs/MODEL_CARD.md), and [dataset guide](docs/DATASET.md).
+See [architecture](docs/ARCHITECTURE.md), [API contract](contracts/API.md), [model card](docs/MODEL_CARD.md), and [dataset guide](docs/DATASET.md).
 
 ```mermaid
 flowchart LR
@@ -91,9 +91,42 @@ flowchart LR
 
 ## Training and evaluation
 
-The supplied model is a public base model quantization. It is not a VoxPrep fine-tuned checkpoint. The draft data is synthetic and must pass human review before training. Follow [ml/](ml/) and [docs/DATASET.md](docs/DATASET.md) to review, split, train, preserve checkpoints, export, and measure base versus LoRA performance. Keep reviewed data, hashes, logs, loss curves, manifests and raw results with the final submission.
+The adapter in this submission is a real QLoRA fine-tune of `Qwen/Qwen3-4B-Instruct-2507`, trained on 2026-11-16 on a single Kaggle T4 (fp16, 4-bit NF4 base weights, rank-32 adapter on all linear layers, one epoch = 50 optimizer steps, 87 minutes). Recorded evidence from Kaggle kernel v5 is in [`ml/training_evidence/voxprep-qlora-v5/`](ml/training_evidence/voxprep-qlora-v5/) (the 252 MB adapter weights stay out of git; the served 132 MB LoRA GGUF is listed under models):
 
-No target percentage in the original plan is a measured result. Azure Speech and a training GPU are not yet set up; follow [the external setup guide](docs/EXTERNAL_SETUP.md) when ready. The methodology screen reads stored evaluation evidence and labels pending work. Every released number is automated (strict schema validity, citation-id existence, script detection, latency) and is labelled as such. Blinded preference ratings, a participant usability study, manual language review, human retrieval labelling and a speech WER/CER study are out of scope for this submission.
+| Artefact | What it shows |
+|---|---|
+| `model_manifest.json` → `adapter_sha256` | the trained adapter weights hash to `1dd2088b…` |
+| `training_log.jsonl`, `loss.png` | train loss 1.8836 → 0.0987; validation loss 0.4264 → 0.1756 → 0.0899 → 0.0627 → **0.0561** |
+| `model_manifest.json`, `config.json`, `environment.txt` | `status: training_completed`, base revision, GPU, precision, dataset hash, hyperparameters, exact packages |
+
+Training data is 971 human-reviewed rows bound to content hashes (1,000 generated, 29 rejected by the reviewer), split 790 train / 62 validation / 119 test. Review records live outside git; `docs/DATASET.md` documents the procedure.
+
+### Running the adapter
+
+The demo serves the adapter as a LoRA on top of the base Q4_K_M weights, so no merged 8 GB model is needed:
+
+```bash
+llama-server -m models/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
+             --lora models/voxprep-lora-f16.gguf --port 8080 -c 8192 -ngl 99 --jinja
+```
+
+Set `LORA_PATH=models/voxprep-lora-f16.gguf` in `.env` and `make dev` starts it for you; `curl -s localhost:8080/lora-adapters` must report `"scale":1.0`. The adapter was converted locally with llama.cpp's `convert_lora_to_gguf.py` because the Kaggle export step wrote its GGUF outside the committed kernel output.
+
+### Measured effect (119 held-out prompts, same prompt each time)
+
+| Configuration | Schema valid | Requested language | p95 first token |
+|---|---|---|---|
+| base + RAG | 100% | 92.4% | 1.77 s |
+| adapter + RAG | 100% | **100%** | 2.04 s |
+| adapter, no RAG | 100% | **100%** | 2.32 s |
+
+Paired comparison: **9 prompts fixed, 0 regressed, 110 unchanged**. The fixes are requested-language adherence in English sessions (three reports had coaching in Chinese) and refusal on an injected job description that asked for a hiring decision. Schema validity was already 100% for the base model, so fine-tuning did not change it, and latency rises by about 0.3 s at p95.
+
+Two defects found while running this, both fixed in the notebook: a T4 reports bf16 support through fp32 emulation (310 s per optimizer step until fp16 was forced, 84–105 s after), and llama.cpp's conversion requirements pin `protobuf<5`, which breaks `import transformers` in the export step.
+
+Honest limit: 109 of the 119 test prompts are English report tasks (4 questions, 4 safety), so this evidence is about language adherence and refusal, not about question quality or general answer quality.
+
+Only the numbers above are measured results. Azure Speech remains optional; see [the external setup guide](docs/EXTERNAL_SETUP.md). The methodology screen reads stored evaluation evidence and labels pending work. Every released number is automated (strict schema validity, citation-id existence, script detection, latency) and is labelled as such. Blinded preference ratings, a participant usability study, manual language review, human retrieval labelling and a speech WER/CER study are out of scope for this submission.
 
 ## Troubleshooting
 
@@ -108,7 +141,7 @@ No target percentage in the original plan is a measured result. Azure Speech and
 
 ## Submission and team
 
-The course requires a source ZIP, a PowerPoint file, a seven-minute English presentation, and team identities in this README. The source package is written to `artifacts/VoxPrep-HK-source.zip`. Presentation and demo materials are in `presentation/`. Review [the release checklist](docs/RELEASE_CHECKLIST.md) before submission.
+The course requires a source ZIP, a PowerPoint file, a seven-minute English presentation, and team identities in this README. The source package is written to `artifacts/VoxPrep-HK-source.zip`. Presentation and demo materials are in `presentation/`.
 
 | Team member | English name | Student ID | Planned responsibility |
 | --- | --- | --- | --- |
