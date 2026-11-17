@@ -4,10 +4,11 @@
 
 The local application, base-model inference, retrieval, speech fallback, training/evaluation tooling and presentation materials are implemented. The Docker app and PostgreSQL run at `http://localhost:4431`; all four saved inference connections are preserved in the Docker volume. Native model launchers remain available for development. The integration branch carries Kelvin's Kaggle v5 training records and automated results. The adapter weights are distributed separately, and participant studies remain pending. Inference providers can now be configured in Settings.
 
-Updated: **2026-11-18T04:42:08+08:00**. See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
+Updated: **2026-11-18T05:20:49+08:00** (Asia/Hong_Kong). See [verification](docs/VERIFICATION.md), [release gates](docs/RELEASE_CHECKLIST.md) and [external setup](docs/EXTERNAL_SETUP.md).
 
 ## Working state
 
+- **Jamie realism follow-up (2026-11-18):** The user rejected a procedural head as too crude. That experiment was discarded and was never deployed. A realistic 3D Jamie remains unfinished: fal is connected, but its account has no credits, so even the portrait upload is blocked and no candidate mesh has been generated. Resume with the original `jamie.png` and Rodin v2.5 after the billing block is resolved; inspect likeness before spending on rigging or integrating it. The independent male-voice fix is saved in `1c7687e` and passed 17 audio tests. Playback uses identifiable local male voices; this Mac currently exposes Sinji only for Cantonese through its native voice inventory.
 - The app uses port **4431** for Docker and native API serving. Jamie is the only included face. Setup previews the appearance before starting, then saves it with the session. A portrait-textured 3D facial surface blinks, moves subtly and animates the mouth during local question playback.
 - Starting immediately shows an indeterminate loading bar, actual preparation stages and elapsed time. Duplicate starts are blocked, errors preserve inputs, and late completion cannot redirect another page.
 - Practice interview opens directly. The two input sections control start readiness; the right panel summarizes configuration and service status. History preserves session management. Overview, consent controls and decorative marketing copy have been removed.
